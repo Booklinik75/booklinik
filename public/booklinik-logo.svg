@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="126.873" height="36" viewBox="0 0 126.873 36">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #485363;
+        font-size: 28px;
+        font-family: CircularStd-Medium, Circular Std;
+        font-weight: 500;
+        letter-spacing: -0.01em;
+      }
+
+      .cls-2 {
+        fill: #33c783;
+      }
+    </style>
+  </defs>
+  <g id="Group_61" data-name="Group 61" transform="translate(-117 -28)">
+    <text id="booklinik" class="cls-1" transform="translate(117 56)"><tspan x="0" y="0">booklinik</tspan></text>
+    <path id="Path_50" data-name="Path 50" class="cls-2" d="M193.684,4.926H189.8V1.047A1.079,1.079,0,0,0,188.758,0h-.985a1.079,1.079,0,0,0-1.047,1.047V4.926h-3.879A1.079,1.079,0,0,0,181.8,5.973v.985A1.079,1.079,0,0,0,182.847,8h3.879v3.879a1.079,1.079,0,0,0,1.047,1.047h.985a1.079,1.079,0,0,0,1.047-1.047V8h3.879a1.079,1.079,0,0,0,1.047-1.047V5.973A1.079,1.079,0,0,0,193.684,4.926Z" transform="translate(49.142 30)"/>
+  </g>
+</svg>
