@@ -9,6 +9,7 @@ module.exports = {
     extend: {
       colors: {
         shamrock: "#33C383",
+        bali: "#80A0AB",
       },
     },
   },
