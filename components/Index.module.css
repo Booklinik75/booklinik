@@ -1,0 +1,10 @@
+.homeHero {
+  background-image: url("../public/assets/home-hero-background@2x.jpg");
+  min-height: 100vh;
+  background-size: cover;
+}
+
+.values {
+  background-image: url("../public/assets/home-values-background@2x.jpg");
+  background-size: cover;
+}
