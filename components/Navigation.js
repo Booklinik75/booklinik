@@ -1,52 +1,18 @@
 import React from "react";
 import Image from "next/image";
-import NavigationItem from "./navigationItem";
+import NavigationItem from "./NavigationItem";
 import Logo from "../public/booklinik-logo.svg";
 import Link from "next/link";
 import { FaBars } from "react-icons/fa";
 
-/* export default function Navigation2() {
-  return (
-    <nav className="flex justify-between items-center py-4 px-4">
-      <Link href="/">
-        <a>
-          <Image src={Logo} alt="Booklinik" />
-        </a>
-      </Link>
-      <div className="hidden md:flex space-x-6 lg:space-x-16 shamrockspace-nowrap">
-        <Link href="/operations">
-          <a className="hover:underline">Opérations</a>
-        </Link>
-        <Link href="/cliniques">
-          <a className="hover:underline">Cliniques</a>
-        </Link>
-        <Link href="/destinations">
-          <a className="hover:underline">Destinations</a>
-        </Link>
-        <Link href="/nos-valeurs">
-          <a className="hover:underline">Nos valeurs</a>
-        </Link>
-        <Link href="offres-speciales">
-          <a className="text-shamrock font-bold hover:underline">
-            Offres spéciales
-          </a>
-        </Link>
-        <Link href="">
-          <a className="hover:underline">Connexion</a>
-        </Link>
-      </div>
-    </nav>
-  );
-}
- */
 export default function Navigation() {
   const [menuOpen, setMenuOpen] = React.useState(false);
 
   return (
-    <>
+    <div className="absolute w-full">
       <div className="flex flex-wrap py-2">
-        <div className="w-full px-4">
-          <nav className="relative flex flex-wrap items-center justify-between px-2 py-3">
+        <div className="w-full px-2">
+          <nav className="relative flex flex-wrap items-center justify-between px-2 py-2">
             <div className="container px-4 mx-auto flex flex-wrap items-center justify-between">
               <div className="w-full relative flex justify-between lg:w-auto px-4 lg:static lg:block lg:justify-start">
                 <Link href="/">
@@ -64,7 +30,7 @@ export default function Navigation() {
               </div>
               <div
                 className={
-                  "lg:flex flex-grow items-center" +
+                  "lg:flex flex-grow items-center bg-white lg:bg-transparent shadow lg:shadow-none p-5" +
                   (menuOpen ? " flex" : " hidden")
                 }
                 id="example-navbar-info"
@@ -85,6 +51,6 @@ export default function Navigation() {
           </nav>
         </div>
       </div>
-    </>
+    </div>
   );
 }
