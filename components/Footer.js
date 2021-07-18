@@ -14,7 +14,11 @@ const Footer = () => {
       <div className="mx-4 xl:mx-auto max-w-7xl space-y-6">
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6">
           <div className="col-span-2">
-            <Image src={Logo}></Image>
+            <Link href="/">
+              <a className="block mb-6">
+                <Image src={Logo}></Image>
+              </a>
+            </Link>
             <p className="w-full sm:w-2/3 font-bold">
               Estimez et réservez votre voyage médical sur mesure, en quelques
               clics.
@@ -43,10 +47,10 @@ const Footer = () => {
             <Link href="#">
               <a className="hover:underline">FAQ</a>
             </Link>
-            <Link href="#">
+            <Link href="/legal/annulations">
               <a className="hover:underline">Options d'annulation</a>
             </Link>
-            <Link href="#">
+            <Link href="/legal/confidentialite">
               <a className="hover:underline">Confidentialité</a>
             </Link>
           </div>
@@ -93,15 +97,15 @@ const Footer = () => {
               &copy; {new Date().getFullYear()} Booklinik
             </p>
             <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2">
-              <Link href="#">
+              <Link href="/legal/confidentialite">
                 <a className="hover:underline">Confidentialité</a>
               </Link>
               <p className="hidden md:block">&bull;</p>
-              <Link href="#" className="hover:underline">
+              <Link href="/legal/cgu" className="hover:underline">
                 <a className="hover:underline">Conditions générales</a>
               </Link>
               <p className="hidden md:block">&bull;</p>
-              <Link href="#" className="hover:underline">
+              <Link href="/legal/informations" className="hover:underline">
                 <a className="hover:underline">Informations d'entreprises</a>
               </Link>
             </div>
