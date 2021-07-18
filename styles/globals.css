@@ -4,4 +4,12 @@
 /* import tailwind */
 @tailwind base;
 @tailwind components;
+
+@layer base {
+  @font-face {
+    font-family: Lancaste;
+    font-weight: 400;
+    src: url(./fonts/lancaste.woff) format("woff");
+  }
+}
 @tailwind utilities;
