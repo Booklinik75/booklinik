@@ -1,6 +1,6 @@
 const Category = () => {
   return (
-    <div className="flex bg-white rounded-lg border border-black border-opacity-10 shadow transition hover:shadow-md hover:border-opacity-20 hover:bg-gray-50">
+    <div className="flex bg-white rounded-lg border border-black border-opacity-10 shadow transition hover:cursor-pointer hover:shadow-md hover:border-opacity-20 hover:bg-gray-50">
       <div
         style={{
           backgroundImage: `url("https://via.placeholder.com/1000")`,
