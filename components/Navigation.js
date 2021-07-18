@@ -9,7 +9,7 @@ export default function Navigation() {
   const [menuOpen, setMenuOpen] = React.useState(false);
 
   return (
-    <div className="absolute w-full">
+    <div className="w-full">
       <div className="flex flex-wrap py-2">
         <div className="w-full px-2">
           <nav className="relative flex flex-wrap items-center justify-between px-2 py-2">
