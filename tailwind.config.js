@@ -11,6 +11,9 @@ module.exports = {
         shamrock: "#33C383",
         bali: "#80A0AB",
       },
+      fontFamily: {
+        hand: ["Lancaste"],
+      },
     },
   },
   variants: {
