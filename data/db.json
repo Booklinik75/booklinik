@@ -1,0 +1,44 @@
+{
+  "legal": [
+    {
+      "id": "1",
+      "urlSlug": "informations",
+      "metaTitle": "L'entreprise | Booklinik",
+      "navTitle": "Informations sur l'entreprise",
+      "pageTitle": "Informations sur l'entreprise",
+      "body": "Anim consectetur ad laborum est. Mollit quis occaecat duis laboris sit aliqua ex sunt cupidatat. Nostrud ut do cillum amet officia laborum tempor Lorem amet eiusmod consequat mollit est occaecat. Nisi cupidatat esse excepteur dolore amet amet dolore tempor enim dolor. Fugiat ut pariatur magna ad quis reprehenderit commodo commodo id excepteur ad cupidatat id nostrud. Consequat occaecat sint laboris aliquip dolor sunt magna sit duis velit minim ex voluptate nulla. Aute exercitation deserunt id ullamco est ut. Tempor Lorem deserunt cupidatat nostrud aliqua pariatur dolore et ad. Tempor veniam consequat proident dolore magna elit.Officia dolor consectetur laborum cillum aute est consectetur aute aute qui Lorem aute enim cupidatat. Fugiat adipisicing sunt voluptate dolore dolor. Id non nostrud duis reprehenderit mollit consectetur. Esse exercitation occaecat officia dolor cupidatat proident. Id pariatur officia deserunt sit proident esse exercitation eu pariatur culpa sunt. Cupidatat excepteur aliqua est id ipsum Lorem do est ea consequat mollit sunt incididunt anim. Ex ullamco ex sunt sunt reprehenderit commodo excepteur anim fugiat.Cillum proident aliqua ut ex cillum aute sunt. In aliquip laboris exercitation laboris. Consectetur Lorem ad ipsum cupidatat excepteur."
+    },
+    {
+      "id": "2",
+      "urlSlug": "confidentialite",
+      "metaTitle": "Confidentialité | Booklinik",
+      "navTitle": "Confidentialité",
+      "pageTitle": "Confidentialité",
+      "body": "Anim consectetur ad laborum est. Mollit quis occaecat duis laboris sit aliqua ex sunt cupidatat. Nostrud ut do cillum amet officia laborum tempor Lorem amet eiusmod consequat mollit est occaecat. Nisi cupidatat esse excepteur dolore amet amet dolore tempor enim dolor. Fugiat ut pariatur magna ad quis reprehenderit commodo commodo id excepteur ad cupidatat id nostrud."
+    },
+    {
+      "id": "3",
+      "urlSlug": "cgu",
+      "metaTitle": "CGU | Booklinik",
+      "navTitle": "Conditions générales",
+      "pageTitle": "Conditions générales d'utilisation",
+      "body": "Anim consectetur ad laborum est. Mollit quis occaecat duis laboris sit aliqua ex sunt cupidatat. Nostrud ut do cillum amet officia laborum tempor Lorem amet eiusmod consequat mollit est occaecat. Nisi cupidatat esse excepteur dolore amet amet dolore tempor enim dolor. Fugiat ut pariatur magna ad quis reprehenderit commodo commodo id excepteur ad cupidatat id nostrud."
+    },
+    {
+      "id": "4",
+      "urlSlug": "covid-19",
+      "metaTitle": "Nos mesures COVID-19 | Booklinik",
+      "navTitle": "Nos mesures COVID-19",
+      "pageTitle": "Des mesures élevés pour chaque voyage",
+      "body": "Anim consectetur ad laborum est. Mollit quis occaecat duis laboris sit aliqua ex sunt cupidatat. Nostrud ut do cillum amet officia laborum tempor Lorem amet eiusmod consequat mollit est occaecat. Nisi cupidatat esse excepteur dolore amet amet dolore tempor enim dolor. Fugiat ut pariatur magna ad quis reprehenderit commodo commodo id excepteur ad cupidatat id nostrud."
+    },
+    {
+      "id": "5",
+      "urlSlug": "annulations",
+      "metaTitle": "Options d'annulation | Booklinik",
+      "navTitle": "Options d'annulation",
+      "pageTitle": "Options d'annulation",
+      "body": "Anim consectetur ad laborum est. Mollit quis occaecat duis laboris sit aliqua ex sunt cupidatat. Nostrud ut do cillum amet officia laborum tempor Lorem amet eiusmod consequat mollit est occaecat. Nisi cupidatat esse excepteur dolore amet amet dolore tempor enim dolor. Fugiat ut pariatur magna ad quis reprehenderit commodo commodo id excepteur ad cupidatat id nostrud."
+    }
+  ]
+}
