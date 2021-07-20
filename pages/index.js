@@ -24,7 +24,7 @@ export default function Home() {
 
       <div className={styles.homeHero}>
         <div className="flex h-screen">
-          <div className="mx-4 my-28 shadow md:shadow-none xl:mx-auto md:my-64">
+          <div className="mx-4 my-12 shadow md:shadow-none xl:mx-auto md:my-32">
             <div className="bg-white bg-opacity-90 max-w-7xl p-10 md:p-20 rounded-xl">
               <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-center mb-12">
                 Estimez et réservez votre voyage médical sur mesure en quelques
@@ -34,18 +34,18 @@ export default function Home() {
                 <Operation />
                 <Operation />
                 <Operation />
-                <Operation />
-                <Operation />
-                <Operation />
-                <Operation />
-                <Operation />
-                <Operation />
+                <Operation extraStyle="hidden md:flex" />
+                <Operation extraStyle="hidden md:flex" />
+                <Operation extraStyle="hidden md:flex" />
+                <Operation extraStyle="hidden lg:flex" />
+                <Operation extraStyle="hidden lg:flex" />
+                <Operation extraStyle="hidden lg:flex" />
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div className="max-w-7xl px-4 xl:mx-auto w-full my-12">
+      <div className="max-w-7xl px-4 xl:px-0 xl:mx-auto w-full my-12">
         <div className="max-w-5xl grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <Category />
           <Category />
