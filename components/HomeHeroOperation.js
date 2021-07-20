@@ -1,9 +1,14 @@
 import Image from "next/image";
 import "./HomeHeroOperation.module.css";
 
-const Operation = () => {
+const Operation = ({ extraStyle }) => {
   return (
-    <div className="flex bg-white hover:cursor-pointer rounded-lg border border-black border-opacity-10 shadow transition hover:shadow-md hover:border-opacity-20 hover:bg-gray-50">
+    <div
+      className={
+        "flex bg-white hover:cursor-pointer rounded-lg border border-black border-opacity-10 shadow transition hover:shadow-md hover:border-opacity-20 hover:bg-gray-50 " +
+        extraStyle
+      }
+    >
       <div
         style={{
           backgroundImage: `url("https://via.placeholder.com/1000?text=en+attente+d\\'image")`,
