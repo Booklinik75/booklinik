@@ -4,15 +4,12 @@ module.exports = {
   darkMode: false,
   theme: {
     fontFamily: {
-      sans: ["Montserrat", "sans-serif"],
+      sans: ["Circular", "Montserrat", "sans-serif"],
     },
     extend: {
       colors: {
         shamrock: "#33C383",
         bali: "#80A0AB",
-      },
-      fontFamily: {
-        hand: ["Lancaste"],
       },
     },
   },
