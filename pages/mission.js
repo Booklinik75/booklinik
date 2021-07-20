@@ -6,8 +6,8 @@ import Navigation from "../components/Navigation";
 import PhotoBanner from "../components/PhotoBanner";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { useEmblaCarousel } from "embla-carousel/react";
-import Image from "next/image";
 import EmblaSlide from "../components/EmblaSlide";
+import Head from "next/head";
 
 const Mission = () => {
   var bodyContents =
@@ -36,9 +36,12 @@ const Mission = () => {
 
   return (
     <div className="overflow-hidden">
+      <Head>
+        <title>Booklinik | Notre Mission</title>
+      </Head>
       <Navigation />
       <PhotoBanner
-        title="Nos Valeurs"
+        title="Notre Mission"
         body={bodyContents}
         fileName="notre-mission@2x.jpg"
       />
