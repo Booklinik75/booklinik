@@ -36,10 +36,10 @@ export default function Navigation() {
                 id="example-navbar-info"
               >
                 <ul className="flex flex-col lg:flex-row list-none lg:ml-auto">
-                  <NavigationItem title="Opérations" />
+                  <NavigationItem title="Opérations" target="/operations" />
                   <NavigationItem title="Cliniques" />
                   <NavigationItem title="Destinations" />
-                  <NavigationItem title="Nos valeurs" />
+                  <NavigationItem title="Nos valeurs" target="/valeurs" />
                   <NavigationItem
                     title="Offres Spéciales"
                     extraStyle="text-shamrock"

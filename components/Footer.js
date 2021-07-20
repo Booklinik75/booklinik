@@ -26,13 +26,13 @@ const Footer = () => {
           </div>
           <div className="flex flex-col text-sm space-y-2">
             <p className="uppercase text-sm mb-2">À propos</p>
-            <Link href="#">
+            <Link href="/valeurs">
               <a className="hover:underline">Nos valeurs</a>
             </Link>
-            <Link href="/notre-mission">
+            <Link href="/mission">
               <a className="hover:underline">Notre mission</a>
             </Link>
-            <Link href="#">
+            <Link href="/etapes">
               <a className="hover:underline">Les étapes clés</a>
             </Link>
             <Link href="#">
@@ -112,22 +112,22 @@ const Footer = () => {
           </div>
           <div className="flex space-x-3">
             <Link href="#">
-              <div className="cursor-pointer hover:text-shamrock">
+              <div className="cursor-pointer transition hover:text-shamrock">
                 <FaInstagram size={24} />
               </div>
             </Link>
             <Link href="#">
-              <div className="cursor-pointer hover:text-shamrock">
+              <div className="cursor-pointer transition hover:text-shamrock">
                 <FaFacebookSquare size={24} />
               </div>
             </Link>
             <Link href="#">
-              <div className="cursor-pointer hover:text-shamrock">
+              <div className="cursor-pointer transition hover:text-shamrock">
                 <FaYoutube size={24} />
               </div>
             </Link>
             <Link href="#">
-              <div className="cursor-pointer hover:text-shamrock">
+              <div className="cursor-pointer transition hover:text-shamrock">
                 <FaWhatsapp size={24} />
               </div>
             </Link>
