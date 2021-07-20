@@ -106,7 +106,7 @@ export default function Home() {
       <div className="mx-4 xl:mx-auto max-w-5xl py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-10">
           <Image
-            src="https://via.placeholder.com/1000"
+            src="https://via.placeholder.com/1000?text=en+attente+d'image"
             width={500}
             height={500}
             objectFit="cover"

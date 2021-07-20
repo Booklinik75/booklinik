@@ -5,7 +5,7 @@ const Offer = () => {
   return (
     <div className="space-y-1">
       <Image
-        src="https://via.placeholder.com/1000"
+        src="https://via.placeholder.com/1000?text=en+attente+d'image"
         width={1000}
         height={650}
         objectFit="cover"

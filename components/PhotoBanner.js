@@ -3,7 +3,8 @@ import { FaChevronDown } from "react-icons/fa";
 
 const PhotoBanner = ({ title, body, fileName }) => {
   var divStyle = {
-    backgroundImage: "url(https://via.placeholder.com/1920x1080)",
+    backgroundImage:
+      "url(https://via.placeholder.com/1000?text=en+attente+d\\'image)",
     backgroundSize: "cover",
     backgroundPosition: "50%",
   };

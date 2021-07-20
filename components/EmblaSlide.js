@@ -8,7 +8,7 @@ const EmblaSlide = () => {
   return (
     <div className="embla__slide relative mr-10">
       <Image
-        src="https://via.placeholder.com/1000x600"
+        src="https://via.placeholder.com/1000?text=en+attente+d'image"
         width={1000}
         height={600}
         objectFit="cover"

@@ -6,7 +6,7 @@ const Operation = () => {
     <div className="flex bg-white hover:cursor-pointer rounded-lg border border-black border-opacity-10 shadow transition hover:shadow-md hover:border-opacity-20 hover:bg-gray-50">
       <div
         style={{
-          backgroundImage: `url("https://via.placeholder.com/1000")`,
+          backgroundImage: `url("https://via.placeholder.com/1000?text=en+attente+d\\'image")`,
           backgroundSize: "cover",
           backgroundPosition: "50%",
           width: "33%",

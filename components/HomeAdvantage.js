@@ -9,7 +9,7 @@ const Advantage = () => {
       <h4 className="text-2xl">Réservation simplifiée</h4>
       <p className="text-sm leading-loose text-justify">
         Booklinik est le premier service de reservation en ligne de tourisme
-        medical. Plus question de régler vos billets d’avions, hotel et
+        medical. Plus question de régler vos billets d'avions, hotel et
         opération séparément.
       </p>
     </div>
