@@ -12,6 +12,9 @@ import Image from "next/image";
 import Footer from "../components/Footer";
 import ContactHelper from "../components/ContactHelper";
 
+// TODO: add unit test for images w/o meta
+// TODO: add unit test for weird characters like apostrophes and such
+
 export default function Home() {
   return (
     <div className="container mx-auto max-w-full">
