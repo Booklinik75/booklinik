@@ -2,6 +2,7 @@ import Link from "next/link";
 import Navigation from "../../components/Navigation";
 import Footer from "../../components/Footer";
 import ContactHelper from "../../components/ContactHelper";
+import Head from "next/head";
 
 export const getStaticPaths = async () => {
   const res = await fetch("http://localhost:8000/legal");
@@ -39,6 +40,9 @@ export const getStaticProps = async (context) => {
 const LegalPage = ({ legal, paths }) => {
   return (
     <div>
+      <Head>
+        <title>Booklinik | {legal.metaTitle}</title>
+      </Head>
       <Navigation />
       <div>
         <div className="grid grid-cols-1 lg:grid-cols-6 gap-10 mx-4 xl:mx-auto max-w-7xl py-12">
