@@ -41,88 +41,86 @@
       "body": "Anim consectetur ad laborum est. Mollit quis occaecat duis laboris sit aliqua ex sunt cupidatat. Nostrud ut do cillum amet officia laborum tempor Lorem amet eiusmod consequat mollit est occaecat. Nisi cupidatat esse excepteur dolore amet amet dolore tempor enim dolor. Fugiat ut pariatur magna ad quis reprehenderit commodo commodo id excepteur ad cupidatat id nostrud."
     }
   ],
-  "operations": [
-    {
-      "id": 1,
-      "photo": "",
-      "categories": [
-        {
-          "id": 1,
-          "slug": "greffe-de-poils",
-          "name": "Greffe de poils",
-          "photo": "",
-          "operations": [
-            {
-              "id": 1,
-              "slug": "greffe-de-barbe",
-              "name": "Greffe de barbe",
-              "photo": "",
-              "excerpt": "Aute Lorem ipsum qui qui tempor aute mollit. Lorem tempor quis nostrud laborum nostrud mollit aute excepteur. Sunt ut nostrud quis dolore adipisicing pariatur. Pariatur incididunt officia irure dolor cupidatat veniam proident. Nulla eiusmod ut ipsum nulla duis.",
-              "startingPrice": 1900,
-              "linkedCities": [],
-              "requiredPictures": []
-            },
-            {
-              "id": 2,
-              "slug": "greffe-de-cheveux",
-              "name": "Greffe de cheveux",
-              "photo": "",
-              "excerpt": "Aute Lorem ipsum qui qui tempor aute mollit. Lorem tempor quis nostrud laborum nostrud mollit aute excepteur. Sunt ut nostrud quis dolore adipisicing pariatur. Pariatur incididunt officia irure dolor cupidatat veniam proident. Nulla eiusmod ut ipsum nulla duis.",
-              "startingPrice": 1900,
-              "linkedCities": [],
-              "requiredPictures": []
-            },
-            {
-              "id": 3,
-              "slug": "greffe-de-sourcils",
-              "name": "Greffe de sourcils",
-              "photo": "",
-              "excerpt": "Aute Lorem ipsum qui qui tempor aute mollit. Lorem tempor quis nostrud laborum nostrud mollit aute excepteur. Sunt ut nostrud quis dolore adipisicing pariatur. Pariatur incididunt officia irure dolor cupidatat veniam proident. Nulla eiusmod ut ipsum nulla duis.",
-              "startingPrice": 1900,
-              "linkedCities": [],
-              "requiredPictures": []
-            }
-          ]
-        },
-        {
-          "id": 2,
-          "slug": "chirurgie-du-nez",
-          "name": "Chirurgie du nez",
-          "photo": "",
-          "operations": [
-            {
-              "id": 1,
-              "slug": "rhinoplastie-primaire",
-              "name": "Rhinoplastie primaire",
-              "photo": "",
-              "excerpt": "Aute Lorem ipsum qui qui tempor aute mollit. Lorem tempor quis nostrud laborum nostrud mollit aute excepteur. Sunt ut nostrud quis dolore adipisicing pariatur. Pariatur incididunt officia irure dolor cupidatat veniam proident. Nulla eiusmod ut ipsum nulla duis.",
-              "startingPrice": 1900,
-              "linkedCities": [],
-              "requiredPictures": []
-            },
-            {
-              "id": 2,
-              "slug": "rhinoplastie-ultrasonique",
-              "name": "Rhinoplastie ultrasonique",
-              "photo": "",
-              "excerpt": "Aute Lorem ipsum qui qui tempor aute mollit. Lorem tempor quis nostrud laborum nostrud mollit aute excepteur. Sunt ut nostrud quis dolore adipisicing pariatur. Pariatur incididunt officia irure dolor cupidatat veniam proident. Nulla eiusmod ut ipsum nulla duis.",
-              "startingPrice": 1900,
-              "linkedCities": [],
-              "requiredPictures": []
-            },
-            {
-              "id": 3,
-              "slug": "rhinoplastie-secondaire-revision",
-              "name": "Greffe de sourcils",
-              "photo": "",
-              "excerpt": "Aute Lorem ipsum qui qui tempor aute mollit. Lorem tempor quis nostrud laborum nostrud mollit aute excepteur. Sunt ut nostrud quis dolore adipisicing pariatur. Pariatur incididunt officia irure dolor cupidatat veniam proident. Nulla eiusmod ut ipsum nulla duis.",
-              "startingPrice": 1900,
-              "linkedCities": [],
-              "requiredPictures": []
-            }
-          ]
-        }
-      ]
-    }
-  ]
+  "operations": {
+    "id": 1,
+    "photo": "",
+    "categories": [
+      {
+        "id": 1,
+        "slug": "greffe-de-poils",
+        "name": "Greffe de poils",
+        "photo": "",
+        "operations": [
+          {
+            "id": 1,
+            "slug": "greffe-de-barbe",
+            "name": "Greffe de barbe",
+            "photo": "",
+            "excerpt": "Aute Lorem ipsum qui qui tempor aute mollit. Lorem tempor quis nostrud laborum nostrud mollit aute excepteur. Sunt ut nostrud quis dolore adipisicing pariatur. Pariatur incididunt officia irure dolor cupidatat veniam proident. Nulla eiusmod ut ipsum nulla duis.",
+            "startingPrice": 1900,
+            "linkedCities": [],
+            "requiredPictures": []
+          },
+          {
+            "id": 2,
+            "slug": "greffe-de-cheveux",
+            "name": "Greffe de cheveux",
+            "photo": "",
+            "excerpt": "Aute Lorem ipsum qui qui tempor aute mollit. Lorem tempor quis nostrud laborum nostrud mollit aute excepteur. Sunt ut nostrud quis dolore adipisicing pariatur. Pariatur incididunt officia irure dolor cupidatat veniam proident. Nulla eiusmod ut ipsum nulla duis.",
+            "startingPrice": 1900,
+            "linkedCities": [],
+            "requiredPictures": []
+          },
+          {
+            "id": 3,
+            "slug": "greffe-de-sourcils",
+            "name": "Greffe de sourcils",
+            "photo": "",
+            "excerpt": "Aute Lorem ipsum qui qui tempor aute mollit. Lorem tempor quis nostrud laborum nostrud mollit aute excepteur. Sunt ut nostrud quis dolore adipisicing pariatur. Pariatur incididunt officia irure dolor cupidatat veniam proident. Nulla eiusmod ut ipsum nulla duis.",
+            "startingPrice": 1900,
+            "linkedCities": [],
+            "requiredPictures": []
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "slug": "chirurgie-du-nez",
+        "name": "Chirurgie du nez",
+        "photo": "",
+        "operations": [
+          {
+            "id": 1,
+            "slug": "rhinoplastie-primaire",
+            "name": "Rhinoplastie primaire",
+            "photo": "",
+            "excerpt": "Aute Lorem ipsum qui qui tempor aute mollit. Lorem tempor quis nostrud laborum nostrud mollit aute excepteur. Sunt ut nostrud quis dolore adipisicing pariatur. Pariatur incididunt officia irure dolor cupidatat veniam proident. Nulla eiusmod ut ipsum nulla duis.",
+            "startingPrice": 1900,
+            "linkedCities": [],
+            "requiredPictures": []
+          },
+          {
+            "id": 2,
+            "slug": "rhinoplastie-ultrasonique",
+            "name": "Rhinoplastie ultrasonique",
+            "photo": "",
+            "excerpt": "Aute Lorem ipsum qui qui tempor aute mollit. Lorem tempor quis nostrud laborum nostrud mollit aute excepteur. Sunt ut nostrud quis dolore adipisicing pariatur. Pariatur incididunt officia irure dolor cupidatat veniam proident. Nulla eiusmod ut ipsum nulla duis.",
+            "startingPrice": 1900,
+            "linkedCities": [],
+            "requiredPictures": []
+          },
+          {
+            "id": 3,
+            "slug": "rhinoplastie-secondaire-revision",
+            "name": "Greffe de sourcils",
+            "photo": "",
+            "excerpt": "Aute Lorem ipsum qui qui tempor aute mollit. Lorem tempor quis nostrud laborum nostrud mollit aute excepteur. Sunt ut nostrud quis dolore adipisicing pariatur. Pariatur incididunt officia irure dolor cupidatat veniam proident. Nulla eiusmod ut ipsum nulla duis.",
+            "startingPrice": 1900,
+            "linkedCities": [],
+            "requiredPictures": []
+          }
+        ]
+      }
+    ]
+  }
 }
