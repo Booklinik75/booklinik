@@ -1,10 +1,10 @@
-import PhotoBanner from "../components/PhotoBanner";
-import Navigation from "../components/Navigation";
-import Footer from "../components/Footer";
-
+import PhotoBanner from "../../components/PhotoBanner";
+import Navigation from "../../components/Navigation";
+import Footer from "../../components/Footer";
 import Head from "next/head";
-import OperationCategory from "../components/OperationCategory";
-import ContactHelper from "../components/ContactHelper";
+import OperationCategory from "../../components/OperationCategory";
+import ContactHelper from "../../components/ContactHelper";
+import Link from "next/link";
 
 export const getStaticProps = async (context) => {
   const res = await fetch("http://localhost:8000/operations");
@@ -12,7 +12,7 @@ export const getStaticProps = async (context) => {
 
   return {
     props: {
-      operations: data[0],
+      operations: data,
     },
   };
 };
