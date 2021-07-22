@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { FaChevronRight } from "react-icons/fa";
 
 const OpCategory = ({ operation }) => {
@@ -33,22 +34,26 @@ const OpCategory = ({ operation }) => {
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 col-span-2 h-2/3">
           {operation.operations.map((operationSingle) => (
-            <div
-              className="border border-gray-100 shadow-sm rounded col-span-1 w-full transition hover:shadow-lg hover:border-gray-300 hover:bg-gray-50 hover:cursor-pointer"
-              id={operationSingle.id}
-            >
-              <div className="flex items-center justify-between justify-items-center h-full px-6 py-6 lg:py-auto">
-                <div>
-                  <h3 className="text-lg">{operationSingle.name}</h3>
-                  <p className="text-sm">
-                    À partir de {operationSingle.startingPrice}€
-                  </p>
+            <Link href="{`/operations/${operation.slug}/${operationSingle.slug}`}">
+              <a>
+                <div
+                  className="border border-gray-100 shadow-sm rounded col-span-1 w-full transition hover:shadow-lg hover:border-gray-300 hover:bg-gray-50 hover:cursor-pointer"
+                  id={operationSingle.id}
+                >
+                  <div className="flex items-center justify-between justify-items-center h-full px-6 py-6 lg:py-auto">
+                    <div>
+                      <h3 className="text-lg">{operationSingle.name}</h3>
+                      <p className="text-sm">
+                        À partir de {operationSingle.startingPrice}€
+                      </p>
+                    </div>
+                    <div className="text-shamrock">
+                      <FaChevronRight size={32} />
+                    </div>
+                  </div>
                 </div>
-                <div className="text-shamrock">
-                  <FaChevronRight size={32} />
-                </div>
-              </div>
-            </div>
+              </a>
+            </Link>
           ))}
         </div>
       </div>
