@@ -42,7 +42,6 @@
     }
   ],
   "operations": {
-    "id": 1,
     "photo": "",
     "categories": [
       {
@@ -120,6 +119,81 @@
             "requiredPictures": []
           }
         ]
+      }
+    ]
+  },
+  "destinations": {
+    "photo": "",
+    "countries": [
+      {
+        "id": 1,
+        "slug": "turquie",
+        "name": "Turquie",
+        "photo": "",
+        "cities": [
+          {
+            "id": 1,
+            "slug": "istanbul",
+            "name": "Istanbul",
+            "photo": "",
+            "availability": true,
+            "hotels": [
+              {
+                "id": 1,
+                "slug": "example-hotel",
+                "name": "Example Hotel",
+                "photo": "",
+                "rating": 4,
+                "extraPrice": 180,
+                "rooms": [{}],
+                "excerpt": "Aute Lorem ipsum qui qui tempor aute mollit. Lorem tempor quis nostrud laborum nostrud mollit aute excepteur."
+              },
+              {
+                "id": 2,
+                "slug": "example-hotel",
+                "name": "Example Hotel",
+                "photo": "",
+                "rating": 4,
+                "extraPrice": 180,
+                "rooms": [{}],
+                "excerpt": "Aute Lorem ipsum qui qui tempor aute mollit. Lorem tempor quis nostrud laborum nostrud mollit aute excepteur."
+              },
+              {
+                "id": 3,
+                "slug": "example-hotel",
+                "name": "Example Hotel",
+                "photo": "",
+                "rating": 4,
+                "extraPrice": 180,
+                "rooms": [{}],
+                "excerpt": "Aute Lorem ipsum qui qui tempor aute mollit. Lorem tempor quis nostrud laborum nostrud mollit aute excepteur."
+              },
+              {
+                "id": 4,
+                "slug": "example-hotel",
+                "name": "Example Hotel",
+                "photo": "",
+                "rating": 4,
+                "extraPrice": 180,
+                "rooms": [{}],
+                "excerpt": "Aute Lorem ipsum qui qui tempor aute mollit. Lorem tempor quis nostrud laborum nostrud mollit aute excepteur."
+              },
+              {
+                "id": 5,
+                "slug": "example-hotel",
+                "name": "Example Hotel",
+                "photo": "",
+                "rating": 4,
+                "extraPrice": 180,
+                "rooms": [{}],
+                "excerpt": "Aute Lorem ipsum qui qui tempor aute mollit. Lorem tempor quis nostrud laborum nostrud mollit aute excepteur."
+              }
+            ],
+            "clinics": {},
+            "additionalDocuments": {}
+          }
+        ],
+        "additionalDocuments": {}
       }
     ]
   }
