@@ -4,7 +4,6 @@ import Footer from "../../components/Footer";
 import Head from "next/head";
 import OperationCategory from "../../components/OperationCategory";
 import ContactHelper from "../../components/ContactHelper";
-import Link from "next/link";
 
 export const getStaticProps = async (context) => {
   const res = await fetch("http://localhost:8000/operations");
