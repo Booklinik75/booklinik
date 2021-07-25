@@ -14,7 +14,7 @@ const Offer = () => {
       <div className="flex space-x-2 items-center text-xs font-bold uppercase">
         <p className="text-white py-1 px-2 rounded bg-bali">Offre</p>
         <p className="flex-grow text-bali">Reste 2 jours</p>
-        <StarRating value={4} />
+        <StarRating value={4} color="bali" />
       </div>
       <p className="font-bold hover:underline">
         Implantation capillaire 4000 greffons à Istanbul - Clinique DHI
