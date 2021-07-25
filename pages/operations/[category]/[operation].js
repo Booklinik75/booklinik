@@ -31,7 +31,7 @@ export const getStaticPaths = async () => {
   };
 };
 
-export const getStaticProps = async (context) => {
+export const getStaticProps = async () => {
   const res = await fetch("http://localhost:8000/operations");
   const data = await res.json();
 
