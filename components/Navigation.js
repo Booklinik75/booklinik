@@ -37,14 +37,15 @@ export default function Navigation() {
               >
                 <ul className="flex flex-col lg:flex-row list-none lg:ml-auto">
                   <NavigationItem title="Opérations" target="/operations" />
-                  <NavigationItem title="Cliniques" />
-                  <NavigationItem title="Destinations" />
+                  <NavigationItem title="Cliniques" target="/cliniques" />
+                  <NavigationItem title="Destinations" target="/destinations" />
                   <NavigationItem title="Nos valeurs" target="/valeurs" />
                   <NavigationItem
                     title="Offres Spéciales"
                     extraStyle="text-shamrock"
+                    target="/offres"
                   />
-                  <NavigationItem title="Connexion" />
+                  <NavigationItem title="Connexion" target="/login" />
                 </ul>
               </div>
             </div>
