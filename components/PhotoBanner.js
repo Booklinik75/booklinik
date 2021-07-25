@@ -11,8 +11,8 @@ const PhotoBanner = ({
   fullWidth,
 }) => {
   var divStyle = {
-    backgroundImage:
-      "url(https://via.placeholder.com/1000?text=en+attente+d\\'image)",
+    backgroundImage: `url(${fileName})`,
+    backgroundColor: "#ccc",
     backgroundSize: "cover",
     backgroundPosition: "50%",
   };
@@ -50,6 +50,15 @@ const PhotoBanner = ({
       </div>
     </div>
   );
+};
+
+PhotoBanner.defaultProps = {
+  title: undefined,
+  body: undefined,
+  fileName: "https://via.placeholder.com/1000?text=en+attente+d\\'image",
+  discover: false,
+  extraLarge: false,
+  fullWidth: false,
 };
 
 export default PhotoBanner;
