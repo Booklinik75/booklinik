@@ -5,7 +5,7 @@ import ContactHelper from "../../components/ContactHelper";
 import Head from "next/head";
 
 export const getStaticPaths = async () => {
-  const res = await fetch("http://localhost:8000/legal");
+  const res = await fetch(process.env.JSON_API_URL + "/legal");
   const data = await res.json();
 
   // map data to an array of path objects with params (id)
@@ -23,10 +23,10 @@ export const getStaticPaths = async () => {
 
 export const getStaticProps = async (context) => {
   const slug = context.params.urlSlug;
-  const res = await fetch("http://localhost:8000/legal?urlSlug=" + slug);
+  const res = await fetch(process.env.JSON_API_URL + "/legal?urlSlug=" + slug);
   const data = await res.json();
 
-  const resPaths = await fetch("http://localhost:8000/legal");
+  const resPaths = await fetch(process.env.JSON_API_URL + "/legal");
   const pathData = await resPaths.json();
 
   return {

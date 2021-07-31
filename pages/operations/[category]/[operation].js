@@ -9,7 +9,7 @@ import ReactMarkdown from "react-markdown";
 import RelatedElement from "../../../components/RelatedSuggestionElement";
 
 export const getStaticPaths = async () => {
-  const res = await fetch("http://localhost:8000/operations");
+  const res = await fetch(process.env.JSON_API_URL + "/operations");
   const data = await res.json();
 
   const paths = data.categories
@@ -32,7 +32,7 @@ export const getStaticPaths = async () => {
 };
 
 export const getStaticProps = async () => {
-  const res = await fetch("http://localhost:8000/operations");
+  const res = await fetch(process.env.JSON_API_URL + "/operations");
   const data = await res.json();
 
   return {
