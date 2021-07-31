@@ -6,7 +6,7 @@ import Head from "next/head";
 import DestinationCountry from "../../components/DestinationCountry";
 
 export const getStaticProps = async (context) => {
-  const res = await fetch("http://localhost:8000/destinations");
+  const res = await fetch(process.env.JSON_API_URL + "/destinations");
   const data = await res.json();
 
   return {

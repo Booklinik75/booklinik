@@ -6,7 +6,7 @@ import OperationCategory from "../../components/OperationCategory";
 import ContactHelper from "../../components/ContactHelper";
 
 export const getStaticProps = async (context) => {
-  const res = await fetch("http://localhost:8000/operations");
+  const res = await fetch(process.env.JSON_API_URL + "/operations");
   const data = await res.json();
 
   return {
