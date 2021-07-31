@@ -189,7 +189,53 @@
                 "excerpt": "Aute Lorem ipsum qui qui tempor aute mollit. Lorem tempor quis nostrud laborum nostrud mollit aute excepteur."
               }
             ],
-            "clinics": {},
+            "clinics": [
+              {
+                "id": 1,
+                "slug": "some-clinic",
+                "name": "Example clinic",
+                "photo": "",
+                "excerpt": "Lorem duis magna aute qui in veniam dolore aliquip consectetur cupidatat elit.",
+                "descriptionBody": "Lorem duis magna aute qui in veniam dolore aliquip consectetur cupidatat elit. Commodo magna consectetur excepteur irure duis mollit fugiat eu laboris nulla laboris commodo sit. Eiusmod dolor exercitation veniam culpa occaecat. Consequat consequat veniam cupidatat nostrud ullamco ullamco cillum culpa et amet anim qui. Anim sint sint commodo ut sunt pariatur. In dolore aliquip culpa cillum dolor amet adipisicing sunt ad ex voluptate ullamco. Fugiat aliquip do esse nostrud sint. Nulla in sunt sunt eiusmod occaecat Lorem nulla sit nulla officia aliquip sint. Aliquip incididunt mollit labore magna esse consectetur. Et nulla laboris eu officia pariatur aute proident nisi veniam et. Dolore labore nulla exercitation velit ea culpa id mollit. Ut duis ut ipsum laborum cillum enim dolor nisi. Laboris sint ut labore anim ea deserunt laborum voluptate sint. Minim fugiat irure veniam magna laboris Lorem ad eiusmod aute commodo nulla exercitation adipisicing ex.",
+                "linkedOperations": {}
+              },
+              {
+                "id": 2,
+                "slug": "some-clinic",
+                "name": "Example clinic",
+                "photo": "",
+                "excerpt": "Lorem duis magna aute qui in veniam dolore aliquip consectetur cupidatat elit.",
+                "descriptionBody": "Lorem duis magna aute qui in veniam dolore aliquip consectetur cupidatat elit. Commodo magna consectetur excepteur irure duis mollit fugiat eu laboris nulla laboris commodo sit. Eiusmod dolor exercitation veniam culpa occaecat. Consequat consequat veniam cupidatat nostrud ullamco ullamco cillum culpa et amet anim qui. Anim sint sint commodo ut sunt pariatur. In dolore aliquip culpa cillum dolor amet adipisicing sunt ad ex voluptate ullamco. Fugiat aliquip do esse nostrud sint. Nulla in sunt sunt eiusmod occaecat Lorem nulla sit nulla officia aliquip sint. Aliquip incididunt mollit labore magna esse consectetur. Et nulla laboris eu officia pariatur aute proident nisi veniam et. Dolore labore nulla exercitation velit ea culpa id mollit. Ut duis ut ipsum laborum cillum enim dolor nisi. Laboris sint ut labore anim ea deserunt laborum voluptate sint. Minim fugiat irure veniam magna laboris Lorem ad eiusmod aute commodo nulla exercitation adipisicing ex.",
+                "linkedOperations": {}
+              },
+              {
+                "id": 3,
+                "slug": "some-clinic",
+                "name": "Example clinic",
+                "photo": "",
+                "excerpt": "Lorem duis magna aute qui in veniam dolore aliquip consectetur cupidatat elit.",
+                "descriptionBody": "Lorem duis magna aute qui in veniam dolore aliquip consectetur cupidatat elit. Commodo magna consectetur excepteur irure duis mollit fugiat eu laboris nulla laboris commodo sit. Eiusmod dolor exercitation veniam culpa occaecat. Consequat consequat veniam cupidatat nostrud ullamco ullamco cillum culpa et amet anim qui. Anim sint sint commodo ut sunt pariatur. In dolore aliquip culpa cillum dolor amet adipisicing sunt ad ex voluptate ullamco. Fugiat aliquip do esse nostrud sint. Nulla in sunt sunt eiusmod occaecat Lorem nulla sit nulla officia aliquip sint. Aliquip incididunt mollit labore magna esse consectetur. Et nulla laboris eu officia pariatur aute proident nisi veniam et. Dolore labore nulla exercitation velit ea culpa id mollit. Ut duis ut ipsum laborum cillum enim dolor nisi. Laboris sint ut labore anim ea deserunt laborum voluptate sint. Minim fugiat irure veniam magna laboris Lorem ad eiusmod aute commodo nulla exercitation adipisicing ex.",
+                "linkedOperations": {}
+              },
+              {
+                "id": 4,
+                "slug": "some-clinic",
+                "name": "Example clinic",
+                "photo": "",
+                "excerpt": "Lorem duis magna aute qui in veniam dolore aliquip consectetur cupidatat elit.",
+                "descriptionBody": "Lorem duis magna aute qui in veniam dolore aliquip consectetur cupidatat elit. Commodo magna consectetur excepteur irure duis mollit fugiat eu laboris nulla laboris commodo sit. Eiusmod dolor exercitation veniam culpa occaecat. Consequat consequat veniam cupidatat nostrud ullamco ullamco cillum culpa et amet anim qui. Anim sint sint commodo ut sunt pariatur. In dolore aliquip culpa cillum dolor amet adipisicing sunt ad ex voluptate ullamco. Fugiat aliquip do esse nostrud sint. Nulla in sunt sunt eiusmod occaecat Lorem nulla sit nulla officia aliquip sint. Aliquip incididunt mollit labore magna esse consectetur. Et nulla laboris eu officia pariatur aute proident nisi veniam et. Dolore labore nulla exercitation velit ea culpa id mollit. Ut duis ut ipsum laborum cillum enim dolor nisi. Laboris sint ut labore anim ea deserunt laborum voluptate sint. Minim fugiat irure veniam magna laboris Lorem ad eiusmod aute commodo nulla exercitation adipisicing ex.",
+                "linkedOperations": {}
+              },
+              {
+                "id": 5,
+                "slug": "some-clinic",
+                "name": "Example clinic",
+                "photo": "",
+                "excerpt": "Lorem duis magna aute qui in veniam dolore aliquip consectetur cupidatat elit.",
+                "descriptionBody": "Lorem duis magna aute qui in veniam dolore aliquip consectetur cupidatat elit. Commodo magna consectetur excepteur irure duis mollit fugiat eu laboris nulla laboris commodo sit. Eiusmod dolor exercitation veniam culpa occaecat. Consequat consequat veniam cupidatat nostrud ullamco ullamco cillum culpa et amet anim qui. Anim sint sint commodo ut sunt pariatur. In dolore aliquip culpa cillum dolor amet adipisicing sunt ad ex voluptate ullamco. Fugiat aliquip do esse nostrud sint. Nulla in sunt sunt eiusmod occaecat Lorem nulla sit nulla officia aliquip sint. Aliquip incididunt mollit labore magna esse consectetur. Et nulla laboris eu officia pariatur aute proident nisi veniam et. Dolore labore nulla exercitation velit ea culpa id mollit. Ut duis ut ipsum laborum cillum enim dolor nisi. Laboris sint ut labore anim ea deserunt laborum voluptate sint. Minim fugiat irure veniam magna laboris Lorem ad eiusmod aute commodo nulla exercitation adipisicing ex.",
+                "linkedOperations": {}
+              }
+            ],
             "additionalDocuments": {}
           }
         ],

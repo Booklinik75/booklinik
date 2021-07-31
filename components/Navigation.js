@@ -4,9 +4,13 @@ import NavigationItem from "./NavigationItem";
 import Logo from "../public/booklinik-logo.svg";
 import Link from "next/link";
 import { FaBars } from "react-icons/fa";
+import { VscLoading } from "react-icons/vsc";
+import firebase from "../firebase/clientApp";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 export default function Navigation() {
   const [menuOpen, setMenuOpen] = React.useState(false);
+  const [user, loading, error] = useAuthState(firebase.auth());
 
   return (
     <div className="w-full">
@@ -35,7 +39,7 @@ export default function Navigation() {
                 }
                 id="example-navbar-info"
               >
-                <ul className="flex flex-col lg:flex-row list-none lg:ml-auto">
+                <ul className="flex flex-col items-center lg:flex-row list-none lg:ml-auto transition">
                   <NavigationItem title="Opérations" target="/operations" />
                   <NavigationItem title="Cliniques" target="/cliniques" />
                   <NavigationItem title="Destinations" target="/destinations" />
@@ -45,7 +49,22 @@ export default function Navigation() {
                     extraStyle="text-shamrock"
                     target="/offres"
                   />
-                  <NavigationItem title="Connexion" target="/login" />
+                  <li>|</li>
+                  {loading && (
+                    <div className="ml-3 animate-spin">
+                      <VscLoading />
+                    </div>
+                  )}
+                  {user != null && loading == false ? (
+                    <>
+                      <NavigationItem
+                        title="Espace client"
+                        target="/dashboard"
+                      />
+                    </>
+                  ) : (
+                    <NavigationItem title="Connexion" target="/login" />
+                  )}
                 </ul>
               </div>
             </div>

@@ -65,9 +65,10 @@ const OperationPage = ({ operationsData }) => {
             </p>
             <p>{currentOperation.excerpt}</p>
             <p className="text-xs text-gray-600">
-              Il s'agit d'une opération prise en charge par l'assurance maladie.
+              Il s&lsquo;agit d&lsquo;une opération prise en charge par
+              l&lsquo;assurance maladie.
             </p>
-            <Link href="/">
+            <Link href="/" passHref={true}>
               <button className="text-white bg-shamrock rounded px-6 py-3 transition border border-shamrock hover:text-shamrock hover:bg-white">
                 Estimez mon séjour
               </button>
@@ -75,10 +76,10 @@ const OperationPage = ({ operationsData }) => {
           </div>
           <div className="col-span-1 lg:col-span-2 w-full relative">
             <Image
-              src="https://via.placeholder.com/1000?text=en+attente+d'image"
+              src="https://via.placeholder.com/1000?text=en+attente+d&lsquo;image"
               layout="fill"
               objectFit="cover"
-              meta="TBD"
+              alt="TBD"
             />{" "}
           </div>
         </div>
@@ -101,6 +102,7 @@ const OperationPage = ({ operationsData }) => {
                   <RelatedElement
                     title={operation.name}
                     target={`/operations/${category}/${operation.slug}`}
+                    key={operation.id}
                   />
                 );
               })}

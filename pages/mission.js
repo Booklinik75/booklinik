@@ -25,15 +25,6 @@ const Mission = () => {
   const scrollPrev = useCallback(() => embla && embla.scrollPrev(), [embla]);
   const scrollNext = useCallback(() => embla && embla.scrollNext(), [embla]);
 
-  const scrollPrevS = useCallback(
-    () => emblaS && emblaS.scrollPrev(),
-    [emblaS]
-  );
-  const scrollNextS = useCallback(
-    () => emblaS && emblaS.scrollNext(),
-    [emblaS]
-  );
-
   return (
     <div className="overflow-hidden">
       <Head>

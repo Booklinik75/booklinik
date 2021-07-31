@@ -4,7 +4,7 @@ import Image from "next/image";
 const StepDash = () => {
   return (
     <div className="text-center">
-      <Image src={StepDashSVG} />
+      <Image src={StepDashSVG} alt="" />
     </div>
   );
 };

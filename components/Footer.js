@@ -16,7 +16,7 @@ const Footer = () => {
           <div className="col-span-2">
             <Link href="/">
               <a className="block mb-6">
-                <Image src={Logo}></Image>
+                <Image src={Logo} alt="Booklink"></Image>
               </a>
             </Link>
             <p className="w-full sm:w-2/3 font-bold">
@@ -48,7 +48,7 @@ const Footer = () => {
               <a className="hover:underline">FAQ</a>
             </Link>
             <Link href="/legal/annulations">
-              <a className="hover:underline">Options d'annulation</a>
+              <a className="hover:underline">Options d&apos;annulation</a>
             </Link>
             <Link href="/legal/confidentialite">
               <a className="hover:underline">Confidentialité</a>
@@ -76,7 +76,7 @@ const Footer = () => {
                   <a className="hover:underline">Chirurgie du visage</a>
                 </Link>
                 <Link href="#">
-                  <a className="hover:underline">Chirurgie de l'oeil</a>
+                  <a className="hover:underline">Chirurgie de l&apos;oeil</a>
                 </Link>
                 <Link href="#">
                   <a className="hover:underline">Dentaires</a>
@@ -106,30 +106,40 @@ const Footer = () => {
               </Link>
               <p className="hidden md:block">&bull;</p>
               <Link href="/legal/informations" className="hover:underline">
-                <a className="hover:underline">Informations d'entreprises</a>
+                <a className="hover:underline">
+                  Informations d&apos;entreprises
+                </a>
               </Link>
             </div>
           </div>
           <div className="flex space-x-3">
             <Link href="#">
-              <div className="cursor-pointer transition hover:text-shamrock">
-                <FaInstagram size={24} />
-              </div>
+              <a>
+                <div className="cursor-pointer transition hover:text-shamrock">
+                  <FaInstagram size={24} />
+                </div>
+              </a>
             </Link>
             <Link href="#">
-              <div className="cursor-pointer transition hover:text-shamrock">
-                <FaFacebookSquare size={24} />
-              </div>
+              <a>
+                <div className="cursor-pointer transition hover:text-shamrock">
+                  <FaFacebookSquare size={24} />
+                </div>
+              </a>
             </Link>
             <Link href="#">
-              <div className="cursor-pointer transition hover:text-shamrock">
-                <FaYoutube size={24} />
-              </div>
+              <a>
+                <div className="cursor-pointer transition hover:text-shamrock">
+                  <FaYoutube size={24} />
+                </div>
+              </a>
             </Link>
             <Link href="#">
-              <div className="cursor-pointer transition hover:text-shamrock">
-                <FaWhatsapp size={24} />
-              </div>
+              <a>
+                <div className="cursor-pointer transition hover:text-shamrock">
+                  <FaWhatsapp size={24} />
+                </div>
+              </a>
             </Link>
           </div>
         </div>

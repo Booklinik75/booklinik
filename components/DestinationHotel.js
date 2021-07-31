@@ -8,10 +8,10 @@ const DestinationHotel = ({ hotel, countrySlug, citySlug, city, country }) => {
       <div className="w-full rounded-xl relative">
         <div className="relative h-48 rounded-xl">
           <Image
-            src="https://via.placeholder.com/1000?text=en+attente+d'image"
+            src="https://via.placeholder.com/1000?text=en+attente+d&lsquo;image"
             layout="fill"
             objectFit="cover"
-            meta="TBD"
+            alt="TBD"
             className="rounded-lg bg-gray-500"
           />
         </div>
