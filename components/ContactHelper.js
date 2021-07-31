@@ -29,7 +29,7 @@ const ContactHelper = () => {
             <p className="uppercase text-sm mb-2">Votre message</p>
             <textarea
               className="w-full h-24 bg-white bg-opacity-10 p-3 placeholder-white border-b border-white"
-              placeholder="J'ai une question à propos de ..."
+              placeholder="J&lsquo;ai une question à propos de ..."
             ></textarea>
           </div>
           <div className="w-full">

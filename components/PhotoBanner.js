@@ -55,7 +55,7 @@ const PhotoBanner = ({
 PhotoBanner.defaultProps = {
   title: undefined,
   body: undefined,
-  fileName: "https://via.placeholder.com/1000?text=en+attente+d\\'image",
+  fileName: "https://via.placeholder.com/1000?text=en+attente+d&lsquo;image",
   discover: false,
   extraLarge: false,
   fullWidth: false,

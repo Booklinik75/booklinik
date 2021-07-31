@@ -12,6 +12,7 @@ export default function RelatedElement({ picture, title, target }) {
             objectFit="cover"
             meta={title}
             className="rounded"
+            alt="TBD"
           ></Image>
           <p className="absolute p-5 bottom-2 group-hover:underline">{title}</p>
         </div>

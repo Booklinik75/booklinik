@@ -11,7 +11,7 @@ const Operation = ({ extraStyle }) => {
     >
       <div
         style={{
-          backgroundImage: `url("https://via.placeholder.com/1000?text=en+attente+d\\'image")`,
+          backgroundImage: `url("https://via.placeholder.com/1000?text=en+attente+d&lsquo;image")`,
           backgroundSize: "cover",
           backgroundPosition: "50%",
           width: "33%",

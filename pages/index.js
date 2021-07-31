@@ -98,10 +98,26 @@ export default function Home() {
       <div className="mx-4 xl:mx-auto max-w-7xl py-6">
         <h3 className="text-4xl mb-8">Les avantages Booklinik</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
-          <Advantage />
-          <Advantage />
-          <Advantage />
-          <Advantage />
+          <Advantage
+            title="Reservation simplifiée"
+            body="Booklinik est le premier service de reservation en ligne de tourisme medical. Plus question de régler vos billets d’avions, hotel et opération séparément."
+          />
+          <Advantage
+            title="Paiement en 4x"
+            body="Grace à notre partenaire de credit …., vous pouvez régler votre operation et votre voyage en plusieurs fois sans frais."
+          />
+          <Advantage
+            title="Equipe dédiée"
+            body="L’assistance booklinik est disponible 
+pour répondre à toutes vos questions 
+avant votre départ. Durant votre 
+séjour, un chauffeur et un traducteur 
+sont mis à votre disposition."
+          />
+          <Advantage
+            title="Assurance annulation"
+            body="L’assurance annulation booklinik vous couvrira si un événement imprévu vous contraint à annuler ou à reporter votre voyage."
+          />
         </div>
       </div>
 
@@ -113,6 +129,7 @@ export default function Home() {
             width={500}
             height={500}
             objectFit="cover"
+            alt="TBD"
           />
           <div className="space-y-5 md:space-y-10">
             <div className="space-y-2">
@@ -120,14 +137,14 @@ export default function Home() {
                 <GoQuote size={48} />
               </div>
               <p className="text-2xl md:text-3xl leading-normal">
-                Merci d'avoir simplifié mes démarches pour ma chirurgie de
-                l'oeil. Je ne savais pas à qui faire confiance avant{" "}
+                Merci d&lsquo;avoir simplifié mes démarches pour ma chirurgie de
+                l&lsquo;oeil. Je ne savais pas à qui faire confiance avant{" "}
                 <span className="text-bali">booklinik.com</span>.
               </p>
             </div>
             <div className="space-y-2">
               <p>Tessa, Paris</p>
-              <Link href="#">
+              <Link href="#" passHref={true}>
                 <button className="border-2 rounded px-6 py-3 border-gray-500 transition hover:bg-gray-500 hover:text-white">
                   Estimez mon séjour
                 </button>

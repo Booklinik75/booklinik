@@ -5,10 +5,14 @@ import Image from "next/image";
 import StepDash from "../components/StepDash";
 import ContactHelper from "../components/ContactHelper";
 import Head from "next/head";
+import { useAuth } from "../hooks/useAuth";
 
 const KeySteps = () => {
+  const t = useAuth();
+  console.log(t);
+
   const body =
-    "Parce qu'il est important de préparer au mieux votre opération, nous avons listé pour vous vos étapes clés";
+    "Parce qu&lsquo;il est important de préparer au mieux votre opération, nous avons listé pour vous vos étapes clés";
   return (
     <div>
       <Head>
@@ -29,8 +33,9 @@ const KeySteps = () => {
             Réservez votre opération et votre voyage
           </h2>
           <p className="text-center w-full lg:w-2/3">
-            Remplissez le formulaire avec tous les détails sur l'intervention
-            chirurgicale désirée, les dates, la destination et l'hotel.
+            Remplissez le formulaire avec tous les détails sur
+            l&apos;intervention chirurgicale désirée, les dates, la destination
+            et l&apos;hotel.
           </p>
         </div>
       </div>
@@ -41,21 +46,23 @@ const KeySteps = () => {
         <div className="mx-4 xl:mx-auto max-w-7xl grid grid-cols-1 md:grid-cols-2 items-center gap-10">
           <div className="flex flex-col" id="content">
             <div className="flex flex-col my-6">
-              <p className="text-xs uppercase">2. L'examen de votre dossier</p>
+              <p className="text-xs uppercase">
+                2. L&apos;examen de votre dossier
+              </p>
               <h2 className="font-bold text-3xl mb-6 mt-2">
                 Nous examinons votre dossier
               </h2>
               <p className="w-full leading-relaxed">
                 Les équipes médicale évaluent votre dossier et statuent sur la
-                possibilité pour vous d'être opéré. Si la réponse est positive
-                votre recevrez : <br />– Le descriptif de votre séjour à la
-                clinique <br />– Le descriptif de vos soins
+                possibilité pour vous d&apos;être opéré. Si la réponse est
+                positive votre recevrez : <br />– Le descriptif de votre séjour
+                à la clinique <br />– Le descriptif de vos soins
               </p>
             </div>
           </div>
           <div className="text-right">
             <Image
-              src="https://via.placeholder.com/1000?text=en+attente+d'image"
+              src="https://via.placeholder.com/1000?text=en+attente+d&lsquo;image"
               alt="TBD"
               width={500}
               height={300}
@@ -72,7 +79,7 @@ const KeySteps = () => {
         <div className="mx-4 xl:mx-auto max-w-7xl grid grid-cols-1 md:grid-cols-2 items-center gap-10">
           <div className="text-left">
             <Image
-              src="https://via.placeholder.com/1000?text=en+attente+d'image"
+              src="https://via.placeholder.com/1000?text=en+attente+d&lsquo;image"
               alt="TBD"
               width={500}
               height={300}
@@ -83,10 +90,10 @@ const KeySteps = () => {
           <div className="flex flex-col" id="content">
             <div className="flex flex-col my-6">
               <p className="text-xs uppercase">
-                3. L'organisation de votre départ
+                3. L&apos;organisation de votre départ
               </p>
               <h2 className="font-bold text-3xl mb-6 mt-2">
-                C'est l'heure du départ
+                C&apos;est l&apos;heure du départ
               </h2>
               <p className="w-full leading-relaxed">
                 Une fois votre reservation booklinik effectuée, nous organisons
@@ -102,15 +109,15 @@ const KeySteps = () => {
       <div className="flex flex-col items-center mb-10" id="content">
         <div className="flex flex-col items-center w-2/3 space-y-10 my-6">
           <p className="text-xs uppercase">
-            4. L'équipe dédiée dès votre arrivée
+            4. L&apos;équipe dédiée dès votre arrivée
           </p>
           <h2 className="font-bold text-3xl">
             Vous êtes arrivé à destination, et nous nous occupons de tout
           </h2>
           <p className="text-center w-full lg:w-2/3">
-            Dès votre arrivée à l'aéroport, booklinik vous propose les services
-            de chauffeurs et traducteurs, qui seront à votre disposition durant
-            toute la durée de votre séjour.
+            Dès votre arrivée à l&apos;aéroport, booklinik vous propose les
+            services de chauffeurs et traducteurs, qui seront à votre
+            disposition durant toute la durée de votre séjour.
           </p>
         </div>
       </div>
@@ -121,21 +128,21 @@ const KeySteps = () => {
         <div className="mx-4 xl:mx-auto max-w-7xl grid grid-cols-1 md:grid-cols-2 items-center gap-10">
           <div className="flex flex-col" id="content">
             <div className="flex flex-col my-6">
-              <p className="text-xs uppercase">5. L'hospitalisation</p>
+              <p className="text-xs uppercase">5. L&apos;hospitalisation</p>
               <h2 className="font-bold text-3xl mb-6 mt-2">
                 Fermez les yeux et laissez vous guider
               </h2>
               <p className="w-full leading-relaxed">
                 Nous veillerons à votre installation dans la clinique et serons
                 présents lors de la visite du médecin. <br />
-                Avant l'intervention, nous nous assurerons votre bien-être en
-                vous offrant le meilleur service.
+                Avant l&apos;intervention, nous nous assurerons votre bien-être
+                en vous offrant le meilleur service.
               </p>
             </div>
           </div>
           <div className="text-right">
             <Image
-              src="https://via.placeholder.com/1000?text=en+attente+d'image"
+              src="https://via.placeholder.com/1000?text=en+attente+d&lsquo;image"
               alt="TBD"
               width={500}
               height={300}
@@ -152,7 +159,7 @@ const KeySteps = () => {
         <div className="mx-4 xl:mx-auto max-w-7xl grid grid-cols-1 md:grid-cols-2 items-center gap-10">
           <div className="text-left">
             <Image
-              src="https://via.placeholder.com/1000?text=en+attente+d'image"
+              src="https://via.placeholder.com/1000?text=en+attente+d&lsquo;image"
               alt="TBD"
               width={500}
               height={300}
@@ -164,13 +171,13 @@ const KeySteps = () => {
             <div className="flex flex-col my-6">
               <p className="text-xs uppercase">6. La convalescence</p>
               <h2 className="font-bold text-3xl mb-6 mt-2">
-                L'heure du repos à sonné
+                L&apos;heure du repos à sonné
               </h2>
               <p className="w-full leading-relaxed">
-                Après l'intervention, vous serez transféré dans l'hotel que vous
-                aurez choisi au préalable sur booklinik.com. Votre chauffeur
-                vous conduira à la clinique pour votre consultation
-                post-opératoire.
+                Après l&apos;intervention, vous serez transféré dans
+                l&apos;hotel que vous aurez choisi au préalable sur
+                booklinik.com. Votre chauffeur vous conduira à la clinique pour
+                votre consultation post-opératoire.
               </p>
             </div>
           </div>
@@ -185,7 +192,8 @@ const KeySteps = () => {
           <h2 className="font-bold text-3xl">Lorem ipsum</h2>
           <p className="text-center w-full lg:w-2/3">
             À la fin de votre séjour médical, un représentant booklinik vous
-            accompagnera jusqu'à l'aéroport et s'assurera de votre embarquement.
+            accompagnera jusqu&apos;à l&apos;aéroport et s&apos;assurera de
+            votre embarquement.
           </p>
         </div>
       </div>
@@ -202,13 +210,13 @@ const KeySteps = () => {
               <p className="w-full leading-relaxed">
                 Dès votre retour, vous disposerez de tous les éléments de
                 contact pour faire part de vos remarques ou de vos questions
-                suite à l'intervention.
+                suite à l&apos;intervention.
               </p>
             </div>
           </div>
           <div className="text-right">
             <Image
-              src="https://via.placeholder.com/1000?text=en+attente+d'image"
+              src="https://via.placeholder.com/1000?text=en+attente+d&lsquo;image"
               alt="TBD"
               width={500}
               height={300}

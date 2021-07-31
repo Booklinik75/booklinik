@@ -26,7 +26,7 @@ const OperationsList = ({ operations }) => {
       <PhotoBanner extraLarge={true} fullWidth={true} title="Les opérations" />
 
       {operations.categories.map((category) => (
-        <OperationCategory operation={category} id={category.id} />
+        <OperationCategory operation={category} key={category.id} />
       ))}
 
       <ContactHelper />
