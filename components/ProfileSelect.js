@@ -13,7 +13,11 @@ const ProfileSelect = ({ value, name, onChange, label, options }) => {
       >
         {options.map((option) => {
           return (
-            <option key={option.value} value={option.value}>
+            <option
+              key={option.value}
+              value={option.value}
+              disabled={option.disabled}
+            >
               {option.label}
             </option>
           );

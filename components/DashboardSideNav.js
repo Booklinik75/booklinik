@@ -1,7 +1,6 @@
 import { useRouter } from "next/router";
 import { useAuth } from "../hooks/useAuth";
 import DashboardSideNavItem from "./DashboardSideNavItem";
-import firebase from "../firebase/clientApp";
 
 const DashboardSideNav = ({ isAdmin }) => {
   const router = useRouter();
@@ -33,6 +32,22 @@ const DashboardSideNav = ({ isAdmin }) => {
               <DashboardSideNavItem
                 title="Edit questions médicales"
                 target="/dashboard/admin/medical-questions"
+              />
+              <DashboardSideNavItem
+                title="Edit catégories"
+                target="/dashboard/admin/operations"
+              />
+              <DashboardSideNavItem
+                title="Edit pays"
+                target="/dashboard/admin/countries"
+              />
+              <DashboardSideNavItem
+                title="Edit villes"
+                target="/dashboard/admin/cities"
+              />
+              <DashboardSideNavItem
+                title="Edit hotels"
+                target="/dashboard/admin/hotels"
               />
             </div>
           ) : (

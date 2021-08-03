@@ -1,7 +1,7 @@
 import DashboardUi from "../../../../components/DashboardUi";
 import {
   checkAdmin,
-  getOperationCategories,
+  getCities,
   getBackEndAsset,
 } from "../../../../utils/ServerHelpers";
 import Image from "next/image";
@@ -10,52 +10,50 @@ import { BsChevronRight } from "react-icons/bs";
 
 export const getServerSideProps = async (ctx) => {
   const userProfile = await checkAdmin(ctx);
-  const operationCategories = await getOperationCategories();
+  const cities = await getCities();
 
-  const operationsImageT = await Promise.all(
-    operationCategories.map(async (operationCategory, index, array) => {
-      let image = await getBackEndAsset(operationCategory.photo);
-      operationCategories[index].photo = image;
+  const citiesT = await Promise.all(
+    cities.map(async (city, index, array) => {
+      let image = await getBackEndAsset(city.photo);
+      cities[index].photo = image;
     })
   );
 
   return {
-    props: { userProfile, operationCategories },
+    props: { userProfile, cities },
   };
 };
 
-const OperationsList = ({ operationCategories }) => {
+const CitiesList = ({ cities }) => {
   return (
     <DashboardUi isAdmin={true}>
       <div className="col-span-10 space-y-3">
         <div className="flex w-full justify-between items-center">
-          <h1 className="text-4xl mb-4">Opérations</h1>
-          <Link href="operations/add/" passHref={true}>
+          <h1 className="text-4xl mb-4">Villes</h1>
+          <Link href="cities/add/" passHref={true}>
             <button className="px-6 py-3 bg-shamrock text-white transition border rounded border-shamrock hover:bg-white hover:text-shamrock">
               Ajouter
             </button>
           </Link>
         </div>
-        {operationCategories.length !== 0 ? (
-          operationCategories.map((operationCategory) => {
+        {cities.length !== 0 ? (
+          cities.map((city) => {
             return (
-              <div key={operationCategory.slug}>
-                <Link
-                  href={`/dashboard/admin/operations/edit/${operationCategory.slug}`}
-                >
+              <div key={city.slug}>
+                <Link href={`/dashboard/admin/cities/edit/${city.slug}`}>
                   <a className="flex space-x-4 items-center transition hover:bg-gray-100 hover:cursor-pointer group">
                     <Image
-                      src={operationCategory.photo}
+                      src={city.photo}
                       width="200"
                       height={100}
                       objectFit="cover"
-                      alt={operationCategory.name}
+                      alt={city.name}
                     />
                     <div className="flex w-full items-center justify-between p-3">
                       <div>
-                        <p>{operationCategory.name}</p>
+                        <p>{city.name}</p>
                         <p className="font-mono text-xs uppercase text-gray-500  ">
-                          {operationCategory.slug}
+                          {city.slug}
                         </p>
                       </div>
                       <div>
@@ -71,7 +69,7 @@ const OperationsList = ({ operationCategories }) => {
           })
         ) : (
           <div>
-            <p>Aucune catégorie d&apos;opération trouvée.</p>
+            <p>Aucune ville trouvée.</p>
           </div>
         )}
       </div>
@@ -79,4 +77,4 @@ const OperationsList = ({ operationCategories }) => {
   );
 };
 
-export default OperationsList;
+export default CitiesList;

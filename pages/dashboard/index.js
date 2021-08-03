@@ -27,8 +27,8 @@ export default function DashboardIndex({ userProfile }) {
                 {userProfile.firstName
                   ? userProfile.firstName
                   : userProfile.email}
-                ,
               </span>
+              ,
             </h1>
             <p>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
@@ -92,9 +92,9 @@ export default function DashboardIndex({ userProfile }) {
                 question.
               </p>
               <p className="text-xs uppercase text-gray-700"></p>
-              <input
-                type="textarea"
-                className="h-16 border-b border-gray-600 bg-gray-100 p-3 w-full"
+              <textarea
+                rows={3}
+                className=" border-2 border-gray-300 bg-gray-100 p-3 w-full transition hover:border-bali focus:outline-none focus:border-shamrock rounded"
                 placeholder="J&lsquo;ai une question à propos de..."
               />
               <button className="w-full text-bali transition hover:underline hover:text-shamrock ">

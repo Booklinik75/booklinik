@@ -9,7 +9,6 @@ import { useAuth } from "../hooks/useAuth";
 
 const KeySteps = () => {
   const t = useAuth();
-  console.log(t);
 
   const body =
     "Parce qu&lsquo;il est important de préparer au mieux votre opération, nous avons listé pour vous vos étapes clés";

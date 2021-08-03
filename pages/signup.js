@@ -71,8 +71,6 @@ const SignUp = () => {
             signupDate: new Date().toUTCString(),
           };
 
-          console.log("user doesnt exist", userData);
-
           firebase
             .firestore()
             .collection("users")
@@ -82,7 +80,6 @@ const SignUp = () => {
               router.push("dashboard");
             })
             .catch((error) => {
-              console.log(error);
               return setError(error.message);
             });
         }
@@ -108,7 +105,6 @@ const SignUp = () => {
   };
 
   const handleCChange = () => {
-    console.log(isChecked);
     setChecked(!isChecked);
   };
 

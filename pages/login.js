@@ -25,7 +25,6 @@ const Login = () => {
         router.push("/dashboard");
       })
       .catch((error) => {
-        console.log(error.code);
         setError(error.message);
         setLoading("idle");
       });

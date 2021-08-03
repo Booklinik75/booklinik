@@ -69,7 +69,6 @@ const MedicalQuestionsEditor = ({ medicalQuestions }) => {
           setLoading("idle");
         })
         .catch((err) => {
-          console.log(err);
           setLoading("idle");
         });
     });

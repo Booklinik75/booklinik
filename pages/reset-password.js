@@ -25,9 +25,7 @@ const ResetPassword = () => {
     firebase
       .auth()
       .sendPasswordResetEmail(email)
-      .then(async (res) => {
-        console.log(res);
-      })
+      .then(async (res) => {})
       .catch((error) => {
         setError(error.message);
       })
