@@ -7,7 +7,6 @@ const AdminIndex = ({ userProfile }) => {
   return (
     <DashboardUi isAdmin={true}>
       <div>
-        {console.log(userProfile)}
         <p>hi {userProfile.email}</p>
       </div>
     </DashboardUi>

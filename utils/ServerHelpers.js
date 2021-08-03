@@ -14,7 +14,6 @@ export async function getUserToken(ctx) {
 
     return token;
   } catch (error) {
-    console.log(error);
     return null;
   }
 }
@@ -28,8 +27,6 @@ export async function isUserAdmin(ctx) {
         .firestore()
         .collection("users")
         .doc(token.uid);
-
-      console.log(token);
 
       const doc = await userDocRef.get();
 
@@ -132,4 +129,124 @@ export async function getMedicalQuestions() {
     .collection("medicalQuestions")
     .get();
   return snapshot.docs.map((doc) => doc.data());
+}
+
+export async function getOperationCategories() {
+  const snapshot = await firebase
+    .firestore()
+    .collection("operationCategories")
+    .get();
+  return snapshot.docs.map((doc) => doc.data());
+}
+
+export async function getCities() {
+  const snapshot = await firebase.firestore().collection("cities").get();
+  return snapshot.docs.map((doc) => doc.data());
+}
+
+export async function getCountries() {
+  const snapshot = await firebase.firestore().collection("countries").get();
+  return snapshot.docs.map((doc) => doc.data());
+}
+
+export async function getHotels() {
+  const snapshot = await firebase.firestore().collection("hotels").get();
+  return snapshot.docs.map((doc) => doc.data());
+}
+
+export async function getBackEndAsset(path) {
+  const storageRef = await firebase
+    .storage()
+    .ref()
+    .child(path)
+    .getDownloadURL()
+    .then((url) => {
+      return url;
+    });
+
+  return storageRef;
+}
+
+export async function getOperationData(slug) {
+  try {
+    const snapshot = await firebase
+      .firestore()
+      .collection("operationCategories")
+      .where("slug", "==", slug)
+      .get();
+
+    const operationData = {
+      data: snapshot.docs[0].data(),
+      id: snapshot.docs[0].id,
+    };
+
+    return {
+      props: operationData,
+    };
+  } catch (error) {
+    return serverRedirect("/dashboard/admin/operations");
+  }
+}
+
+export async function getCityData(slug) {
+  try {
+    const snapshot = await firebase
+      .firestore()
+      .collection("cities")
+      .where("slug", "==", slug)
+      .get();
+
+    const cityData = {
+      data: snapshot.docs[0].data(),
+      id: snapshot.docs[0].id,
+    };
+
+    return {
+      props: cityData,
+    };
+  } catch (error) {
+    return serverRedirect("/dashboard/admin/cities");
+  }
+}
+
+export async function getCountryData(slug) {
+  try {
+    const snapshot = await firebase
+      .firestore()
+      .collection("countries")
+      .where("slug", "==", slug)
+      .get();
+
+    const countryData = {
+      data: snapshot.docs[0].data(),
+      id: snapshot.docs[0].id,
+    };
+
+    return {
+      props: countryData,
+    };
+  } catch (error) {
+    return serverRedirect("/dashboard/admin/countries");
+  }
+}
+
+export async function getHotelData(slug) {
+  try {
+    const snapshot = await firebase
+      .firestore()
+      .collection("hotels")
+      .where("slug", "==", slug)
+      .get();
+
+    const countryData = {
+      data: snapshot.docs[0].data(),
+      id: snapshot.docs[0].id,
+    };
+
+    return {
+      props: countryData,
+    };
+  } catch (error) {
+    return serverRedirect("/dashboard/admin/hotels");
+  }
 }

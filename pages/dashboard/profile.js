@@ -1,5 +1,5 @@
 import DashboardUi from "../../components/DashboardUi";
-import ProfileInput from "../../components/ProfileInput";
+import DashboardInput from "../../components/DashboardInput";
 import { checkAuth } from "../../utils/ServerHelpers";
 import ProfileSelect from "../../components/ProfileSelect";
 import DashboardButton from "../../components/DashboardButton";
@@ -19,8 +19,6 @@ const ProfilePage = ({ userProfile, token }) => {
   const [profile, setProfile] = useState(userProfile);
 
   const handleChange = (e) => {
-    console.log(e.target.value);
-    console.log(e.target.name);
     setProfile({
       ...profile,
 
@@ -54,10 +52,9 @@ const ProfilePage = ({ userProfile, token }) => {
             onSubmit={(e) => {
               e.preventDefault();
               doUpdate();
-              console.log(profile);
             }}
           >
-            <ProfileInput
+            <DashboardInput
               type="text"
               name="firstName"
               value={profile.firstName ?? ""}
@@ -65,7 +62,7 @@ const ProfilePage = ({ userProfile, token }) => {
               autoComplete="first-name"
               label="Prénom"
             />
-            <ProfileInput
+            <DashboardInput
               type="text"
               name="lastName"
               value={profile.lastName ?? ""}
@@ -73,7 +70,7 @@ const ProfilePage = ({ userProfile, token }) => {
               autoComplete="last-name"
               label="Nom de famille"
             />
-            <ProfileInput
+            <DashboardInput
               type="date"
               name="birthdate"
               value={formatDate(profile.birthdate) ?? ""}
@@ -88,7 +85,7 @@ const ProfilePage = ({ userProfile, token }) => {
               value={profile.gender}
               onChange={handleChange}
             />
-            <ProfileInput
+            <DashboardInput
               type="tel"
               name="mobilePhone"
               value={profile.mobilePhone}
@@ -96,7 +93,7 @@ const ProfilePage = ({ userProfile, token }) => {
               autoComplete="bday"
               label="Téléphone mobile"
             />
-            <ProfileInput
+            <DashboardInput
               type="tel"
               name="landlinePhone"
               value={profile.landlinePhone}
@@ -104,7 +101,7 @@ const ProfilePage = ({ userProfile, token }) => {
               autoComplete="tel-local"
               label="Téléphone fixe"
             />
-            <ProfileInput
+            <DashboardInput
               type="text"
               name="address"
               value={profile.address}
@@ -112,7 +109,7 @@ const ProfilePage = ({ userProfile, token }) => {
               autoComplete="tel-local"
               label="Adresse postale"
             />
-            <ProfileInput
+            <DashboardInput
               type="text"
               name="referer"
               value={profile.referer ?? ""}

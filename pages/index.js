@@ -11,11 +11,20 @@ import Advantage from "../components/HomeAdvantage";
 import Image from "next/image";
 import Footer from "../components/Footer";
 import ContactHelper from "../components/ContactHelper";
+import { getFrontEndAsset } from "../utils/ClientHelpers";
 
 // TODO: add unit test for images w/o meta
 // TODO: add unit test for weird characters like apostrophes and such
 
-export default function Home() {
+export const getStaticProps = async () => {
+  const heroImage = await getFrontEndAsset("image-asset.jpg");
+
+  return {
+    props: { heroImage }, // will be passed to the page component as props
+  };
+};
+
+export default function Home({ heroImage }) {
   return (
     <div className="container mx-auto max-w-full">
       <Head>
@@ -25,7 +34,13 @@ export default function Home() {
 
       <Navigation />
 
-      <div className={styles.homeHero}>
+      <div
+        style={{
+          backgroundImage: `url(${heroImage})`,
+          minHeight: "100vh",
+          backgroundSize: "cover",
+        }}
+      >
         <div className="flex h-screen">
           <div className="mx-4 my-12 shadow md:shadow-none xl:mx-auto md:my-32">
             <div className="bg-white bg-opacity-90 max-w-7xl p-10 md:p-20 rounded-xl">
