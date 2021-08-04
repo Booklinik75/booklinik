@@ -95,6 +95,24 @@ export async function getUserProfile(ctx) {
   }
 }
 
+export async function getHotelNameById(id) {
+  try {
+    const userDocRef = firebase.firestore().collection("hotels").doc(id);
+
+    const doc = await userDocRef.get();
+
+    if (doc.exists) {
+      const docData = doc.data().name;
+
+      return docData;
+    } else {
+      return null;
+    }
+  } catch (error) {
+    return error;
+  }
+}
+
 export async function checkAuth(ctx) {
   const token = await getUserToken(ctx);
 
@@ -144,6 +162,18 @@ export async function getCities() {
   return snapshot.docs.map((doc) => doc.data());
 }
 
+export async function getOptions() {
+  const options = {};
+
+  const snapshots = await (
+    await firebase.firestore().collection("options").get()
+  ).forEach((doc) => {
+    options[doc.id.toString()] = doc.data();
+  });
+  console.log(options);
+  return options;
+}
+
 export async function getCountries() {
   const snapshot = await firebase.firestore().collection("countries").get();
   return snapshot.docs.map((doc) => doc.data());
@@ -151,6 +181,32 @@ export async function getCountries() {
 
 export async function getHotels() {
   const snapshot = await firebase.firestore().collection("hotels").get();
+  return snapshot.docs.map((doc) => doc.data());
+}
+
+export async function getHotelsWithIds() {
+  const hotels = [];
+  const snapshots = await (
+    await firebase.firestore().collection("hotels").get()
+  ).forEach((doc) => {
+    hotels.push({ data: doc.data(), id: doc.id });
+  });
+
+  return hotels;
+}
+
+export async function getRooms() {
+  const snapshot = await firebase.firestore().collection("rooms").get();
+  return snapshot.docs.map((doc) => doc.data());
+}
+
+export async function getClinics() {
+  const snapshot = await firebase.firestore().collection("clinics").get();
+  return snapshot.docs.map((doc) => doc.data());
+}
+
+export async function getSurgeries() {
+  const snapshot = await firebase.firestore().collection("surgeries").get();
   return snapshot.docs.map((doc) => doc.data());
 }
 
@@ -185,6 +241,65 @@ export async function getOperationData(slug) {
     };
   } catch (error) {
     return serverRedirect("/dashboard/admin/operations");
+  }
+}
+
+export async function gatherOptionsFromHotelId(id) {
+  try {
+    const options = await firebase
+      .firestore()
+      .collection("options")
+      .doc(id)
+      .get()
+      .then((doc) => {
+        return doc.data()[0];
+      });
+    console.log(options);
+    return options;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function getSurgeryData(slug) {
+  try {
+    const snapshot = await firebase
+      .firestore()
+      .collection("surgeries")
+      .where("slug", "==", slug)
+      .get();
+
+    const surgeryData = {
+      data: snapshot.docs[0].data(),
+      id: snapshot.docs[0].id,
+    };
+
+    return {
+      props: surgeryData,
+    };
+  } catch (error) {
+    return serverRedirect("/dashboard/admin/surgeries");
+  }
+}
+
+export async function getClinicData(slug) {
+  try {
+    const snapshot = await firebase
+      .firestore()
+      .collection("clinics")
+      .where("slug", "==", slug)
+      .get();
+
+    const operationData = {
+      data: snapshot.docs[0].data(),
+      id: snapshot.docs[0].id,
+    };
+
+    return {
+      props: operationData,
+    };
+  } catch (error) {
+    return serverRedirect("/dashboard/admin/clinics");
   }
 }
 
