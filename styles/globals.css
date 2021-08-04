@@ -46,3 +46,11 @@
 }
 
 @tailwind utilities;
+
+.wmde-markdown > * {
+  font-family: "Circular", "Montserrat", "sans-serif" !important;
+}
+
+.surgeries-cities > *:not(:last-child):after {
+  content: ", ";
+}
