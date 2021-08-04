@@ -18,7 +18,9 @@ export default function DashboardIndex({ userProfile }) {
           height: "calc(100% - 75px)",
         }}
       >
-        <DashboardSideNav />
+        <DashboardSideNav
+          isAdmin={userProfile.role === "admin" ? true : false}
+        />
         <div className="col-span-10 shadow-lg grid grid-cols-6 p-12 gap-10">
           <div className="col-span-6 lg:col-span-4 flex flex-col gap-4">
             <h1 className="text-4xl">
@@ -72,6 +74,7 @@ export default function DashboardIndex({ userProfile }) {
           <div className="col-span-6 lg:col-span-2 flex flex-row lg:flex-col gap-6">
             <div className="w-1/2 lg:w-full rounded border border-shamrock p-4 space-y-2">
               <h3 className="text-2xl">Parrainez un proche</h3>
+
               <p>
                 Recommandez Booklinik à vos amis et recevez 100€ sur votre
                 voyage. Vos amis profiteront aussi de 100€ sur leurs opérations.
