@@ -5,10 +5,8 @@ import { useRouter } from "next/router";
 import DashboardInput from "../../../../components/DashboardInput";
 import { useState, useEffect, useRef } from "react";
 import DashboardButton from "../../../../components/DashboardButton";
-import { doFileUpload } from "../../../../utils/ClientHelpers";
 import slugify from "slugify";
 import ProfileSelect from "../../../../components/ProfileSelect";
-import { useStateWithPromise } from "../../../../hooks/useStateWithPromise";
 
 export const getServerSideProps = async (ctx) => {
   const userProfile = await checkAdmin(ctx);
@@ -114,41 +112,49 @@ const AddRoom = ({ hotelsOptions }) => {
     if (isInitialMount.current) {
       isInitialMount.current = false;
     } else {
-      if (urls.length === images.length) {
+      if (urls.length === images.length && images.length !== 0) {
+        const doAdd = async (data) => {
+          setLoading("loading");
+
+          let docData = {
+            name: form.name,
+            slug: form.slug,
+            extraPrice: form.extraPrice,
+            photo: null,
+            hotel: form.hotel,
+            photos: urls,
+          };
+
+          console.log(docData);
+
+          firebase
+            .firestore()
+            .collection("rooms")
+            .add(docData)
+            .catch((error) => {})
+            .finally(() => {
+              setLoading("done");
+              setTimeout(() => {
+                setLoading("idle");
+              }, 1000);
+              router.push(`/dashboard/admin/rooms/edit/${form.slug}`);
+            });
+        };
+
         doAdd();
       } else if (urls.length > images.length) {
         router.reload(window.location.pathname);
       }
     }
-  }, [urls]);
-
-  const doAdd = async (data) => {
-    setLoading("loading");
-
-    let docData = {
-      name: form.name,
-      slug: form.slug,
-      extraPrice: form.extraPrice,
-      photo: null,
-      hotel: form.hotel,
-      photos: urls,
-    };
-
-    console.log(docData);
-
-    firebase
-      .firestore()
-      .collection("rooms")
-      .add(docData)
-      .catch((error) => {})
-      .finally(() => {
-        setLoading("done");
-        setTimeout(() => {
-          setLoading("idle");
-        }, 1000);
-        router.push(`/dashboard/admin/rooms/edit/${form.slug}`);
-      });
-  };
+  }, [
+    form.extraPrice,
+    form.hotel,
+    form.name,
+    form.slug,
+    images.length,
+    router,
+    urls,
+  ]);
 
   return (
     <DashboardUi isAdmin={true}>
