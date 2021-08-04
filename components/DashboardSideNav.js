@@ -9,7 +9,7 @@ const DashboardSideNav = ({ isAdmin }) => {
 
   return (
     <div className="z-10 h-full col-span-2">
-      <div className="flex flex-col px-6 py-10 h-full justify-between ">
+      <div className="flex flex-col px-6 py-10 h-full justify-between max-h-screen">
         <div className="space-y-5">
           <DashboardSideNavItem title="Dashboard" target="/dashboard" />
           <div className="flex flex-col">
@@ -30,24 +30,40 @@ const DashboardSideNav = ({ isAdmin }) => {
             <div className="flex flex-col">
               <p className="text-sm text-gray-700 uppercase">Admin</p>
               <DashboardSideNavItem
-                title="Edit questions médicales"
+                title="Questions médicales"
                 target="/dashboard/admin/medical-questions"
               />
               <DashboardSideNavItem
-                title="Edit catégories"
+                title="Cat. opérations"
                 target="/dashboard/admin/operations"
               />
               <DashboardSideNavItem
-                title="Edit pays"
+                title="Opérations"
+                target="/dashboard/admin/surgeries"
+              />
+              <DashboardSideNavItem
+                title="Pays"
                 target="/dashboard/admin/countries"
               />
               <DashboardSideNavItem
-                title="Edit villes"
+                title="Villes"
                 target="/dashboard/admin/cities"
               />
               <DashboardSideNavItem
-                title="Edit hotels"
+                title="Hôtels"
                 target="/dashboard/admin/hotels"
+              />
+              <DashboardSideNavItem
+                title="Options d'hôtel"
+                target="/dashboard/admin/options"
+              />
+              <DashboardSideNavItem
+                title="Chambres"
+                target="/dashboard/admin/rooms"
+              />
+              <DashboardSideNavItem
+                title="Cliniques"
+                target="/dashboard/admin/clinics"
               />
             </div>
           ) : (
