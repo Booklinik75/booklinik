@@ -1,6 +1,6 @@
 import DashboardUi from "../../../components/DashboardUi";
 import { checkAdmin, getMedicalQuestions } from "../../../utils/ServerHelpers";
-import React, { useState } from "react";
+import { useState } from "react";
 import firebase from "../../../firebase/clientApp";
 import DashboardButton from "../../../components/DashboardButton";
 
@@ -69,6 +69,7 @@ const MedicalQuestionsEditor = ({ medicalQuestions }) => {
           setLoading("idle");
         })
         .catch((err) => {
+          console.log(err);
           setLoading("idle");
         });
     });
@@ -86,8 +87,13 @@ const MedicalQuestionsEditor = ({ medicalQuestions }) => {
         >
           {inputList.map((x, i) => {
             return (
-              <div className="box" key={(x, i)}>
-                <div className="flex gap-2">
+              <div
+                className={
+                  "box transition " + (x.published ? "" : "opacity-30")
+                }
+                key={(x, i)}
+              >
+                <div className="flex gap-2 items-center">
                   <div className="flex flex-col">
                     <label className="text-sm text-gray-500 uppercase">
                       Question
@@ -99,6 +105,7 @@ const MedicalQuestionsEditor = ({ medicalQuestions }) => {
                       onChange={(e) => handleInputChange(e, i)}
                       name="questionContent"
                       value={x.questionContent}
+                      required={true}
                     />
                   </div>
                   <div className="flex flex-col">
@@ -135,8 +142,16 @@ const MedicalQuestionsEditor = ({ medicalQuestions }) => {
                       placeholder="Ex : si oui, pourquoi ?"
                       onChange={(e) => handleInputChange(e, i)}
                       name="precision"
+                      required={true}
                       value={x.precision}
                     />
+                    <p className="text-xs mt-2 text-gray-400">
+                      Écrire{" "}
+                      <span className="px-1 font-mono py-0.5 rounded bg-blue-100 text-blue-900">
+                        null
+                      </span>{" "}
+                      si aucune.
+                    </p>
                   </div>
                   <div className="flex flex-col">
                     <label className="text-sm text-gray-500 uppercase">
