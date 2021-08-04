@@ -44,7 +44,6 @@ const EditHotel = ({ data, id, citiesOptions }) => {
   const [isLoading, setLoading] = useState("idle");
 
   const [form, setFormData] = useState({
-    city: data.city,
     slug: data.slug,
     name: data.name,
     rating: data.rating,
@@ -55,6 +54,9 @@ const EditHotel = ({ data, id, citiesOptions }) => {
   const handleChange = (e) => {
     if (e.target.name === "name") {
       form.slug = slugify(e.target.value, { lower: true });
+    }
+    if (e.target.type === "select-one") {
+      form.city = e.target.value;
     }
 
     setFormData({
