@@ -23,7 +23,6 @@ export const getServerSideProps = async (ctx) => {
 
   cities.map((city) => {
     citiesOptions.push({ value: city.slug, label: city.name });
-    console.log(citiesOptions);
   });
 
   return {
@@ -54,8 +53,6 @@ const AddHotel = ({ citiesOptions }) => {
     if (e.target.type === "select-one") {
       form.city = e.target.value;
     }
-
-    console.log(e);
 
     setFormData({
       ...form,
@@ -88,11 +85,7 @@ const AddHotel = ({ citiesOptions }) => {
       photo: imageUploadRes.ref.fullPath,
     };
 
-    console.log(docData);
     setLoading("idle");
-    console.log(form.city);
-
-    console.log(docData.city);
 
     firebase
       .firestore()
