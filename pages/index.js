@@ -12,19 +12,31 @@ import Image from "next/image";
 import Footer from "../components/Footer";
 import ContactHelper from "../components/ContactHelper";
 import { getFrontEndAsset } from "../utils/ClientHelpers";
+import {
+  getOperationCategories,
+  getBackEndAsset,
+} from "../utils/ServerHelpers";
 
 // TODO: add unit test for images w/o meta
 // TODO: add unit test for weird characters like apostrophes and such
 
 export const getStaticProps = async () => {
   const heroImage = await getFrontEndAsset("image-asset.jpg");
+  const categories = await getOperationCategories();
+
+  const operationsImageT = await Promise.all(
+    categories.map(async (operationCategory, index, array) => {
+      let image = await getBackEndAsset(operationCategory.photo);
+      categories[index].photo = image;
+    })
+  );
 
   return {
-    props: { heroImage }, // will be passed to the page component as props
+    props: { heroImage, categories }, // will be passed to the page component as props
   };
 };
 
-export default function Home({ heroImage }) {
+export default function Home({ heroImage, categories }) {
   return (
     <div className="container mx-auto max-w-full">
       <Head>
@@ -36,8 +48,9 @@ export default function Home({ heroImage }) {
 
       <div
         style={{
-          backgroundImage: `url(${heroImage})`,
-          minHeight: "100vh",
+          backgroundImage: "url(/assets/home-hero-background.jpg)",
+          height: "100vh",
+          marginTop: "-110px",
           backgroundSize: "cover",
         }}
       >
@@ -48,16 +61,10 @@ export default function Home({ heroImage }) {
                 Estimez et réservez votre voyage médical sur mesure en quelques
                 clics.
               </h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <Operation />
-                <Operation />
-                <Operation />
-                <Operation extraStyle="hidden md:flex" />
-                <Operation extraStyle="hidden md:flex" />
-                <Operation extraStyle="hidden md:flex" />
-                <Operation extraStyle="hidden lg:flex" />
-                <Operation extraStyle="hidden lg:flex" />
-                <Operation extraStyle="hidden lg:flex" />
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 home-hero-surgery-categories">
+                {categories.map((category) => {
+                  return <Operation key={category.slug} data={category} />;
+                })}
               </div>
             </div>
           </div>
@@ -65,9 +72,21 @@ export default function Home({ heroImage }) {
       </div>
       <div className="max-w-7xl px-4 xl:px-0 xl:mx-auto w-full my-12">
         <div className="max-w-5xl grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <Category />
-          <Category />
-          <Category />
+          <Category
+            href="/cliniques"
+            title="Cliniques"
+            imageSrc="https://firebasestorage.googleapis.com/v0/b/booklinik.appspot.com/o/frontendassets%2F542af9d2e639775d04155ddeb8295d48%20copie.jpg?alt=media&token=5ace499e-0efe-4e37-b934-01b1db78b7f2"
+          />
+          <Category
+            href="/destinations"
+            title="Destinations"
+            imageSrc="https://firebasestorage.googleapis.com/v0/b/booklinik.appspot.com/o/frontendassets%2F66975f67e7ee56b5b434fe075d65cd87%20copie.jpg?alt=media&token=d7ee1d87-02ee-4157-9348-a9dca9e74a86"
+          />
+          <Category
+            href="/hotels"
+            title="Hôtels"
+            imageSrc="https://firebasestorage.googleapis.com/v0/b/booklinik.appspot.com/o/frontendassets%2Fae21c7bd1bf0a0006c20a583d2046ee9%20copie.jpg?alt=media&token=92e34938-ba57-4110-9b1c-b532bc6beb13"
+          />
         </div>
       </div>
 
@@ -81,7 +100,7 @@ export default function Home({ heroImage }) {
           <p className="uppercase text-sm mb-2">Découvrez nos valeurs</p>
           <h2 className="text-4xl">Parce que votre bien-être est notre</h2>
           <p className="mt-4 mb-2">Les 8 étapes clé de votre voyage</p>
-          <Link href="#">
+          <Link href="/valeurs">
             <a className="hover:underline flex items-center">
               Découvrir <FaChevronRight size={12} />
             </a>
@@ -89,7 +108,7 @@ export default function Home({ heroImage }) {
         </div>
       </div>
 
-      <div className="mx-4 xl:mx-auto max-w-7xl py-10">
+      <div className="mx-4 xl:mx-auto max-w-7xl py-10 hidden">
         <div className="flex flex-row items-baseline justify-between mb-2">
           <h3 className="text-xl mr-2">
             Découvrez les offres Booklikik du moment
@@ -111,7 +130,7 @@ export default function Home({ heroImage }) {
       </div>
 
       <div className="mx-4 xl:mx-auto max-w-7xl py-6">
-        <h3 className="text-4xl mb-8">Les avantages Booklinik</h3>
+        <h3 className="text-4xl my-8">Les avantages Booklinik</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           <Advantage
             title="Reservation simplifiée"
@@ -137,7 +156,7 @@ sont mis à votre disposition."
       </div>
 
       {/* témoignage */}
-      <div className="mx-4 xl:mx-auto max-w-5xl py-12">
+      <div className="mx-4 lg:mx-auto max-w-5xl py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-10">
           <Image
             src="https://via.placeholder.com/1000?text=en+attente+d'image"

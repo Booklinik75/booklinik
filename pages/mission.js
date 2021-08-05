@@ -10,8 +10,10 @@ import EmblaSlide from "../components/EmblaSlide";
 import Head from "next/head";
 
 const Mission = () => {
-  var bodyContents =
+  const bodyContents =
     "Parce que votre bien-être est notre priorité nous vous garantissons des critères de qualité et de sécurité.";
+  const fileName =
+    "https://firebasestorage.googleapis.com/v0/b/booklinik.appspot.com/o/frontendassets%2Fsimon-migaj-Yui5vfKHuzs-unsplash%20copie.jpg?alt=media&token=de1492a8-392f-4e26-a7f1-e23b9c170596";
 
   const options = {
     loop: true,
@@ -34,7 +36,8 @@ const Mission = () => {
       <PhotoBanner
         title="Notre Mission"
         body={bodyContents}
-        fileName="notre-mission@2x.jpg"
+        fileName={fileName}
+        fullWidth={true}
       />
 
       <div className="flex flex-col items-center mb-10" id="content">
