@@ -365,3 +365,24 @@ export async function getHotelData(slug) {
     return serverRedirect("/dashboard/admin/hotels");
   }
 }
+
+export async function getRelatedSurgeries(categoryName) {
+  try {
+    const relatedSurgeries = [];
+    const snapshot = await firebase
+      .firestore()
+      .collection("surgeries")
+      .where("category", "==", categoryName)
+      .get();
+
+    for (let i = 0; i < 4; i++) {
+      if (snapshot.docs[i]) {
+        relatedSurgeries.push(snapshot.docs[i].data());
+      }
+    }
+
+    return relatedSurgeries;
+  } catch (error) {
+    console.log(error);
+  }
+}
