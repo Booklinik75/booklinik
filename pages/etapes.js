@@ -5,24 +5,25 @@ import Image from "next/image";
 import StepDash from "../components/StepDash";
 import ContactHelper from "../components/ContactHelper";
 import Head from "next/head";
-import { useAuth } from "../hooks/useAuth";
 
 const KeySteps = () => {
-  const t = useAuth();
-
   const body =
-    "Parce qu&lsquo;il est important de préparer au mieux votre opération, nous avons listé pour vous vos étapes clés";
+    "Parce qu'il est important de préparer au mieux votre opération, nous avons listé pour vous vos étapes clés";
+  const fileName =
+    "https://firebasestorage.googleapis.com/v0/b/booklinik.appspot.com/o/frontendassets%2Fmanuel-moreno-DGa0LQ0yDPc-unsplash%20copie.jpg?alt=media&token=0c8dabb0-60b6-4342-a771-e1f550b3db5e";
   return (
     <div>
       <Head>
         <title>Booklinik | Les étapes clés</title>
       </Head>
       <Navigation />
+
       <PhotoBanner
         title="Les etapes cles"
         body={body}
-        fileName="etapes-cles@2x.jpg"
+        fileName={fileName}
         discover={true}
+        fullWidth={true}
       />
 
       <div className="flex flex-col items-center mb-10" id="content">
@@ -61,7 +62,7 @@ const KeySteps = () => {
           </div>
           <div className="text-right">
             <Image
-              src="https://via.placeholder.com/1000?text=en+attente+d&lsquo;image"
+              src="https://firebasestorage.googleapis.com/v0/b/booklinik.appspot.com/o/frontendassets%2Fscott-graham-OQMZwNd3ThU-unsplash%20copie.jpg?alt=media&token=7455e41b-d4b8-481e-9341-2ca39a29ccab"
               alt="TBD"
               width={500}
               height={300}
@@ -78,7 +79,7 @@ const KeySteps = () => {
         <div className="mx-4 xl:mx-auto max-w-7xl grid grid-cols-1 md:grid-cols-2 items-center gap-10">
           <div className="text-left">
             <Image
-              src="https://via.placeholder.com/1000?text=en+attente+d&lsquo;image"
+              src="https://firebasestorage.googleapis.com/v0/b/booklinik.appspot.com/o/frontendassets%2Fmargo-brodowicz-KZHhnb6XsQI-unsplash%20copie.jpg?alt=media&token=608f61f8-e864-45f2-aba7-1ae2aee68e5f"
               alt="TBD"
               width={500}
               height={300}
@@ -141,7 +142,7 @@ const KeySteps = () => {
           </div>
           <div className="text-right">
             <Image
-              src="https://via.placeholder.com/1000?text=en+attente+d&lsquo;image"
+              src="https://firebasestorage.googleapis.com/v0/b/booklinik.appspot.com/o/frontendassets%2Fpaul-postema-mr0Dp231IEw-unsplash%20copie.jpg?alt=media&token=4abd2ea0-e874-429a-8638-cedd91b0851f"
               alt="TBD"
               width={500}
               height={300}
@@ -158,7 +159,7 @@ const KeySteps = () => {
         <div className="mx-4 xl:mx-auto max-w-7xl grid grid-cols-1 md:grid-cols-2 items-center gap-10">
           <div className="text-left">
             <Image
-              src="https://via.placeholder.com/1000?text=en+attente+d&lsquo;image"
+              src="https://firebasestorage.googleapis.com/v0/b/booklinik.appspot.com/o/frontendassets%2Folga-guryanova-tMFeatBSS4s-unsplash%20copie.jpg?alt=media&token=f31744ba-91b1-485d-83cf-84d472c4619b"
               alt="TBD"
               width={500}
               height={300}
@@ -215,7 +216,7 @@ const KeySteps = () => {
           </div>
           <div className="text-right">
             <Image
-              src="https://via.placeholder.com/1000?text=en+attente+d&lsquo;image"
+              src="https://firebasestorage.googleapis.com/v0/b/booklinik.appspot.com/o/frontendassets%2Ftoa-heftiba-4xe-yVFJCvw-unsplash%20copie.jpg?alt=media&token=3bf63796-d012-4606-9dbf-14008d155110"
               alt="TBD"
               width={500}
               height={300}
