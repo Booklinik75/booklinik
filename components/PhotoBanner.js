@@ -9,6 +9,7 @@ const PhotoBanner = ({
   discover,
   extraLarge,
   fullWidth,
+  overlay,
 }) => {
   var divStyle = {
     backgroundImage: `url(${fileName})`,
@@ -21,9 +22,9 @@ const PhotoBanner = ({
     <div
       style={divStyle}
       className={
-        "mx-4 flex flex-col mb-10 rounded-xl items-center text-white " +
-        (extraLarge ? "py-32" : "py-24") +
-        (fullWidth ? "" : "max-w-7xl")
+        "mx-4 flex flex-col mb-10 rounded-xl items-center relative text-white " +
+        (extraLarge ? "py-32 " : "py-24 ") +
+        (fullWidth ? "" : "mx-auto max-w-7xl")
       }
     >
       <h1
