@@ -1,14 +1,16 @@
 language: node_js
 node_js:
-  - 16
+- 16
 cache:
   directories:
-    - node_modules
+  - node_modules
 script:
-  - npm run lint
-  - npm run build
+- npm run lint
+- npm run build
 deploy:
   provider: heroku
   app:
     main: booklinik-client
     dev: booklinik-staging
+  api_key:
+    secure: Xh4u1IdhPTJI7/bNhVYyNFMQWyHOjLBdp4JvVDk8WTED56w4FjqctyOPBGEjgSSwXsvi6DFwpFko6rdLfGX/TyoABtdSUwBtk99dvQN7iSU9nOncABg9ZhHkkfjT/HgtQ0vBzB4KfzkICjRlKlnfizosNNhCjQVbQ3qxk1flv43qW8jsi3M8TIrxD/LnnjDlTsi0QxrV8MsjjTDCD94cnsGUwW4nQYSoulcW1/Bvz+lKRHS1g5eOO76sKuWfvF8PbOptn7LBxUKcEMRmF2xrGm55dynL0pSdnnF8X9RBy1UfxTO1+zn07qXSp1l7haqYC54AyHx/1bjIpB7mfeJo/yK+f7EC+75/ZxGHamuAxf026ZrG9WtUt/LguuZZZZ3NfnVFqRbKY/F5u1Z3tgsjQ2Zbn0Kk0CnEFQik4qqeTpr++GPMk/HcAKYgVS96W3p/bLbetQe8Q+dKr7JtfsXUeQxuVR0aPgBKt0nCsmLqwuIgo+cxidCfAxNk3vIre647DB21OcnCexeWOqCV+DNYNm3ZbVi7RUj97NawSzOTfQrHljTUcRxhsWd1d24SDxgengkvd+8Vjd4+Dw2S5F/R5sUivC7UYD9JTyWxoVNpLw8loKqFjoFrfJITXzOBYKApOTDixCNUW47+7aO23WewytMrKODByuTXlZ/TJKtsxlg=
