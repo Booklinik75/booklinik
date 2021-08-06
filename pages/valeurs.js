@@ -106,7 +106,7 @@ const Values = () => {
           </div>
         </div>
         <div className="flex items-center w-screen text-bali justify-center mt-6">
-          <Link href="#">
+          <Link href="/destinations">
             <a className="flex items-center text-lg text-bali hover:underline">
               Découvrez les hôtels sélectionné juste pour vous
             </a>
@@ -152,7 +152,7 @@ const Values = () => {
           </div>
         </div>
         <div className="flex items-center w-screen text-bali justify-center mt-6">
-          <Link href="#">
+          <Link href="/destinations">
             <a className="flex items-center text-lg text-bali hover:underline">
               Découvrez les destinations sélectionné juste pour vous
             </a>

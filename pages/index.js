@@ -17,7 +17,6 @@ import {
   getBackEndAsset,
 } from "../utils/ServerHelpers";
 
-// TODO: add unit test for images w/o meta
 // TODO: add unit test for weird characters like apostrophes and such
 
 export const getStaticProps = async () => {
@@ -83,7 +82,7 @@ export default function Home({ heroImage, categories }) {
             imageSrc="https://firebasestorage.googleapis.com/v0/b/booklinik.appspot.com/o/frontendassets%2F66975f67e7ee56b5b434fe075d65cd87%20copie.jpg?alt=media&token=d7ee1d87-02ee-4157-9348-a9dca9e74a86"
           />
           <Category
-            href="/hotels"
+            href="/destinations"
             title="Hôtels"
             imageSrc="https://firebasestorage.googleapis.com/v0/b/booklinik.appspot.com/o/frontendassets%2Fae21c7bd1bf0a0006c20a583d2046ee9%20copie.jpg?alt=media&token=92e34938-ba57-4110-9b1c-b532bc6beb13"
           />
@@ -134,15 +133,15 @@ export default function Home({ heroImage, categories }) {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           <Advantage
             title="Reservation simplifiée"
-            body="Booklinik est le premier service de reservation en ligne de tourisme medical. Plus question de régler vos billets d’avions, hotel et opération séparément."
+            body="Booklinik est le premier service de reservation en ligne de tourisme medical. Plus question de régler vos billets d'avions, hotel et opération séparément."
           />
           <Advantage
             title="Paiement en 4x"
-            body="Grace à notre partenaire de credit …., vous pouvez régler votre operation et votre voyage en plusieurs fois sans frais."
+            body="Grace à notre partenaire de credit ..., vous pouvez régler votre operation et votre voyage en plusieurs fois sans frais."
           />
           <Advantage
             title="Equipe dédiée"
-            body="L’assistance booklinik est disponible 
+            body="L’'assistance booklinik est disponible 
 pour répondre à toutes vos questions 
 avant votre départ. Durant votre 
 séjour, un chauffeur et un traducteur 
@@ -150,7 +149,7 @@ sont mis à votre disposition."
           />
           <Advantage
             title="Assurance annulation"
-            body="L’assurance annulation booklinik vous couvrira si un événement imprévu vous contraint à annuler ou à reporter votre voyage."
+            body="L'assurance annulation booklinik vous couvrira si un événement imprévu vous contraint à annuler ou à reporter votre voyage."
           />
         </div>
       </div>
@@ -159,7 +158,7 @@ sont mis à votre disposition."
       <div className="mx-4 lg:mx-auto max-w-5xl py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-10">
           <Image
-            src="https://via.placeholder.com/1000?text=en+attente+d'image"
+            src="https://firebasestorage.googleapis.com/v0/b/booklinik.appspot.com/o/frontendassets%2Fdaniil-kuzelev-AkGd_YB6Q2c-unsplash%20copie.jpg?alt=media&token=637b7948-db90-4955-865a-8f9b4b2ce5d7"
             width={500}
             height={500}
             objectFit="cover"
@@ -178,7 +177,7 @@ sont mis à votre disposition."
             </div>
             <div className="space-y-2">
               <p>Tessa, Paris</p>
-              <Link href="#" passHref={true}>
+              <Link href="/book" passHref={true}>
                 <button className="border-2 rounded px-6 py-3 border-gray-500 transition hover:bg-gray-500 hover:text-white">
                   Estimez mon séjour
                 </button>
