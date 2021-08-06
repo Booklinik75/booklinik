@@ -16,9 +16,6 @@ import {
 } from "../../../utils/ServerHelpers";
 
 export const getStaticPaths = async () => {
-  const res = await fetch(process.env.JSON_API_URL + "/operations");
-  const data = await res.json();
-
   const surgeryCategories = await getOperationCategories();
   const surgeries = await getSurgeries();
 
