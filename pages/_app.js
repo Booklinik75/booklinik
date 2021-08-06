@@ -3,7 +3,7 @@ import { AuthProvider } from "../utils/UserContext";
 import Head from "next/head";
 import "@uiw/react-md-editor/dist/markdown-editor.css";
 import "@uiw/react-markdown-preview/dist/markdown.css";
-import "../styles/Calendar.css";
+import "../styles/calendar.css";
 
 function BooklinikClient({ Component, pageProps }) {
   return (
