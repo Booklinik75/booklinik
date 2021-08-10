@@ -12,7 +12,7 @@ const StarRating = ({ value, color }) => {
   const [selection, setSelection] = React.useState(0);
 
   return (
-    <div className={`flex text-{$color}`}>
+    <div className={`flex text-${color}`}>
       {Array.from({ length: 5 }, (v, i) => (
         <Star
           starId={i + 1}
