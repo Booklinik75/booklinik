@@ -19,6 +19,7 @@ import HotelSelectStep from "../../components/bookingComponents/steps/HotelSelec
 
 import FormStepper from "../../components/bookingComponents/steps/BookingStepper";
 import RoomsSelectStep from "../../components/bookingComponents/steps/RoomsSelect";
+import OptionsSelectStep from "../../components/bookingComponents/steps/OptionsSelect";
 
 export const getStaticProps = async () => {
   const countries = await getCountries();
@@ -28,6 +29,8 @@ export const getStaticProps = async () => {
   const surgeries = await getSurgeries();
   const options = await getOptions();
   const rooms = await getRooms();
+
+  console.log(hotels);
 
   await Promise.all(
     hotels.map(async (hotel, index) => {
@@ -67,8 +70,10 @@ const NewBookingContainer = ({
 }) => {
   const [booking, setBooking] = useState({
     surgeryCategory: "",
+    surgeryCategoryName: "",
     surgery: "",
     surgeryPrice: 0,
+    surgeryName: "",
     startDate: "",
     endDate: "",
     extraTravellers: 0,
@@ -81,8 +86,11 @@ const NewBookingContainer = ({
     hotelPhotoLink: "",
     hotelName: "",
     hotelRating: "",
+    hotelId: "",
     room: "",
+    roomName: "",
     roomPrice: 0,
+    roomPhotoLink: "",
   });
 
   const extraTravellersSupplement = 450;
@@ -90,19 +98,14 @@ const NewBookingContainer = ({
   const extraBabiesSupplement = 450;
 
   useEffect(() => {
+    console.log(booking);
+  }, [booking]);
+
+  useEffect(() => {
     let totalExtraTravellers =
       extraTravellersSupplement * booking.extraTravellers +
       extraChildsSupplement * booking.extraChilds +
       extraBabiesSupplement * booking.extraBabies;
-
-    console.log(
-      extraTravellersSupplement,
-      booking.extraTravellers,
-      extraChildsSupplement,
-      booking.extraChilds,
-      extraBabiesSupplement,
-      booking.extraBabies
-    );
 
     setBooking({
       ...booking,
@@ -138,30 +141,41 @@ const NewBookingContainer = ({
     return result;
   }
 
-  const handleSurgerySelect = (surgery, price) => {
+  const handleSurgeryCategorySelect = (category, name) => {
+    setBooking({
+      ...booking,
+      surgeryCategory: category,
+      surgeryCategoryName: name,
+    });
+  };
+
+  const handleSurgerySelect = (surgery, price, name) => {
     setBooking({
       ...booking,
       surgery: surgery,
-      surgeryPrice: price,
+      surgeryPrice: parseInt(price),
+      surgeryName: name,
     });
   };
 
-  const handleHotelSelect = (hotel, price, photo, name, rating) => {
+  const handleHotelSelect = (hotel, price, photo, name, rating, id) => {
     setBooking({
       ...booking,
       hotel: hotel,
-      hotelPrice: price,
+      hotelPrice: parseInt(price),
       hotelPhotoLink: photo,
       hotelName: name,
-      hotelRating: rating,
+      hotelRating: parseInt(rating),
+      hotelId: id,
     });
   };
 
-  const handleRoomSelect = (room, price) => {
+  const handleRoomSelect = (room, price, photo) => {
     setBooking({
       ...booking,
       room: room,
-      roomPrice: price,
+      roomPrice: parseInt(price),
+      roomPhotoLink: photo,
     });
   };
 
@@ -178,6 +192,7 @@ const NewBookingContainer = ({
           surgeries={surgeries}
           setBooking={setBooking}
           handleSurgerySelect={handleSurgerySelect}
+          handleSurgeryCategorySelect={handleSurgeryCategorySelect}
         />
 
         <DatesSelectStep
@@ -208,6 +223,8 @@ const NewBookingContainer = ({
           rooms={rooms}
           handleRoomSelect={handleRoomSelect}
         />
+
+        <OptionsSelectStep booking={booking} options={options} />
       </FormStepper>
     </>
   );

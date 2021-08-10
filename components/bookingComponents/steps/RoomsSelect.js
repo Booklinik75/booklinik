@@ -5,16 +5,15 @@ import { AiFillCheckCircle } from "react-icons/ai";
 import { BsCircle } from "react-icons/bs";
 
 const RoomsSelectStep = ({ booking, rooms, handleRoomSelect }) => {
-  console.log(booking, rooms);
   return (
     <div className="space-y-6 h-full">
       <h1 className="text-2xl mb-6">
         Un hôtel atypique, bon choix le{" "}
         <span className="text-shamrock">{booking.hotelName}</span> !
       </h1>
-      <p className="text-xs text-gray-500 uppercase">Hôtel</p>
-      <div className="grid grid-cols-9 gap-4 h-3/4">
+      <div className="grid grid-cols-9 gap-12 h-3/4 max-h-full">
         <div className="col-span-3 space-y-3">
+          <p className="text-xs text-gray-500 uppercase pt-2">Hôtel</p>
           <div className="h-64 relative">
             <Image
               src={booking.hotelPhotoLink}
@@ -38,7 +37,7 @@ const RoomsSelectStep = ({ booking, rooms, handleRoomSelect }) => {
           <div className="flex flex-col w-full gap-2">
             {rooms.map((room) => {
               return room.hotel === booking.hotel ? (
-                <>
+                <div key={room.slug}>
                   <input
                     type="radio"
                     name="room"
@@ -46,10 +45,13 @@ const RoomsSelectStep = ({ booking, rooms, handleRoomSelect }) => {
                     value={room.slug}
                     formNoValidate={true}
                     onChange={(e) =>
-                      handleRoomSelect(room.slug, room.extraPrice)
+                      handleRoomSelect(
+                        room.slug,
+                        room.extraPrice,
+                        room.photos[0]
+                      )
                     }
                     className="hidden"
-                    key={room.slug}
                   />
                   <label
                     htmlFor={room.slug}
@@ -83,12 +85,59 @@ const RoomsSelectStep = ({ booking, rooms, handleRoomSelect }) => {
                       )}
                     </div>
                   </label>
-                </>
+                </div>
               ) : (
                 ""
               );
             })}
           </div>
+        </div>
+        <div className="col-span-6 space-y-6 max-h-192 overflow-y-scroll">
+          {rooms.map((room) => {
+            return room.hotel === booking.hotel ? (
+              <div className="space-y-2">
+                <h2 className="text-xl flex items-center gap-2">
+                  {room.name}{" "}
+                  {room.slug === booking.room ? (
+                    <span className="text-shamrock">
+                      <AiFillCheckCircle />
+                    </span>
+                  ) : (
+                    ""
+                  )}
+                </h2>
+                <div className="grid grid-rows-2 grid-cols-4 h-64 gap-4">
+                  <div className="row-span-2 col-span-2 relative">
+                    <Image
+                      src={room.photos[0]}
+                      layout="fill"
+                      objectFit="cover"
+                      alt={room.name}
+                      className="rounded transition bg-gray-300"
+                    />
+                  </div>
+                  {room.photos.slice(1).map((roomPhoto, index) => {
+                    return (
+                      <div
+                        key={index}
+                        className="row-span-1 col-span-1 relative"
+                      >
+                        <Image
+                          src={roomPhoto}
+                          layout="fill"
+                          objectFit="cover"
+                          alt={room.name}
+                          className="rounded transition bg-gray-300"
+                        />
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            ) : (
+              ""
+            );
+          })}
         </div>
       </div>
     </div>

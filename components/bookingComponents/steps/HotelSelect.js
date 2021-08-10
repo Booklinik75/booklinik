@@ -12,7 +12,7 @@ const HotelSelectStep = ({ booking, hotels, handleHotelSelect }) => {
       <div className="grid grid-cols-9 gap-4">
         {hotels.map((hotel) => {
           return hotel.city === booking.city ? (
-            <div className="col-span-3 space-y-2">
+            <div className="col-span-3 space-y-2" key={hotel.slug}>
               <input
                 type="radio"
                 name="hotel"
@@ -23,10 +23,11 @@ const HotelSelectStep = ({ booking, hotels, handleHotelSelect }) => {
                 onChange={(e) =>
                   handleHotelSelect(
                     hotel.slug,
-                    hotel.startingPrice,
+                    hotel.extraPrice,
                     hotel.photo,
                     hotel.name,
-                    hotel.rating
+                    hotel.rating,
+                    hotel.id
                   )
                 }
               />
@@ -40,7 +41,7 @@ const HotelSelectStep = ({ booking, hotels, handleHotelSelect }) => {
                     layout="fill"
                     objectFit="cover"
                     alt={hotel.name}
-                    className="rounded transition brightness-90 hover:brightness-50"
+                    className="rounded transition brightness-90 hover:brightness-50 bg-gray-200"
                   />
                   <div className="absolute  bottom-0 left-0 m-4">
                     {hotel.slug === booking.hotel ? (

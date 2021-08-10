@@ -7,6 +7,7 @@ const SurgerySelectStep = ({
   surgeries,
   setBooking,
   handleSurgerySelect,
+  handleSurgeryCategorySelect,
 }) => {
   return (
     <div className="space-y-6">
@@ -33,6 +34,7 @@ const SurgerySelectStep = ({
                         surgeryPrice: 0,
                       })
                     }
+                    key={surgeryCategory.slug}
                     className="m-2 absolute top-0 right-0 transition opacity-20 hover:opacity-100"
                   >
                     <IoIosCloseCircle size={24} />
@@ -45,7 +47,12 @@ const SurgerySelectStep = ({
                   type="radio"
                   name="surgeryCategory"
                   value={surgeryCategory.slug}
-                  onChange={handleChange}
+                  onChange={(e) =>
+                    handleSurgeryCategorySelect(
+                      surgeryCategory.slug,
+                      surgeryCategory.name
+                    )
+                  }
                   className="hidden"
                   required={true}
                 />
@@ -75,13 +82,20 @@ const SurgerySelectStep = ({
           {surgeries.map((surgery) => {
             return booking.surgeryCategory !== "" &&
               surgery.category === booking.surgeryCategory ? (
-              <div className="flex flex-col items-center col-span-3">
+              <div
+                className="flex flex-col items-center col-span-3"
+                key={surgery.slug}
+              >
                 <input
                   id={surgery.slug}
                   value={surgery.slug}
                   className="hidden"
                   onChange={(e) =>
-                    handleSurgerySelect(surgery.slug, surgery.startingPrice)
+                    handleSurgerySelect(
+                      surgery.slug,
+                      surgery.startingPrice,
+                      surgery.name
+                    )
                   }
                   name="surgery"
                   type="radio"

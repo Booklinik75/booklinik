@@ -29,6 +29,7 @@ const CitySelectStep = ({
                   className="hidden"
                   required={true}
                   onChange={handleChange}
+                  noValidate
                 />
                 <label
                   htmlFor={city.slug}
