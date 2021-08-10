@@ -33,8 +33,6 @@ export const getServerSideProps = async (ctx) => {
     categoriesOptions.push({ value: category.slug, label: category.name });
   });
 
-  console.log(surgeryData);
-
   return {
     props: { citiesOptions, categoriesOptions, surgeryData },
   };

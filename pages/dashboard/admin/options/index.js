@@ -13,8 +13,6 @@ export const getServerSideProps = async (ctx) => {
   const hotels = await getHotelsWithIds();
   const options = await getOptions();
 
-  console.log(options);
-
   return {
     props: { userProfile, hotels, options },
   };
@@ -48,7 +46,6 @@ const OptionsList = ({ hotels, options }) => {
               {options[hotel.id] ? (
                 <div className="flex gap-2 items-center">
                   {options[hotel.id][0].map((option) => {
-                    console.log(option);
                     return (
                       <div
                         key={slugify(option.name, { lower: true })}

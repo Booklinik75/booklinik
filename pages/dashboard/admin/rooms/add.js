@@ -95,7 +95,6 @@ const AddRoom = ({ hotelsOptions }) => {
             .child(image.name)
             .getDownloadURL()
             .then((urls) => {
-              console.log("coucou");
               setUrls((prevState) => [...prevState, urls]);
             });
         }
@@ -124,8 +123,6 @@ const AddRoom = ({ hotelsOptions }) => {
             hotel: form.hotel,
             photos: urls,
           };
-
-          console.log(docData);
 
           firebase
             .firestore()
