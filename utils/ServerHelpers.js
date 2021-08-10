@@ -170,7 +170,6 @@ export async function getOptions() {
   ).forEach((doc) => {
     options[doc.id.toString()] = doc.data();
   });
-  console.log(options);
   return options;
 }
 
@@ -181,7 +180,11 @@ export async function getCountries() {
 
 export async function getHotels() {
   const snapshot = await firebase.firestore().collection("hotels").get();
-  return snapshot.docs.map((doc) => doc.data());
+  const hotels = snapshot.docs.map((doc) => {
+    return { ...doc.data(), id: doc.id };
+  });
+
+  return hotels;
 }
 
 export async function getHotelsWithIds() {
@@ -254,7 +257,6 @@ export async function gatherOptionsFromHotelId(id) {
       .then((doc) => {
         return doc.data()[0];
       });
-    console.log(options);
     return options;
   } catch (error) {
     console.log(error);

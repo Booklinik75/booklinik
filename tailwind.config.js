@@ -14,6 +14,9 @@ module.exports = {
         "monospace",
       ],
     },
+    maxHeight: {
+      192: "44rem",
+    },
     extend: {
       colors: {
         shamrock: "#33C383",
