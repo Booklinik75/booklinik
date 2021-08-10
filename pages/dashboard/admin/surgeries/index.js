@@ -12,8 +12,6 @@ export const getServerSideProps = async (ctx) => {
   const categories = await getOperationCategories();
   const surgeries = await getSurgeries();
 
-  console.log(surgeries);
-
   return {
     props: { userProfile, categories, surgeries },
   };

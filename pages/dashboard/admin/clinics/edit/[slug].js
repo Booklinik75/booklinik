@@ -20,8 +20,6 @@ export const getServerSideProps = async (ctx) => {
   const clinic = await getClinicData(slug);
   const cities = await getCities();
 
-  console.log(clinic);
-
   const citiesOptions = [];
 
   citiesOptions.push({
@@ -85,7 +83,6 @@ const UpdateClinic = ({ citiesOptions, data, id }) => {
     let docData = {};
 
     if (image !== null) {
-      console.log(image);
       const fileName = `${form.slug}-${image.name}`;
       const imageUploadRes = await doFileUpload(root, fileName, image);
 
