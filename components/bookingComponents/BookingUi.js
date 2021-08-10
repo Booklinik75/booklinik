@@ -9,7 +9,7 @@ const BookingUi = ({ children, bookingData, step }) => {
         <div className="col-span-2">
           <BookingSideNavigation step={step} />
         </div>
-        <div className="col-span-8 shadow-xl h-full grid grid-cols-12">
+        <div className="col-span-8 shadow-xl h-full grid grid-cols-12 overflow-y-scroll">
           {children}
         </div>
       </div>
