@@ -9,9 +9,14 @@ const BookingTopNavigation = ({ bookingData }) => {
   useEffect(() => {
     setEstimate(
       parseInt(bookingData.surgeryPrice) +
-        parseInt(bookingData.totalExtraTravellersPrice)
+        parseInt(bookingData.totalExtraTravellersPrice) +
+        parseInt(bookingData.hotelPrice)
     );
-  }, [bookingData.surgeryPrice, bookingData.totalExtraTravellersPrice]);
+  }, [
+    bookingData.surgeryPrice,
+    bookingData.totalExtraTravellersPrice,
+    bookingData.hotelPrice,
+  ]);
 
   return (
     <div className="flex flex-row w-full items-center justify-between z-50 px-10 py-6 bg-white border-b border-gray-500">
