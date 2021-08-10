@@ -53,7 +53,7 @@ export default function Home({ heroImage, categories }) {
           backgroundSize: "cover",
         }}
       >
-        <div className="flex h-screen">
+        <div className="flex h-screen items-center">
           <div className="mx-4 my-12 shadow md:shadow-none xl:mx-auto md:my-32">
             <div className="bg-white bg-opacity-90 max-w-7xl p-10 md:p-20 rounded-xl">
               <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-center mb-12">
