@@ -123,7 +123,6 @@ const EditSurgery = ({ citiesOptions, categoriesOptions, surgeryData }) => {
 
   async function doAdd() {
     setLoading("loading");
-    const root = "surgeries";
 
     let docData = {
       slug: form.slug,
