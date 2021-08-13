@@ -131,9 +131,10 @@ const EditSurgery = ({ citiesOptions, categoriesOptions, surgeryData }) => {
       excerpt: form.excerpt,
       category: form.category,
       cities: selectedCities,
-      startingPrice: form.startingPrice,
+      startingPrice: parseInt(form.startingPrice),
       additionalDocuments: inputList,
       descriptionBody: mdValue,
+      minimumNights: parseInt(form.minimumNights),
     };
 
     firebase
