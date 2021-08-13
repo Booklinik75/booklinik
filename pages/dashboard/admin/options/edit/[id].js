@@ -138,7 +138,7 @@ const EditOptions = ({ hotelName, id, options }) => {
                     <DashboardInput
                       type="number"
                       onChange={(e) => handleChange(e, i)}
-                      value={x.price}
+                      value={parseInt(x.price)}
                       name="price"
                       label="Prix de l'option (0 pour gratuit)"
                       required={true}
