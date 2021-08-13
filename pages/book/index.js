@@ -174,12 +174,15 @@ const NewBookingContainer = ({
     });
   };
 
-  const handleRoomSelect = (room, price, photo) => {
+  const handleRoomSelect = (room, price, photo, name) => {
     setBooking({
       ...booking,
       room: room,
       roomPrice: parseInt(price),
       roomPhotoLink: photo,
+      roomName: name,
+    });
+  };
     });
   };
 
