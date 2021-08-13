@@ -18,7 +18,7 @@
     "firebase": "^8.8.0",
     "firebase-admin": "^9.11.0",
     "formik": "^2.2.9",
-    "next": "11.0.1",
+    "next": "^11.1.0",
     "next-remove-imports": "^1.0.5",
     "nookies": "^2.5.2",
     "react": "17.0.2",
@@ -38,8 +38,8 @@
     "eslint-config-next": "11.0.1",
     "eslint-plugin-react": "^7.24.0",
     "postcss": "^8.3.5",
-    "webpack-bundle-analyzer": "^4.4.2",
-    "tailwindcss": "^2.2.4"
+    "tailwindcss": "^2.2.4",
+    "webpack-bundle-analyzer": "^4.4.2"
   },
   "browser": {
     "fs": false
