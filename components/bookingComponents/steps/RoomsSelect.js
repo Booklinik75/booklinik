@@ -48,7 +48,8 @@ const RoomsSelectStep = ({ booking, rooms, handleRoomSelect }) => {
                       handleRoomSelect(
                         room.slug,
                         room.extraPrice,
-                        room.photos[0]
+                        room.photos[0],
+                        room.name
                       )
                     }
                     className="hidden"
