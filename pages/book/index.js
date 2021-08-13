@@ -183,6 +183,11 @@ const NewBookingContainer = ({
       roomName: name,
     });
   };
+
+  const handleOptionsSelect = (a) => {
+    setBooking({
+      ...booking,
+      options: a,
     });
   };
 
@@ -229,6 +234,11 @@ const NewBookingContainer = ({
           booking={booking}
           rooms={rooms}
           handleRoomSelect={handleRoomSelect}
+        />
+        <OptionsSelectStep
+          booking={booking}
+          options={options}
+          handleOptionsSelect={handleOptionsSelect}
         />
 
         <OptionsSelectStep booking={booking} options={options} />
