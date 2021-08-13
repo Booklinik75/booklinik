@@ -20,6 +20,7 @@ import HotelSelectStep from "../../components/bookingComponents/steps/HotelSelec
 import FormStepper from "../../components/bookingComponents/steps/BookingStepper";
 import RoomsSelectStep from "../../components/bookingComponents/steps/RoomsSelect";
 import OptionsSelectStep from "../../components/bookingComponents/steps/OptionsSelect";
+import BookingConfirmation from "../../components/bookingComponents/steps/Confirmation";
 
 export const getStaticProps = async () => {
   const countries = await getCountries();
@@ -241,7 +242,7 @@ const NewBookingContainer = ({
           handleOptionsSelect={handleOptionsSelect}
         />
 
-        <OptionsSelectStep booking={booking} options={options} />
+        <BookingConfirmation booking={booking} />
       </FormStepper>
     </>
   );
