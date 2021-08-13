@@ -31,8 +31,6 @@ export const getStaticProps = async () => {
   const options = await getOptions();
   const rooms = await getRooms();
 
-  console.log(hotels);
-
   await Promise.all(
     hotels.map(async (hotel, index) => {
       let image = await getBackEndAsset(hotel.photo);
