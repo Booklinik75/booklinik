@@ -46,6 +46,7 @@ const EditSurgery = ({ citiesOptions, categoriesOptions, surgeryData }) => {
     category: surgeryData.props.data.category,
     excerpt: surgeryData.props.data.excerpt,
     startingPrice: surgeryData.props.data.startingPrice,
+    minimumNights: surgeryData.props.data.minimumNights,
   });
   const [isLoading, setLoading] = useState("idle");
   const [inputList, setInputList] = useState(
@@ -215,6 +216,16 @@ const EditSurgery = ({ citiesOptions, categoriesOptions, surgeryData }) => {
             onChange={handleChange}
             disabled={false}
             label="Prix de base"
+            required={true}
+            min={0}
+          />
+          <DashboardInput
+            type="number"
+            name="minimumNights"
+            value={form.minimumNights}
+            onChange={handleChange}
+            disabled={false}
+            label="Nuits minimum"
             required={true}
             min={0}
           />

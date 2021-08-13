@@ -9,7 +9,16 @@ const DatesSelectStep = ({
 }) => {
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl mb-6">Choisissez vos dates de voyage</h1>
+      <h1 className="text-2xl mb-6">
+        Choisissez vos dates de voyage
+        {booking.totalSelectedNights !== 0 ? (
+          <span className="text-white p-2 ml-2 bg-shamrock rounded text-lg">
+            {booking.totalSelectedNights} nuits
+          </span>
+        ) : (
+          ""
+        )}{" "}
+      </h1>
       <p className="p-4 bg-green-50 border-green-400 text-shamrock border rounded w-full max-w-max">
         <span className="text-lg flex items-center gap-2">
           <AiFillInfoCircle /> Bon à savoir
@@ -25,16 +34,25 @@ const DatesSelectStep = ({
               onChange={onCalendarStartDateChange}
               value={booking.startDate}
               locale="fr"
-              minDate={new Date()}
+              minDate={booking.startDate}
             />
           </div>
           <div className="w-full lg:w-1/2 xl:w-1/3 space-y-3">
             <h2 className="text-xs uppercase text-gray-500">Date de retour</h2>
             <Calendar
-              onChange={onCalendarEndDateChange}
+              onChange={(e) => {
+                let timeDiff = Math.abs(
+                  e.getTime() - booking.startDate.getTime()
+                );
+                let numberOfNights = Math.ceil(timeDiff / (1000 * 3600 * 24));
+                onCalendarEndDateChange(e, numberOfNights);
+              }}
               value={booking.endDate}
               locale="fr"
-              minDate={addDays(booking.startDate, 1)}
+              minDate={addDays(
+                booking.startDate,
+                parseInt(booking.minimumNights)
+              )}
             />
           </div>
         </div>
