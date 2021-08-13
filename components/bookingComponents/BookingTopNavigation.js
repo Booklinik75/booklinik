@@ -10,14 +10,17 @@ const BookingTopNavigation = ({ bookingData }) => {
     setEstimate(
       parseInt(bookingData.surgeryPrice) +
         parseInt(bookingData.totalExtraTravellersPrice) +
-        parseInt(bookingData.hotelPrice) +
-        parseInt(bookingData.roomPrice)
+        parseInt(bookingData.hotelPrice) *
+          parseInt(bookingData.totalSelectedNights) +
+        parseInt(bookingData.roomPrice) *
+          parseInt(bookingData.totalSelectedNights)
     );
   }, [
     bookingData.surgeryPrice,
     bookingData.totalExtraTravellersPrice,
     bookingData.hotelPrice,
     bookingData.roomPrice,
+    bookingData.totalSelectedNights,
   ]);
 
   return (
