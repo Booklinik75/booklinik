@@ -41,7 +41,8 @@ const FormStepper = ({ children, booking }) => {
                 onClick={() => setStep((s) => s + 1)}
                 className="flex items-center gap-1 border border-shamrock bg-shamrock text-white transition hover:bg-white hover:text-shamrock px-5 py-2 rounded disabled:hover:bg-shamrock disabled:hover:text-white disabled:opacity-30 disabled:cursor-not-allowed"
               >
-                Suivant <BsArrowRight />
+                {step === stepsArray.length - 2 ? "Finaliser" : "Continuer"}
+                <BsArrowRight />
               </button>
             )}
           </div>
