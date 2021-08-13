@@ -94,7 +94,8 @@ const SurgerySelectStep = ({
                     handleSurgerySelect(
                       surgery.slug,
                       surgery.startingPrice,
-                      surgery.name
+                      surgery.name,
+                      surgery.minimumNights
                     )
                   }
                   name="surgery"

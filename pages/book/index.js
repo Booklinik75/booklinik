@@ -74,8 +74,10 @@ const NewBookingContainer = ({
     surgery: "",
     surgeryPrice: 0,
     surgeryName: "",
-    startDate: "",
+    surgeryMinDays: 0,
+    startDate: new Date(),
     endDate: "",
+    totalSelectedNights: 0,
     extraTravellers: 0,
     extraChilds: 0,
     extraBabies: 0,
@@ -128,10 +130,11 @@ const NewBookingContainer = ({
     });
   };
 
-  const onCalendarEndDateChange = (e) => {
+  const onCalendarEndDateChange = (e, total) => {
     setBooking({
       ...booking,
       endDate: e,
+      totalSelectedNights: total,
     });
   };
 
@@ -149,12 +152,13 @@ const NewBookingContainer = ({
     });
   };
 
-  const handleSurgerySelect = (surgery, price, name) => {
+  const handleSurgerySelect = (surgery, price, name, minimumNights) => {
     setBooking({
       ...booking,
       surgery: surgery,
       surgeryPrice: parseInt(price),
       surgeryName: name,
+      minimumNights: parseInt(minimumNights),
     });
   };
 

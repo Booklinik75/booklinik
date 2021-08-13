@@ -40,6 +40,7 @@ const AddSurgery = ({ citiesOptions, categoriesOptions }) => {
     slug: "",
     name: "",
     excerpt: "",
+    minimumNights: 0,
     countries: [],
     category: categoriesOptions[0].value,
     startingPrice: 0,
@@ -167,6 +168,16 @@ const AddSurgery = ({ citiesOptions, categoriesOptions }) => {
             required={true}
             min={0}
           />
+          <DashboardInput
+            type="number"
+            name="minimumNights"
+            value={form.minimumNights}
+            onChange={handleChange}
+            disabled={false}
+            label="Nuits minimum"
+            required={true}
+            min={0}
+          />
           <ProfileSelect
             label="Pays"
             name="country"
@@ -205,7 +216,6 @@ const AddSurgery = ({ citiesOptions, categoriesOptions }) => {
             </label>
             <MDEditor value={mdValue} onChange={setMdValue} />
           </div>
-
           {inputList.map((x, i) => {
             return (
               <div className="box w-full" key={(x, i)}>
@@ -271,7 +281,6 @@ const AddSurgery = ({ citiesOptions, categoriesOptions }) => {
               </div>
             );
           })}
-
           {inputList.length === 0 && (
             <div
               onClick={handleAddClick}
@@ -282,7 +291,6 @@ const AddSurgery = ({ citiesOptions, categoriesOptions }) => {
               </button>
             </div>
           )}
-
           <DashboardButton defaultText="Ajouter" status={isLoading} />
         </form>
       </div>
