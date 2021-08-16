@@ -6,11 +6,11 @@ import {
   getSurgeries,
   getOptions,
   getRooms,
+  getBackEndAsset,
 } from "../../utils/ServerHelpers";
-import { useState } from "react";
+
 import Head from "next/head";
-import { useEffect } from "react";
-import { getBackEndAsset } from "../../utils/ServerHelpers";
+import { useEffect, useState } from "react";
 import SurgerySelectStep from "../../components/bookingComponents/steps/SurgerySelect";
 import DatesSelectStep from "../../components/bookingComponents/steps/DatesSelect";
 import TravellersSelectStep from "../../components/bookingComponents/steps/TravellersSelect";
@@ -21,6 +21,11 @@ import FormStepper from "../../components/bookingComponents/steps/BookingStepper
 import RoomsSelectStep from "../../components/bookingComponents/steps/RoomsSelect";
 import OptionsSelectStep from "../../components/bookingComponents/steps/OptionsSelect";
 import BookingConfirmation from "../../components/bookingComponents/steps/Confirmation";
+
+import { useAuthState } from "react-firebase-hooks/auth";
+import { VscLoading } from "react-icons/vsc";
+import firebase from "../../firebase/clientApp";
+import { useRouter } from "next/router";
 
 export const getStaticProps = async () => {
   const countries = await getCountries();
@@ -67,6 +72,13 @@ const NewBookingContainer = ({
   options,
   rooms,
 }) => {
+  const [user, loading] = useAuthState(firebase.auth());
+  const router = useRouter();
+
+  if (user === null && loading === false) {
+    router.push("/signup?i=anonBooking");
+  }
+
   const [booking, setBooking] = useState({
     surgeryCategory: "",
     surgeryCategoryName: "",
@@ -195,53 +207,62 @@ const NewBookingContainer = ({
       <Head>
         <title>Booklinik | Réservation</title>
       </Head>
-      <FormStepper booking={booking}>
-        <SurgerySelectStep
-          surgeryCategories={surgeryCategories}
-          booking={booking}
-          handleChange={handleChange}
-          surgeries={surgeries}
-          setBooking={setBooking}
-          handleSurgerySelect={handleSurgerySelect}
-          handleSurgeryCategorySelect={handleSurgeryCategorySelect}
-        />
+      {loading && (
+        <div className="animate-spin h-screen w-screen flex items-center justify-center">
+          <VscLoading />
+        </div>
+      )}
+      {loading === false && user !== null ? (
+        <FormStepper booking={booking}>
+          <SurgerySelectStep
+            surgeryCategories={surgeryCategories}
+            booking={booking}
+            handleChange={handleChange}
+            surgeries={surgeries}
+            setBooking={setBooking}
+            handleSurgerySelect={handleSurgerySelect}
+            handleSurgeryCategorySelect={handleSurgeryCategorySelect}
+          />
 
-        <DatesSelectStep
-          onCalendarStartDateChange={onCalendarStartDateChange}
-          onCalendarEndDateChange={onCalendarEndDateChange}
-          booking={booking}
-          addDays={addDays}
-        />
+          <DatesSelectStep
+            onCalendarStartDateChange={onCalendarStartDateChange}
+            onCalendarEndDateChange={onCalendarEndDateChange}
+            booking={booking}
+            addDays={addDays}
+          />
 
-        <TravellersSelectStep booking={booking} setBooking={setBooking} />
+          <TravellersSelectStep booking={booking} setBooking={setBooking} />
 
-        <CitySelectStep
-          booking={booking}
-          countries={countries}
-          cities={cities}
-          hotels={hotels}
-          handleChange={handleChange}
-        />
+          <CitySelectStep
+            booking={booking}
+            countries={countries}
+            cities={cities}
+            hotels={hotels}
+            handleChange={handleChange}
+          />
 
-        <HotelSelectStep
-          booking={booking}
-          hotels={hotels}
-          handleHotelSelect={handleHotelSelect}
-        />
+          <HotelSelectStep
+            booking={booking}
+            hotels={hotels}
+            handleHotelSelect={handleHotelSelect}
+          />
 
-        <RoomsSelectStep
-          booking={booking}
-          rooms={rooms}
-          handleRoomSelect={handleRoomSelect}
-        />
-        <OptionsSelectStep
-          booking={booking}
-          options={options}
-          handleOptionsSelect={handleOptionsSelect}
-        />
+          <RoomsSelectStep
+            booking={booking}
+            rooms={rooms}
+            handleRoomSelect={handleRoomSelect}
+          />
+          <OptionsSelectStep
+            booking={booking}
+            options={options}
+            handleOptionsSelect={handleOptionsSelect}
+          />
 
-        <BookingConfirmation booking={booking} />
-      </FormStepper>
+          <BookingConfirmation booking={booking} />
+        </FormStepper>
+      ) : (
+        ""
+      )}
     </>
   );
 };
