@@ -25,6 +25,12 @@ const DatesSelectStep = ({
         </span>
         Vous avez la possibilité de rester plus longtemps sur place afin de
         profiter de la ville que vous choisissez.
+        <br />
+        Pour cette opération, vous devrez sélectionner un minimum de{" "}
+        <span className="font-bold underline">
+          {parseInt(booking.minimumNights)} nuits
+        </span>
+        .
       </p>
       <div className="space-y-2">
         <div className="flex gap-4">
