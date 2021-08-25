@@ -42,10 +42,7 @@ const ProfilePage = ({ userProfile, token }) => {
     <DashboardUi isAdmin={userProfile.role === "admin" ? true : false}>
       <div className="col-span-10 space-y-4">
         <h1 className="text-4xl">Informations personnelles</h1>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua.
-        </p>
+        <p>Renseignez vos informations personnelles.</p>
         <div>
           <form
             className="grid grid-cols-12 gap-4"
