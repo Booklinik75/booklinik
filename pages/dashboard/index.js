@@ -4,6 +4,7 @@ import DashboardModal from "../../components/DashboardModal";
 import DashboardOperationCard from "../../components/DashboardOperationCard";
 import Link from "next/link";
 import { checkAuth } from "../../utils/ServerHelpers";
+import firebase from "../../firebase/clientApp";
 import { useAuthState } from "react-firebase-hooks/auth";
 
 export const getServerSideProps = checkAuth;
