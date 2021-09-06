@@ -111,10 +111,6 @@ const NewBookingContainer = ({
   const extraBabiesSupplement = 450;
 
   useEffect(() => {
-    console.log(booking);
-  }, [booking]);
-
-  useEffect(() => {
     let totalExtraTravellers =
       extraTravellersSupplement * booking.extraTravellers +
       extraChildsSupplement * booking.extraChilds +
