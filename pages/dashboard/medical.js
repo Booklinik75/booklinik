@@ -3,7 +3,9 @@ import { checkAuth } from "../../utils/ServerHelpers";
 import firebase from "../../firebase/clientApp";
 import { HiCheckCircle } from "react-icons/hi";
 import DashboardButton from "../../components/DashboardButton";
-import slugify from "slugify";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 
 export const getServerSideProps = async (ctx) => {
   const auth = await checkAuth(ctx);
@@ -21,15 +23,76 @@ export const getServerSideProps = async (ctx) => {
     });
   };
 
-  console.log(medicalQuestions());
-
   return {
     props: { auth, medicalQuestions: medicalQuestions() },
   };
 };
 
 const MedicalProfile = ({ auth, medicalQuestions }) => {
-  console.log(medicalQuestions);
+  const router = useRouter();
+  const [user, loading] = useAuthState(firebase.auth());
+  const [isLoading, setLoading] = useState("idle");
+  const [formData, setFormData] = useState({
+    weight: 0,
+    height: 0,
+    answers: {},
+  });
+
+  const handleInputChange = (e, index) => {
+    const { name } = e.target;
+
+    if (name !== "weight" && name !== "height") {
+      if (name.toString().includes("_value")) {
+        setFormData({
+          ...formData,
+          answers: {
+            ...formData.answers,
+            [name.replace("_value", "")]: {
+              ...formData.answers[name.replace("_value", "")],
+              [name.replace("_value", "_title")]:
+                e.target.attributes.ariaDetails.nodeValue,
+              [name]: Boolean(e.target.value),
+            },
+          },
+        });
+      } else {
+        setFormData({
+          ...formData,
+          answers: {
+            ...formData.answers,
+            [name.replace("_precision", "")]: {
+              ...formData.answers[name.replace("_precision", "")],
+              [name]: e.target.value,
+            },
+          },
+        });
+      }
+    } else {
+      setFormData({ ...formData, [name]: parseInt(e.target.value) });
+    }
+  };
+
+  const submitData = (e) => {
+    e.preventDefault();
+    setLoading("idle");
+
+    firebase
+      .firestore()
+      .collection("medicalAnswers")
+      .doc(user.uid)
+      .set(formData)
+      .catch((error) => {
+        console.error(error);
+      })
+      .finally(() => {
+        setLoading("done");
+        setTimeout(() => {
+          setLoading("idle");
+        }, 1000);
+        router.push(`/dashboard`);
+      });
+  };
+
   return (
     <DashboardUi
       isAdmin={auth.props.userProfile.role === "admin" ? true : false}
@@ -43,7 +106,7 @@ const MedicalProfile = ({ auth, medicalQuestions }) => {
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
           eiusmod tempor incididunt ut labore et dolore magna aliqua.
         </p>
-        <form className="w-full space-y-4">
+        <form className="w-full space-y-4" onSubmit={submitData}>
           <div className="flex gap-6">
             <div className="w-1/6 space-y-2">
               <label htmlFor="weight" className="flex justify-between">
@@ -54,6 +117,9 @@ const MedicalProfile = ({ auth, medicalQuestions }) => {
                 name="weight"
                 type="number"
                 placeholder="175 cm"
+                min={0}
+                required={true}
+                onChange={(e) => handleInputChange(e, -1)}
                 className=" w-full p-3 border outline-none rounded border-gray-400 transition hover:border-bali focus:border-shamrock"
               />
             </div>
@@ -66,6 +132,9 @@ const MedicalProfile = ({ auth, medicalQuestions }) => {
                 name="height"
                 type="number"
                 placeholder="95 kg"
+                min={0}
+                required={true}
+                onChange={(e) => handleInputChange(e, -1)}
                 className=" w-full p-3 border outline-none rounded border-gray-400 transition hover:border-bali focus:border-shamrock"
               />
             </div>
@@ -80,15 +149,23 @@ const MedicalProfile = ({ auth, medicalQuestions }) => {
                   <select
                     name={`${medicalQuestion.id}_value`}
                     className="w-1/4 p-3 rounded border outline-none border-gray-400 transition hover:border-bali focus:border-shamrock"
+                    onChange={(e) => handleInputChange(e, index)}
+                    ariaDetails={medicalQuestion.questionContent}
+                    required={true}
                   >
+                    <option selected={true} disabled={true}>
+                      Sélectionner
+                    </option>
                     <option value={true}>Oui</option>
                     <option value={false}>Non</option>
                   </select>
                   {medicalQuestion.hasPrecision === true ? (
                     <input
                       type="text"
+                      required={true}
                       name={`${medicalQuestion.id}_precision`}
                       placeholder={medicalQuestion.precision}
+                      onChange={(e) => handleInputChange(e, index)}
                       className="w-3/4 p-3 border outline-none rounded border-gray-400 transition hover:border-bali focus:border-shamrock"
                     />
                   ) : (
@@ -100,7 +177,12 @@ const MedicalProfile = ({ auth, medicalQuestions }) => {
               ""
             );
           })}
-          <DashboardButton defaultText="Sauvegarder mes informations" />
+          {!loading && (
+            <DashboardButton
+              defaultText="Sauvegarder mes informations"
+              status={isLoading}
+            />
+          )}
         </form>
       </div>
     </DashboardUi>
