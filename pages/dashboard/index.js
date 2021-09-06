@@ -4,10 +4,12 @@ import DashboardModal from "../../components/DashboardModal";
 import DashboardOperationCard from "../../components/DashboardOperationCard";
 import Link from "next/link";
 import { checkAuth } from "../../utils/ServerHelpers";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 export const getServerSideProps = checkAuth;
 
 export default function DashboardIndex({ userProfile }) {
+  const [user, loading] = useAuthState(firebase.auth());
   return (
     <div className="h-screen">
       <DashboardNavigation />
@@ -33,8 +35,8 @@ export default function DashboardIndex({ userProfile }) {
               ,
             </h1>
             <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. {}
+              Bienvenue sur votre profil, renseignez vos informations
+              personnelles.
             </p>
             {[
               userProfile.firstName,
