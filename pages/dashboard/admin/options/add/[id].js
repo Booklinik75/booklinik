@@ -68,7 +68,7 @@ const DefineOptions = ({ hotelName, id }) => {
       .doc(id)
       .set({ ...[inputList] })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
       })
       .finally(() => {
         setLoading("done");
