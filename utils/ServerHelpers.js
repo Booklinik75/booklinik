@@ -154,7 +154,11 @@ export async function getOperationCategories() {
     .firestore()
     .collection("operationCategories")
     .get();
-  return snapshot.docs.map((doc) => doc.data());
+  const categories = snapshot.docs.map((doc) => {
+    return { ...doc.data(), id: doc.id };
+  });
+
+  return categories;
 }
 
 export async function getCities() {
@@ -224,6 +228,19 @@ export async function getBackEndAsset(path) {
     });
 
   return storageRef;
+}
+
+export async function getSetting(setting) {
+  const settings = await firebase
+    .firestore()
+    .collection("settings")
+    .doc(setting)
+    .get()
+    .then((doc) => {
+      return doc.data()[0];
+    });
+
+  return settings;
 }
 
 export async function getOperationData(slug) {

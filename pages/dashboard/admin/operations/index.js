@@ -30,11 +30,18 @@ const OperationsList = ({ operationCategories }) => {
       <div className="col-span-10 space-y-3">
         <div className="flex w-full justify-between items-center">
           <h1 className="text-4xl mb-4">Opérations</h1>
-          <Link href="operations/add/" passHref={true}>
-            <button className="px-6 py-3 bg-shamrock text-white transition border rounded border-shamrock hover:bg-white hover:text-shamrock">
-              Ajouter
-            </button>
-          </Link>
+          <div className="flex gap-2">
+            <Link href="operations/edit/order/" passHref={true}>
+              <button className="px-6 py-3 bg-blue-500 text-white transition border rounded border-blue-500 hover:bg-white hover:text-blue-500">
+                Modifier l&apos;ordre
+              </button>
+            </Link>
+            <Link href="operations/add/" passHref={true}>
+              <button className="px-6 py-3 bg-shamrock text-white transition border rounded border-shamrock hover:bg-white hover:text-shamrock">
+                Ajouter
+              </button>
+            </Link>
+          </div>
         </div>
         {operationCategories.length !== 0 ? (
           operationCategories.map((operationCategory) => {
@@ -53,7 +60,21 @@ const OperationsList = ({ operationCategories }) => {
                     />
                     <div className="flex w-full items-center justify-between p-3">
                       <div>
-                        <p>{operationCategory.name}</p>
+                        <p className="flex items-center gap-2 text-black">
+                          {operationCategory.icon ? (
+                            <span>
+                              <Image
+                                height={14}
+                                width={14}
+                                src={operationCategory.icon}
+                                alt={operationCategory.name}
+                              />
+                            </span>
+                          ) : (
+                            ""
+                          )}
+                          {operationCategory.name}
+                        </p>
                         <p className="font-mono text-xs uppercase text-gray-500  ">
                           {operationCategory.slug}
                         </p>

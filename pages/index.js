@@ -15,6 +15,7 @@ import { getFrontEndAsset } from "../utils/ClientHelpers";
 import {
   getOperationCategories,
   getBackEndAsset,
+  getSetting,
 } from "../utils/ServerHelpers";
 
 // TODO: add unit test for weird characters like apostrophes and such
@@ -22,20 +23,21 @@ import {
 export const getStaticProps = async () => {
   const heroImage = await getFrontEndAsset("image-asset.jpg");
   const categories = await getOperationCategories();
+  const categoriesSettings = await getSetting("surgeryCategoriesOrdering");
 
-  const operationsImageT = await Promise.all(
-    categories.map(async (operationCategory, index, array) => {
+  await Promise.all(
+    categories.map(async (operationCategory, index) => {
       let image = await getBackEndAsset(operationCategory.photo);
       categories[index].photo = image;
     })
   );
 
   return {
-    props: { heroImage, categories }, // will be passed to the page component as props
+    props: { heroImage, categories, categoriesSettings }, // will be passed to the page component as props
   };
 };
 
-export default function Home({ heroImage, categories }) {
+export default function Home({ heroImage, categories, categoriesSettings }) {
   return (
     <div className="container mx-auto max-w-full">
       <Head>
@@ -56,13 +58,28 @@ export default function Home({ heroImage, categories }) {
         <div className="flex h-screen items-center">
           <div className="mx-4 my-12 shadow md:shadow-none xl:mx-auto md:my-32">
             <div className="bg-white bg-opacity-90 max-w-7xl p-10 md:p-20 rounded-xl">
-              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-center mb-12">
-                Estimez et réservez votre voyage médical sur mesure en quelques
-                clics.
+              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-center">
+                Booklinik, l’unique service de réservation en ligne de tourisme
+                médical
               </h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 home-hero-surgery-categories">
-                {categories.map((category) => {
-                  return <Operation key={category.slug} data={category} />;
+              <h2 className="text-xl md:text-2xl lg:text-3xl text-center mb-12">
+                Estimez et réservez votre voyage esthétique médical
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-10 gap-6 home-hero-surgery-categories">
+                {categoriesSettings.slice(0, 5).map((orderedCategory) => {
+                  return categories.map((category) => {
+                    return Object.keys(orderedCategory)[0].toString() ===
+                      category.id ? (
+                      <div
+                        className="col-span-1 lg:col-span-2"
+                        key={category.slug}
+                      >
+                        <Operation data={category} />
+                      </div>
+                    ) : (
+                      ""
+                    );
+                  });
                 })}
               </div>
             </div>
