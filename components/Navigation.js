@@ -43,7 +43,7 @@ export default function Navigation() {
                   <NavigationItem title="Opérations" target="/operations" />
                   <NavigationItem title="Cliniques" target="/cliniques" />
                   <NavigationItem title="Destinations" target="/destinations" />
-                  <NavigationItem title="Nos valeurs" target="/valeurs" />
+                  <NavigationItem title="À propos de nous" target="/valeurs" />
                   <NavigationItem
                     title="Offres Spéciales"
                     extraStyle="text-shamrock"
