@@ -8,7 +8,10 @@ import { useRouter } from "next/router";
 import DashboardInput from "../../../../../components/DashboardInput";
 import { useState } from "react";
 import DashboardButton from "../../../../../components/DashboardButton";
-import { doFileUpload } from "../../../../../utils/ClientHelpers";
+import {
+  doFileUpload,
+  getBackEndAsset,
+} from "../../../../../utils/ClientHelpers";
 import slugify from "slugify";
 
 export const getServerSideProps = async (ctx) => {
@@ -23,6 +26,7 @@ const EditOperationCategory = ({ data, id }) => {
   const [form, setFormData] = useState({ slug: data.slug, name: data.name });
   const [isLoading, setLoading] = useState("idle");
   const [image, setImage] = useState("");
+  const [icon, setIcon] = useState("");
 
   function deleteSelf() {
     firebase
@@ -61,24 +65,35 @@ const EditOperationCategory = ({ data, id }) => {
     }
   };
 
+  const handleIconChange = (e) => {
+    if (e.target.files[0]) {
+      setIcon(e.target.files[0]);
+    }
+  };
+
   async function doUpdate() {
     setLoading("loading");
     const root = "operations";
-    let docData = {};
+    let docData = { slug: form.slug, name: form.name };
 
     if (image !== "") {
       const fileName = `${form.slug}-${image.name}`;
       const imageUploadRes = await doFileUpload(root, fileName, image);
 
       docData = {
-        slug: form.slug,
-        name: form.name,
+        ...docData,
         photo: imageUploadRes.ref.fullPath,
       };
-    } else {
+    }
+
+    if (icon !== "") {
+      const iconName = `icon__${form.slug}-${icon.name}`;
+      const iconUploadRef = await doFileUpload(root, iconName, icon);
+      const iconURL = await getBackEndAsset(iconUploadRef.ref.fullPath);
+
       docData = {
-        slug: form.slug,
-        name: form.name,
+        ...docData,
+        icon: iconURL,
       };
     }
 
@@ -156,6 +171,15 @@ const EditOperationCategory = ({ data, id }) => {
               onChange={handleImageChange}
               disabled={false}
               label="Image"
+              required={false}
+              accept="image/*"
+            />
+            <DashboardInput
+              type="file"
+              name="icon"
+              onChange={handleIconChange}
+              disabled={false}
+              label="Icône"
               required={false}
               accept="image/*"
             />
