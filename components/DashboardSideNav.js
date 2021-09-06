@@ -8,8 +8,11 @@ const DashboardSideNav = ({ isAdmin }) => {
   const { signOut } = useAuth();
 
   return (
-    <div className="z-10 h-full col-span-2">
-      <div className="flex flex-col px-6 py-10 h-full justify-between max-h-screen">
+    <div className="z-10 h-full col-span-2 sticky w-full">
+      <div
+        className="flex flex-col px-6 py-10 h-full justify-between"
+        style={{ maxHeight: "95vh" }}
+      >
         <div className="space-y-5">
           <DashboardSideNavItem title="Dashboard" target="/dashboard" />
           <div className="flex flex-col">
