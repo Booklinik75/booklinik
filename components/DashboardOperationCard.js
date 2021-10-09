@@ -24,7 +24,7 @@ function currentState(currentState) {
       </div>
     );
   }
-  if (currentState === "awaitingEstimate") {
+  if (currentState === "examining") {
     return (
       <div className="flex flex-row items-center gap-1">
         <div className="text-bali">
@@ -37,11 +37,11 @@ function currentState(currentState) {
   return <div className="ml-3">Loading</div>;
 }
 
-const DashboardOperationCard = ({ state }) => {
+const DashboardOperationCard = ({ booking }) => {
   return (
     <div className="flex">
       <Image
-        src="https://via.placeholder.com/1000?text=en+attente+d&lsquo;image"
+        src={booking.hotelPhotoLink}
         width={97}
         height={80}
         className="rounded"
@@ -49,10 +49,21 @@ const DashboardOperationCard = ({ state }) => {
       />
       <div className="p-3">
         <p className="text-leading">
-          Greffe de cheveux à Istanbul - Clinique DHI
+          {booking.surgeryCategoryName} -{" "}
+          <span className="capitalize">{booking.city}</span>
         </p>
-        <p className="text-xs text-bali">Witt Istanbul Suites • 2350€</p>
-        <div>{currentState(state)}</div>
+        <p className="text-xs text-bali">
+          {booking.hotelName} •{" "}
+          {booking.hotelPrice *
+            booking.totalSelectedNights *
+            (1 +
+              booking.extraBabies +
+              booking.extraChilds +
+              booking.extraTravellers) +
+            booking.surgeryPrice}{" "}
+          €
+        </p>
+        <div>{currentState(booking.status)}</div>
       </div>
     </div>
   );
