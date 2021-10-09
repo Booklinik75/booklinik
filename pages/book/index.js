@@ -209,7 +209,7 @@ const NewBookingContainer = ({
         </div>
       )}
       {loading === false && user !== null ? (
-        <FormStepper booking={booking}>
+        <FormStepper booking={booking} user={user}>
           <SurgerySelectStep
             surgeryCategories={surgeryCategories}
             booking={booking}

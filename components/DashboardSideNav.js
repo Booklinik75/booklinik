@@ -1,11 +1,39 @@
+import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { useAuth } from "../hooks/useAuth";
 import DashboardSideNavItem from "./DashboardSideNavItem";
+import firebase from "firebase/clientApp";
 
-const DashboardSideNav = ({ isAdmin }) => {
+const DashboardSideNav = ({ userProfile, user, token }) => {
   const router = useRouter();
-
+  const isAdmin = userProfile.role === "admin" ? true : false;
   const { signOut } = useAuth();
+
+  const [bookings, setBookings] = useState([]);
+
+  useEffect(() => {
+    const asyncFunc = async () => {
+      const entries = [];
+
+      await firebase
+        .firestore()
+        .collection("bookings")
+        .where("user", "==", token.uid)
+        .get()
+        .then((item) => {
+          console.log(item);
+          return item.forEach((doc) =>
+            entries.push({
+              id: doc.id,
+            })
+          );
+        });
+
+      setBookings(entries);
+    };
+
+    asyncFunc();
+  }, []);
 
   return (
     <div className="z-10 h-full col-span-2 sticky w-full">
@@ -18,7 +46,7 @@ const DashboardSideNav = ({ isAdmin }) => {
           <div className="flex flex-col">
             <p className="text-sm text-gray-700 uppercase">Opérations</p>
             <DashboardSideNavItem
-              title="Mes opérations (1)"
+              title={`Mes opérations (${bookings.length})`}
               target="/dashboard/operations"
             />
 
