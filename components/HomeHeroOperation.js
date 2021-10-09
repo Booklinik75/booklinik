@@ -3,7 +3,6 @@ import "./HomeHeroOperation.module.css";
 import Link from "next/link";
 
 const Operation = ({ extraStyle, data }) => {
-  console.log(data);
   return (
     <div className="w-full">
       <Link scroll={false} href={`/operations/#${data.slug}`}>
