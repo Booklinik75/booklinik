@@ -42,7 +42,11 @@ export default function Home({ heroImage, categories, categoriesSettings }) {
     <div className="container mx-auto max-w-full">
       <Head>
         <title>Booklinik | Accueil</title>
-        <meta name="description" content="uwu" />
+        <meta
+          name="description"
+          content="Booklinik, l'unique service de réservation en ligne de tourisme
+                médical"
+        />
       </Head>
 
       <Navigation />
