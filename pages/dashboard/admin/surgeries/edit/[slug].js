@@ -46,25 +46,19 @@ const EditSurgery = ({
   auth,
 }) => {
   const [form, setFormData] = useState({
-    slug: surgeryData.props.data.slug,
-    name: surgeryData.props.data.name,
-    countries: surgeryData.props.data.countries,
-    category: surgeryData.props.data.category,
-    excerpt: surgeryData.props.data.excerpt,
-    startingPrice: surgeryData.props.data.startingPrice,
-    minimumNights: surgeryData.props.data.minimumNights,
+    slug: surgeryData.data.slug,
+    name: surgeryData.data.name,
+    countries: surgeryData.data.countries,
+    category: surgeryData.data.category,
+    excerpt: surgeryData.data.excerpt,
+    startingPrice: surgeryData.data.startingPrice,
+    minimumNights: surgeryData.data.minimumNights,
   });
   const [isLoading, setLoading] = useState("idle");
-  const [inputList, setInputList] = useState(
-    surgeryData.props.data.requiredPictures
-  );
-  const [selectedCities, setselectedCities] = useState(
-    surgeryData.props.data.cities
-  );
+  const [inputList, setInputList] = useState(surgeryData.data.requiredPictures);
+  const [selectedCities, setselectedCities] = useState(surgeryData.data.cities);
   const router = useRouter();
-  const [mdValue, setMdValue] = useState(
-    surgeryData.props.data.descriptionBody
-  );
+  const [mdValue, setMdValue] = useState(surgeryData.data.descriptionBody);
 
   const handleChange = (e) => {
     if (e.target.name === "name") {
@@ -117,7 +111,7 @@ const EditSurgery = ({
     firebase
       .firestore()
       .collection("surgeries")
-      .doc(surgeryData.props.id)
+      .doc(surgeryData.id)
       .delete()
       .then(() => {
         router.push("/dashboard/admin/surgeries");
@@ -146,7 +140,7 @@ const EditSurgery = ({
     firebase
       .firestore()
       .collection("surgeries")
-      .doc(surgeryData.props.id)
+      .doc(surgeryData.id)
       .set(docData)
       .then((docRef) => {})
       .catch((error) => {})
@@ -166,16 +160,16 @@ const EditSurgery = ({
           <div className="space-y-3">
             <div className="flex gap-2">
               <p className="bg-gray-200 font-mono text-red-900 text-xs p-2 rounded max-w-max">
-                {surgeryData.props.data.slug}
+                {surgeryData.data.slug}
               </p>
               <p className="bg-gray-200 font-mono text-red-900 text-xs p-2 rounded max-w-max">
-                {surgeryData.props.id}
+                {surgeryData.id}
               </p>
             </div>
             <h1 className="text-4xl gap-2">
               Édition :
               <span className="ml-2 text-shamrock">
-                {surgeryData.props.data.name}
+                {surgeryData.data.name}
               </span>
             </h1>
             <p></p>

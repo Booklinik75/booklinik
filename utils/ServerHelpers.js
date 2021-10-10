@@ -292,9 +292,7 @@ export async function getSurgeryData(slug) {
       id: snapshot.docs[0].id,
     };
 
-    return {
-      props: surgeryData,
-    };
+    return surgeryData;
   } catch (error) {
     return serverRedirect("/dashboard/admin/surgeries");
   }

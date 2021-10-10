@@ -40,11 +40,10 @@ export const getStaticPaths = async () => {
 export const getStaticProps = async (context) => {
   const { operation, category } = context.params;
   const surgeryData = await getSurgeryData(operation);
+  console.log(surgeryData);
   const categoryData = await getOperationData(category);
-  const categoryPhoto = await getBackEndAsset(categoryData.props.data.photo);
-  const relatedSurgeries = await getRelatedSurgeries(
-    surgeryData.props.data.category
-  );
+  const categoryPhoto = await getBackEndAsset(categoryData.data.photo);
+  const relatedSurgeries = await getRelatedSurgeries(surgeryData.data.category);
 
   return {
     props: {
@@ -60,17 +59,17 @@ const OperationPage = ({ surgeryData, categoryPhoto, relatedSurgeries }) => {
   return (
     <div className="space-y-6">
       <Head>
-        <title>Booklinik | {surgeryData.props.data.name}</title>
+        <title>Booklinik | {surgeryData.data.name}</title>
       </Head>
       <Navigation />
       <div className="mx-4 space-y-10">
         <div className="grid grid-cols-3 gap-6">
           <div className="col-span-3 lg:col-span-1 bg-gray-100 p-14 space-y-4">
-            <h1 className="text-5xl">{surgeryData.props.data.name}</h1>
+            <h1 className="text-5xl">{surgeryData.data.name}</h1>
             <p className="text-shamrock">
-              À partir de {surgeryData.props.data.startingPrice}€
+              À partir de {surgeryData.data.startingPrice}€
             </p>
-            <p>{surgeryData.props.data.excerpt}</p>
+            <p>{surgeryData.data.excerpt}</p>
             <p className="text-xs text-gray-600">
               Il s&lsquo;agit d&lsquo;une opération prise en charge par
               l&lsquo;assurance maladie.
@@ -94,7 +93,7 @@ const OperationPage = ({ surgeryData, categoryPhoto, relatedSurgeries }) => {
       </div>
       <div className="mx-4 xl:mx-auto max-w-7xl space-y-10">
         <div>
-          <MDEditor.Markdown source={surgeryData.props.data.descriptionBody} />
+          <MDEditor.Markdown source={surgeryData.data.descriptionBody} />
         </div>
         <div className="space-y-6">
           <h2 className="text-2xl">Opérations similaires</h2>
