@@ -11,21 +11,19 @@ import DashboardButton from "../../../../../components/DashboardButton";
 import { useRouter } from "next/router";
 
 export const getServerSideProps = async (ctx) => {
+  const auth = await checkAdmin(ctx);
+  if (auth.redirect) return auth;
+
   const { id } = ctx.query;
-  const userProfile = await checkAdmin(ctx);
   const hotelName = await getHotelNameById(id);
   const options = await gatherOptionsFromHotelId(id);
 
-  if (userProfile.redirect) {
-    return userProfile;
-  }
-
   return {
-    props: { hotelName, id, options },
+    props: { hotelName, id, options, auth },
   };
 };
 
-const EditOptions = ({ hotelName, id, options }) => {
+const EditOptions = ({ hotelName, id, options, auth }) => {
   const router = useRouter();
   const [inputList, setInputList] = useState(options);
   const [isLoading, setLoading] = useState("idle");
@@ -91,7 +89,7 @@ const EditOptions = ({ hotelName, id, options }) => {
   }
 
   return (
-    <DashboardUi isAdmin={true}>
+    <DashboardUi userProfile={auth.props.userProfile} token={auth.props.token}>
       <div className="col-span-6 space-y-3 max-h-full transition">
         <div className="flex gap-6 items-center justify-between">
           <div className="space-y-3">

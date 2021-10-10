@@ -10,7 +10,11 @@ import { useRouter } from "next/router";
 import ProfileSelect from "../../../../components/ProfileSelect";
 
 export const getServerSideProps = async (ctx) => {
-  const userProfile = await checkAdmin(ctx);
+  const auth = await checkAdmin(ctx);
+  if (auth.redirect) {
+    return userProfile;
+  }
+
   const countries = await getCountries();
   const countriesOptions = [];
 
@@ -19,11 +23,11 @@ export const getServerSideProps = async (ctx) => {
   });
 
   return {
-    props: { countriesOptions },
+    props: { countriesOptions, auth },
   };
 };
 
-const AddCity = ({ countriesOptions }) => {
+const AddCity = ({ countriesOptions, auth }) => {
   const [form, setFormData] = useState({ slug: "", name: "" });
   const [isLoading, setLoading] = useState("idle");
   const [image, setImage] = useState("");
@@ -78,7 +82,7 @@ const AddCity = ({ countriesOptions }) => {
   }
 
   return (
-    <DashboardUi isAdmin={true}>
+    <DashboardUi userProfile={auth.props.userProfile} token={auth.props.token}>
       <div className="col-span-10 space-y-4">
         <h1 className="text-4xl">Ajouter une ville</h1>
         <form

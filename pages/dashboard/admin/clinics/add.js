@@ -11,7 +11,11 @@ import slugify from "slugify";
 import ProfileSelect from "../../../../components/ProfileSelect";
 
 export const getServerSideProps = async (ctx) => {
-  const userProfile = await checkAdmin(ctx);
+  const auth = await checkAdmin(ctx);
+  if (auth.redirect) {
+    return userProfile;
+  }
+
   const { slug } = ctx.query;
   const cities = await getCities();
 
@@ -29,11 +33,12 @@ export const getServerSideProps = async (ctx) => {
   return {
     props: {
       citiesOptions: citiesOptions,
+      auth,
     },
   };
 };
 
-const AddClinic = ({ citiesOptions }) => {
+const AddClinic = ({ citiesOptions, auth }) => {
   const router = useRouter();
   const [mdValue, setMdValue] = useState("");
   const [isLoading, setLoading] = useState("idle");
@@ -103,7 +108,7 @@ const AddClinic = ({ citiesOptions }) => {
   }
 
   return (
-    <DashboardUi isAdmin={true}>
+    <DashboardUi userProfile={auth.props.userProfile} token={auth.props.token}>
       <div className="col-span-10 space-y-4">
         <h1 className="text-4xl">Ajouter une clinique</h1>
         <form

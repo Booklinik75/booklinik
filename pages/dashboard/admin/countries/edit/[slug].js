@@ -9,13 +9,23 @@ import { doFileUpload } from "../../../../../utils/ClientHelpers";
 import slugify from "slugify";
 
 export const getServerSideProps = async (ctx) => {
-  const userProfile = await checkAdmin(ctx);
+  const auth = await checkAdmin(ctx);
+  if (auth.redirect) {
+    return userProfile;
+  }
+
   const { slug } = ctx.query;
   const country = await getCountryData(slug);
-  return country;
+  return {
+    props: {
+      data: country.data,
+      id: country.id,
+      auth,
+    },
+  };
 };
 
-const EditCountry = ({ data, id }) => {
+const EditCountry = ({ data, id, auth }) => {
   const [form, setFormData] = useState({
     slug: data.slug,
     name: data.name,
@@ -159,7 +169,7 @@ const EditCountry = ({ data, id }) => {
   }
 
   return (
-    <DashboardUi isAdmin={true}>
+    <DashboardUi userProfile={auth.props.userProfile} token={auth.props.token}>
       <div className="col-span-10 space-y-4">
         <div className="flex justify-between items-center">
           <div className="space-y-3">

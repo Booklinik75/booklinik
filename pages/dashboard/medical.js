@@ -94,9 +94,7 @@ const MedicalProfile = ({ auth, medicalQuestions }) => {
   };
 
   return (
-    <DashboardUi
-      isAdmin={auth.props.userProfile.role === "admin" ? true : false}
-    >
+    <DashboardUi userProfile={auth.props.userProfile} token={auth.props.token}>
       <div className="col-span-12 space-y-3 transition">
         <h1 className="text-4xl">Informations médicales</h1>
         <p className="flex items-center gap-2">

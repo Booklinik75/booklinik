@@ -4,7 +4,7 @@ import { useAuth } from "../hooks/useAuth";
 import DashboardSideNavItem from "./DashboardSideNavItem";
 import firebase from "firebase/clientApp";
 
-const DashboardSideNav = ({ userProfile, user, token }) => {
+const DashboardSideNav = ({ userProfile, token }) => {
   const router = useRouter();
   const isAdmin = userProfile.role === "admin" ? true : false;
   const { signOut } = useAuth();
@@ -21,7 +21,6 @@ const DashboardSideNav = ({ userProfile, user, token }) => {
         .where("user", "==", token.uid)
         .get()
         .then((item) => {
-          console.log(item);
           return item.forEach((doc) =>
             entries.push({
               id: doc.id,

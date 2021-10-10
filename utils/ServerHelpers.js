@@ -129,6 +129,7 @@ export async function checkAuth(ctx) {
 
 export async function checkAdmin(ctx) {
   const adminState = await isUserAdmin(ctx);
+  const token = await getUserToken(ctx);
 
   if (!adminState) {
     return serverRedirect("/dashboard");
@@ -136,7 +137,7 @@ export async function checkAdmin(ctx) {
     const userProfile = await getUserProfile(ctx);
 
     return {
-      props: { userProfile },
+      props: { userProfile, token },
     };
   }
 }
@@ -256,9 +257,7 @@ export async function getOperationData(slug) {
       id: snapshot.docs[0].id,
     };
 
-    return {
-      props: operationData,
-    };
+    return operationData;
   } catch (error) {
     return serverRedirect("/dashboard/admin/operations");
   }
@@ -356,9 +355,7 @@ export async function getCountryData(slug) {
       id: snapshot.docs[0].id,
     };
 
-    return {
-      props: countryData,
-    };
+    return countryData;
   } catch (error) {
     return serverRedirect("/dashboard/admin/countries");
   }

@@ -14,7 +14,11 @@ import slugify from "slugify";
 import ProfileSelect from "../../../../../components/ProfileSelect";
 
 export const getServerSideProps = async (ctx) => {
-  const userProfile = await checkAdmin(ctx);
+  const auth = await checkAdmin(ctx);
+  if (auth.redirect) {
+    return userProfile;
+  }
+
   const { slug } = ctx.query;
   const hotel = await getHotelData(slug);
   const cities = await getCities();
@@ -35,11 +39,12 @@ export const getServerSideProps = async (ctx) => {
       data: hotel.props.data,
       id: hotel.props.id,
       citiesOptions: citiesOptions,
+      auth,
     },
   };
 };
 
-const EditHotel = ({ data, id, citiesOptions }) => {
+const EditHotel = ({ data, id, citiesOptions, auth }) => {
   const router = useRouter();
   const [isLoading, setLoading] = useState("idle");
 
@@ -129,7 +134,7 @@ const EditHotel = ({ data, id, citiesOptions }) => {
   }
 
   return (
-    <DashboardUi isAdmin={true}>
+    <DashboardUi userProfile={auth.props.userProfile} token={auth.props.token}>
       <div className="col-span-10 space-y-4">
         <div className="flex justify-between items-center gap-6">
           <div className="space-y-3">

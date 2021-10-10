@@ -8,18 +8,20 @@ import Link from "next/link";
 import Image from "next/image";
 
 export const getServerSideProps = async (ctx) => {
-  const userProfile = await checkAdmin(ctx);
+  const auth = await checkAdmin(ctx);
+  if (auth.redirect) return auth;
+
   const categories = await getOperationCategories();
   const surgeries = await getSurgeries();
 
   return {
-    props: { userProfile, categories, surgeries },
+    props: { categories, surgeries, auth },
   };
 };
 
-const SurgeriesList = ({ categories, surgeries }) => {
+const SurgeriesList = ({ categories, surgeries, auth }) => {
   return (
-    <DashboardUi isAdmin={true}>
+    <DashboardUi userProfile={auth.props.userProfile} token={auth.props.token}>
       <div className="col-span-10 space-y-3">
         <div className="flex w-full justify-between items-center">
           <h1 className="text-4xl mb-4">Liste d&apos;opérations</h1>

@@ -80,7 +80,7 @@ const AddOperation = ({ userProfile, token }) => {
   }
 
   return (
-    <DashboardUi isAdmin={true}>
+    <DashboardUi userProfile={userProfile} token={token}>
       <div className="col-span-10 space-y-4">
         <h1 className="text-4xl">Ajouter une catégorie d&apos;opération</h1>
         <form

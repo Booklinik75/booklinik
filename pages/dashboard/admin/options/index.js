@@ -9,18 +9,20 @@ import { AiFillQuestionCircle } from "react-icons/ai";
 import slugify from "slugify";
 
 export const getServerSideProps = async (ctx) => {
-  const userProfile = await checkAuth(ctx);
+  const auth = await checkAuth(ctx);
+  if (auth.redirect) return auth;
+
   const hotels = await getHotelsWithIds();
   const options = await getOptions();
 
   return {
-    props: { userProfile, hotels, options },
+    props: { auth, hotels, options },
   };
 };
 
-const OptionsList = ({ hotels, options }) => {
+const OptionsList = ({ auth, hotels, options }) => {
   return (
-    <DashboardUi isAdmin={true}>
+    <DashboardUi userProfile={auth.props.userProfile} token={auth.props.token}>
       <div className="col-span-10 space-y-6">
         <div className="flex w-full justify-between items-center">
           <h1 className="text-4xl mb-4">Options</h1>

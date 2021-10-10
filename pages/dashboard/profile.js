@@ -39,7 +39,7 @@ const ProfilePage = ({ userProfile, token }) => {
   }
 
   return (
-    <DashboardUi isAdmin={userProfile.role === "admin" ? true : false}>
+    <DashboardUi userProfile={userProfile} token={token}>
       <div className="col-span-10 space-y-4">
         <h1 className="text-4xl">Informations personnelles</h1>
         <p>Renseignez vos informations personnelles.</p>
