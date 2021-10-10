@@ -15,9 +15,10 @@ import ProfileSelect from "../../../../../components/ProfileSelect";
 import MDEditor from "@uiw/react-md-editor";
 
 export const getServerSideProps = async (ctx) => {
-  const { slug } = ctx.query;
+  const auth = await checkAdmin(ctx);
+  if (auth.redirect) return auth;
 
-  const userProfile = await checkAdmin(ctx);
+  const { slug } = ctx.query;
   const cities = await getCities();
   const categories = await getOperationCategories();
   const surgeryData = await getSurgeryData(slug);
@@ -34,11 +35,16 @@ export const getServerSideProps = async (ctx) => {
   });
 
   return {
-    props: { citiesOptions, categoriesOptions, surgeryData },
+    props: { citiesOptions, categoriesOptions, surgeryData, auth },
   };
 };
 
-const EditSurgery = ({ citiesOptions, categoriesOptions, surgeryData }) => {
+const EditSurgery = ({
+  citiesOptions,
+  categoriesOptions,
+  surgeryData,
+  auth,
+}) => {
   const [form, setFormData] = useState({
     slug: surgeryData.props.data.slug,
     name: surgeryData.props.data.name,
@@ -154,7 +160,7 @@ const EditSurgery = ({ citiesOptions, categoriesOptions, surgeryData }) => {
   }
 
   return (
-    <DashboardUi isAdmin={true}>
+    <DashboardUi userProfile={auth.props.userProfile} token={auth.props.token}>
       <div className="col-span-10 space-y-4">
         <div className="flex justify-between items-center">
           <div className="space-y-3">

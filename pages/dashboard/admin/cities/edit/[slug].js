@@ -14,7 +14,11 @@ import { useRouter } from "next/router";
 import ProfileSelect from "../../../../../components/ProfileSelect";
 
 export const getServerSideProps = async (ctx) => {
-  const userProfile = await checkAdmin(ctx);
+  const auth = await checkAdmin(ctx);
+  if (auth.redirect) {
+    return userProfile;
+  }
+
   const { slug } = ctx.query;
   const country = await getCityData(slug);
   const countries = await getCountries();
@@ -29,11 +33,13 @@ export const getServerSideProps = async (ctx) => {
       data: country.props.data,
       id: country.props.id,
       countriesOptions: countriesOptions,
+      userProfile: auth.props.userProfile,
+      token: auth.props.token,
     },
   };
 };
 
-const AddCity = ({ countriesOptions, data, id }) => {
+const AddCity = ({ countriesOptions, data, id, token, userProfile }) => {
   const [form, setFormData] = useState({
     slug: data.slug,
     name: data.name,
@@ -114,7 +120,7 @@ const AddCity = ({ countriesOptions, data, id }) => {
   }
 
   return (
-    <DashboardUi isAdmin={true}>
+    <DashboardUi userProfile={userProfile} token={token}>
       <div className="col-span-10 space-y-4">
         <div className="flex justify-between items-center">
           <div className="space-y-3">

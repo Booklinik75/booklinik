@@ -9,7 +9,9 @@ import Link from "next/link";
 import Image from "next/image";
 
 export const getServerSideProps = async (ctx) => {
-  const userProfile = await checkAdmin(ctx);
+  const auth = await checkAdmin(ctx);
+  if (auth.redirect) return auth;
+
   const hotels = await getHotels();
   const rooms = await getRooms();
 
@@ -20,13 +22,13 @@ export const getServerSideProps = async (ctx) => {
     })
   );
   return {
-    props: { userProfile, hotels, rooms },
+    props: { auth, hotels, rooms },
   };
 };
 
-const RoomsList = ({ hotels, rooms }) => {
+const RoomsList = ({ auth, hotels, rooms }) => {
   return (
-    <DashboardUi isAdmin={true}>
+    <DashboardUi userProfile={auth.props.userProfile} token={auth.props.token}>
       <div className="col-span-10 space-y-3">
         <div className="flex w-full justify-between items-center">
           <h1 className="text-4xl mb-4">Chambres</h1>

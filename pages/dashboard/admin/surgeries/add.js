@@ -15,7 +15,9 @@ import ProfileSelect from "../../../../components/ProfileSelect";
 import MDEditor from "@uiw/react-md-editor";
 
 export const getServerSideProps = async (ctx) => {
-  const userProfile = await checkAdmin(ctx);
+  const auth = await checkAdmin(ctx);
+  if (auth.redirect) return auth;
+
   const cities = await getCities();
   const categories = await getOperationCategories();
 
@@ -31,11 +33,11 @@ export const getServerSideProps = async (ctx) => {
   });
 
   return {
-    props: { citiesOptions, categoriesOptions },
+    props: { citiesOptions, categoriesOptions, auth },
   };
 };
 
-const AddSurgery = ({ citiesOptions, categoriesOptions }) => {
+const AddSurgery = ({ citiesOptions, categoriesOptions, auth }) => {
   const [form, setFormData] = useState({
     slug: "",
     name: "",
@@ -130,7 +132,7 @@ const AddSurgery = ({ citiesOptions, categoriesOptions }) => {
   }
 
   return (
-    <DashboardUi isAdmin={true}>
+    <DashboardUi userProfile={auth.props.userProfile} token={auth.props.token}>
       <div className="col-span-10 space-y-4">
         <h1 className="text-4xl">Ajouter une opération</h1>
         <form

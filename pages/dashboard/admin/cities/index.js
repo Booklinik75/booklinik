@@ -9,7 +9,11 @@ import Link from "next/link";
 import { BsChevronRight } from "react-icons/bs";
 
 export const getServerSideProps = async (ctx) => {
-  const userProfile = await checkAdmin(ctx);
+  const auth = await checkAdmin(ctx);
+  if (auth.redirect) {
+    return userProfile;
+  }
+
   const cities = await getCities();
 
   const citiesT = await Promise.all(
@@ -20,13 +24,13 @@ export const getServerSideProps = async (ctx) => {
   );
 
   return {
-    props: { userProfile, cities },
+    props: { auth, cities },
   };
 };
 
-const CitiesList = ({ cities }) => {
+const CitiesList = ({ auth, cities }) => {
   return (
-    <DashboardUi isAdmin={true}>
+    <DashboardUi userProfile={auth.props.userProfile} token={auth.props.token}>
       <div className="col-span-10 space-y-3">
         <div className="flex w-full justify-between items-center">
           <h1 className="text-4xl mb-4">Villes</h1>

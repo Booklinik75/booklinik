@@ -5,15 +5,16 @@ import firebase from "../../../firebase/clientApp";
 import DashboardButton from "../../../components/DashboardButton";
 
 export const getServerSideProps = async (ctx) => {
-  const userProfile = await checkAdmin(ctx);
+  const auth = await checkAdmin(ctx);
+  if (auth.redirect) return auth;
   const medicalQuestions = await getMedicalQuestions();
 
   return {
-    props: { userProfile, medicalQuestions },
+    props: { auth, medicalQuestions },
   };
 };
 
-const MedicalQuestionsEditor = ({ medicalQuestions }) => {
+const MedicalQuestionsEditor = ({ auth, medicalQuestions }) => {
   const [inputList, setInputList] = useState(medicalQuestions);
   const [isLoading, setLoading] = useState("idle");
 
@@ -75,7 +76,7 @@ const MedicalQuestionsEditor = ({ medicalQuestions }) => {
   }
 
   return (
-    <DashboardUi isAdmin={true}>
+    <DashboardUi userProfile={auth.props.userProfile} token={auth.props.token}>
       <div className="col-span-12 space-y-3 transition">
         <h1 className="text-4xl">Édition : questions médicales</h1>
         <form

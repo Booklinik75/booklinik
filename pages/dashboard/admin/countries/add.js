@@ -10,7 +10,7 @@ import { useRouter } from "next/router";
 
 export const getServerSideProps = checkAdmin;
 
-const AddCountry = () => {
+const AddCountry = ({ userProfile, token }) => {
   const [form, setFormData] = useState({
     slug: "",
     name: "",
@@ -122,7 +122,7 @@ const AddCountry = () => {
   }
 
   return (
-    <DashboardUi isAdmin={true}>
+    <DashboardUi userProfile={userProfile} token={token}>
       <div className="col-span-10 space-y-4">
         <h1 className="text-4xl">Ajouter un pays</h1>
         <form

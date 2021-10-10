@@ -15,7 +15,11 @@ import slugify from "slugify";
 import ProfileSelect from "../../../../../components/ProfileSelect";
 
 export const getServerSideProps = async (ctx) => {
-  const userProfile = await checkAdmin(ctx);
+  const auth = await checkAdmin(ctx);
+  if (auth.redirect) {
+    return userProfile;
+  }
+
   const { slug } = ctx.query;
   const clinic = await getClinicData(slug);
   const cities = await getCities();
@@ -36,11 +40,12 @@ export const getServerSideProps = async (ctx) => {
       citiesOptions: citiesOptions,
       data: clinic.props.data,
       id: clinic.props.id,
+      auth,
     },
   };
 };
 
-const UpdateClinic = ({ citiesOptions, data, id }) => {
+const UpdateClinic = ({ citiesOptions, data, id, auth }) => {
   const router = useRouter();
   const [mdValue, setMdValue] = useState(data.descriptionBody);
   const [isLoading, setLoading] = useState("idle");
@@ -122,7 +127,7 @@ const UpdateClinic = ({ citiesOptions, data, id }) => {
   }
 
   return (
-    <DashboardUi isAdmin={true}>
+    <DashboardUi userProfile={auth.props.userProfile} token={auth.props.token}>
       <div className="col-span-10 space-y-4">
         <div className="space-y-3">
           <div className="flex gap-2">

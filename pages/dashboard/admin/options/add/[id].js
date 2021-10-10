@@ -10,20 +10,20 @@ import DashboardButton from "../../../../../components/DashboardButton";
 import { useRouter } from "next/router";
 
 export const getServerSideProps = async (ctx) => {
-  const { id } = ctx.query;
-  const userProfile = await checkAdmin(ctx);
-  const hotelName = await getHotelNameById(id);
-
-  if (userProfile.redirect) {
-    return userProfile;
+  const auth = await checkAdmin(ctx);
+  if (auth.redirect) {
+    return auth;
   }
 
+  const { id } = ctx.query;
+  const hotelName = await getHotelNameById(id);
+
   return {
-    props: { hotelName, id },
+    props: { auth, hotelName, id },
   };
 };
 
-const DefineOptions = ({ hotelName, id }) => {
+const DefineOptions = ({ auth, hotelName, id }) => {
   const router = useRouter();
   const [inputList, setInputList] = useState([
     {
@@ -80,7 +80,7 @@ const DefineOptions = ({ hotelName, id }) => {
   }
 
   return (
-    <DashboardUi isAdmin={true}>
+    <DashboardUi userProfile={auth.props.userProfile} token={auth.props.token}>
       <div className="col-span-6 space-y-3 max-h-full transition">
         <h1 className="text-4xl">
           Options : <span className="text-shamrock">{hotelName}</span>

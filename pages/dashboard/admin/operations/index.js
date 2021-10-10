@@ -9,7 +9,11 @@ import Link from "next/link";
 import { BsChevronRight } from "react-icons/bs";
 
 export const getServerSideProps = async (ctx) => {
-  const userProfile = await checkAdmin(ctx);
+  const auth = await checkAdmin(ctx);
+  if (auth.redirect) {
+    return auth;
+  }
+
   const operationCategories = await getOperationCategories();
 
   const operationsImageT = await Promise.all(
@@ -20,13 +24,13 @@ export const getServerSideProps = async (ctx) => {
   );
 
   return {
-    props: { userProfile, operationCategories },
+    props: { auth, operationCategories },
   };
 };
 
-const OperationsList = ({ operationCategories }) => {
+const OperationsList = ({ auth, operationCategories }) => {
   return (
-    <DashboardUi isAdmin={true}>
+    <DashboardUi userProfile={auth.props.userProfile} token={auth.props.token}>
       <div className="col-span-10 space-y-3">
         <div className="flex w-full justify-between items-center">
           <h1 className="text-4xl mb-4">Opérations</h1>

@@ -10,9 +10,9 @@ import firebase from "../../../../../firebase/clientApp";
 
 export const getServerSideProps = async (ctx) => {
   // check admin
-  const userProfile = await checkAdmin(ctx);
-  if (userProfile.redirect) {
-    return userProfile;
+  const auth = await checkAdmin(ctx);
+  if (auth.redirect) {
+    return auth;
   }
 
   // get surgery categories
@@ -22,11 +22,11 @@ export const getServerSideProps = async (ctx) => {
   });
 
   return {
-    props: { categoriesOrder },
+    props: { categoriesOrder, auth },
   };
 };
 
-const OrderSurgeryCategories = ({ categoriesOrder }) => {
+const OrderSurgeryCategories = ({ auth, categoriesOrder }) => {
   const [newCategories, setNewCategories] = useState(categoriesOrder);
   const [saving, setSaving] = useState(false);
 
@@ -66,7 +66,7 @@ const OrderSurgeryCategories = ({ categoriesOrder }) => {
   }, [newCategories]);
 
   return (
-    <DashboardUi isAdmin={true}>
+    <DashboardUi userProfile={auth.props.userProfile} token={auth.props.token}>
       <div className="col-span-10 space-y-4">
         <h1 className="text-4xl gap-4 flex items-baseline">
           Ordering : Catégories d&apos;opérations

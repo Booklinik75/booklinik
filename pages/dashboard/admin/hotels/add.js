@@ -10,7 +10,11 @@ import slugify from "slugify";
 import ProfileSelect from "../../../../components/ProfileSelect";
 
 export const getServerSideProps = async (ctx) => {
-  const userProfile = await checkAdmin(ctx);
+  const auth = await checkAdmin(ctx);
+  if (auth.redirect) {
+    return userProfile;
+  }
+
   const { slug } = ctx.query;
   const cities = await getCities();
 
@@ -28,11 +32,12 @@ export const getServerSideProps = async (ctx) => {
   return {
     props: {
       citiesOptions: citiesOptions,
+      auth,
     },
   };
 };
 
-const AddHotel = ({ citiesOptions }) => {
+const AddHotel = ({ auth, citiesOptions }) => {
   const router = useRouter();
   const [isLoading, setLoading] = useState("idle");
 
@@ -102,7 +107,7 @@ const AddHotel = ({ citiesOptions }) => {
   }
 
   return (
-    <DashboardUi isAdmin={true}>
+    <DashboardUi userProfile={auth.props.userProfile} token={auth.props.token}>
       <div className="col-span-10 space-y-4">
         <h1 className="text-4xl">Ajouter un hotel</h1>
         <form
