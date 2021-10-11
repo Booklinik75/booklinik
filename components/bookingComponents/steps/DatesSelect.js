@@ -1,5 +1,6 @@
 import { AiFillInfoCircle } from "react-icons/ai";
 import Calendar from "react-calendar";
+import { useState } from "react";
 
 const DatesSelectStep = ({
   onCalendarStartDateChange,
@@ -7,6 +8,8 @@ const DatesSelectStep = ({
   booking,
   addDays,
 }) => {
+  const [hideReturnCalendar, setHideReturnCalendar] = useState(true);
+
   return (
     <div className="space-y-6">
       <h1 className="text-2xl mb-6">
@@ -37,29 +40,42 @@ const DatesSelectStep = ({
           <div className="w-full lg:w-1/2 xl:w-1/3 space-y-3">
             <h2 className="text-xs uppercase text-gray-500">Date de départ</h2>
             <Calendar
-              onChange={onCalendarStartDateChange}
+              onChange={(e) => {
+                onCalendarStartDateChange(e);
+                setHideReturnCalendar(false);
+              }}
               value={booking.startDate}
               locale="fr"
-              minDate={booking.startDate}
+              minDate={new Date()}
+              defaultValue={new Date()}
             />
           </div>
           <div className="w-full lg:w-1/2 xl:w-1/3 space-y-3">
             <h2 className="text-xs uppercase text-gray-500">Date de retour</h2>
-            <Calendar
-              onChange={(e) => {
-                let timeDiff = Math.abs(
-                  e.getTime() - booking.startDate.getTime()
-                );
-                let numberOfNights = Math.ceil(timeDiff / (1000 * 3600 * 24));
-                onCalendarEndDateChange(e, numberOfNights);
-              }}
-              value={booking.endDate}
-              locale="fr"
-              minDate={addDays(
-                booking.startDate,
-                parseInt(booking.minimumNights)
+            <div className="relative">
+              {hideReturnCalendar && (
+                <div className="w-full h-full absolute bg-white bg-opacity-70 z-20 flex items-center justify-center">
+                  <p className="bg-shamrock px-4 py-2.5 rounded shadow text-white">
+                    Sélectionnez une date de départ
+                  </p>
+                </div>
               )}
-            />
+              <Calendar
+                onChange={(e) => {
+                  let timeDiff = Math.abs(
+                    e.getTime() - booking.startDate.getTime()
+                  );
+                  let numberOfNights = Math.ceil(timeDiff / (1000 * 3600 * 24));
+                  onCalendarEndDateChange(e, numberOfNights);
+                }}
+                value={booking.endDate}
+                locale="fr"
+                minDate={addDays(
+                  booking.startDate,
+                  parseInt(booking.minimumNights)
+                )}
+              />
+            </div>
           </div>
         </div>
       </div>
