@@ -3,6 +3,7 @@ import Navigation from "../../components/Navigation";
 import Footer from "../../components/Footer";
 import Head from "next/head";
 import OperationCategory from "../../components/OperationCategory";
+import Link from "next/link";
 import ContactHelper from "../../components/ContactHelper";
 import {
   getOperationCategories,
@@ -45,6 +46,29 @@ const OperationsList = ({ surgeries, operationCategories }) => {
         overlay={true}
         title="Les opérations"
       />
+
+      <div className="hidden lg:flex w-full bg-shamrock gap-2 justify-center p-5 text-white">
+        {operationCategories
+          .slice(0, operationCategories.length - 2)
+          .map((category) => (
+            <>
+              <Link key={category.slug} href={`#${category.slug}`}>
+                <a className="text-white text-xl text-center hover:underline">
+                  {category.name}
+                </a>
+              </Link>
+              —
+            </>
+          ))}
+        <Link
+          key={operationCategories[operationCategories.length - 1].slug}
+          href={`#${operationCategories[operationCategories.length - 1].slug}`}
+        >
+          <a className="text-white text-xl text-center hover:underline">
+            {operationCategories[operationCategories.length - 1].name}
+          </a>
+        </Link>
+      </div>
 
       {operationCategories.map((category) => (
         <OperationCategory
