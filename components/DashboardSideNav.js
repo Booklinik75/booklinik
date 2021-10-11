@@ -48,11 +48,6 @@ const DashboardSideNav = ({ userProfile, token }) => {
               title={`Mes opérations (${bookings.length})`}
               target="/dashboard/operations"
             />
-
-            <DashboardSideNavItem
-              title="Sauvegardés (2)"
-              target="/dashboard/saved"
-            />
           </div>
         </div>
         <div className="space-y-5">
