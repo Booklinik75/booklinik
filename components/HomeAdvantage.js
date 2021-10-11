@@ -1,12 +1,15 @@
-import { HiCheck } from "react-icons/hi";
+import Image from "next/image";
 
 const Advantage = ({ title, body }) => {
   return (
     <div className="space-y-4">
-      <div className="border-2 border-black p-3 rounded-full w-min">
-        <HiCheck size={24} />
-      </div>
-      <h4 className="text-2xl">{title}</h4>
+      <Image
+        src="/apple-touch-icon.png"
+        width={48}
+        height={48}
+        alt="Booklinik"
+      />
+      <h4 className="text-3xl">{title}</h4>
       <p className="text-sm leading-loose text-justify">{body}</p>
     </div>
   );
