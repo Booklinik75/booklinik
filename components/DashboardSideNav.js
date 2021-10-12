@@ -110,7 +110,6 @@ const DashboardSideNav = ({ userProfile, token }) => {
             <DashboardSideNavItem
               title="Mot de passe et email"
               target="/dashboard/security"
-              disabled={true}
             />
             <DashboardSideNavItem
               title="Code de parrainage"
