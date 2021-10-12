@@ -13,6 +13,7 @@ import {
   getBackEndAsset,
 } from "../../../../../utils/ClientHelpers";
 import slugify from "slugify";
+import Image from "next/image";
 
 export const getServerSideProps = async (ctx) => {
   const auth = await checkAdmin(ctx);
@@ -138,8 +139,19 @@ const EditOperationCategory = ({ auth, data, id }) => {
                 {id}
               </p>
             </div>
-            <h1 className="text-4xl">
-              Édition :<span className="text-shamrock"> {data.name}</span>
+            <h1 className="text-4xl flex gap-2 items-center">
+              Édition :
+              {data.icon && (
+                <span>
+                  <Image
+                    height={20}
+                    width={20}
+                    src={data.icon}
+                    alt={data.name}
+                  />
+                </span>
+              )}
+              <span className="text-shamrock">{` ${data.name}`}</span>
             </h1>
             <p></p>
           </div>
