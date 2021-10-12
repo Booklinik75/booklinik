@@ -53,12 +53,12 @@ const SurgeriesList = ({ categories, surgeries, auth }) => {
                                 className="rounded shadow bg-gray-50 transition hover:bg-gray-100 hover:shadow-lg hover:cursor-pointer"
                               >
                                 <div className="p-3 space-y-2">
-                                  <div className="flex flex-row items-center justify-between">
+                                  <div className="flex flex-row items-start justify-between gap-4">
                                     <p className="bg-gray-200 font-mono text-red-900 text-xs p-2 rounded max-w-max">
                                       {surgery.slug}
                                     </p>
                                     <p className="bg-bali text-white px-2 py-1 rounded">
-                                      {surgery.startingPrice} €
+                                      {surgery.startingPrice}&nbsp;€
                                     </p>
                                   </div>
                                   <div className="gap-1">
