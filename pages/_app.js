@@ -1,9 +1,12 @@
 import "../styles/globals.css";
 import { AuthProvider } from "../utils/UserContext";
+import { ToastContainer } from "react-toastify";
 import Head from "next/head";
 import "@uiw/react-md-editor/dist/markdown-editor.css";
 import "@uiw/react-markdown-preview/dist/markdown.css";
 import "../styles/calendar.css";
+
+import "react-toastify/dist/ReactToastify.css";
 
 function BooklinikClient({ Component, pageProps }) {
   return (
@@ -32,6 +35,7 @@ function BooklinikClient({ Component, pageProps }) {
         <meta name="theme-color" content="#33c783" />
       </Head>
       <Component {...pageProps} />
+      <ToastContainer />
     </AuthProvider>
   );
 }
