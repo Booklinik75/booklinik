@@ -40,7 +40,6 @@ export const getStaticPaths = async () => {
 export const getStaticProps = async (context) => {
   const { operation, category } = context.params;
   const surgeryData = await getSurgeryData(operation);
-  console.log(surgeryData);
   const categoryData = await getOperationData(category);
   const categoryPhoto = await getBackEndAsset(categoryData.data.photo);
   const relatedSurgeries = await getRelatedSurgeries(surgeryData.data.category);

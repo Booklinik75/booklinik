@@ -9,8 +9,6 @@ export const getServerSideProps = checkAuth;
 const DashboardOperations = ({ userProfile, token }) => {
   const [bookings, setBookings] = useState([]);
 
-  console.log(userProfile);
-
   useEffect(() => {
     const asyncFunc = async () => {
       const entries = [];
@@ -21,7 +19,6 @@ const DashboardOperations = ({ userProfile, token }) => {
         .where("user", "==", token.uid)
         .get()
         .then((item) => {
-          console.log(item);
           return item.forEach((doc) =>
             entries.push({
               id: doc.id,
@@ -35,8 +32,6 @@ const DashboardOperations = ({ userProfile, token }) => {
 
     asyncFunc();
   }, []);
-
-  console.log(bookings);
 
   return (
     <DashboardUi userProfile={userProfile} token={token}>
