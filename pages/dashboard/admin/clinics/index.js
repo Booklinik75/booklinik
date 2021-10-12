@@ -35,7 +35,7 @@ const RoomsList = ({ auth, cities, clinics }) => {
       <div className="col-span-10 space-y-3">
         <div className="flex w-full justify-between items-center">
           <h1 className="text-4xl mb-4">Cliniques</h1>
-          <Link href="rooms/add/" passHref={true}>
+          <Link href="clinics/add/" passHref={true}>
             <button className="px-6 py-3 bg-shamrock text-white transition border rounded border-shamrock hover:bg-white hover:text-shamrock">
               Ajouter
             </button>
