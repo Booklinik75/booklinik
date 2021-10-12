@@ -26,7 +26,6 @@ export default function DashboardIndex({ userProfile, token }) {
         .where("user", "==", token.uid)
         .get()
         .then((item) => {
-          console.log(item);
           return item.forEach((doc) =>
             entries.push({
               id: doc.id,
@@ -105,7 +104,6 @@ export default function DashboardIndex({ userProfile, token }) {
 
                   {bookings !== [] &&
                     bookings.map((booking) => {
-                      console.log(booking);
                       return (
                         <DashboardOperationCard
                           key={booking.id}
