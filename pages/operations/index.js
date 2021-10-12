@@ -5,6 +5,7 @@ import Head from "next/head";
 import OperationCategory from "../../components/OperationCategory";
 import Link from "next/link";
 import ContactHelper from "../../components/ContactHelper";
+import firebase from "firebase/clientApp";
 import {
   getOperationCategories,
   getSurgeries,
@@ -15,22 +16,43 @@ export const getStaticProps = async (context) => {
   const operationCategories = await getOperationCategories();
   const surgeries = await getSurgeries();
 
-  const operationsImageT = await Promise.all(
+  await Promise.all(
     operationCategories.map(async (operationCategory, index, array) => {
       let image = await getBackEndAsset(operationCategory.photo);
       operationCategories[index].photo = image;
     })
   );
 
+  const categoriesOrder = await firebase
+    .firestore()
+    .collection("settings")
+    .doc("surgeryCategoriesOrdering")
+    .get();
+
+  const orderedSurgeryCategories = categoriesOrder
+    .data()[0]
+    .map(
+      (category) =>
+        operationCategories.filter(
+          (obj) => obj.id === Object.keys(category)[0]
+        )[0]
+    );
+
+  console.log(orderedSurgeryCategories);
+
   return {
     props: {
       surgeries,
-      operationCategories,
+      operationCategories: orderedSurgeryCategories,
     },
   };
 };
 
-const OperationsList = ({ surgeries, operationCategories }) => {
+const OperationsList = ({
+  surgeries,
+  operationCategories,
+  categoriesOrder,
+}) => {
   const fileName =
     "https://firebasestorage.googleapis.com/v0/b/booklinik.appspot.com/o/frontendassets%2Ff3f4e34aca2cab87619cb04c6610b4c7%20copie.jpg?alt=media&token=c402bd27-0ea9-411a-9960-78ce51c29558";
   return (
@@ -51,14 +73,14 @@ const OperationsList = ({ surgeries, operationCategories }) => {
         {operationCategories
           .slice(0, operationCategories.length - 2)
           .map((category) => (
-            <>
-              <Link key={category.slug} href={`#${category.slug}`}>
+            <div key={`${category.slug}-nav`}>
+              <Link href={`#${category.slug}`}>
                 <a className="text-white text-xl text-center hover:underline">
-                  {category.name}
+                  {`${category.name} `}
                 </a>
               </Link>
               —
-            </>
+            </div>
           ))}
         <Link
           key={operationCategories[operationCategories.length - 1].slug}
@@ -71,11 +93,9 @@ const OperationsList = ({ surgeries, operationCategories }) => {
       </div>
 
       {operationCategories.map((category) => (
-        <OperationCategory
-          operation={category}
-          surgeries={surgeries}
-          key={category.slug}
-        />
+        <div key={category.slug}>
+          <OperationCategory operation={category} surgeries={surgeries} />
+        </div>
       ))}
 
       <ContactHelper />
