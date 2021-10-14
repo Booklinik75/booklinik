@@ -118,7 +118,7 @@ const Login = () => {
                 </div>
                 <div>
                   <DashboardButton
-                    defaultText="Se connecter"
+                    defaultText="Se&nbsp;connecter"
                     status={isLoading}
                   ></DashboardButton>
                 </div>
