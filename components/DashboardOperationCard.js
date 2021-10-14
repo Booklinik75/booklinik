@@ -5,7 +5,7 @@ import { IoMdAddCircle } from "react-icons/io";
 import { AiFillInfoCircle } from "react-icons/ai";
 import Link from "next/link";
 
-function currentState(currentState) {
+function currentState(currentState, id) {
   if (currentState === "awaitingDocuments") {
     return (
       <div className="flex flex-row items-center gap-1">
@@ -13,7 +13,7 @@ function currentState(currentState) {
           <AiFillInfoCircle />
         </div>
         <p>Des documents sont manquants</p>
-        <Link href="#">
+        <Link href={`dashboard/operations/${id}`}>
           <a>
             <div className="text-green-500 flex flex-row ml-4 items-center gap-1">
               <IoMdAddCircle></IoMdAddCircle>
@@ -63,7 +63,7 @@ const DashboardOperationCard = ({ booking }) => {
             booking.surgeryPrice}{" "}
           €
         </p>
-        <div>{currentState(booking.status)}</div>
+        <div>{currentState(booking.status, booking.id)}</div>
       </div>
     </div>
   );
