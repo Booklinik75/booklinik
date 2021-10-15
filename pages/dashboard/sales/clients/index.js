@@ -49,13 +49,13 @@ export const getServerSideProps = async (ctx) => {
   };
 };
 
-const ClientsList = ({ auth, users }) => {
+const CustomersList = ({ auth, users }) => {
   console.log(users);
 
   const columns = useMemo(
     () => [
       { Header: "ID", accessor: "uid" },
-      { Header: "Nom et prénom ", accessor: "name" },
+      { Header: "Nom et prénom", accessor: "name" },
       { Header: "E-mail", accessor: "email" },
       { Header: "Date d'inscription", accessor: "creationTime" },
     ],
@@ -139,4 +139,4 @@ const ClientsList = ({ auth, users }) => {
   );
 };
 
-export default ClientsList;
+export default CustomersList;
