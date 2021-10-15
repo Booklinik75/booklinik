@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-key */
 import { useMemo } from "react";
 import DashboardUi from "components/DashboardUi";
 import { checkAuth } from "utils/ServerHelpers";
@@ -68,7 +67,7 @@ export const getServerSideProps = async (ctx) => {
   };
 };
 
-const ClientsList = ({ auth, user, userBookings }) => {
+const Customer = ({ auth, user, userBookings }) => {
   return (
     <DashboardUi userProfile={auth.props.userProfile} token={auth.props.token}>
       <div className="col-span-6">
@@ -159,14 +158,13 @@ const ClientsList = ({ auth, user, userBookings }) => {
               {userBookings.length > 0 ? (
                 userBookings.map((booking) => {
                   return (
-                    <Link href={`/dashboard/sales/reservations/${booking.id}`}>
+                    <Link
+                      key={booking.id}
+                      href={`/dashboard/sales/reservations/${booking.id}`}
+                    >
                       <a className="hover:bg-gray-100 rounded">
                         <div className="col-span-1">
-                          <DashboardOperationCard
-                            key={booking.id}
-                            booking={booking}
-                            noActions
-                          />
+                          <DashboardOperationCard booking={booking} noActions />
                         </div>
                       </a>
                     </Link>
@@ -183,4 +181,4 @@ const ClientsList = ({ auth, user, userBookings }) => {
   );
 };
 
-export default ClientsList;
+export default Customer;
