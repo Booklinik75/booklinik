@@ -9,6 +9,8 @@ import moment from "moment";
 import "moment/locale/fr";
 
 import "react-toastify/dist/ReactToastify.css";
+import "react-dropdown/style.css";
+
 moment.locale("fr");
 
 function BooklinikClient({ Component, pageProps }) {
