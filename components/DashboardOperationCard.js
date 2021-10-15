@@ -37,7 +37,7 @@ function currentState(currentState, id) {
   return <div className="ml-3">Loading</div>;
 }
 
-const DashboardOperationCard = ({ booking }) => {
+const DashboardOperationCard = ({ booking, noActions }) => {
   return (
     <div className="flex">
       <Image
@@ -63,7 +63,7 @@ const DashboardOperationCard = ({ booking }) => {
             booking.surgeryPrice}{" "}
           €
         </p>
-        <div>{currentState(booking.status, booking.id)}</div>
+        {!noActions && <div>{currentState(booking.status, booking.id)}</div>}
       </div>
     </div>
   );
