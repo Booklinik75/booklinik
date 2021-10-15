@@ -39,8 +39,6 @@ export const getServerSideProps = async (ctx) => {
   data.startDate = new Date(data.startDate.toDate()).toString();
   data.endDate = new Date(data.endDate.toDate()).toString();
 
-  console.log(data.surgeryCategory);
-
   const currentOperationCategory = [];
 
   await firebase
@@ -102,7 +100,6 @@ export const getServerSideProps = async (ctx) => {
             ...currentCountry[0].additionalDocuments[index],
             url: res,
           };
-          console.log(currentCountry[0].additionalDocuments[index]);
         });
       })
     );
@@ -126,7 +123,6 @@ const OperationPage = ({
   currentOperation,
   currentCountry,
 }) => {
-  console.log(currentCountry);
   return (
     <DashboardUi userProfile={auth.props.userProfile} token={auth.props.token}>
       <div className="grid grid-cols-10 col-span-10 grid-flow-column auto-rows-max gap-4">
@@ -293,38 +289,3 @@ const OperationPage = ({
 };
 
 export default OperationPage;
-
-// {
-//     surgery: 'oreilles-decollees-otoplastie',
-//     status: 'awaitingDocuments',
-//     totalSelectedNights: 6,
-//     hotelPhotoLink: 'https://firebasestorage.googleapis.com/v0/b/booklinik.appspot.com/o/hotels%2Fmariott-8B49FC12-8E28-44A9-AAF2-92635931FC46.jpeg?alt=media&token=c1878d2d-e583-47a2-827b-4cf883314d3e',
-//     hotelName: 'Marriott',
-//     city: 'istanbul',
-//     room: 'acibadem-altunizade',
-//     roomPhotoLink: 'https://firebasestorage.googleapis.com/v0/b/booklinik.appspot.com/o/rooms%2Facibadem-altunizade-hastanesi-og-banner.png?alt=media&token=42277ea9-4753-4fe4-965b-8033c4bf44d2',
-//     endDate: 'Fri Oct 15 2021 00:00:00 GMT+0200 (Central European Summer Time)',
-//     options: [
-//       { price: 0, name: 'Petit déjeuner', isChecked: true },
-//       { isChecked: false, name: 'Stationnement', price: 0 },
-//       { name: 'wifi', isChecked: true, price: 0 }
-//     ],
-//     user: 'JJcmtRw5WOY9C6lF9WeZlt54RR53',
-//     totalExtraTravellersPrice: 450,
-//     hotelPrice: 120,
-//     surgeryCategory: 'chirurgie-du-visage',
-//     minimumNights: 0,
-//     extraTravellers: 1,
-//     roomPrice: 0,
-//     hotelId: '79YOC8AB5ge8iMWQTCPM',
-//     roomName: 'ACIBADEM ALTUNIZADE',
-//     surgeryCategoryName: 'Chirurgie du visage',
-//     surgeryName: 'Oreilles décollées / Otoplastie',
-//     extraBabies: 0,
-//     hotel: 'marriott',
-//     surgeryPrice: 2200,
-//     surgeryMinDays: 0,
-//     extraChilds: 0,
-//     startDate: 'Sat Oct 09 2021 15:58:45 GMT+0200 (Central European Summer Time)',
-//     hotelRating: 5
-//   }
