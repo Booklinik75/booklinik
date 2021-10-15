@@ -7,6 +7,8 @@ import firebase from "firebase/clientApp";
 const DashboardSideNav = ({ userProfile, token }) => {
   const router = useRouter();
   const isAdmin = userProfile.role === "admin" ? true : false;
+  const isSales =
+    userProfile.role === "admin" || userProfile.role === "sales" ? true : false;
   const { signOut } = useAuth();
 
   const [bookings, setBookings] = useState([]);
@@ -51,7 +53,20 @@ const DashboardSideNav = ({ userProfile, token }) => {
           </div>
         </div>
         <div className="space-y-5">
-          {isAdmin ? (
+          {isSales && (
+            <div className="flex flex-col">
+              <p className="text-sm text-gray-700 uppercase">Sales</p>
+              <DashboardSideNavItem
+                title="Clients"
+                target="/dashboard/sales/clients"
+              />
+              <DashboardSideNavItem
+                title="Réservations"
+                target="/dashboard/sales/bookings"
+              />
+            </div>
+          )}
+          {isAdmin && (
             <div className="flex flex-col">
               <p className="text-sm text-gray-700 uppercase">Admin</p>
               <DashboardSideNavItem
@@ -91,8 +106,6 @@ const DashboardSideNav = ({ userProfile, token }) => {
                 target="/dashboard/admin/clinics"
               />
             </div>
-          ) : (
-            ""
           )}
           <div className="flex flex-col">
             <p className="text-sm text-gray-700 uppercase">Mon profil</p>
