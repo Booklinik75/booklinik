@@ -42,6 +42,9 @@ const FormStepper = ({ children, booking, user }) => {
           }),
         });
       })
+      .then(() => {
+        router.push("/dashboard/operations");
+      })
       .catch((error) => {
         console.error(error);
       });
