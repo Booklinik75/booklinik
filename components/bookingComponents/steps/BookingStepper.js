@@ -11,6 +11,9 @@ const FormStepper = ({ children, booking, user }) => {
   const router = useRouter();
   const [isSaving, setIsSaving] = useState(false);
 
+  const mail = require("@sendgrid/mail");
+  mail.setApiKey(process.env.SENDGRID_API_KEY);
+
   const doBooking = () => {
     setIsSaving(true);
 
@@ -31,7 +34,13 @@ const FormStepper = ({ children, booking, user }) => {
         ...booking,
       })
       .then(() => {
-        router.push(`/dashboard`);
+        fetch("/api/mail", {
+          method: "post",
+          body: JSON.stringify({
+            recipient: user.email,
+            templateId: "d-b504c563b53846fbadb0a53151a82d57",
+          }),
+        });
       })
       .catch((error) => {
         console.error(error);
