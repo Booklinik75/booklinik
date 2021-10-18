@@ -7,6 +7,18 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import { BiError } from "react-icons/bi";
 import DashboardButton from "../components/DashboardButton";
+import { checkAuth, serverRedirect } from "utils/ServerHelpers";
+
+export const getServerSideProps = async (ctx) => {
+  const auth = await checkAuth(ctx);
+  if (auth.props.userProfile) return serverRedirect("/dashboard");
+
+  return {
+    props: {
+      auth,
+    },
+  };
+};
 
 const Login = () => {
   const [formData, updateFormData] = useState({ email: "", password: "" });

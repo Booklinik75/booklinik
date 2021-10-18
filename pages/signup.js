@@ -8,6 +8,18 @@ import { useState } from "react";
 import DashboardButton from "../components/DashboardButton";
 import * as Yup from "yup";
 import { BiError } from "react-icons/bi";
+import { checkAuth, serverRedirect } from "utils/ServerHelpers";
+
+export const getServerSideProps = async (ctx) => {
+  const auth = await checkAuth(ctx);
+  if (auth.props.userProfile) return serverRedirect("/dashboard");
+
+  return {
+    props: {
+      auth,
+    },
+  };
+};
 
 const SignUp = () => {
   const [formData, updateFormData] = useState({
