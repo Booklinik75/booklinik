@@ -88,9 +88,7 @@ const AddRoom = ({ hotelsOptions, auth }) => {
           );
           setProgress(progress);
         },
-        (error) => {
-          console.log(error);
-        },
+        (error) => {},
         async () => {
           await firebase
             .storage()
@@ -106,7 +104,7 @@ const AddRoom = ({ hotelsOptions, auth }) => {
 
     Promise.all(promises)
       .then(() => {})
-      .catch((err) => console.log(err));
+      .catch((err) => {});
   };
 
   const isInitialMount = useRef(true);

@@ -50,8 +50,6 @@ export const getServerSideProps = async (ctx) => {
 };
 
 const CustomersList = ({ auth, users }) => {
-  console.log(users);
-
   const columns = useMemo(
     () => [
       { Header: "ID", accessor: "uid" },

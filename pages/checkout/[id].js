@@ -91,8 +91,6 @@ export const getServerSideProps = async (ctx) => {
       return {};
     });
 
-  console.log(stripeSession);
-
   if (stripeSession.redirect) return stripeSession;
 
   booking.startDate = new Date(booking.startDate.toDate()).toString();
@@ -115,9 +113,6 @@ export const getServerSideProps = async (ctx) => {
 };
 
 const Checkout = ({ booking, stripeArgs, auth, stripeSession }) => {
-  console.log(stripeArgs);
-  console.log(stripeSession);
-
   const initiatePayment = async () => {
     const stripe = await loadStripe(
       process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
