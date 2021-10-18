@@ -68,15 +68,7 @@ const BookingCard = ({ booking }) => {
               {booking.surgeryName} à {booking.city}
             </p>
             <p className="text-sm text-bali font-bold">
-              Witt Istanbul Suites &bull;{" "}
-              {booking.hotelPrice *
-                booking.totalSelectedNights *
-                (1 +
-                  booking.extraBabies +
-                  booking.extraChilds +
-                  booking.extraTravellers) +
-                booking.surgeryPrice}{" "}
-              €
+              Witt Istanbul Suites &bull; {booking.total}&nbsp;€
             </p>
           </div>
         </div>

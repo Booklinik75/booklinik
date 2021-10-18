@@ -78,10 +78,13 @@ const BookingConfirmation = ({ booking }) => {
       <p className="py-6">
         Le prix tout compris de votre voyage sur-mesure est de{" "}
         <span className="text-2xl rounded text-white px-4 py-2 mx-2 bg-shamrock">
-          {booking.totalExtraTravellersPrice +
-            1900 +
-            booking.totalSelectedNights * booking.roomPrice +
-            booking.totalSelectedNights * booking.hotelPrice}{" "}
+          {Number(booking.surgeryPrice) +
+            Number(booking.totalExtraTravellersPrice) +
+            Number(booking.hotelPrice) * Number(booking.totalSelectedNights) +
+            Number(booking.roomPrice) * Number(booking.totalSelectedNights) +
+            booking.options
+              ?.map((option) => option.isChecked && Number(option.price))
+              .reduce((a, b) => a + b)}
           €
         </span>
       </p>

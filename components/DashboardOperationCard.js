@@ -53,15 +53,7 @@ const DashboardOperationCard = ({ booking, noActions }) => {
           <span className="capitalize">{booking.city}</span>
         </p>
         <p className="text-xs text-bali">
-          {booking.hotelName} •{" "}
-          {booking.hotelPrice *
-            booking.totalSelectedNights *
-            (1 +
-              booking.extraBabies +
-              booking.extraChilds +
-              booking.extraTravellers) +
-            booking.surgeryPrice}{" "}
-          €
+          {booking.hotelName} • {booking.total}&nbsp;€
         </p>
         {!noActions && <div>{currentState(booking.status, booking.id)}</div>}
       </div>
