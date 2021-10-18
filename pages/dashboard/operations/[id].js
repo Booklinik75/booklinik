@@ -469,7 +469,7 @@ const OperationPage = ({
         </div>
         <div className="col-span-10 lg:col-span-3 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-4 grid-flow-column auto-rows-max">
           <div className="col-span-1 flex flex-col gap-2 border border-gray-800 p-4 rounded">
-            <p className="text-3xl">Documents manquants</p>
+            <p className="text-3xl">Documents requis</p>
             <p>
               Afin de finaliser votre séjour, vous devez remplir ces documents.
             </p>
@@ -482,10 +482,12 @@ const OperationPage = ({
                     : "border-red-500 hover:shadow hover:bg-red-500 hover:cursor-pointer hover:animate-pulse"
                 }`}
                 onClick={() => {
-                  setPicturesImporter({
-                    set: requiredPicturesSet,
-                    visibility: true,
-                  });
+                  if (!requiredPicturesSet.done) {
+                    setPicturesImporter({
+                      set: requiredPicturesSet,
+                      visibility: true,
+                    });
+                  }
                 }}
               >
                 <p className="transition group-hover:text-white">
