@@ -187,7 +187,7 @@ const Checkout = ({ booking, stripeArgs, auth, stripeSession }) => {
                 {moment(booking.endDate).format("DD[/]MM[/]YY")}{" "}
               </p>
               <p>{`${booking.totalTravellers} voyageur${
-                Number(booking.totalTravellers) > 1 && "s"
+                Number(booking.totalTravellers) > 1 ? "s" : ""
               }`}</p>
               <hr className="border-gray-900" />
               <div className="flex w-full justify-between gap-4 text-xl text-bali mb-4">
