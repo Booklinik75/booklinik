@@ -65,7 +65,7 @@ export const getServerSideProps = async (ctx) => {
         currentOperationCategory.push(doc.data());
       });
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {});
 
   const currentOperation = [];
   await firebase
@@ -78,7 +78,7 @@ export const getServerSideProps = async (ctx) => {
         currentOperation.push(doc.data());
       });
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {});
 
   const currentCity = [];
   await firebase
@@ -91,7 +91,7 @@ export const getServerSideProps = async (ctx) => {
         currentCity.push(doc.data());
       });
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {});
 
   const currentCountry = [];
   await firebase
@@ -104,7 +104,7 @@ export const getServerSideProps = async (ctx) => {
         currentCountry.push(doc.data());
       });
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {});
 
   if (currentCountry[0].additionalDocuments) {
     await Promise.all(
@@ -279,7 +279,6 @@ const OperationPage = ({
                       `Nombre de photos limité à ${picturesImporter.set.photosCount}`
                     );
                   } else {
-                    console.log(pictures);
                     setPictures([
                       ...pictures,
                       ...acceptedFiles.map((file) =>

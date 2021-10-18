@@ -16,7 +16,7 @@ export default async (req, res) => {
   if (body.dynamicTemplateData)
     data = { ...data, dynamicTemplateData: { ...body.dynamicTemplateData } };
 
-  await mail.send(data).catch((err) => console.log(err));
+  await mail.send(data).catch((err) => {});
 
   res.status(200).json({ status: "OK" });
 };

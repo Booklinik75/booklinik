@@ -76,9 +76,7 @@ const EditOptions = ({ hotelName, id, options, auth }) => {
       .collection("options")
       .doc(id)
       .set({ ...[inputList] })
-      .catch((err) => {
-        console.log(err);
-      })
+      .catch(() => {})
       .finally(() => {
         setLoading("done");
         setTimeout(() => {

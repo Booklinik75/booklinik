@@ -52,7 +52,7 @@ export const getServerSideProps = async (ctx) => {
         currentOperation.push(doc.data());
       });
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {});
 
   if (auth.props.userProfile.role === "admin") {
     currentOperation[0].requiredPictures.map((set, index) => {
@@ -105,7 +105,6 @@ const Booking = ({ booking, auth, currentOperation }) => {
   const updateStatus = () => {
     setLoading("loading");
 
-    console.log(status.value);
     firebase
       .firestore()
       .collection("bookings")
@@ -162,7 +161,7 @@ const Booking = ({ booking, auth, currentOperation }) => {
               recipient: booking.customer.email,
               templateId: "d-4e1bda2d9da349d1987a1a8c69238484",
               dynamicTemplateData: {
-                payment_link: `https://booklinik.com/checkout/${booking.id}`,
+                payment_link: `https://${process.env.ABSOLUTE_URL_ORIGIN}/checkout/${booking.id}`,
               },
             }),
           }).then(() => {

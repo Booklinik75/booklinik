@@ -274,9 +274,7 @@ export async function gatherOptionsFromHotelId(id) {
         return doc.data()[0];
       });
     return options;
-  } catch (error) {
-    console.log(error);
-  }
+  } catch (error) {}
 }
 
 export async function getSurgeryData(slug) {
@@ -396,7 +394,5 @@ export async function getRelatedSurgeries(categoryName) {
     }
 
     return relatedSurgeries;
-  } catch (error) {
-    console.log(error);
-  }
+  } catch (error) {}
 }
