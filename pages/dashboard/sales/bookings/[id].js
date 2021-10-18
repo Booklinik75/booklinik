@@ -9,6 +9,7 @@ import slugify from "slugify";
 import Link from "next/link";
 import { FaExternalLinkAlt } from "react-icons/fa";
 import { useRouter } from "next/router";
+import DashboardInput from "Components/DashboardInput";
 
 export const getServerSideProps = async (ctx) => {
   const auth = await checkAuth(ctx);
@@ -98,9 +99,13 @@ const Booking = ({ booking, auth, currentOperation }) => {
 
   const [status, setStatus] = useState(currentOption);
 
+  const [estimatePrice, setEstimatePrice] = useState(booking.total);
+  // const [estimateFile, setEstimateFile] = useState("");
+
   const updateStatus = () => {
     setLoading("loading");
 
+    console.log(status.value);
     firebase
       .firestore()
       .collection("bookings")
@@ -113,6 +118,58 @@ const Booking = ({ booking, auth, currentOperation }) => {
         }, 1000);
         router.reload(window.location.pathname);
       });
+  };
+
+  const definedStatusUpdate = (status) => {
+    setLoading("loading");
+    firebase
+      .firestore()
+      .collection("bookings")
+      .doc(booking.id)
+      .update({ status: status })
+      .then(() => {
+        setLoading("done");
+        setTimeout(() => {
+          setLoading("idle");
+        }, 1000);
+        router.reload(window.location.pathname);
+      });
+  };
+
+  // const toBase64 = (file) =>
+  //   new Promise((resolve, reject) => {
+  //     const reader = new FileReader();
+  //     reader.readAsDataURL(file);
+  //     reader.onload = () => resolve(reader.result);
+  //     reader.onerror = (error) => reject(error);
+  //   });
+
+  const handleEstimate = (e) => {
+    e.preventDefault();
+
+    setStatus("awaitingPayment");
+
+    if (estimatePrice !== booking.total) {
+      firebase
+        .firestore()
+        .collection("bookings")
+        .doc(booking.id)
+        .update({ alternativeTotal: Number(estimatePrice) })
+        .then(() => {
+          fetch("/api/mail", {
+            method: "post",
+            body: JSON.stringify({
+              recipient: booking.customer.email,
+              templateId: "d-4e1bda2d9da349d1987a1a8c69238484",
+              dynamicTemplateData: {
+                payment_link: `https://booklinik.com/checkout/${booking.id}`,
+              },
+            }),
+          }).then(() => {
+            definedStatusUpdate("awaitingPayment");
+          });
+        });
+    }
   };
 
   return (
@@ -191,16 +248,49 @@ const Booking = ({ booking, auth, currentOperation }) => {
               </div>
             </div>
           )}
+          {booking.status === "awaitingEstimate" && (
+            <div className="col-span-2">
+              <div className="border rounded p-3 flex flex-col gap-4">
+                <div className="flex justify-between items-center">
+                  <p className="text-2xl">Importer un devis</p>
+                  <p className="text-xs text-white px-2 py-1 uppercase rounded bg-shamrock">
+                    awaitingestimate
+                  </p>
+                </div>
+                <p className="text-sm">
+                  Cette action entrainera l&apos;envoi du devis par e-mail,
+                  ainsi que d&apos;un lien pour procéder au règlement.
+                </p>
+                <form onSubmit={handleEstimate} className="flex flex-col gap-2">
+                  <DashboardInput
+                    type="number"
+                    label="Prix"
+                    value={estimatePrice}
+                    onChange={(e) => {
+                      setEstimatePrice(e.target.value);
+                    }}
+                    min={0}
+                    required={true}
+                    name="price"
+                  />
+                  {/* <DashboardInput
+                    type="file"
+                    label="Devis"
+                    required={true}
+                    name="estimate"
+                    onChange={(e) => {
+                      if (e.target.files[0]) {
+                        setEstimateFile(e.target.files[0]);
+                      }
+                    }}
+                  /> */}
+                  <DashboardButton defaultText="Envoyer" />
+                </form>
+              </div>
+            </div>
+          )}
         </div>
       </div>
-      <button
-        type="button"
-        onClick={() => {
-          throw new Error("Sentry Frontend Error");
-        }}
-      >
-        Throw error
-      </button>
     </DashboardUi>
   );
 };
