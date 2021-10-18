@@ -17,7 +17,19 @@ const FormStepper = ({ children, booking, user }) => {
     firebase
       .firestore()
       .collection("bookings")
-      .add({ user: user.uid, status: "examining", ...booking })
+      .add({
+        user: user.uid,
+        status: "examining",
+        total:
+          Number(booking.surgeryPrice) +
+          Number(booking.totalExtraTravellersPrice) +
+          Number(booking.hotelPrice) * Number(booking.totalSelectedNights) +
+          Number(booking.roomPrice) * Number(booking.totalSelectedNights) +
+          booking.options
+            ?.map((option) => option.isChecked && Number(option.price))
+            .reduce((a, b) => a + b),
+        ...booking,
+      })
       .then(() => {
         router.push(`/dashboard`);
       })

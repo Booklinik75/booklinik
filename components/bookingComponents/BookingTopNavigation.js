@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import Logo from "../../public/booklinik-logo.svg";
+import Logo from "public/booklinik-logo.svg";
 import { useEffect, useState } from "react";
 
 const BookingTopNavigation = ({ bookingData }) => {
@@ -8,12 +8,15 @@ const BookingTopNavigation = ({ bookingData }) => {
 
   useEffect(() => {
     setEstimate(
-      parseInt(bookingData.surgeryPrice) +
-        parseInt(bookingData.totalExtraTravellersPrice) +
-        parseInt(bookingData.hotelPrice) *
-          parseInt(bookingData.totalSelectedNights) +
-        parseInt(bookingData.roomPrice) *
-          parseInt(bookingData.totalSelectedNights)
+      Number(bookingData.surgeryPrice) +
+        Number(bookingData.totalExtraTravellersPrice) +
+        Number(bookingData.hotelPrice) *
+          Number(bookingData.totalSelectedNights) +
+        Number(bookingData.roomPrice) *
+          Number(bookingData.totalSelectedNights) +
+        bookingData.options
+          ?.map((option) => option.isChecked && Number(option.price))
+          .reduce((a, b) => a + b)
     );
   }, [
     bookingData.surgeryPrice,
@@ -21,6 +24,7 @@ const BookingTopNavigation = ({ bookingData }) => {
     bookingData.hotelPrice,
     bookingData.roomPrice,
     bookingData.totalSelectedNights,
+    bookingData.options,
   ]);
 
   return (
