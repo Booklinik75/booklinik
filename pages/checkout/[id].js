@@ -47,8 +47,8 @@ export const getServerSideProps = async (ctx) => {
     }
   )
     .then(async (res) => {
-      //   if (booking.status === "validated")
-      //     return serverRedirect(`/dashboard/operations/${booking.id}`);
+      if (booking.status === "validated")
+        return serverRedirect(`/dashboard/operations/${booking.id}`);
       if (!res.ok) return {};
 
       const stripeRes = await res.json();
