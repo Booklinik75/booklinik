@@ -1,6 +1,8 @@
 const removeImports = require("next-remove-imports")();
+const { withSentryConfig } = require("@sentry/nextjs");
 
-module.exports = removeImports({
+const moduleExports = removeImports({
+  webpack5: true,
   reactStrictMode: true,
   images: {
     domains: [
@@ -11,6 +13,18 @@ module.exports = removeImports({
   },
   webpack(config) {
     config.resolve.modules.push(__dirname);
+
+    config.resolve.fallback = {
+      ...config.resolve.fallback,
+      fs: false,
+    };
+
     return config;
   },
 });
+
+const SentryWebpackPluginOptions = {
+  silent: true,
+};
+
+module.exports = withSentryConfig(moduleExports, SentryWebpackPluginOptions);
