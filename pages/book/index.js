@@ -7,24 +7,24 @@ import {
   getOptions,
   getRooms,
   getBackEndAsset,
-} from "../../utils/ServerHelpers";
+} from "utils/ServerHelpers";
 
 import Head from "next/head";
 import { useEffect, useState } from "react";
-import SurgerySelectStep from "../../components/bookingComponents/steps/SurgerySelect";
-import DatesSelectStep from "../../components/bookingComponents/steps/DatesSelect";
-import TravellersSelectStep from "../../components/bookingComponents/steps/TravellersSelect";
-import CitySelectStep from "../../components/bookingComponents/steps/CitySelect";
-import HotelSelectStep from "../../components/bookingComponents/steps/HotelSelect";
+import SurgerySelectStep from "components/bookingComponents/steps/SurgerySelect";
+import DatesSelectStep from "components/bookingComponents/steps/DatesSelect";
+import TravellersSelectStep from "components/bookingComponents/steps/TravellersSelect";
+import CitySelectStep from "components/bookingComponents/steps/CitySelect";
+import HotelSelectStep from "components/bookingComponents/steps/HotelSelect";
 
-import FormStepper from "../../components/bookingComponents/steps/BookingStepper";
-import RoomsSelectStep from "../../components/bookingComponents/steps/RoomsSelect";
-import OptionsSelectStep from "../../components/bookingComponents/steps/OptionsSelect";
-import BookingConfirmation from "../../components/bookingComponents/steps/Confirmation";
+import FormStepper from "components/bookingComponents/steps/BookingStepper";
+import RoomsSelectStep from "components/bookingComponents/steps/RoomsSelect";
+import OptionsSelectStep from "components/bookingComponents/steps/OptionsSelect";
+import BookingConfirmation from "components/bookingComponents/steps/Confirmation";
 
 import { useAuthState } from "react-firebase-hooks/auth";
 import { VscLoading } from "react-icons/vsc";
-import firebase from "../../firebase/clientApp";
+import firebase from "firebase/clientApp";
 import { useRouter } from "next/router";
 
 export const getStaticProps = async () => {
