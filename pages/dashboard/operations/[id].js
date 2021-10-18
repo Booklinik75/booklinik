@@ -1,11 +1,19 @@
+import { useState } from "react";
+
+// utils
+import { checkAuth, serverRedirect } from "utils/ServerHelpers";
+
+// global components
 import DashboardUi from "components/DashboardUi";
 import DashboardInput from "components/DashboardInput";
-import { checkAuth, serverRedirect } from "utils/ServerHelpers";
 import ProfileSelect from "components/ProfileSelect";
 import DashboardButton from "components/DashboardButton";
-import { useState } from "react";
+import BookingDetailBox from "components/BookingDetailBox";
+
+// libraries
 import firebase from "firebase/clientApp";
 import moment from "moment";
+import Dropzone from "react-dropzone";
 import { RiErrorWarningFill } from "react-icons/ri";
 import {
   FaCalendar,
@@ -15,12 +23,18 @@ import {
   FaBed,
   FaDownload,
   FaUpload,
+  FaCheck,
 } from "react-icons/fa";
+import { RiCloseCircleLine, RiCloseCircleFill } from "react-icons/ri";
 import Image from "next/image";
 import Link from "next/link";
-import BookingDetailBox from "components/BookingDetailBox";
 import slugify from "slugify";
-import { getBackEndAsset } from "utils/ClientHelpers";
+import { createPortal } from "react-dom";
+import { toast } from "react-toastify";
+import { useRouter } from "next/router";
+
+// utils
+import { getBackEndAsset, doFileUpload } from "utils/ClientHelpers";
 
 export const getServerSideProps = async (ctx) => {
   const auth = await checkAuth(ctx);
@@ -105,8 +119,25 @@ export const getServerSideProps = async (ctx) => {
     );
   }
 
+  currentOperation[0].requiredPictures.map((set, index) => {
+    let slug = slugify(set.title);
+
+    if (data.picturesSet?.[slug]) {
+      currentOperation[0].requiredPictures[index] = {
+        ...currentOperation[0].requiredPictures[index],
+        done: true,
+      };
+    } else {
+      currentOperation[0].requiredPictures[index] = {
+        ...currentOperation[0].requiredPictures[index],
+        done: false,
+      };
+    }
+  });
+
   return {
     props: {
+      bookingId: id,
       data: data,
       auth,
       currentOperationCategory: currentOperationCategory[0],
@@ -119,12 +150,216 @@ export const getServerSideProps = async (ctx) => {
 const OperationPage = ({
   auth,
   data,
+  bookingId,
   currentOperationCategory,
   currentOperation,
   currentCountry,
 }) => {
+  const [isLoading, setIsLoading] = useState("idle");
+  const router = useRouter();
+
+  const [picturesImporter, setPicturesImporter] = useState({
+    set: undefined,
+    visibility: false,
+  });
+
+  const [pictures, setPictures] = useState([]);
+
+  const deletePicture = (e, index) => {
+    e.stopPropagation();
+
+    let oldPictures = pictures;
+    oldPictures.splice(index, 1);
+    setPictures([...oldPictures]);
+  };
+
+  const uploadPictureSet = async () => {
+    const pictureSetLinks = [];
+    setIsLoading("loading");
+
+    if (Number(pictures.length) === Number(picturesImporter.set.photosCount)) {
+      Promise.all(
+        pictures.map(async (file) => {
+          // build storage object
+          const fileRef = `customer_data/${data.user}/${bookingId}/${slugify(
+            picturesImporter.set.title
+          )}`;
+          const fileName = `${(Math.random() + 1).toString(36).substring(7)}_${
+            file.name
+          }`;
+
+          // upload action
+          const imageUploadRes = await doFileUpload(fileRef, fileName, file);
+
+          // save links
+          pictureSetLinks.push(
+            await getBackEndAsset(imageUploadRes.ref.fullPath)
+          );
+        })
+      ).then(() => {
+        firebase
+          .firestore()
+          .collection("bookings")
+          .doc(bookingId)
+          .update({
+            [`picturesSet.${slugify(picturesImporter.set.title)}`]: [
+              ...pictureSetLinks,
+            ],
+          })
+          .then(() => {
+            setIsLoading("done");
+            setTimeout(() => {
+              setIsLoading("idle");
+            }, 1000);
+            router.reload(window.location.pathname);
+          });
+
+        setIsLoading("idle");
+      });
+    }
+  };
+
   return (
     <DashboardUi userProfile={auth.props.userProfile} token={auth.props.token}>
+      {picturesImporter.visibility &&
+        createPortal(
+          <div
+            className="absolute w-screen h-screen bg-black bg-opacity-30 flex items-center justify-center z-20"
+            style={{ marginTop: "-100vh" }}
+            onClick={(e) => {
+              e.stopPropagation();
+              setPicturesImporter({
+                set: undefined,
+                visibility: false,
+              });
+              setPictures([]);
+            }}
+          >
+            <div
+              className="bg-white rounded shadow-lg p-8 z-30 flex flex-col m-8 md:max-w-3xl lg:max-w-3xl gap-4"
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
+            >
+              <div className="flex justify-between items-center">
+                <p className="text-3xl">
+                  {`Ajouter ${picturesImporter.set.photosCount} ${picturesImporter.set.title}`}
+                </p>
+                <div
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setPicturesImporter({
+                      set: undefined,
+                      visibility: false,
+                    });
+                    setPictures([]);
+                  }}
+                  className="transition w-1 h-8 hover:cursor-pointer hover:text-red-600 group"
+                >
+                  <div className="relative">
+                    <RiCloseCircleLine
+                      size={24}
+                      className="absolute right-0 top-0 opacity-100 group-hover:opacity-0"
+                    />
+                    <RiCloseCircleFill
+                      size={24}
+                      className="absolute right-0 top-0 opacity-0 group-hover:opacity-100"
+                    />
+                  </div>
+                </div>
+              </div>
+              <p>{picturesImporter.set.description}</p>
+              <Dropzone
+                onDrop={(acceptedFiles) => {
+                  if (
+                    acceptedFiles.length + pictures.length >
+                    picturesImporter.set.photosCount
+                  ) {
+                    toast.warn(
+                      `Nombre de photos limité à ${picturesImporter.set.photosCount}`
+                    );
+                  } else {
+                    console.log(pictures);
+                    setPictures([
+                      ...pictures,
+                      ...acceptedFiles.map((file) =>
+                        Object.assign(file, {
+                          preview: URL.createObjectURL(file),
+                        })
+                      ),
+                    ]);
+                  }
+                }}
+                accept="image/*"
+                multiple={true}
+              >
+                {({ getRootProps, getInputProps }) => (
+                  <section>
+                    <div
+                      {...getRootProps()}
+                      className="w-full flex flex-col gap-4 items-center justify-center bg-gray-100 border border-dashed border-gray-400 py-12"
+                    >
+                      <input {...getInputProps()} />
+                      <p>
+                        Cliquez ici pour ajouter des photos, ou glissez
+                        directement vos photos
+                      </p>
+                      {pictures.length > 0 && (
+                        <div className="flex items-center justify-center gap-4">
+                          {pictures?.map((picture, index) => (
+                            <div
+                              className="rounded overflow-hidden shadow relative group hover:cursor-pointer z-20"
+                              key={`${picture.name}-${picture.lastModified}`}
+                              onClick={(e) => {
+                                deletePicture(e, index);
+                              }}
+                            >
+                              <div className="transition opacity-0 group-hover:opacity-100 bg-red-200 z-10 flex bg-opacity-30 w-full h-full absolute items-center justify-center">
+                                <p className="text-white drop-shadow uppercase text-sm">
+                                  Supprimer
+                                </p>
+                              </div>
+                              <Image
+                                src={picture.preview}
+                                width={100}
+                                height={100}
+                                objectFit="cover"
+                                alt=""
+                              />
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </section>
+                )}
+              </Dropzone>
+              <div className="w-full flex justify-end gap-4 ">
+                <div
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setPicturesImporter({
+                      set: undefined,
+                      visibility: false,
+                    });
+                    setPictures([]);
+                  }}
+                  className="group px-5 py-3 hover:cursor-pointer"
+                >
+                  <p className="group-hover:underline">Annuler</p>
+                </div>
+                <DashboardButton
+                  defaultText="Soumettre les photos"
+                  className="w-max"
+                  disabled={pictures.length < picturesImporter.set.photosCount}
+                  onClick={uploadPictureSet}
+                  status={isLoading}
+                />
+              </div>
+            </div>
+          </div>,
+          document.querySelector("body")
+        )}
       <div className="grid grid-cols-10 col-span-10 grid-flow-column auto-rows-max gap-4">
         <div className="col-span-10 space-y-4 max-h-max">
           <div className="flex justify-between gap-4 flex-col items-start md:flex-row md:items-center">
@@ -138,15 +373,13 @@ const OperationPage = ({
                 {data.surgeryName}
               </h2>
             </div>
-            <div className="transition h-max flex border border-red-500 rounded py-2 px-4 items-center gap-4 hover:bg-red-500 group">
+            {/* <div className="transition h-max flex border border-red-500 rounded py-2 px-4 items-center gap-4 group">
               <div className="relative">
-                <RiErrorWarningFill className="transition text-red-500 group-hover:text-white animate-ping z-10 absolute" />
-                <RiErrorWarningFill className="transition text-red-500 group-hover:text-white" />
+                <RiErrorWarningFill className="transition text-red-500 animate-ping z-10 absolute" />
+                <RiErrorWarningFill className="transition text-red-500" />
               </div>
-              <p className="transition group-hover:text-white">
-                Documents manquants
-              </p>
-            </div>
+              <p>Documents manquants</p>
+            </div> */}
           </div>
         </div>
         <div className="col-span-10 lg:col-span-7 flex flex-col gap-4">
@@ -158,14 +391,7 @@ const OperationPage = ({
               objectFit="cover"
             />
             <p className="text-3xl rounded shadow bg-shamrock py-2 px-4 absolute right-4 top-4 z-10 text-white">
-              {data.hotelPrice *
-                data.totalSelectedNights *
-                (1 +
-                  data.extraBabies +
-                  data.extraChilds +
-                  data.extraTravellers) +
-                data.surgeryPrice}{" "}
-              €
+              {data.total}&nbsp;€
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -242,7 +468,7 @@ const OperationPage = ({
           </div>
         </div>
         <div className="col-span-10 lg:col-span-3 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-4 grid-flow-column auto-rows-max">
-          <div className="col-span-1 flex flex-col gap-2 border border-red-500 p-4 rounded">
+          <div className="col-span-1 flex flex-col gap-2 border border-gray-800 p-4 rounded">
             <p className="text-3xl">Documents manquants</p>
             <p>
               Afin de finaliser votre séjour, vous devez remplir ces documents.
@@ -250,7 +476,17 @@ const OperationPage = ({
             {currentOperation.requiredPictures.map((requiredPicturesSet, i) => (
               <div
                 key={`${slugify(requiredPicturesSet.title)}_${i}`}
-                className="transition h-max flex border justify-between border-red-500 rounded py-2 px-4 items-center gap-4 hover:shadow hover:bg-red-500 hover:cursor-pointer hover:animate-pulse group"
+                className={`transition h-max flex border justify-between rounded py-2 px-4 items-center gap-4 group ${
+                  requiredPicturesSet.done
+                    ? "border-green-500 bg-green-500 text-white"
+                    : "border-red-500 hover:shadow hover:bg-red-500 hover:cursor-pointer hover:animate-pulse"
+                }`}
+                onClick={() => {
+                  setPicturesImporter({
+                    set: requiredPicturesSet,
+                    visibility: true,
+                  });
+                }}
               >
                 <p className="transition group-hover:text-white">
                   {requiredPicturesSet.photosCount}
@@ -259,7 +495,11 @@ const OperationPage = ({
                     {requiredPicturesSet.title}
                   </span>
                 </p>
-                <FaUpload className="transition text-red-500 group-hover:text-white" />
+                {requiredPicturesSet.done ? (
+                  <FaCheck />
+                ) : (
+                  <FaUpload className="transition text-red-500 group-hover:text-white" />
+                )}
               </div>
             ))}
           </div>
