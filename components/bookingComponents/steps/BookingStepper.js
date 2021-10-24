@@ -22,7 +22,7 @@ const FormStepper = ({ children, booking, user }) => {
       .collection("bookings")
       .add({
         user: user.uid,
-        status: "examining",
+        status: "awaitingPictures",
         total:
           Number(booking.surgeryPrice) +
           Number(booking.totalExtraTravellersPrice) +

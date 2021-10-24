@@ -51,7 +51,8 @@ export const getServerSideProps = async (ctx) => {
 
 const BookingsList = ({ auth, bookings }) => {
   const statusOptions = [
-    { value: "examining", label: "En attente de photos" },
+    { value: "awaitingDocuments", label: "En attente de photos" },
+    { value: "examining", label: "En cours d'examen" },
     { value: "awaitingEstimate", label: "En attente de devis" },
     { value: "awaitingPayment", label: "En attente de règlement" },
     { value: "validated", label: "Validé" },
