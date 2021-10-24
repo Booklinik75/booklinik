@@ -42,8 +42,6 @@ export const getStaticProps = async (context) => {
       snapshot.forEach((doc) => docs.push(doc.data()));
     });
 
-  console.log(docs);
-
   const currentDoc = [];
   await firebase
     .firestore()
