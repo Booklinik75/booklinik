@@ -43,15 +43,12 @@ export const getStaticProps = async () => {
     },
   ];
 
-  console.log(categories);
-  console.log(categoriesSettings);
   return {
     props: { heroImage, categories, categoriesSettings }, // will be passed to the page component as props
   };
 };
 
 export default function Home({ heroImage, categories, categoriesSettings }) {
-  console.log(categories, categoriesSettings);
   return (
     <div className="container mx-auto max-w-full">
       <Head>

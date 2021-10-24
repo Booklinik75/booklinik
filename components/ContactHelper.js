@@ -33,7 +33,6 @@ const ContactHelper = () => {
         toast.success("Message envoyé avec succès.");
       })
       .catch((error) => {
-        console.log(error);
         toast.error("Une erreur est survenue.");
         Sentry.captureException(error);
       });
