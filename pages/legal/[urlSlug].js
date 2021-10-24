@@ -3,13 +3,22 @@ import Navigation from "../../components/Navigation";
 import Footer from "../../components/Footer";
 import ContactHelper from "../../components/ContactHelper";
 import Head from "next/head";
+import firebase from "firebase/clientApp";
+import MDEditor from "@uiw/react-md-editor";
 
 export const getStaticPaths = async () => {
-  const res = await fetch(process.env.JSON_API_URL + "/legal");
-  const data = await res.json();
+  const docs = [];
+
+  await firebase
+    .firestore()
+    .collection("legal")
+    .get()
+    .then((snapshot) => {
+      snapshot.forEach((doc) => docs.push(doc.data()));
+    });
 
   // map data to an array of path objects with params (id)
-  const paths = data.map((legal) => {
+  const paths = docs.map((legal) => {
     return {
       params: { urlSlug: legal.urlSlug.toString() },
     };
@@ -23,16 +32,30 @@ export const getStaticPaths = async () => {
 
 export const getStaticProps = async (context) => {
   const slug = context.params.urlSlug;
-  const res = await fetch(process.env.JSON_API_URL + "/legal?urlSlug=" + slug);
-  const data = await res.json();
 
-  const resPaths = await fetch(process.env.JSON_API_URL + "/legal");
-  const pathData = await resPaths.json();
+  const docs = [];
+  await firebase
+    .firestore()
+    .collection("legal")
+    .get()
+    .then((snapshot) => {
+      snapshot.forEach((doc) => docs.push(doc.data()));
+    });
+
+  console.log(docs);
+
+  const currentDoc = [];
+  await firebase
+    .firestore()
+    .collection("legal")
+    .where("urlSlug", "==", slug)
+    .get()
+    .then((snapshot) => snapshot.forEach((doc) => currentDoc.push(doc.data())));
 
   return {
     props: {
-      legal: data[0],
-      paths: pathData,
+      legal: currentDoc[0],
+      paths: docs,
     },
   };
 };
@@ -57,14 +80,19 @@ const LegalPage = ({ legal, paths }) => {
                       : "")
                   }
                 >
-                  {path.navTitle}
+                  {path.metaTitle}
                 </a>
               </Link>
             ))}
           </div>
           <div className="col-span-6 lg:col-span-4">
-            <h1 className="text-2xl font-semibold mb-6">{legal.pageTitle}</h1>
-            <p className="text-justify">{legal.body}</p>
+            <h1 className="text-2xl font-semibold mb-6">{legal.metaTitle}</h1>
+            <p className="flex flex-col">
+              <MDEditor.Markdown
+                source={legal.body.replaceAll("\\n", "\n")}
+                className="flex flex-col"
+              />
+            </p>
           </div>
         </div>
       </div>
