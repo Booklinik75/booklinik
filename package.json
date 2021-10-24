@@ -22,6 +22,7 @@
     "firebase": "^8.8.0",
     "firebase-admin": "^9.11.0",
     "formik": "^2.2.9",
+    "framer-motion": "^4.1.17",
     "moment": "^2.29.1",
     "next": "^11.1.2",
     "next-remove-imports": "^1.0.5",
