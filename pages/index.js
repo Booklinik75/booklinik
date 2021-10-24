@@ -22,8 +22,8 @@ import {
 
 export const getStaticProps = async () => {
   const heroImage = await getFrontEndAsset("image-asset.jpg");
-  const categories = await getOperationCategories();
-  const categoriesSettings = await getSetting("surgeryCategoriesOrdering");
+  let categories = await getOperationCategories();
+  let categoriesSettings = await getSetting("surgeryCategoriesOrdering");
 
   await Promise.all(
     categories.map(async (operationCategory, index) => {
@@ -32,12 +32,26 @@ export const getStaticProps = async () => {
     })
   );
 
+  categoriesSettings = [...categoriesSettings, { others: "Autres opérations" }];
+  categories = [
+    ...categories,
+    {
+      slug: "others",
+      icon: "https://firebasestorage.googleapis.com/v0/b/booklinik.appspot.com/o/operations%2FAutres%20ope%CC%81rations.svg?alt=media&token=5aee4cf6-f092-46dc-8782-6aa4b402c6c9",
+      name: "Autres opérations",
+      id: "others",
+    },
+  ];
+
+  console.log(categories);
+  console.log(categoriesSettings);
   return {
     props: { heroImage, categories, categoriesSettings }, // will be passed to the page component as props
   };
 };
 
 export default function Home({ heroImage, categories, categoriesSettings }) {
+  console.log(categories, categoriesSettings);
   return (
     <div className="container mx-auto max-w-full">
       <Head>
@@ -59,7 +73,7 @@ export default function Home({ heroImage, categories, categoriesSettings }) {
           backgroundSize: "cover",
         }}
       >
-        <div className="flex h-screen items-center">
+        <div className="flex h-screen items-center justify-center">
           <div className="mx-4 my-12 shadow md:shadow-none xl:mx-auto md:my-32">
             <div className="bg-white bg-opacity-90 max-w-7xl p-10 md:p-20 rounded-xl">
               <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-center">
@@ -69,8 +83,8 @@ export default function Home({ heroImage, categories, categoriesSettings }) {
               <h2 className="text-xl md:text-2xl lg:text-3xl text-center mb-12">
                 Estimez et réservez votre voyage esthétique médical
               </h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-10 gap-6 home-hero-surgery-categories">
-                {categoriesSettings.slice(0, 5).map((orderedCategory) => {
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-10 gap-6 home-hero-surgery-categories">
+                {categoriesSettings.map((orderedCategory) => {
                   return categories.map((category) => {
                     return Object.keys(orderedCategory)[0].toString() ===
                       category.id ? (

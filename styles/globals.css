@@ -62,8 +62,6 @@ html {
   content: ", ";
 }
 
-.home-hero-surgery-categories > div:nth-child(4),
-.home-hero-surgery-categories > div:nth-child(5),
 .home-hero-surgery-categories > div:nth-child(6),
 .home-hero-surgery-categories > div:nth-child(7),
 .home-hero-surgery-categories > div:nth-child(8),
@@ -74,7 +72,9 @@ html {
 @media (min-width: 768px) {
   .home-hero-surgery-categories > div:nth-child(4),
   .home-hero-surgery-categories > div:nth-child(5),
-  .home-hero-surgery-categories > div:nth-child(6) {
+  .home-hero-surgery-categories > div:nth-child(6),
+  .home-hero-surgery-categories > div:nth-child(7),
+  .home-hero-surgery-categories > div:nth-child(8) {
     display: flex;
   }
 }
@@ -82,7 +82,8 @@ html {
 @media (min-width: 1024px) {
   .home-hero-surgery-categories > div:nth-child(7),
   .home-hero-surgery-categories > div:nth-child(8),
-  .home-hero-surgery-categories > div:nth-child(9) {
+  .home-hero-surgery-categories > div:nth-child(9),
+  .home-hero-surgery-categories > div:nth-child(10) {
     display: flex;
   }
 }
