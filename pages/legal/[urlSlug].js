@@ -89,7 +89,7 @@ const LegalPage = ({ legal, paths }) => {
             <h1 className="text-2xl font-semibold mb-6">{legal.metaTitle}</h1>
             <p className="flex flex-col">
               <MDEditor.Markdown
-                source={legal.body.replaceAll("\\n", "\n")}
+                source={legal.body.replace(/\\n/g, "\n")}
                 className="flex flex-col"
               />
             </p>
