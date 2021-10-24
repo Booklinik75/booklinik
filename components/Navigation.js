@@ -36,7 +36,7 @@ export default function Navigation() {
               </div>
               <div
                 className={
-                  "lg:flex flex-grow items-center bg-white lg:bg-transparent shadow lg:shadow-none p-5 absolute top-[calc(100%+1rem)] lg:static right-6" +
+                  "lg:flex flex-grow items-center bg-white lg:bg-transparent shadow lg:shadow-none p-5 absolute top-[calc(100%+1rem)] lg:static right-6 bg-white z-30 lg:bg-transparent" +
                   (menuOpen ? " flex" : " hidden")
                 }
               >
