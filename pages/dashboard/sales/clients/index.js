@@ -6,6 +6,7 @@ import { firebaseAdmin } from "firebase/clientAdmin";
 import firebase from "firebase/clientApp";
 import { useTable } from "react-table";
 import Link from "next/link";
+import CsvDownload from "react-json-to-csv";
 
 export const getServerSideProps = async (ctx) => {
   const auth = await checkAuth(ctx);
@@ -86,8 +87,19 @@ const CustomersList = ({ auth, users }) => {
 
   return (
     <DashboardUi userProfile={auth.props.userProfile} token={auth.props.token}>
-      <div className="col-span-6">
-        <h1 className="text-4xl">Clients</h1>
+      <div className="col-span-6 flex flex-col w-full gap-6">
+        <div className="flex gap-4 justify-between items-center">
+          <h1 className="text-4xl">Clients</h1>
+          <CsvDownload
+            data={users.map((user) => {
+              return { ...user.auth, ...user.details };
+            })}
+            filename="bookings.csv"
+            className="min-w-max transition px-10 py-3 rounded border border-shamrock bg-shamrock text-white hover:text-shamrock group hover:bg-white"
+          >
+            Exporter
+          </CsvDownload>
+        </div>
         <table {...getTableProps()} className="w-full">
           <thead>
             {headerGroups.map((headerGroup) => (
