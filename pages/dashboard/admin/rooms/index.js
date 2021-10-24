@@ -51,9 +51,7 @@ const RoomsList = ({ auth, hotels, rooms }) => {
                           key={room.slug}
                           className="col-span-12 md:col-span-6 lg:col-span-3"
                         >
-                          <Link
-                            href={`/dashboard/admin/rooms/edit/${room.slug}`}
-                          >
+                          <Link href={`/dashboard/admin/rooms/edit/${room.id}`}>
                             <a className="w-full lg:max-w-max">
                               <div
                                 key={room.slug}

@@ -205,7 +205,9 @@ export async function getHotelsWithIds() {
 
 export async function getRooms() {
   const snapshot = await firebase.firestore().collection("rooms").get();
-  return snapshot.docs.map((doc) => doc.data());
+  return snapshot.docs.map((doc) => {
+    return { ...doc.data(), id: doc.id };
+  });
 }
 
 export async function getClinics() {
