@@ -69,12 +69,9 @@ const EditRoom = ({ hotelsOptions, auth, room }) => {
 
   const handleImages = (e) => {
     setImages(Array.from(e.target.files));
-    console.log(Array.from(e.target.files));
   };
 
   const doUpdate = (f) => {
-    console.log(f);
-
     firebase
       .firestore()
       .collection("rooms")
