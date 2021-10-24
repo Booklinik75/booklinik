@@ -9,6 +9,8 @@ import DashboardButton from "../components/DashboardButton";
 import * as Yup from "yup";
 import { BiError } from "react-icons/bi";
 import { checkAuth, serverRedirect } from "utils/ServerHelpers";
+import errors from "utils/firebase_auth_errors";
+import * as Sentry from "@sentry/browser";
 
 export const getServerSideProps = async (ctx) => {
   const auth = await checkAuth(ctx);
@@ -89,10 +91,11 @@ const SignUp = () => {
             .doc(user.uid)
             .set(userData)
             .then((docRef) => {
-              router.push("dashboard");
+              router.push("/dashboard");
             })
             .catch((error) => {
-              return setError(error.message);
+              Sentry.captureException(error);
+              setError("Une erreur est survenue");
             });
         }
 
@@ -100,7 +103,12 @@ const SignUp = () => {
         router.push("/dashboard");
       })
       .catch((error) => {
-        setError(error.message);
+        if (errors[error.code]) {
+          setError(errors[error.code]);
+        } else {
+          setError("Une erreur est survenue");
+        }
+        Sentry.captureException(error);
       })
       .finally(() => {
         setLoading("idle");
