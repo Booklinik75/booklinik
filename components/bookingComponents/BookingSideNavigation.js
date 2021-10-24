@@ -9,7 +9,7 @@ import {
 } from "react-icons/fa";
 import { BsThreeDots } from "react-icons/bs";
 
-const BookingSideNavigation = ({ step }) => {
+const BookingSideNavigation = ({ step, bookingData }) => {
   return (
     <div
       style={{ height: "calc(100vh - 101px)" }}
@@ -21,7 +21,11 @@ const BookingSideNavigation = ({ step }) => {
         </p>
         <BookingStep currentStep={step} stepId={0}>
           <FaHospital />
-          <p>Greffe de poils</p>
+          <p>
+            {bookingData.surgeryName !== ""
+              ? bookingData.surgeryName
+              : "Sélectionnez une opération"}
+          </p>
         </BookingStep>
       </div>
       <div className="flex flex-col gap-3">
