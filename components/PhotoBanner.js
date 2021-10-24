@@ -28,7 +28,7 @@ const PhotoBanner = ({
       }
     >
       <h1
-        className="text-7xl md:text-8xl my-10"
+        className="text-7xl md:text-8xl my-10 font-decorative"
         style={{ display: title ? "block" : "none" }}
       >
         {title}

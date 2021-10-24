@@ -39,6 +39,9 @@ module.exports = {
         shamrock: "2px solid #33C383",
         bali: "2px solid #80A0AB",
       },
+      fontFamily: {
+        decorative: ["Hind Siliguri", "Montserrat"],
+      },
     },
   },
   variants: {
