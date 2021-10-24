@@ -8,6 +8,10 @@ import firebase from "../../firebase/clientApp";
 import { useAuthState } from "react-firebase-hooks/auth";
 import Loader from "components/Loader";
 import { useState, useEffect } from "react";
+import { toast } from "react-toastify";
+import * as Sentry from "@sentry/browser";
+import moment from "moment";
+import { useRouter } from "next/router";
 
 export const getServerSideProps = checkAuth;
 
@@ -15,6 +19,8 @@ export default function DashboardIndex({ userProfile, token }) {
   const [user, loading] = useAuthState(firebase.auth());
 
   const [bookings, setBookings] = useState([]);
+  const [message, setMessage] = useState("");
+  const router = useRouter();
 
   useEffect(() => {
     const asyncFunc = async () => {
@@ -39,6 +45,32 @@ export default function DashboardIndex({ userProfile, token }) {
 
     asyncFunc();
   }, []);
+
+  const handleMessage = (e) => {
+    e.preventDefault();
+
+    fetch("/api/mail", {
+      method: "post",
+      body: JSON.stringify({
+        recipient: "info@booklinik.com",
+        templateId: "d-6b9ed961cfdc44228824603584a8b740",
+        dynamicTemplateData: {
+          email: userProfile.email,
+          datetime: moment(new Date()).format("LLLL"),
+          message: message,
+          path: router.asPath,
+        },
+      }),
+    })
+      .then(() => {
+        toast.success("Message envoyé avec succès.");
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.error("Une erreur est survenue.");
+        Sentry.captureException(error);
+      });
+  };
 
   return (
     <div className="h-screen">
@@ -92,11 +124,13 @@ export default function DashboardIndex({ userProfile, token }) {
                 ) : (
                   ""
                 )}
-                <DashboardModal
-                  content="Vous devez ajoutez des documents dans une opération"
-                  cta="Ajouter"
-                  target="/dashboard/operations"
-                />
+                {bookings.some((b) => b.status === "awaitingDocuments") && (
+                  <DashboardModal
+                    content="Vous devez ajoutez des documents dans une opération"
+                    cta="Ajouter"
+                    target="/dashboard/operations"
+                  />
+                )}
                 <div className="flex flex-col mt-4 gap-2">
                   <p className="text-sm text-gray-700 uppercase">
                     Mes Opérations
@@ -142,8 +176,15 @@ export default function DashboardIndex({ userProfile, token }) {
                     rows={3}
                     className=" border-2 border-gray-300 bg-gray-100 p-3 w-full transition hover:border-bali focus:outline-none focus:border-shamrock rounded"
                     placeholder="J&lsquo;ai une question à propos de..."
+                    value={message}
+                    name="message"
+                    onChange={(e) => setMessage(e.target.value)}
                   />
-                  <button className="w-full text-bali transition hover:underline hover:text-shamrock ">
+                  <button
+                    className="w-full text-bali transition hover:underline hover:text-shamrock"
+                    type="submit"
+                    onClick={handleMessage}
+                  >
                     Envoyer mon message
                   </button>
                 </div>
