@@ -1,63 +1,81 @@
 import Image from "next/image";
-import { VscLoading } from "react-icons/vsc";
-import { FaHourglassHalf } from "react-icons/fa";
-import { IoMdAddCircle } from "react-icons/io";
-import { AiFillInfoCircle } from "react-icons/ai";
 import Link from "next/link";
-
-function currentState(currentState, id) {
-  if (currentState === "awaitingDocuments") {
-    return (
-      <div className="flex flex-row items-center gap-1">
-        <div className="text-red-500">
-          <AiFillInfoCircle />
-        </div>
-        <p>Des documents sont manquants</p>
-        <Link href={`dashboard/operations/${id}`}>
-          <a>
-            <div className="text-green-500 flex flex-row ml-4 items-center gap-1">
-              <IoMdAddCircle></IoMdAddCircle>
-              <p className="hover:underline">Ajouter</p>
-            </div>
-          </a>
-        </Link>
-      </div>
-    );
-  }
-  if (currentState === "examining") {
-    return (
-      <div className="flex flex-row items-center gap-1">
-        <div className="text-bali">
-          <FaHourglassHalf />
-        </div>
-        <p>Examen en cours</p>
-      </div>
-    );
-  }
-  return <div className="ml-3">Loading</div>;
-}
+import { GrDocumentMissing } from "react-icons/gr";
+import { FaUserClock, FaCreditCard, FaCheck, FaTimes } from "react-icons/fa";
 
 const DashboardOperationCard = ({ booking, noActions }) => {
+  const generateBookingStatus = (status) => {
+    if (status === "awaitingDocuments")
+      return {
+        text: "Documents manquants",
+        color: "red-500",
+        icon: <GrDocumentMissing />,
+      };
+    if (status === "examining" || status === "awaitingEstimate")
+      return {
+        text: "Examen en cours",
+        color: "yellow-500",
+        icon: <FaUserClock />,
+      };
+    if (status === "awaitingPayment")
+      return {
+        text: "À régler",
+        color: "blue-600",
+        icon: <FaCreditCard />,
+      };
+    if (status === "validated")
+      return {
+        text: "Validé",
+        color: "shamrock",
+        icon: <FaCheck />,
+      };
+    if (status === "cancelled")
+      return {
+        text: "Annulé",
+        color: "red",
+        icon: <FaTimes />,
+      };
+
+    return undefined;
+  };
+
+  const bookingStatus = generateBookingStatus(booking.status);
+
   return (
-    <div className="flex">
-      <Image
-        src={booking.hotelPhotoLink}
-        width={97}
-        height={80}
-        className="rounded"
-        alt="TBD"
-      />
-      <div className="p-3">
-        <p className="text-leading">
-          {booking.surgeryCategoryName} -{" "}
-          <span className="capitalize">{booking.city}</span>
-        </p>
-        <p className="text-xs text-bali">
-          {booking.hotelName} • {booking.total}&nbsp;€
-        </p>
-        {!noActions && <div>{currentState(booking.status, booking.id)}</div>}
-      </div>
-    </div>
+    <Link href={`/dashboard/operations/${booking.id}`}>
+      <a className="rounded transition hover:bg-gray-100 hover:cursor-pointer">
+        <div className="flex">
+          <Image
+            src={booking.hotelPhotoLink}
+            width={97}
+            height={80}
+            className="rounded"
+            alt="TBD"
+          />
+          <div className="p-3">
+            <p className="text-leading">
+              {booking.surgeryCategoryName} -{" "}
+              <span className="capitalize">{booking.city}</span>
+            </p>
+            <p className="text-xs text-bali">
+              {booking.hotelName} • {booking.total}&nbsp;€
+            </p>
+            {!noActions && bookingStatus && (
+              <div className="flex gap-2">
+                <p className={`text-${bookingStatus.color}`}>
+                  {bookingStatus.icon}
+                </p>
+                <p
+                  className={booking.status === "validated" && "text-shamrock"}
+                >
+                  {bookingStatus.text}
+                </p>
+              </div>
+            )}
+          </div>
+        </div>
+      </a>
+    </Link>
   );
 };
 

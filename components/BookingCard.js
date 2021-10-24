@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { GrDocumentMissing } from "react-icons/gr";
-import { FaUserClock, FaCreditCard, FaCheck } from "react-icons/fa";
+import { FaUserClock, FaCreditCard, FaCheck, FaTimes } from "react-icons/fa";
 
 const BookingCard = ({ booking }) => {
   const generateBookingStatus = (status) => {
@@ -11,7 +11,7 @@ const BookingCard = ({ booking }) => {
         color: "red-500",
         icon: <GrDocumentMissing />,
       };
-    if (status === "examining")
+    if (status === "examining" || status === "awaitingEstimate")
       return {
         text: "Examen en cours",
         color: "yellow-500",
@@ -28,6 +28,12 @@ const BookingCard = ({ booking }) => {
         text: "Validé",
         color: "shamrock",
         icon: <FaCheck />,
+      };
+    if (status === "cancelled")
+      return {
+        text: "Annulé",
+        color: "red",
+        icon: <FaTimes />,
       };
 
     return undefined;
