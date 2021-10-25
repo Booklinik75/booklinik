@@ -24,6 +24,7 @@ import {
   FaDownload,
   FaUpload,
   FaCheck,
+  FaCreditCard,
 } from "react-icons/fa";
 import { RiCloseCircleLine, RiCloseCircleFill } from "react-icons/ri";
 import Image from "next/image";
@@ -522,6 +523,20 @@ const OperationPage = ({
                 </a>
               </Link>
             ))}
+          </div>
+          <div className="col-span-1 flex flex-col gap-2 border border-blue-500 p-4 rounded">
+            <p className="text-3xl">Régler votre opération</p>
+            <p>Vous pouvez désormais régler votre opération.</p>
+            {data.status === "awaitingPayment" && (
+              <Link href={`/checkout/${bookingId}`}>
+                <a>
+                  <div className="transition h-max flex justify-between border border-blue-500 rounded py-2 px-4 items-center gap-4 hover:shadow hover:bg-blue-500 hover:cursor-pointer group">
+                    <p className="transition group-hover:text-white">Régler</p>
+                    <FaCreditCard className="transition text-blue-500 group-hover:text-white" />
+                  </div>
+                </a>
+              </Link>
+            )}
           </div>
         </div>
       </div>
