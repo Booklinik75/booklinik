@@ -73,16 +73,24 @@ const Customer = ({ auth, user, userBookings }) => {
   const router = useRouter();
 
   const roleOptions = [
-    { value: "admin", label: "Administrateur" },
     { value: "sales", label: "Commercial/sales" },
     { value: "guest", label: "Guest/invité" },
   ];
+
+  if (auth.props.userProfile.role === "admin")
+    roleOptions.push({ value: "admin", label: "Administrateur" });
 
   const [role, setRole] = useState(
     roleOptions.filter((r) => r.value === user.details.role)[0]
   );
 
   useEffect(() => {
+    if (
+      user.details.role === "admin" &&
+      auth.props.userProfile.role !== "admin"
+    )
+      return;
+
     if (role.value !== user.details.role) {
       firebase
         .firestore()
@@ -160,7 +168,8 @@ const Customer = ({ auth, user, userBookings }) => {
             </p>
             <p>
               <span className="font-bold">Date de naissance :</span>{" "}
-              {moment(user.details.birthdate).format("ll") || (
+              {(user.details.birthdate &&
+                moment(user.details.birthdate).format("ll")) || (
                 <span className="text-gray-400">null</span>
               )}
             </p>
@@ -209,8 +218,8 @@ const Customer = ({ auth, user, userBookings }) => {
                         <div className="col-span-1">
                           <DashboardOperationCard
                             booking={booking}
-                            noActions
                             salesMode
+                            withId
                           />
                         </div>
                       </a>

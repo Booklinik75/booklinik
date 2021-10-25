@@ -3,7 +3,7 @@ import Link from "next/link";
 import { GrDocumentMissing } from "react-icons/gr";
 import { FaUserClock, FaCreditCard, FaCheck, FaTimes } from "react-icons/fa";
 
-const DashboardOperationCard = ({ booking, noActions, salesMode }) => {
+const DashboardOperationCard = ({ booking, noActions, salesMode, withId }) => {
   const generateBookingStatus = (status) => {
     if (status === "awaitingDocuments")
       return {
@@ -55,8 +55,11 @@ const DashboardOperationCard = ({ booking, noActions, salesMode }) => {
             height={80}
             className="rounded"
             alt="TBD"
+            objectFit="cover"
           />
           <div className="p-3">
+            {withId && <p className="text-xs ">id : {booking.id}</p>}
+
             <p className="text-leading">
               {booking.surgeryCategoryName} -{" "}
               <span className="capitalize">{booking.city}</span>
