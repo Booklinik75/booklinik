@@ -11,6 +11,7 @@ import { BiError } from "react-icons/bi";
 import { checkAuth, serverRedirect } from "utils/ServerHelpers";
 import errors from "utils/firebase_auth_errors";
 import * as Sentry from "@sentry/browser";
+import MD5 from "crypto-js/md5";
 
 export const getServerSideProps = async (ctx) => {
   const auth = await checkAuth(ctx);
@@ -82,7 +83,9 @@ const SignUp = () => {
             lastname: null,
             mobilePhone: null,
             role: "guest",
+            referalCode: `WELCOME-${MD5(email).toString().substring(0, 5)}`,
             signupDate: new Date().toUTCString(),
+            referalBalance: 0,
           };
 
           firebase
@@ -108,6 +111,7 @@ const SignUp = () => {
         } else {
           setError("Une erreur est survenue");
         }
+        console.log(error);
         Sentry.captureException(error);
       })
       .finally(() => {

@@ -169,9 +169,9 @@ export default function DashboardIndex({ userProfile, token }) {
                     opérations.
                   </p>
                   <p className="w-full bg-shamrock text-white uppercase font-2xl text-center py-3 rounded">
-                    MAXM1002021
+                    {userProfile.referalCode ? userProfile.referalCode : "null"}
                   </p>
-                  <Link href="#" className="w-full">
+                  <Link href="/dashboard/parrainage" className="w-full">
                     <a className="w-full block text-center text-gray-700 text-xs hover:underline">
                       Ajouter un code de parrainage
                     </a>

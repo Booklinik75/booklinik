@@ -14,7 +14,7 @@ const DashboardInput = ({
   className,
 }) => {
   return (
-    <div className="col-span-12 flex-grow md:col-span-6">
+    <div className="col-span-12 flex-grow md:col-span-6 flex flex-col gap-2">
       <label className="text-xs uppercase text-gray-500 w-full" htmlFor={name}>
         {label}
       </label>

@@ -13,6 +13,8 @@ const errors = {
   "auth/user-disabled": "Cet utilisateur est désactivé",
   "auth/web-storage-unsupported":
     "Votre navigateur est incompatible avec Booklinik",
+  "auth/weak-password":
+    "Votre mot de passe doit contenir au moins 6 caractères",
 };
 
 export default errors;

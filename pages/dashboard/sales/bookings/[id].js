@@ -101,6 +101,8 @@ const Booking = ({ booking, auth, currentOperation }) => {
   const [status, setStatus] = useState(currentOption);
 
   const [estimatePrice, setEstimatePrice] = useState(booking.total);
+
+  const [useReferalBalance, setUseReferalBalance] = useState(false);
   // const [estimateFile, setEstimateFile] = useState("");
 
   const updateStatus = () => {
@@ -149,12 +151,18 @@ const Booking = ({ booking, auth, currentOperation }) => {
 
     setStatus("awaitingPayment");
 
-    if (estimatePrice !== booking.total) {
+    if (estimatePrice !== booking.total || useReferalBalance) {
+      let newPrice = estimatePrice;
+
+      if (useReferalBalance) {
+        newPrice = newPrice - booking.customer.referalBalance;
+      }
+
       firebase
         .firestore()
         .collection("bookings")
         .doc(booking.id)
-        .update({ alternativeTotal: Number(estimatePrice) })
+        .update({ alternativeTotal: newPrice })
         .then(() => {
           fetch("/api/mail", {
             method: "post",
@@ -168,6 +176,12 @@ const Booking = ({ booking, auth, currentOperation }) => {
           }).then(() => {
             definedStatusUpdate("awaitingPayment");
           });
+
+          firebase
+            .firestore()
+            .collection("users")
+            .doc(booking.customer.id)
+            .update({ referalBalance: 0 });
         });
     }
   };
@@ -260,6 +274,18 @@ const Booking = ({ booking, auth, currentOperation }) => {
                 <p className="text-sm">
                   Cette action entrainera l&apos;envoi du devis par e-mail,
                   ainsi que d&apos;un lien pour procéder au règlement.
+                </p>
+                <p className="text-sm flex items-center items-center gap-2">
+                  <span className="font-bold">Utiliser solde parrainage :</span>{" "}
+                  {booking.customer.referalBalance || 0} €
+                  <input
+                    type="checkbox"
+                    name="useReferalBalance"
+                    checked={useReferalBalance}
+                    onChange={(e) => {
+                      setUseReferalBalance(e.target.checked);
+                    }}
+                  />
                 </p>
                 <form onSubmit={handleEstimate} className="flex flex-col gap-2">
                   <DashboardInput
