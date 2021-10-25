@@ -64,6 +64,19 @@ export default function DashboardIndex({ userProfile, token }) {
     })
       .then(() => {
         toast.success("Message envoyé avec succès.");
+
+        fetch("/api/mail", {
+          method: "post",
+          body: JSON.stringify({
+            recipient: userProfile.email,
+            templateId: "d-57cbc54b5ac345beb1bfc6509381ccee",
+            dynamicTemplateData: {
+              email: userProfile.email,
+              datetime: moment(new Date()).format("LLLL"),
+              message: message,
+            },
+          }),
+        });
       })
       .catch((error) => {
         toast.error("Une erreur est survenue.");
