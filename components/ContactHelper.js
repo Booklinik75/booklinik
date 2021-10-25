@@ -31,6 +31,19 @@ const ContactHelper = () => {
     })
       .then(() => {
         toast.success("Message envoyé avec succès.");
+
+        fetch("/api/mail", {
+          method: "post",
+          body: JSON.stringify({
+            recipient: form.email,
+            templateId: "d-57cbc54b5ac345beb1bfc6509381ccee",
+            dynamicTemplateData: {
+              email: form.email,
+              datetime: moment(new Date()).format("LLLL"),
+              message: form.message,
+            },
+          }),
+        });
       })
       .catch((error) => {
         toast.error("Une erreur est survenue.");
