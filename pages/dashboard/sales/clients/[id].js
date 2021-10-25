@@ -1,14 +1,16 @@
-import { useMemo } from "react";
+import { useEffect, useState } from "react";
 import DashboardUi from "components/DashboardUi";
 import { checkAuth } from "utils/ServerHelpers";
 import { firebaseAdmin } from "firebase/clientAdmin";
 import firebase from "firebase/clientApp";
-import { useTable } from "react-table";
 import Link from "next/link";
 import { SiFirebase } from "react-icons/si";
 import { FaUserAlt, FaCalendar } from "react-icons/fa";
 import moment from "moment";
 import DashboardOperationCard from "components/DashboardOperationCard";
+import Dropdown from "react-dropdown";
+import { toast } from "react-toastify";
+import { useRouter } from "next/router";
 
 export const getServerSideProps = async (ctx) => {
   const auth = await checkAuth(ctx);
@@ -68,6 +70,33 @@ export const getServerSideProps = async (ctx) => {
 };
 
 const Customer = ({ auth, user, userBookings }) => {
+  const router = useRouter();
+
+  const roleOptions = [
+    { value: "admin", label: "Administrateur" },
+    { value: "sales", label: "Commercial/sales" },
+    { value: "guest", label: "Guest/invité" },
+  ];
+
+  const [role, setRole] = useState(
+    roleOptions.filter((r) => r.value === user.details.role)[0]
+  );
+
+  useEffect(() => {
+    if (role.value !== user.details.role) {
+      firebase
+        .firestore()
+        .collection("users")
+        .doc(user.auth.uid)
+        .update({ role: role.value })
+        .then(() => {
+          toast.success("Rôle mis à jour");
+          router.replace(router.asPath);
+        })
+        .catch(() => {});
+    }
+  }, [role]);
+
   return (
     <DashboardUi userProfile={auth.props.userProfile} token={auth.props.token}>
       <div className="col-span-6">
@@ -80,6 +109,20 @@ const Customer = ({ auth, user, userBookings }) => {
             : `${user.details.firstName} ${user.details.lastName}`}
         </h1>
         <div className="flex flex-col gap-4">
+          <div>
+            <p className="text-sm uppercase text-gray-600 mt-4">
+              Sélectionner un rôle
+              <Dropdown
+                options={roleOptions}
+                placeholder="Sélectionnez un role"
+                value={role}
+                onChange={(e) => {
+                  setRole(e);
+                }}
+                className="max-w-max"
+              />
+            </p>
+          </div>
           <div>
             <h2 className="text-2xl flex items-center gap-1 mb-2">
               <SiFirebase size={20} style={{ color: "#F2A43A" }} /> Firebase
@@ -164,7 +207,11 @@ const Customer = ({ auth, user, userBookings }) => {
                     >
                       <a className="hover:bg-gray-100 rounded">
                         <div className="col-span-1">
-                          <DashboardOperationCard booking={booking} noActions />
+                          <DashboardOperationCard
+                            booking={booking}
+                            noActions
+                            salesMode
+                          />
                         </div>
                       </a>
                     </Link>

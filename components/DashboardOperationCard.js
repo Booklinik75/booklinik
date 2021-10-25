@@ -3,7 +3,7 @@ import Link from "next/link";
 import { GrDocumentMissing } from "react-icons/gr";
 import { FaUserClock, FaCreditCard, FaCheck, FaTimes } from "react-icons/fa";
 
-const DashboardOperationCard = ({ booking, noActions }) => {
+const DashboardOperationCard = ({ booking, noActions, salesMode }) => {
   const generateBookingStatus = (status) => {
     if (status === "awaitingDocuments")
       return {
@@ -42,7 +42,11 @@ const DashboardOperationCard = ({ booking, noActions }) => {
   const bookingStatus = generateBookingStatus(booking.status);
 
   return (
-    <Link href={`/dashboard/operations/${booking.id}`}>
+    <Link
+      href={`/dashboard/${salesMode ? "sales/bookings/" : "operations/"}${
+        booking.id
+      }`}
+    >
       <a className="rounded transition hover:bg-gray-100 hover:cursor-pointer">
         <div className="flex">
           <Image
