@@ -127,7 +127,6 @@ const DashboardSideNav = ({ userProfile, token }) => {
             <DashboardSideNavItem
               title="Code de parrainage"
               target="/dashboard/parrainage"
-              disabled={true}
             />
           </div>
           <a
