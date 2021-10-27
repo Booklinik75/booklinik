@@ -38,10 +38,6 @@ const DashboardOperations = ({ userProfile, token }) => {
       <div className="col-span-12 space-y-3 transition">
         <div className="col-span-6">
           <h1 className="text-4xl">Mes opérations ({bookings?.length})</h1>
-          <p className="flex items-center gap-2">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua.
-          </p>
         </div>
         <div className="grid grid-cols-6 gap-8">
           {bookings.map((booking) => (
