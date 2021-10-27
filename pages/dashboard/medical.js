@@ -101,8 +101,9 @@ const MedicalProfile = ({ auth, medicalQuestions }) => {
           <span className="text-shamrock">
             <HiCheckCircle size={32} />
           </span>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua.
+          Veuillez indiquer vos informations médicales afin que l&apos;on puisse
+          confirmer vos demandes de reservations. Vous pouvez modifier ces
+          informations à tout moment.
         </p>
         <form className="w-full space-y-4" onSubmit={submitData}>
           <div className="flex gap-6">
