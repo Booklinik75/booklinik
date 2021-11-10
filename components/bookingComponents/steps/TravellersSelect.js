@@ -22,7 +22,7 @@ const TravellersSelectStep = ({ booking, setBooking }) => {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl mb-6">Combien de voyageurs ?</h1>
+      <h1 className="text-2xl mb-6">Souhaitez vous être accompagné ?</h1>
       <div className="w-52 flex justify-center flex-col">
         <div className="flex items-center p-4 justify-between border rounded-t border-gray-500">
           <div className="flex items-center gap-2 ">
