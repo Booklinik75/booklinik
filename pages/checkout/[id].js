@@ -172,7 +172,7 @@ const Checkout = ({ booking, stripeArgs, auth, stripeSession }) => {
                 Règlement de votre opération
               </h1>
               <p className="text-sm uppercase text-gray-400 flex gap-1">
-                Besoin d'aide ? Appelez nous au
+                Besoin d&apos;aide ? Appelez nous au
                 <Link href="tel:+33678901234">
                   <a className="hover:text-shamrock transition-colors">
                     +33 6 78 90 12 34
