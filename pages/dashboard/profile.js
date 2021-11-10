@@ -6,6 +6,7 @@ import DashboardButton from "../../components/DashboardButton";
 import { useState } from "react";
 import { formatDate } from "../../utils/ClientHelpers";
 import firebase from "../../firebase/clientApp";
+import { toast } from "react-toastify";
 
 export const getServerSideProps = checkAuth;
 
@@ -35,6 +36,14 @@ const ProfilePage = ({ userProfile, token }) => {
       .collection("users")
       .doc(token.uid)
       .update(profile)
+      .then(() => {
+        toast.success("Informations mises à jour");
+        setLoading("idle");
+      })
+      .catch((error) => {
+        toast.error("Erreur lors de la mise à jour");
+        setLoading("idle");
+      })
       .finally(setLoading("idle"));
   }
 
