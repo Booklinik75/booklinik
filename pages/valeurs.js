@@ -51,33 +51,29 @@ const Values = () => {
         discover={true}
       />
 
-      <div className="flex flex-col items-center mb-10" id="content">
-        <div className="flex flex-col items-center w-2/3 space-y-10 my-6">
-          <h2 className="font-bold text-3xl">La sécurité</h2>
-          <p className="text-center w-full lg:w-2/3">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit dolor
-            voluptatum laborum officiis eum accusamus vel ratione. At
-            consequuntur, illum consectetur laborum eius beatae quidem aliquam
-            voluptate, illo, sunt dignissimos!
-          </p>
-          <Link href="/etapes">
-            <a className="flex items-center text-lg text-bali hover:underline">
-              Découvrir les étapes clés de votre voyage{" "}
-              <FaChevronRight size={14} />
-            </a>
-          </Link>
-        </div>
-      </div>
-
-      <div className="bg-gray-50 py-10">
+      <div className="py-10">
         <div className="flex flex-col items-center" id="content">
-          <div className="flex flex-col items-center w-2/3 space-y-10 my-6">
-            <h2 className="font-bold text-3xl">Le confort</h2>
-            <p className="text-center w-full mb-4 lg:w-2/3">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit
-              dolor voluptatum laborum officiis eum accusamus vel ratione. At
-              consequuntur, illum consectetur laborum eius beatae quidem aliquam
-              voluptate, illo, sunt dignissimos!
+          <div className="flex flex-col items-center space-y-10 my-6">
+            <p className="text-center w-full mb-4 prose prose-lg">
+              Booklinik est une plateforme de réservation en ligne pour votre
+              intervention esthétique. Nous sommes une startup française
+              spécialisée dans la mise en relation de patients et cliniques
+              esthétiques. Nous avons 7 ans d&apos;expériences dans le monde de
+              la chirurgie esthétique et médicale avec plus de 8400
+              interventions à notre actif.
+            </p>
+            <p className="text-center w-full mb-4 prose prose-lg">
+              Une équipe jeune et dynamique avec chacun ses compétences. Sur
+              Booklinik, en seulement quelques clics, le patient peut créer son
+              profil, importer ses photos et indiquer ses disponibilités. La
+              plateforme analyse votre demande et vous propose le meilleur
+              chirurgien pour votre opération esthétique tout en proposant des
+              facilités de paiement.
+            </p>
+            <p className="text-center w-full mb-4 prose prose-lg">
+              Une application mobile est en cours de lancement pour que vous
+              puissiez suivre toutes les instructions nécessaires une fois
+              arrivée sur place.
             </p>
           </div>
         </div>
@@ -117,13 +113,27 @@ const Values = () => {
 
       <div className="bg-white py-10">
         <div className="flex flex-col items-center" id="content">
-          <div className="flex flex-col items-center w-2/3 space-y-10 my-6">
+          <div className="flex flex-col items-center space-y-10 my-6">
             <h2 className="font-bold text-3xl">La découverte</h2>
-            <p className="text-center w-full mb-4 lg:w-2/3">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit
-              dolor voluptatum laborum officiis eum accusamus vel ratione. At
-              consequuntur, illum consectetur laborum eius beatae quidem aliquam
-              voluptate, illo, sunt dignissimos!
+            <p className="text-center w-full mb-4 prose prose-lg">
+              Aujourd&apos;hui, 9 patients sur 10 font leurs recherches sur
+              Internet et prennent le risque de se faire opérer dans des
+              cliniques sans connaître les capacités du chirurgien et sans avoir
+              la garantie d&apos;un suivi. Booklinik est sur le terrain pour
+              vous, nous avons pris en compte les manques et les remarques de
+              nos patients et sélectionné les meilleurs médecins et cliniques
+              dans leur domaine.
+            </p>
+            <p className="text-center w-full mb-4 prose prose-lg">
+              Une équipe de contrôle qualité et d&apos;hygiène est sur place
+              tous les jours sur le terrain pour vous apporter une meilleure
+              expérience. Nos accompagnateurs francophones sont bilingues et
+              vous suivent dès votre arrivée le jour de l&apos;intervention et
+              jusqu&apos;à votre départ.
+            </p>
+            <p className="text-center w-full mb-4 prose prose-lg">
+              Notre équipe en France est connecté et disponible pour votre suivi
+              et reste à votre disponibilité pour toutes questions.
             </p>
           </div>
         </div>

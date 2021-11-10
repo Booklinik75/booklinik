@@ -14,12 +14,12 @@ const KeySteps = () => {
   return (
     <div>
       <Head>
-        <title>Booklinik | Comment ça marche ?</title>
+        <title>Booklinik | Les étapes clés</title>
       </Head>
       <Navigation />
 
       <PhotoBanner
-        title="Les etapes cles"
+        title="Les etapes clés"
         body={body}
         fileName={fileName}
         discover={true}

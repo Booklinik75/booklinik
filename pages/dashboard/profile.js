@@ -23,7 +23,7 @@ const ProfilePage = ({ userProfile, token }) => {
       ...profile,
 
       // Trimming any whitespace
-      [e.target.name]: e.target.value.trim(),
+      [e.target.name]: e.target.value,
     });
   };
 

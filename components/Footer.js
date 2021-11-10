@@ -34,7 +34,7 @@ const Footer = () => {
                 <a className="hover:underline">Notre mission</a>
               </Link>
               <Link href="/etapes">
-                <a className="hover:underline">Comment ça marche ?</a>
+                <a className="hover:underline">Les étapes clés</a>
               </Link>
               <Link href="#">
                 <a className="hover:underline">Les cliniques</a>

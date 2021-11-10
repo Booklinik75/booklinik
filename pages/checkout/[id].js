@@ -167,9 +167,19 @@ const Checkout = ({ booking, stripeArgs, auth, stripeSession }) => {
                 </p>
               </div>
             )}
-            <h1 className="text-4xl text-shamrock">
-              Règlement de votre opération
-            </h1>
+            <div>
+              <h1 className="text-4xl text-shamrock">
+                Règlement de votre opération
+              </h1>
+              <p className="text-sm uppercase text-gray-400 flex gap-1">
+                Besoin d'aide ? Appelez nous au
+                <Link href="tel:+33678901234">
+                  <a className="hover:text-shamrock transition-colors">
+                    +33 6 78 90 12 34
+                  </a>
+                </Link>
+              </p>
+            </div>
 
             <div className="w-full flex gap-2 flex-col">
               <p className="text-xl font-bold">Résumé</p>
