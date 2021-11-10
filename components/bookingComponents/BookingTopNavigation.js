@@ -6,6 +6,15 @@ import { useEffect, useState } from "react";
 const BookingTopNavigation = ({ bookingData }) => {
   const [estimate, setEstimate] = useState(0);
 
+  console.log(
+    Number(bookingData.surgeryPrice),
+    Number(bookingData.totalExtraTravellersPrice),
+    Number(bookingData.hotelPrice),
+    Number(bookingData.totalSelectedNights),
+    Number(bookingData.roomPrice),
+    Number(bookingData.totalSelectedNights)
+  );
+
   useEffect(() => {
     setEstimate(
       Number(bookingData.surgeryPrice) +
@@ -14,18 +23,11 @@ const BookingTopNavigation = ({ bookingData }) => {
           Number(bookingData.totalSelectedNights) +
         Number(bookingData.roomPrice) *
           Number(bookingData.totalSelectedNights) +
-        bookingData.options
+        (bookingData.options
           ?.map((option) => option.isChecked && Number(option.price))
-          .reduce((a, b) => a + b)
+          .reduce((a, b) => a + b) || 0)
     );
-  }, [
-    bookingData.surgeryPrice,
-    bookingData.totalExtraTravellersPrice,
-    bookingData.hotelPrice,
-    bookingData.roomPrice,
-    bookingData.totalSelectedNights,
-    bookingData.options,
-  ]);
+  }, [bookingData]);
 
   return (
     <div className="flex flex-row w-full items-center justify-between z-50 px-10 py-6 bg-white border-b border-gray-500">

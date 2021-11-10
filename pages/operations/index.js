@@ -68,6 +68,7 @@ const OperationsList = ({
       />
 
       <div className="hidden lg:flex w-full bg-shamrock gap-2 justify-center p-5 text-white">
+        {console.log(operationCategories)}
         {operationCategories
           .slice(0, operationCategories.length - 2)
           .map((category) => (
