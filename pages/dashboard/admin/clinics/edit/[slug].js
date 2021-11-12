@@ -207,7 +207,33 @@ const UpdateClinic = ({ citiesOptions, data, id, auth }) => {
             </label>
             <MDEditor value={mdValue} onChange={setMdValue} />
           </div>
-          <DashboardButton defaultText="Mettre à jour" status={isLoading} />
+          <div className="flex gap-2">
+            <DashboardButton defaultText="Mettre à jour" status={isLoading} />
+            {/* delete clinic button */}
+            <button
+              type="button"
+              className="bg-red-500 hover:bg-red-700 text-white font-bold px-10 py-3 rounded focus:outline-none focus:shadow-outline"
+              onClick={() => {
+                if (
+                  window.confirm(
+                    "Voulez-vous vraiment supprimer cette clinique ?"
+                  )
+                ) {
+                  firebase
+                    .firestore()
+                    .collection("clinics")
+                    .doc(id)
+                    .delete()
+                    .catch((error) => {})
+                    .finally(() => {
+                      router.push("/dashboard/admin/clinics");
+                    });
+                }
+              }}
+            >
+              Supprimer
+            </button>
+          </div>
         </form>
       </div>
     </DashboardUi>
