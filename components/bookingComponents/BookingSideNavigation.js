@@ -8,6 +8,7 @@ import {
   FaBed,
 } from "react-icons/fa";
 import { BsThreeDots } from "react-icons/bs";
+import moment from "moment";
 
 const BookingSideNavigation = ({ step, bookingData }) => {
   return (
@@ -32,11 +33,26 @@ const BookingSideNavigation = ({ step, bookingData }) => {
         <p className="text-xs text-gray-500 uppercase">2. Date de départ</p>
         <BookingStep currentStep={step} stepId={1}>
           <FaCalendarAlt />
-          <p>Date de départ</p>
+          <p>
+            {bookingData.endDate !== ""
+              ? `${moment(bookingData.startDate).format(
+                  "DD/MM/YYYY"
+                )} - ${moment(bookingData.endDate).format("DD/MM/YYYY")}`
+              : "Date de départ"}
+          </p>
         </BookingStep>
         <BookingStep currentStep={step} stepId={2}>
           <FaUserAlt />
-          <p>Nombre de voyageurs</p>
+          <p>
+            {step >= 2
+              ? `${
+                  1 +
+                  bookingData.extraTravellers +
+                  bookingData.extraChilds +
+                  bookingData.extraBabies
+                } voyageur(s)`
+              : "Nombre de voyageurs"}
+          </p>
         </BookingStep>
       </div>
       <div className="flex flex-col gap-3">
@@ -45,7 +61,9 @@ const BookingSideNavigation = ({ step, bookingData }) => {
         </p>
         <BookingStep currentStep={step} stepId={3}>
           <FaPlane />
-          <p>Ville, pays</p>
+          <p className="first-letter:capitalize">
+            {bookingData.city ? bookingData.city : "Ville"}
+          </p>
         </BookingStep>
       </div>
       <div className="flex flex-col gap-3">
