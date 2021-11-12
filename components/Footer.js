@@ -114,7 +114,7 @@ const Footer = () => {
               </div>
             </div>
             <div className="flex space-x-3">
-              <Link href="#">
+              <Link href="https://instagram.com/booklinik?utm_medium=website">
                 <a>
                   <div className="cursor-pointer transition hover:text-shamrock">
                     <FaInstagram size={24} />
@@ -125,20 +125,6 @@ const Footer = () => {
                 <a>
                   <div className="cursor-pointer transition hover:text-shamrock">
                     <FaFacebookSquare size={24} />
-                  </div>
-                </a>
-              </Link>
-              <Link href="#">
-                <a>
-                  <div className="cursor-pointer transition hover:text-shamrock">
-                    <FaYoutube size={24} />
-                  </div>
-                </a>
-              </Link>
-              <Link href="#">
-                <a>
-                  <div className="cursor-pointer transition hover:text-shamrock">
-                    <FaWhatsapp size={24} />
                   </div>
                 </a>
               </Link>
