@@ -6,15 +6,6 @@ import { useEffect, useState } from "react";
 const BookingTopNavigation = ({ bookingData }) => {
   const [estimate, setEstimate] = useState(0);
 
-  console.log(
-    Number(bookingData.surgeryPrice),
-    Number(bookingData.totalExtraTravellersPrice),
-    Number(bookingData.hotelPrice),
-    Number(bookingData.totalSelectedNights),
-    Number(bookingData.roomPrice),
-    Number(bookingData.totalSelectedNights)
-  );
-
   useEffect(() => {
     setEstimate(
       Number(bookingData.surgeryPrice) +
