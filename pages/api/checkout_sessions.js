@@ -25,6 +25,20 @@ export default async function handler(req, res) {
         currency: "eur",
       });
 
+      let coupon = false;
+
+      // check if the coupon is valid if promoCode is present, if so, update coupon
+      try {
+        if (body.promoCode !== null) {
+          const couponCheck = await stripe.coupons.retrieve(body.promoCode);
+          if (couponCheck.valid) {
+            coupon = body.promoCode;
+          }
+        }
+      } catch (error) {
+        console.log(error);
+      }
+
       // Create Checkout Sessions from body params.
       const session = await stripe.checkout.sessions.create({
         line_items: [
@@ -36,6 +50,13 @@ export default async function handler(req, res) {
         payment_method_types: ["card"],
         mode: "payment",
         locale: "fr",
+        ...(coupon && {
+          discounts: [
+            {
+              coupon: coupon,
+            },
+          ],
+        }),
         success_url: `${req.headers.origin}/checkout/${body.id}?success=true&session_id={CHECKOUT_SESSION_ID}`,
         cancel_url: `${req.headers.origin}/checkout/${body.id}?canceled=true`,
       });

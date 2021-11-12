@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Link from "next/link";
 import Logo from "public/booklinik-logo.svg";
 import Image from "next/image";
@@ -9,7 +10,6 @@ import { checkAuth, serverRedirect } from "utils/ServerHelpers";
 import moment from "moment";
 import DashboardButton from "components/DashboardButton";
 import { loadStripe } from "@stripe/stripe-js";
-import { useRouter } from "next/router";
 
 export const getServerSideProps = async (ctx) => {
   const auth = await checkAuth(ctx);
@@ -113,10 +113,16 @@ export const getServerSideProps = async (ctx) => {
 };
 
 const Checkout = ({ booking, stripeArgs, auth, stripeSession }) => {
+  // promo code state
+  const [promoCode, setPromoCode] = useState(null);
+  const [promoCodeInput, setPromoCodeInput] = useState(false);
+
   const initiatePayment = async () => {
     const stripe = await loadStripe(
       process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
     );
+
+    const body = {};
 
     fetch("/api/checkout_sessions", {
       method: "post",
@@ -127,6 +133,7 @@ const Checkout = ({ booking, stripeArgs, auth, stripeSession }) => {
         product: booking.surgeryName,
         image: booking.hotelPhotoLink,
         id: booking.id,
+        promoCode,
       }),
     })
       .then((res) => res.json())
@@ -194,6 +201,35 @@ const Checkout = ({ booking, stripeArgs, auth, stripeSession }) => {
               <p>{`${booking.totalTravellers} voyageur${
                 Number(booking.totalTravellers) > 1 ? "s" : ""
               }`}</p>
+              {!promoCodeInput && (
+                <button
+                  onClick={() => {
+                    setPromoCodeInput(true);
+                  }}
+                  className="transition-colors hover:text-shamrock w-max mt-3 text-gray-500"
+                >
+                  Vous avez un code promotionnel ?
+                </button>
+              )}
+              {promoCodeInput && (
+                <div className="w-full mt-3">
+                  <input
+                    className="w-full p-2 border-2 border-shamrock rounded"
+                    type="text"
+                    placeholder="Code promo"
+                    value={promoCode}
+                    onChange={(e) => setPromoCode(e.target.value)}
+                  />
+                  <button
+                    onClick={() => {
+                      setPromoCodeInput(false);
+                    }}
+                    className="transition-colors hover:text-shamrock w-max mt-3 text-gray-500"
+                  >
+                    Annuler
+                  </button>
+                </div>
+              )}
               <hr className="border-gray-900" />
               <div className="flex w-full justify-between gap-4 text-xl text-bali mb-4">
                 <p className="font-bold ">Total</p>
