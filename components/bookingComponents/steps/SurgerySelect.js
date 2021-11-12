@@ -1,4 +1,5 @@
 import { IoIosCloseCircle } from "react-icons/io";
+import { useEffect } from "react";
 
 const SurgerySelectStep = ({
   surgeryCategories,
@@ -8,7 +9,15 @@ const SurgerySelectStep = ({
   setBooking,
   handleSurgerySelect,
   handleSurgeryCategorySelect,
+  setNextStep,
 }) => {
+  useEffect(() => {
+    // setNextStep to true when all inputs are filled
+    if (booking.surgeryCategory && booking.surgery) {
+      setNextStep(true);
+    }
+  }, [booking]);
+
   return (
     <div className="space-y-6">
       <h1 className="text-2xl mb-6">

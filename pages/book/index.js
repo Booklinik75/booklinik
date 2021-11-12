@@ -110,6 +110,8 @@ const NewBookingContainer = ({
   const extraChildsSupplement = 450;
   const extraBabiesSupplement = 450;
 
+  const [nextStep, setNextStep] = useState(false);
+
   useEffect(() => {
     let totalExtraTravellers =
       extraTravellersSupplement * booking.extraTravellers +
@@ -209,7 +211,12 @@ const NewBookingContainer = ({
         </div>
       )}
       {loading === false && user !== null ? (
-        <FormStepper booking={booking} user={user}>
+        <FormStepper
+          booking={booking}
+          user={user}
+          nextStep={nextStep}
+          setNextStep={setNextStep}
+        >
           <SurgerySelectStep
             surgeryCategories={surgeryCategories}
             booking={booking}
@@ -218,6 +225,7 @@ const NewBookingContainer = ({
             setBooking={setBooking}
             handleSurgerySelect={handleSurgerySelect}
             handleSurgeryCategorySelect={handleSurgeryCategorySelect}
+            setNextStep={setNextStep}
           />
 
           <DatesSelectStep
@@ -225,9 +233,14 @@ const NewBookingContainer = ({
             onCalendarEndDateChange={onCalendarEndDateChange}
             booking={booking}
             addDays={addDays}
+            setNextStep={setNextStep}
           />
 
-          <TravellersSelectStep booking={booking} setBooking={setBooking} />
+          <TravellersSelectStep
+            booking={booking}
+            setBooking={setBooking}
+            setNextStep={setNextStep}
+          />
 
           <CitySelectStep
             booking={booking}
@@ -235,23 +248,28 @@ const NewBookingContainer = ({
             cities={cities}
             hotels={hotels}
             handleChange={handleChange}
+            setNextStep={setNextStep}
           />
 
           <HotelSelectStep
             booking={booking}
             hotels={hotels}
             handleHotelSelect={handleHotelSelect}
+            setNextStep={setNextStep}
           />
 
           <RoomsSelectStep
             booking={booking}
             rooms={rooms}
             handleRoomSelect={handleRoomSelect}
+            setNextStep={setNextStep}
           />
+
           <OptionsSelectStep
             booking={booking}
             options={options}
             handleOptionsSelect={handleOptionsSelect}
+            setNextStep={setNextStep}
           />
 
           <BookingConfirmation booking={booking} />

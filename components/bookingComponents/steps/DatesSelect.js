@@ -1,14 +1,27 @@
 import { AiFillInfoCircle } from "react-icons/ai";
 import Calendar from "react-calendar";
 import { useState } from "react";
+import { useEffect } from "react";
 
 const DatesSelectStep = ({
   onCalendarStartDateChange,
   onCalendarEndDateChange,
   booking,
   addDays,
+  setNextStep,
 }) => {
   const [hideReturnCalendar, setHideReturnCalendar] = useState(true);
+
+  useEffect(() => {
+    // setNextStep to true when all inputs are filled
+    if (
+      booking.startDate &&
+      booking.endDate &&
+      booking.endDate !== booking.startDate
+    ) {
+      setNextStep(true);
+    }
+  }, [booking]);
 
   return (
     <div className="space-y-6">

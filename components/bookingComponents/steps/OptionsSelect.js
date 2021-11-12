@@ -5,7 +5,12 @@ import { useState, useEffect } from "react";
 import { AiFillCheckCircle } from "react-icons/ai";
 import { BsCircle } from "react-icons/bs";
 
-const OptionsSelectStep = ({ options, booking, handleOptionsSelect }) => {
+const OptionsSelectStep = ({
+  options,
+  booking,
+  handleOptionsSelect,
+  setNextStep,
+}) => {
   const [optionsList, setOptionsList] = useState(
     options[booking.hotelId][0].map((opt) => {
       return { ...opt, isChecked: false };
@@ -22,6 +27,10 @@ const OptionsSelectStep = ({ options, booking, handleOptionsSelect }) => {
     handleOptionsSelect(optionsList);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [optionsList]);
+
+  useEffect(() => {
+    setNextStep(true);
+  }, []);
 
   return (
     <div className="space-y-6 h-full">

@@ -1,6 +1,7 @@
 import { FaUserAlt } from "react-icons/fa";
+import { useEffect } from "react";
 
-const TravellersSelectStep = ({ booking, setBooking }) => {
+const TravellersSelectStep = ({ booking, setBooking, setNextStep }) => {
   const handleIncrement = (e) => {
     if (e.target.attributes.do.value === "add") {
       setBooking({
@@ -19,6 +20,10 @@ const TravellersSelectStep = ({ booking, setBooking }) => {
       });
     }
   };
+
+  useEffect(() => {
+    setNextStep(true);
+  }, []);
 
   return (
     <div className="space-y-6">
