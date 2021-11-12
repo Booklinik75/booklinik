@@ -10,6 +10,7 @@ import Link from "next/link";
 import { FaExternalLinkAlt } from "react-icons/fa";
 import { useRouter } from "next/router";
 import DashboardInput from "Components/DashboardInput";
+import { FaEye } from "react-icons/fa";
 
 export const getServerSideProps = async (ctx) => {
   const auth = await checkAuth(ctx);
@@ -189,15 +190,109 @@ const Booking = ({ booking, auth, currentOperation }) => {
   return (
     <DashboardUi userProfile={auth.props.userProfile} token={auth.props.token}>
       <div className="col-span-6">
-        <h1 className="text-4xl flex mb-2">
-          <span className="font-bold">Réservation&nbsp;:&nbsp;</span>
-          {booking.id}
-        </h1>
+        <div className="mb-4">
+          <h1 className="text-4xl flex">
+            <span className="font-bold">Réservation&nbsp;:&nbsp;</span>
+            {booking.id}
+          </h1>
+          <p>
+            {/* See client's page */}
+            <Link href={`/dashboard/sales/clients/${booking.customer.id}`}>
+              <a className="text-blue-500 flex gap-1 items-center">
+                <FaEye /> Voir la fiche client
+              </a>
+            </Link>
+          </p>
+        </div>
         <div className="grid grid-cols-3 lg:grid-cols-6 gap-4">
           <div className="col-span-3 space-y-2">
             <p className="text-sm text-gray-800 uppercase">Données</p>
-            <div className="h-96 rounded w-full bg-gray-50 border border-gray-500 border-dashed flex items-center justify-center">
-              <p className="text-7xl">🚧</p>
+            <div className="h-96 rounded w-full p-4 overflow-y-auto bg-gray-50 border border-gray-500 border-dashed flex">
+              <div className="flex flex-col space-y-4">
+                <div>
+                  <p className="text-sm text-gray-800 uppercase">Dates</p>
+                  <p className="text-gray-600">
+                    {new Date(booking.startDate).toLocaleDateString()}
+                    &nbsp;-&nbsp;
+                    {new Date(booking.endDate).toLocaleDateString()}
+                    {booking.endDate > new Date().getTime() && (
+                      <span className="text-red-500">&nbsp;(en cours)</span>
+                    )}
+                    {booking.totalSelectedNights > 0 && (
+                      <span className="text-green-500">
+                        &nbsp;(
+                        {booking.totalSelectedNights}
+                        {booking.totalSelectedNights > 1 ? " jours" : " jour"})
+                      </span>
+                    )}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-sm text-gray-800 uppercase font-medium">
+                    Opération
+                  </p>
+                  <p className="text-gray-600">{booking.surgery}</p>
+                </div>
+                <div>
+                  <p className="text-sm text-gray-800 uppercase font-medium">
+                    Prix
+                  </p>
+                  <p className="text-gray-600 flex gap-1">
+                    <span
+                      className={`${
+                        booking.total !== booking.alternativeTotal &&
+                        "line-through"
+                      }`}
+                    >
+                      {booking.total}€
+                    </span>
+                    {booking.total !== booking.alternativeTotal && (
+                      <span className="text-green-500">
+                        (devis&nbsp;:&nbsp;{booking.alternativeTotal}€)
+                      </span>
+                    )}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-sm text-gray-800 uppercase font-medium">
+                    Status
+                  </p>
+                  <p className="text-gray-600">{currentOption.label}</p>
+                </div>
+                <div>
+                  <p className="text-sm text-gray-800 uppercase font-medium">
+                    Destination
+                  </p>
+                  <p className="text-gray-600">
+                    {booking.hotelName}, {booking.roomName}
+                    <br />@{" "}
+                    <span className="first-letter:uppercase">
+                      {booking.city}
+                    </span>
+                  </p>
+                </div>
+                <div>
+                  <p className="text-sm text-gray-800 uppercase font-medium">
+                    Options
+                  </p>
+                  <p className="text-gray-600">
+                    {booking.options.map(
+                      (option) =>
+                        option.isChecked && `${option.name} (+${option.price}€)`
+                    )}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-sm text-gray-800 uppercase font-medium">
+                    Voyageurs
+                  </p>
+                  <p className="text-gray-600">
+                    {booking.extraTravellers + 1} adulte(s),{" "}
+                    {booking.extraChilds || "0"} enfant(s),{" "}
+                    {booking.extraBabies || "0"} bébé(s)
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
           <div className="col-span-3 space-y-2">
