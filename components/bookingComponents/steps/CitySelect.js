@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { AiOutlineCheckCircle } from "react-icons/ai";
+import { useEffect } from "react";
 
 const CitySelectStep = ({
   booking,
@@ -7,7 +8,13 @@ const CitySelectStep = ({
   cities,
   hotels,
   handleChange,
+  setNextStep,
 }) => {
+  useEffect(() => {
+    // setNextStep to true when all inputs are filled
+    if (booking.city) setNextStep(true);
+  }, [booking]);
+
   return (
     <div className="space-y-6">
       <h1 className="text-2xl mb-6">Où voulez-vous partir ?</h1>

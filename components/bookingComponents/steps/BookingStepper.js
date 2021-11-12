@@ -5,7 +5,7 @@ import { Children, useState } from "react";
 import { useRouter } from "next/router";
 import firebase from "../../../firebase/clientApp";
 
-const FormStepper = ({ children, booking, user }) => {
+const FormStepper = ({ children, booking, user, nextStep, setNextStep }) => {
   const stepsArray = Children.toArray(children);
   const [step, setStep] = useState(0);
   const router = useRouter();
@@ -94,8 +94,15 @@ const FormStepper = ({ children, booking, user }) => {
                 </button>
               ) : (
                 <button
-                  onClick={() => setStep((s) => s + 1)}
+                  onClick={() => {
+                    // if nextStep is true
+                    if (nextStep) {
+                      setNextStep(false);
+                      setStep((s) => s + 1);
+                    }
+                  }}
                   className="flex items-center gap-1 border border-shamrock bg-shamrock text-white transition hover:bg-white hover:text-shamrock px-5 py-2 rounded disabled:hover:bg-shamrock disabled:hover:text-white disabled:opacity-30 disabled:cursor-not-allowed"
+                  disabled={!nextStep}
                 >
                   {step === stepsArray.length - 2 ? "Finaliser" : "Continuer"}
                   <BsArrowRight />

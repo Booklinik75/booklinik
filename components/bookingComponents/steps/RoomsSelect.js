@@ -3,8 +3,14 @@ import StarRating from "../../StarRating";
 import { BiBed } from "react-icons/bi";
 import { AiFillCheckCircle } from "react-icons/ai";
 import { BsCircle } from "react-icons/bs";
+import { useEffect } from "react";
 
-const RoomsSelectStep = ({ booking, rooms, handleRoomSelect }) => {
+const RoomsSelectStep = ({ booking, rooms, handleRoomSelect, setNextStep }) => {
+  useEffect(() => {
+    // setNextStep to true when all inputs are filled
+    if (booking.room) setNextStep(true);
+  }, [booking]);
+
   return (
     <div className="space-y-6 h-full">
       <h1 className="text-2xl mb-6">

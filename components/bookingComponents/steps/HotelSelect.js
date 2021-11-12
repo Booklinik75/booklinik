@@ -1,8 +1,19 @@
 import Image from "next/image";
 import StarRating from "../../StarRating";
 import { AiOutlineCheckCircle } from "react-icons/ai";
+import { useEffect } from "react";
 
-const HotelSelectStep = ({ booking, hotels, handleHotelSelect }) => {
+const HotelSelectStep = ({
+  booking,
+  hotels,
+  handleHotelSelect,
+  setNextStep,
+}) => {
+  useEffect(() => {
+    // setNextStep to true when all inputs are filled
+    if (booking.hotel) setNextStep(true);
+  }, [booking]);
+
   return (
     <div className="space-y-6">
       <h1 className="text-2xl mb-6">
