@@ -90,14 +90,6 @@ const Values = () => {
             ></iframe>
           </div>
         </div>
-        <div className="flex items-center w-screen text-bali justify-center mt-6">
-          <Link href="/destinations">
-            <a className="flex items-center text-lg text-bali hover:underline">
-              Découvrez les hôtels sélectionné juste pour vous
-            </a>
-          </Link>
-          <FaChevronRight size={14} />
-        </div>
       </div>
 
       <div className="bg-white py-10">
@@ -124,30 +116,6 @@ const Values = () => {
               Notre équipe en France est connecté et disponible pour votre suivi
               et reste à votre disponibilité pour toutes questions.
             </p>
-          </div>
-        </div>
-        <div className="relative mt-6">
-          <button
-            onClick={scrollPrev}
-            className="absolute z-50 top-1/2 left-3 text-white"
-          >
-            <FaChevronLeft size={36} />
-          </button>
-          <button
-            onClick={scrollNext}
-            className="absolute z-50 top-1/2 right-3 text-white"
-          >
-            <FaChevronRight size={36} />
-          </button>
-
-          <div className="embla overflow-hidden" ref={viewportRef}>
-            <div className="embla__container flex">
-              <EmblaSlide />
-              <EmblaSlide />
-              <EmblaSlide />
-              <EmblaSlide />
-              <EmblaSlide />
-            </div>
           </div>
         </div>
         <div className="flex items-center w-screen text-bali justify-center mt-6">
