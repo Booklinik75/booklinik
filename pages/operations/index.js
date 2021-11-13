@@ -29,7 +29,8 @@ export const getStaticProps = async (context) => {
     .doc("surgeryCategoriesOrdering")
     .get();
 
-  const orderedSurgeryCategories = categoriesOrder
+  // array that sorts operationCategories based on orderSurgeryCategories
+  const sortedOperationCategories = categoriesOrder
     .data()[0]
     .map(
       (category) =>
@@ -38,10 +39,12 @@ export const getStaticProps = async (context) => {
         )[0]
     );
 
+  console.log(sortedOperationCategories);
+
   return {
     props: {
       surgeries,
-      operationCategories: orderedSurgeryCategories,
+      operationCategories: sortedOperationCategories,
     },
   };
 };
@@ -68,26 +71,18 @@ const OperationsList = ({
       />
 
       <div className="hidden lg:flex w-full bg-shamrock gap-2 justify-center p-5 text-white">
-        {operationCategories
-          .slice(0, operationCategories.length - 2)
-          .map((category) => (
-            <div key={`${category.slug}-nav`}>
-              <Link href={`#${category.slug}`}>
-                <a className="text-white text-xl text-center hover:underline">
-                  {`${category.name} `}
-                </a>
-              </Link>
-              —
-            </div>
-          ))}
-        <Link
-          key={operationCategories[operationCategories.length - 1].slug}
-          href={`#${operationCategories[operationCategories.length - 1].slug}`}
-        >
-          <a className="text-white text-xl text-center hover:underline">
-            {operationCategories[operationCategories.length - 1].name}
-          </a>
-        </Link>
+        {operationCategories.map((category) => (
+          <div
+            key={`${category.slug}-nav`}
+            className="after:content-['—'] last:after:content-none"
+          >
+            <Link href={`#${category.slug}`}>
+              <a className="text-white text-xl text-center hover:underline mr-1">
+                {`${category.name} `}
+              </a>
+            </Link>
+          </div>
+        ))}
       </div>
 
       {operationCategories.map((category) => (
