@@ -4,6 +4,7 @@ const { withSentryConfig } = require("@sentry/nextjs");
 const moduleExports = removeImports({
   webpack5: true,
   reactStrictMode: true,
+  outputFileTracing: false, // fix sentry error related to vercel & next.js upgrade to v12
   images: {
     domains: [
       "via.placeholder.com",
