@@ -39,8 +39,6 @@ export const getStaticProps = async (context) => {
         )[0]
     );
 
-  console.log(sortedOperationCategories);
-
   return {
     props: {
       surgeries,

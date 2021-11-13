@@ -17,10 +17,12 @@ import {
   getBackEndAsset,
   getSetting,
 } from "../utils/ServerHelpers";
+import firebase from "firebase/clientApp";
+import moment from "moment";
 
 // TODO: add unit test for weird characters like apostrophes and such
 
-export const getStaticProps = async () => {
+export const getServerSideProps = async (ctx) => {
   const heroImage = await getFrontEndAsset("image-asset.jpg");
   let categories = await getOperationCategories();
   let categoriesSettings = await getSetting("surgeryCategoriesOrdering");
@@ -43,12 +45,63 @@ export const getStaticProps = async () => {
     },
   ];
 
+  // get all offers from firestore
+  const offers = await firebase.firestore().collection("offers").get();
+
+  // build an array of offers with data and id
+  const offersArray = [];
+  offers.forEach((offer) => {
+    const offerData = offer.data();
+    const offerId = offer.id;
+    offersArray.push({ ...offerData, id: offerId });
+  });
+
+  // in offers, convert createdAt from firestore timestamp using moment if needed
+  await Promise.all(
+    offersArray.map(async (offer, i) => {
+      await firebase
+        .firestore()
+        .collection("rooms")
+        .doc(offer.hotelRoom)
+        .get()
+        .then(async (doc) => {
+          if (doc.exists) {
+            offersArray[i].hotelRoomData = doc.data();
+          }
+        });
+
+      await firebase
+        .firestore()
+        .collection("hotels")
+        .where("slug", "==", offer.hotelRoomData.hotel)
+        .get()
+        .then(async (hotels) => {
+          if (hotels.size > 0) {
+            hotels.forEach((hotel) => {
+              offersArray[i].hotelData = hotel.data();
+            });
+          }
+        });
+
+      if (offer.createdAt) {
+        offer.createdAt = moment(offer.createdAt.toDate()).format(
+          "MMM Do YYYY"
+        );
+      }
+    })
+  );
+
   return {
-    props: { heroImage, categories, categoriesSettings }, // will be passed to the page component as props
+    props: { heroImage, categories, categoriesSettings, offers: offersArray }, // will be passed to the page component as props
   };
 };
 
-export default function Home({ heroImage, categories, categoriesSettings }) {
+export default function Home({
+  heroImage,
+  categories,
+  categoriesSettings,
+  offers,
+}) {
   return (
     <div className="container mx-auto max-w-full">
       <Head>
@@ -153,9 +206,9 @@ export default function Home({ heroImage, categories, categoriesSettings }) {
         </div>
         <div className="xl:w-10/12">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <Offer />
-            <Offer />
-            <Offer />
+            {offers.map((offer) => (
+              <Offer data={offer} key={offer.id} />
+            ))}
           </div>
         </div>
       </div>
