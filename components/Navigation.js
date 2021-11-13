@@ -50,7 +50,7 @@ export default function Navigation() {
                     onMouseEnter={() => setDropdownVisibility(true)}
                     onMouseLeave={() => setDropdownVisibility(false)}
                   >
-                    <NavigationItem title="À propos" target="/valeurs" />
+                    <NavigationItem title="À propos" target="/a-propos" />
 
                     <AnimatePresence>
                       {dropdownVisibility && (
@@ -60,7 +60,7 @@ export default function Navigation() {
                           exit={{ opacity: 0, y: "-6px" }}
                           className="absolute p-3 bg-white border border-shamrock rounded w-full gap-2 flex flex-col min-w-max shadow"
                         >
-                          <Link href="/valeurs" className="">
+                          <Link href="/a-propos" className="">
                             <a className="w-full p-2 transition hover:cursor-pointer hover:bg-gray-100 rounded">
                               À propos de nous
                             </a>

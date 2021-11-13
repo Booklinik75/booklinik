@@ -128,10 +128,10 @@ export default function Home({ heroImage, categories, categoriesSettings }) {
         }
       >
         <div className="md:w-1/2 lg:w-1/3">
-          <p className="uppercase text-sm mb-2">Découvrez nos valeurs</p>
+          <p className="uppercase text-sm mb-2">Découvrez Booklinik</p>
           <h2 className="text-4xl">Parce que votre bien-être est notre</h2>
           <p className="mt-4 mb-2">Les 8 étapes clé de votre voyage</p>
-          <Link href="/valeurs">
+          <Link href="/a-propos">
             <a className="hover:underline flex items-center">
               Découvrir <FaChevronRight size={12} />
             </a>
@@ -139,7 +139,7 @@ export default function Home({ heroImage, categories, categoriesSettings }) {
         </div>
       </div>
 
-      <div className="mx-4 xl:mx-auto max-w-7xl py-10 hidden">
+      <div className="mx-4 xl:mx-auto max-w-7xl py-10">
         <div className="flex flex-row items-baseline justify-between mb-2">
           <h3 className="text-xl mr-2">
             Découvrez les offres Booklikik du moment
