@@ -206,9 +206,15 @@ export default function Home({
         </div>
         <div className="xl:w-10/12">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {offers.map((offer) => (
-              <Offer data={offer} key={offer.id} />
-            ))}
+            {offers.map((offer) => {
+              // if today is after startDate and after endDate
+              if (
+                new Date(offer.startDate) <= new Date() &&
+                new Date(offer.endDate) >= new Date()
+              ) {
+                return <Offer data={offer} key={offer.id} />;
+              }
+            })}
           </div>
         </div>
       </div>
