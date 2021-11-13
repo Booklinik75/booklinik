@@ -25,7 +25,7 @@ const Offer = ({ data }) => {
           <div className="flex space-x-2 items-center text-xs font-bold uppercase">
             <p className="text-white py-1 px-2 rounded bg-bali">Offre</p>
             <p className="flex-grow text-bali">
-              {moment().to(moment(endDate))}
+              Reste {moment().to(moment(endDate), true)}
             </p>
             <StarRating value={rating} color="bali" />
           </div>
