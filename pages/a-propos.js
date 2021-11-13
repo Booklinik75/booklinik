@@ -77,28 +77,17 @@ const Values = () => {
             </p>
           </div>
         </div>
-        <div className="relative mt-6">
-          <button
-            onClick={scrollPrev}
-            className="absolute z-50 top-1/2 left-3 text-white"
-          >
-            <FaChevronLeft size={36} />
-          </button>
-          <button
-            onClick={scrollNext}
-            className="absolute z-50 top-1/2 right-3 text-white"
-          >
-            <FaChevronRight size={36} />
-          </button>
-
-          <div className="embla overflow-hidden" ref={viewportRefS}>
-            <div className="embla__container flex">
-              <EmblaSlide />
-              <EmblaSlide />
-              <EmblaSlide />
-              <EmblaSlide />
-              <EmblaSlide />
-            </div>
+        <div className="bg-gray-100 p-10">
+          <div className="flex flex-col items-center justify-center">
+            {/* youtube video */}
+            <iframe
+              src="https://www.youtube.com/embed/5qap5aO4i9A"
+              title="YouTube video player"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              className="w-full h-96 max-w-3xl"
+              allowFullScreen
+            ></iframe>
           </div>
         </div>
         <div className="flex items-center w-screen text-bali justify-center mt-6">
