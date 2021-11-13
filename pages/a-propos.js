@@ -40,11 +40,11 @@ const Values = () => {
   return (
     <div className="overflow-hidden">
       <Head>
-        <title>Booklinik | Nos Valeurs</title>
+        <title>Booklinik | À Propos</title>
       </Head>
       <Navigation />
       <PhotoBanner
-        title="Nos Valeurs"
+        title="À propos"
         body={bodyContents}
         fileName={fileName}
         fullWidth={true}
