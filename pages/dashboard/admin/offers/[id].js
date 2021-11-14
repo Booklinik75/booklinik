@@ -140,7 +140,7 @@ const EditOffer = ({
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // uploaded image url
-  const [imageUrl, setImageUrl] = useState("");
+  const [imageUrl, setImageUrl] = useState(currentOffer.imageUrl);
 
   // determine offer surgery against groupedOptions using the id of the current offer
   const currentOfferSurgery = groupedOptions.find((group) =>
@@ -155,7 +155,6 @@ const EditOffer = ({
   // form state
   const [offer, setOffer] = useState({
     name: currentOffer.name,
-    slug: currentOffer.slug,
     description: currentOffer.description,
     price: currentOffer.price,
     hotelRoom: currentOffer.hotelRoom,
@@ -225,24 +224,19 @@ const EditOffer = ({
       createdBy: auth.props.token.uid,
     };
 
-    // create offer in firestore
-    try {
-      await firebase
-        .firestore()
-        .collection("offers")
-        .add(offerData)
-        .then(() => {
-          toast.success("Offre ajoutée avec succès");
-        })
-        .catch((error) => {
-          toast.error("Une erreur est survenue");
-        })
-        .finally(() => {
-          router.push("/dashboard/admin/offers");
-        });
-    } catch (error) {
-      toast.error("Une erreur est survenue");
-    }
+    // update offer in firestore
+    await firebase
+      .firestore()
+      .collection("offers")
+      .doc(id)
+      .update(offerData)
+      .then(() => {
+        toast.success("Offre mise à jour");
+        router.replace(router.asPath);
+      })
+      .catch((error) => {
+        toast.error("Une erreur est survenue lors de la mise à jour");
+      });
   };
 
   // delete offer function
@@ -353,7 +347,6 @@ const EditOffer = ({
                 id="previewPicture"
                 type="file"
                 placeholder="Image de prévisualisation"
-                required
                 value={offer.previewPicture}
                 onChange={handleFileUpload}
                 name="previewPicture"
