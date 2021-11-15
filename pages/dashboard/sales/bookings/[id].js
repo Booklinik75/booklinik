@@ -271,17 +271,20 @@ const Booking = ({ booking, auth, currentOperation }) => {
                     </span>
                   </p>
                 </div>
-                <div>
-                  <p className="text-sm text-gray-800 uppercase font-medium">
-                    Options
-                  </p>
-                  <p className="text-gray-600">
-                    {booking.options.map(
-                      (option) =>
-                        option.isChecked && `${option.name} (+${option.price}€)`
-                    )}
-                  </p>
-                </div>
+                {booking.options && (
+                  <div>
+                    <p className="text-sm text-gray-800 uppercase font-medium">
+                      Options
+                    </p>
+                    <p className="text-gray-600">
+                      {booking.options.map(
+                        (option) =>
+                          option.isChecked &&
+                          `${option.name} (+${option.price}€)`
+                      )}
+                    </p>
+                  </div>
+                )}
                 <div>
                   <p className="text-sm text-gray-800 uppercase font-medium">
                     Voyageurs

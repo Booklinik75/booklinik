@@ -65,7 +65,11 @@ const DashboardOperationCard = ({ booking, noActions, salesMode, withId }) => {
               <span className="capitalize">{booking.city}</span>
             </p>
             <p className="text-xs text-bali">
-              {booking.hotelName} • {booking.total}&nbsp;€
+              {booking.hotelName} •{" "}
+              {booking.alternativeTotal
+                ? booking.alternativeTotal
+                : booking.total}
+              &nbsp;€
             </p>
             {!noActions && bookingStatus && (
               <div className="flex gap-2">

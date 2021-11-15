@@ -120,7 +120,7 @@ const Offer = ({
 
       <div className="p-8 space-y-12 flex flex-col items-center">
         <div className="flex flex-col-reverse lg:flex-row gap-4 w-full">
-          <div className="w-full lg:w-1/4 bg-gray-100 rounded py-6 px-8 space-y-3">
+          <div className="w-full flex flex-col justify-center lg:w-1/4 bg-gray-100 rounded py-6 px-8 space-y-3">
             <div className="flex gap-2 items-center">
               <p className="px-2 py-1 rounded-sm uppercase text-white bg-bali max-w-min font-bold">
                 Offre
@@ -139,7 +139,7 @@ const Offer = ({
             <Link href={`/book/offer/${id}`} passHref>
               <button
                 className="bg-shamrock text-white font-bold py-3 px-7 rounded border border-shamrock
-            hover:bg-transparent hover:text-shamrock transition-colors"
+            hover:bg-transparent hover:text-shamrock transition-colors max-w-max"
               >
                 Réserver
               </button>

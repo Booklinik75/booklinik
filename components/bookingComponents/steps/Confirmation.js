@@ -93,31 +93,3 @@ const BookingConfirmation = ({ booking }) => {
 };
 
 export default BookingConfirmation;
-
-/* city: "istanbul"
-endDate: Sun Aug 29 2021 00:00:00 GMT+0200 (Central European Summer Time) {}
-extraBabies: 0
-extraChilds: 0
-extraTravellers: 1
-hotel: "wyndham-grand-istanbul-kalamis-marina-hotel"
-hotelId: "uTEaIEIYD88BKvgkYLOv"
-hotelName: "Wyndham Grand Istanbul Kalamış Marina Hôtel"
-hotelPhotoLink: "https://firebasestorage.googleapis.com/v0/b/booklinik.appspot.com/o/hotels%2Fwyndham-grand-istanbul-kalamis-marina-hotel-Wyndham%20Grand%20Istanbul%20Kalam%C4%B1s%CC%A7%20Marina%20Ho%CC%82tel%205_%20_guestroom_king_executive_city_view.webp?alt=media&token=6ecde0e1-78a5-4c37-adcf-3522d40b4929"
-hotelPrice: 80
-hotelRating: 5
-minimumNights: 10
-options: (3) [{…}, {…}, {…}]
-room: "un-super"
-roomName: "Un super hotel trop trop cool"
-roomPhotoLink: "https://firebasestorage.googleapis.com/v0/b/booklinik.appspot.com/o/rooms%2Fpark%20inn%20by%20radisson%20atasehir%20ho%CC%82tel%204%20%201.webp?alt=media&token=96ffa67b-8582-4ee7-a884-2c46536c49c9"
-roomPrice: 0
-startDate: Fri Aug 13 2021 02:24:35 GMT+0200 (Central European Summer Time) {}
-surgery: "oreilles-decollees-otoplastie"
-surgeryCategory: "chirurgie-du-visage"
-surgeryCategoryName: "Chirurgie du visage"
-surgeryMinDays: 0
-surgeryName: "Oreilles décollées / Otoplastie"
-surgeryPrice: 1900
-totalExtraTravellersPrice: 450
-totalSelectedNights: 16
- */
