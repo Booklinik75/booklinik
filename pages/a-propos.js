@@ -51,8 +51,8 @@ const Values = () => {
         discover={true}
       />
 
-      <div className="py-10">
-        <div className="flex flex-col items-center" id="content">
+      <div className="">
+        <div className="flex flex-col items-center pb-5" id="content">
           <div className="flex flex-col items-center space-y-10 my-6">
             <p className="text-center w-full mb-4 prose prose-lg">
               Booklinik est une plateforme de réservation en ligne pour votre
