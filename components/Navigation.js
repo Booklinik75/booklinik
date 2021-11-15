@@ -67,7 +67,7 @@ export default function Navigation() {
                           </Link>
                           <Link href="/etapes">
                             <a className="w-full p-2 transition hover:cursor-pointer hover:bg-gray-100 rounded">
-                              Les étapes clés
+                              Comment ça marche ?
                             </a>
                           </Link>
                         </motion.div>
