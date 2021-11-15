@@ -3,27 +3,33 @@ import Navigation from "../../../components/Navigation";
 import Footer from "../../../components/Footer";
 import ContactHelper from "../../../components/ContactHelper";
 import Head from "next/head";
-import { useRouter } from "next/router";
 import Image from "next/image";
-import ReactMarkdown from "react-markdown";
+import MDEditor from "@uiw/react-md-editor";
 import RelatedElement from "../../../components/RelatedSuggestionElement";
+import {
+  getBackEndAsset,
+  getOperationCategories,
+  getOperationData,
+  getRelatedSurgeries,
+  getSurgeries,
+  getSurgeryData,
+} from "../../../utils/ServerHelpers";
 
 export const getStaticPaths = async () => {
-  const res = await fetch(process.env.JSON_API_URL + "/operations");
-  const data = await res.json();
+  const surgeryCategories = await getOperationCategories();
+  const surgeries = await getSurgeries();
 
-  const paths = data.categories
-    .map((category) => {
-      return category.operations.map((operation) => {
-        return {
-          params: {
-            category: category.slug.toString(),
-            operation: operation.slug.toString(),
-          },
-        };
-      });
-    })
-    .flat();
+  const paths = [];
+
+  surgeryCategories.map((category) => {
+    return surgeries.map((surgery) => {
+      return category.slug === surgery.category
+        ? paths.push({
+            params: { category: category.slug, operation: surgery.slug },
+          })
+        : "";
+    });
+  });
 
   return {
     paths,
@@ -31,44 +37,43 @@ export const getStaticPaths = async () => {
   };
 };
 
-export const getStaticProps = async () => {
-  const res = await fetch(process.env.JSON_API_URL + "/operations");
-  const data = await res.json();
+export const getStaticProps = async (context) => {
+  const { operation, category } = context.params;
+  const surgeryData = await getSurgeryData(operation);
+  const categoryData = await getOperationData(category);
+  const categoryPhoto = await getBackEndAsset(categoryData.data.photo);
+  const relatedSurgeries = await getRelatedSurgeries(surgeryData.data.category);
 
   return {
     props: {
-      operationsData: data.categories,
+      surgeryData,
+      categoryPhoto,
+      relatedSurgeries,
     },
+    revalidate: 120,
   };
 };
 
-const OperationPage = ({ operationsData }) => {
-  const router = useRouter();
-  const { category, operation } = router.query;
-
-  const currentOperation = operationsData
-    .find((cat) => cat.slug === category)
-    .operations.find((op) => op.slug === operation);
-
+const OperationPage = ({ surgeryData, categoryPhoto, relatedSurgeries }) => {
   return (
-    <div>
+    <div className="space-y-6">
       <Head>
-        <title>Booklinik | {currentOperation.name}</title>
+        <title>Booklinik | {surgeryData.data.name}</title>
       </Head>
       <Navigation />
-      <div className="mx-4 lg:mx-auto max-w-7xl space-y-10">
+      <div className="mx-4 space-y-10">
         <div className="grid grid-cols-3 gap-6">
           <div className="col-span-3 lg:col-span-1 bg-gray-100 p-14 space-y-4">
-            <h1 className="text-5xl">{currentOperation.name}</h1>
+            <h1 className="text-5xl">{surgeryData.data.name}</h1>
             <p className="text-shamrock">
-              À partir de {currentOperation.startingPrice}€
+              À partir de {surgeryData.data.startingPrice}€
             </p>
-            <p>{currentOperation.excerpt}</p>
+            <p>{surgeryData.data.excerpt}</p>
             <p className="text-xs text-gray-600">
               Il s&lsquo;agit d&lsquo;une opération prise en charge par
               l&lsquo;assurance maladie.
             </p>
-            <Link href="/" passHref={true}>
+            <Link href="/book" passHref={true}>
               <button className="text-white bg-shamrock rounded px-6 py-3 transition border border-shamrock hover:text-shamrock hover:bg-white">
                 Estimez mon séjour
               </button>
@@ -76,36 +81,32 @@ const OperationPage = ({ operationsData }) => {
           </div>
           <div className="col-span-1 lg:col-span-2 w-full relative">
             <Image
-              src="https://via.placeholder.com/1000?text=en+attente+d&lsquo;image"
+              src={categoryPhoto}
               layout="fill"
               objectFit="cover"
+              objectPosition="center center"
               alt="TBD"
             />{" "}
           </div>
         </div>
+      </div>
+      <div className="mx-4 xl:mx-auto max-w-7xl space-y-10">
         <div>
-          <ReactMarkdown>{currentOperation.excerpt}</ReactMarkdown>
+          <MDEditor.Markdown source={surgeryData.data.descriptionBody} />
         </div>
         <div className="space-y-6">
           <h2 className="text-2xl">Opérations similaires</h2>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-            {operationsData
-              .find((cat) => cat.slug === category)
-              .operations.filter((opEl) => {
-                if (opEl.slug === operation) {
-                  return false;
-                }
-                return true;
-              })
-              .map((operation) => {
-                return (
-                  <RelatedElement
-                    title={operation.name}
-                    target={`/operations/${category}/${operation.slug}`}
-                    key={operation.id}
-                  />
-                );
-              })}
+            {relatedSurgeries.map((surgery) => {
+              return (
+                <RelatedElement
+                  title={surgery.name}
+                  target={`/operations/${surgery.category}/${surgery.slug}`}
+                  key={surgery.slug}
+                  picture={categoryPhoto}
+                />
+              );
+            })}
           </div>
         </div>
       </div>

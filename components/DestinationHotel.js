@@ -2,18 +2,19 @@ import Image from "next/image";
 import StarRating from "./StarRating";
 import Link from "next/link";
 
-const DestinationHotel = ({ hotel, countrySlug, citySlug, city, country }) => {
+const DestinationHotel = ({ hotel, city }) => {
   return (
     <div className="col-span-1 space-y-2">
       <div className="w-full rounded-xl relative">
         <div className="relative h-48 rounded-xl">
           <Image
-            src="https://via.placeholder.com/1000?text=en+attente+d&lsquo;image"
+            src={hotel.photo}
             layout="fill"
             objectFit="cover"
             alt="TBD"
             className="rounded-lg bg-gray-500"
           />
+          <div className="opacity-30 bg-gradient-to-t from-black rounded-lg w-full h-full absolute"></div>
         </div>
         <div className="absolute mx-4 text-white bottom-4 space-y-1">
           <h3 className="text-lg">{hotel.name}</h3>

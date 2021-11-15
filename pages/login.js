@@ -7,6 +7,20 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import { BiError } from "react-icons/bi";
 import DashboardButton from "../components/DashboardButton";
+import { checkAuth, serverRedirect } from "utils/ServerHelpers";
+import errors from "utils/firebase_auth_errors";
+import * as Sentry from "@sentry/browser";
+
+export const getServerSideProps = async (ctx) => {
+  const auth = await checkAuth(ctx);
+  if (auth.props.userProfile) return serverRedirect("/dashboard");
+
+  return {
+    props: {
+      auth,
+    },
+  };
+};
 
 const Login = () => {
   const [formData, updateFormData] = useState({ email: "", password: "" });
@@ -25,8 +39,15 @@ const Login = () => {
         router.push("/dashboard");
       })
       .catch((error) => {
-        console.log(error.code);
-        setError(error.message);
+        if (errors[error.code]) {
+          setError(errors[error.code]);
+        } else {
+          setError("Une erreur est survenue");
+        }
+
+        Sentry.captureException(error);
+      })
+      .finally(() => {
         setLoading("idle");
       });
   }
@@ -119,7 +140,7 @@ const Login = () => {
                 </div>
                 <div>
                   <DashboardButton
-                    defaultText="Se connecter"
+                    defaultText="Se&nbsp;connecter"
                     status={isLoading}
                   ></DashboardButton>
                 </div>

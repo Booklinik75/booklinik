@@ -1,19 +1,20 @@
 import DashboardUi from "../../../components/DashboardUi";
 import { checkAdmin, getMedicalQuestions } from "../../../utils/ServerHelpers";
-import React, { useState } from "react";
+import { useState } from "react";
 import firebase from "../../../firebase/clientApp";
 import DashboardButton from "../../../components/DashboardButton";
 
 export const getServerSideProps = async (ctx) => {
-  const userProfile = await checkAdmin(ctx);
+  const auth = await checkAdmin(ctx);
+  if (auth.redirect) return auth;
   const medicalQuestions = await getMedicalQuestions();
 
   return {
-    props: { userProfile, medicalQuestions },
+    props: { auth, medicalQuestions },
   };
 };
 
-const MedicalQuestionsEditor = ({ medicalQuestions }) => {
+const MedicalQuestionsEditor = ({ auth, medicalQuestions }) => {
   const [inputList, setInputList] = useState(medicalQuestions);
   const [isLoading, setLoading] = useState("idle");
 
@@ -69,14 +70,13 @@ const MedicalQuestionsEditor = ({ medicalQuestions }) => {
           setLoading("idle");
         })
         .catch((err) => {
-          console.log(err);
           setLoading("idle");
         });
     });
   }
 
   return (
-    <DashboardUi isAdmin={true}>
+    <DashboardUi userProfile={auth.props.userProfile} token={auth.props.token}>
       <div className="col-span-12 space-y-3 transition">
         <h1 className="text-4xl">Édition : questions médicales</h1>
         <form
@@ -87,8 +87,13 @@ const MedicalQuestionsEditor = ({ medicalQuestions }) => {
         >
           {inputList.map((x, i) => {
             return (
-              <div className="box" key={(x, i)}>
-                <div className="flex gap-2">
+              <div
+                className={
+                  "box transition " + (x.published ? "" : "opacity-30")
+                }
+                key={(x, i)}
+              >
+                <div className="flex gap-2 items-center">
                   <div className="flex flex-col">
                     <label className="text-sm text-gray-500 uppercase">
                       Question
@@ -100,6 +105,7 @@ const MedicalQuestionsEditor = ({ medicalQuestions }) => {
                       onChange={(e) => handleInputChange(e, i)}
                       name="questionContent"
                       value={x.questionContent}
+                      required={true}
                     />
                   </div>
                   <div className="flex flex-col">
@@ -136,8 +142,16 @@ const MedicalQuestionsEditor = ({ medicalQuestions }) => {
                       placeholder="Ex : si oui, pourquoi ?"
                       onChange={(e) => handleInputChange(e, i)}
                       name="precision"
+                      required={true}
                       value={x.precision}
                     />
+                    <p className="text-xs mt-2 text-gray-400">
+                      Écrire{" "}
+                      <span className="px-1 font-mono py-0.5 rounded bg-blue-100 text-blue-900">
+                        null
+                      </span>{" "}
+                      si aucune.
+                    </p>
                   </div>
                   <div className="flex flex-col">
                     <label className="text-sm text-gray-500 uppercase">

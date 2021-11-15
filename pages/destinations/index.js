@@ -4,19 +4,37 @@ import Navigation from "../../components/Navigation";
 import PhotoBanner from "../../components/PhotoBanner";
 import Head from "next/head";
 import DestinationCountry from "../../components/DestinationCountry";
+import {
+  getCities,
+  getCountries,
+  getHotels,
+  getBackEndAsset,
+} from "../../utils/ServerHelpers";
 
 export const getStaticProps = async (context) => {
-  const res = await fetch(process.env.JSON_API_URL + "/destinations");
-  const data = await res.json();
+  const countries = await getCountries();
+  const cities = await getCities();
+  const hotels = await getHotels();
+
+  const operationsImageT = await Promise.all(
+    hotels.map(async (hotel, index, array) => {
+      let image = await getBackEndAsset(hotel.photo);
+      hotels[index].photo = image;
+    })
+  );
 
   return {
     props: {
-      destinations: data,
+      countries,
+      cities,
+      hotels,
     },
   };
 };
 
-const DestinationsList = ({ destinations }) => {
+const DestinationsList = ({ countries, cities, hotels }) => {
+  const fileName =
+    "https://firebasestorage.googleapis.com/v0/b/booklinik.appspot.com/o/frontendassets%2Falexander-kaunas-xEaAoizNFV8-unsplash%20copie.jpg?alt=media&token=758bcbd4-9599-48ef-9859-8ecea183d066";
   return (
     <div>
       <Head>
@@ -24,14 +42,22 @@ const DestinationsList = ({ destinations }) => {
       </Head>
       <Navigation />
       <PhotoBanner
+        fileName={fileName}
         fullWidth={true}
         extraLarge={true}
         title="Les Destinations"
       />
 
       <div className="mx-4 xl:mx-auto max-w-7xl">
-        {destinations.countries.map((country) => {
-          return <DestinationCountry country={country} key={country.id} />;
+        {countries.map((country) => {
+          return (
+            <DestinationCountry
+              country={country}
+              cities={cities}
+              key={country.id}
+              hotels={hotels}
+            />
+          );
         })}
       </div>
 

@@ -4,106 +4,207 @@ import DashboardModal from "../../components/DashboardModal";
 import DashboardOperationCard from "../../components/DashboardOperationCard";
 import Link from "next/link";
 import { checkAuth } from "../../utils/ServerHelpers";
+import firebase from "../../firebase/clientApp";
+import { useAuthState } from "react-firebase-hooks/auth";
+import Loader from "components/Loader";
+import { useState, useEffect } from "react";
+import { toast } from "react-toastify";
+import * as Sentry from "@sentry/browser";
+import moment from "moment";
+import { useRouter } from "next/router";
 
 export const getServerSideProps = checkAuth;
 
-export default function DashboardIndex({ userProfile }) {
+export default function DashboardIndex({ userProfile, token }) {
+  const [user, loading] = useAuthState(firebase.auth());
+
+  const [bookings, setBookings] = useState([]);
+  const [message, setMessage] = useState("");
+  const router = useRouter();
+
+  useEffect(() => {
+    const asyncFunc = async () => {
+      const entries = [];
+
+      await firebase
+        .firestore()
+        .collection("bookings")
+        .where("user", "==", token.uid)
+        .get()
+        .then((item) => {
+          return item.forEach((doc) =>
+            entries.push({
+              id: doc.id,
+              ...doc.data(),
+            })
+          );
+        });
+
+      setBookings(entries);
+    };
+
+    asyncFunc();
+  }, []);
+
+  const handleMessage = (e) => {
+    e.preventDefault();
+
+    fetch("/api/mail", {
+      method: "post",
+      body: JSON.stringify({
+        recipient: "info@booklinik.com",
+        templateId: "d-6b9ed961cfdc44228824603584a8b740",
+        dynamicTemplateData: {
+          email: userProfile.email,
+          datetime: moment(new Date()).format("LLLL"),
+          message: message,
+          path: router.asPath,
+        },
+      }),
+    })
+      .then(() => {
+        toast.success("Message envoyé avec succès.");
+
+        fetch("/api/mail", {
+          method: "post",
+          body: JSON.stringify({
+            recipient: userProfile.email,
+            templateId: "d-57cbc54b5ac345beb1bfc6509381ccee",
+            dynamicTemplateData: {
+              email: userProfile.email,
+              datetime: moment(new Date()).format("LLLL"),
+              message: message,
+            },
+          }),
+        });
+      })
+      .catch((error) => {
+        toast.error("Une erreur est survenue.");
+        Sentry.captureException(error);
+      });
+  };
+
   return (
     <div className="h-screen">
-      <DashboardNavigation />
+      {loading ? (
+        <Loader />
+      ) : (
+        <>
+          <DashboardNavigation />
 
-      <div
-        className="grid grid-cols-12"
-        style={{
-          height: "calc(100% - 75px)",
-        }}
-      >
-        <DashboardSideNav />
-        <div className="col-span-10 shadow-lg grid grid-cols-6 p-12 gap-10">
-          <div className="col-span-6 lg:col-span-4 flex flex-col gap-4">
-            <h1 className="text-4xl">
-              Bonjour{" "}
-              <span className="text-shamrock">
-                {userProfile.firstName
-                  ? userProfile.firstName
-                  : userProfile.email}
-                ,
-              </span>
-            </h1>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. {}
-            </p>
-            {[
-              userProfile.firstName,
-              userProfile.lastName,
-              userProfile.email,
-              userProfile.address,
-              userProfile.mobilePhone,
-              userProfile.gender,
-              userProfile.landlinePhone,
-              userProfile.birthdate,
-            ].some((x) => x === null) ? (
-              <DashboardModal
-                content="Vous devez remplir vos informations"
-                cta="Compléter"
-                target="/dashboard/profile"
-              />
-            ) : (
-              ""
-            )}
-            <DashboardModal
-              content="Vous devez ajoutez des documents dans une opération"
-              cta="Ajouter"
-              target="/dashboard/operations"
+          <div
+            className="grid grid-cols-12"
+            style={{
+              height: "calc(100% - 75px)",
+            }}
+          >
+            <DashboardSideNav
+              userProfile={userProfile}
+              user={user}
+              token={token}
             />
-            <div className="flex flex-col mt-4 gap-2">
-              <p className="text-sm text-gray-700 uppercase">Mes Opérations</p>
-              <DashboardOperationCard
-                operationID="123"
-                state="awaitingDocuments"
-              />
-              <DashboardOperationCard
-                operationID="123"
-                state="awaitingEstimate"
-              />
+            <div className="col-span-10 shadow-lg grid grid-cols-6 p-12 gap-10">
+              <div className="col-span-6 lg:col-span-4 flex flex-col gap-4">
+                <h1 className="text-4xl">
+                  Bonjour{" "}
+                  <span className="text-shamrock">
+                    {userProfile.firstName
+                      ? userProfile.firstName
+                      : userProfile.email}
+                  </span>
+                  ,
+                </h1>
+                <p>
+                  Bienvenue sur votre profil, renseignez vos informations
+                  personnelles.
+                </p>
+                {[
+                  userProfile.firstName,
+                  userProfile.lastName,
+                  userProfile.email,
+                  userProfile.address,
+                  userProfile.mobilePhone,
+                  userProfile.gender,
+                  userProfile.landlinePhone,
+                  userProfile.birthdate,
+                ].some((x) => x === null) ? (
+                  <DashboardModal
+                    content="Vous devez remplir vos informations"
+                    cta="Compléter"
+                    target="/dashboard/profile"
+                  />
+                ) : (
+                  ""
+                )}
+                {bookings.some((b) => b.status === "awaitingDocuments") && (
+                  <DashboardModal
+                    content="Vous devez ajoutez des documents dans une opération"
+                    cta="Ajouter"
+                    target="/dashboard/operations"
+                  />
+                )}
+                <div className="flex flex-col mt-4 gap-2">
+                  <p className="text-sm text-gray-700 uppercase">
+                    Mes Opérations
+                  </p>
+
+                  {bookings !== [] &&
+                    bookings.map((booking) => {
+                      return (
+                        <DashboardOperationCard
+                          key={booking.id}
+                          booking={booking}
+                        />
+                      );
+                    })}
+                </div>
+              </div>
+              <div className="col-span-6 lg:col-span-2 flex flex-row lg:flex-col gap-6">
+                <div className="w-1/2 lg:w-full rounded border border-shamrock p-4 space-y-2">
+                  <h3 className="text-2xl">Parrainez un proche</h3>
+
+                  <p>
+                    Recommandez Booklinik à vos amis et recevez 100€ sur votre
+                    voyage. Vos amis profiteront aussi de 100€ sur leurs
+                    opérations.
+                  </p>
+                  <p className="w-full bg-shamrock text-white uppercase font-2xl text-center py-3 rounded">
+                    {userProfile.referalCode ? userProfile.referalCode : "null"}
+                  </p>
+                  <Link href="/dashboard/parrainage" className="w-full">
+                    <a className="w-full block text-center text-gray-700 text-xs hover:underline">
+                      Ajouter un code de parrainage
+                    </a>
+                  </Link>
+                </div>
+                <div className="w-1/2 lg:w-full rounded border border-gray-600 p-4 space-y-2">
+                  <h3 className="text-2xl">Assistance Booklinik</h3>
+                  <p>
+                    Nous sommes à votre disposition si vous avez la moindre
+                    question.
+                  </p>
+                  <p className="text-xs uppercase text-gray-700"></p>
+                  <textarea
+                    rows={3}
+                    className=" border-2 border-gray-300 bg-gray-100 p-3 w-full transition hover:border-bali focus:outline-none focus:border-shamrock rounded"
+                    placeholder="J&lsquo;ai une question à propos de..."
+                    value={message}
+                    name="message"
+                    onChange={(e) => setMessage(e.target.value)}
+                  />
+                  <button
+                    className="w-full text-bali transition hover:underline hover:text-shamrock"
+                    type="submit"
+                    onClick={handleMessage}
+                  >
+                    Envoyer mon message
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
-          <div className="col-span-6 lg:col-span-2 flex flex-row lg:flex-col gap-6">
-            <div className="w-1/2 lg:w-full rounded border border-shamrock p-4 space-y-2">
-              <h3 className="text-2xl">Parrainez un proche</h3>
-              <p>
-                Recommandez Booklinik à vos amis et recevez 100€ sur votre
-                voyage. Vos amis profiteront aussi de 100€ sur leurs opérations.
-              </p>
-              <p className="w-full bg-shamrock text-white uppercase font-2xl text-center py-3 rounded">
-                MAXM1002021
-              </p>
-              <Link href="#" className="w-full">
-                <a className="w-full block text-center text-gray-700 text-xs hover:underline">
-                  Ajouter un code de parrainage
-                </a>
-              </Link>
-            </div>
-            <div className="w-1/2 lg:w-full rounded border border-gray-600 p-4 space-y-2">
-              <h3 className="text-2xl">Assistance Booklinik</h3>
-              <p>
-                Nous sommes à votre disposition si vous avez la moindre
-                question.
-              </p>
-              <p className="text-xs uppercase text-gray-700"></p>
-              <input
-                type="textarea"
-                className="h-16 border-b border-gray-600 bg-gray-100 p-3 w-full"
-                placeholder="J&lsquo;ai une question à propos de..."
-              />
-              <button className="w-full text-bali transition hover:underline hover:text-shamrock ">
-                Envoyer mon message
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
+        </>
+      )}
     </div>
   );
 }

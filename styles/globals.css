@@ -1,5 +1,12 @@
 /* import google font */
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Hind+Siliguri&display=swap");
+
+html {
+  scroll-behavior: smooth;
+  font-size: 13px;
+  color: #444444;
+}
 
 /* import tailwind */
 @tailwind base;
@@ -46,3 +53,37 @@
 }
 
 @tailwind utilities;
+
+.wmde-markdown > * {
+  font-family: "Circular", "Montserrat", "sans-serif" !important;
+}
+
+.surgeries-cities > *:not(:last-child):after {
+  content: ", ";
+}
+
+.home-hero-surgery-categories > div:nth-child(6),
+.home-hero-surgery-categories > div:nth-child(7),
+.home-hero-surgery-categories > div:nth-child(8),
+.home-hero-surgery-categories > div:nth-child(9) {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .home-hero-surgery-categories > div:nth-child(4),
+  .home-hero-surgery-categories > div:nth-child(5),
+  .home-hero-surgery-categories > div:nth-child(6),
+  .home-hero-surgery-categories > div:nth-child(7),
+  .home-hero-surgery-categories > div:nth-child(8) {
+    display: flex;
+  }
+}
+
+@media (min-width: 1024px) {
+  .home-hero-surgery-categories > div:nth-child(7),
+  .home-hero-surgery-categories > div:nth-child(8),
+  .home-hero-surgery-categories > div:nth-child(9),
+  .home-hero-surgery-categories > div:nth-child(10) {
+    display: flex;
+  }
+}

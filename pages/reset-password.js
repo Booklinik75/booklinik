@@ -7,6 +7,7 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import DashboardButton from "../components/DashboardButton";
 import { BiError } from "react-icons/bi";
+import { toast } from "react-toastify";
 
 const ResetPassword = () => {
   const [formData, updateFormData] = useState({
@@ -25,11 +26,13 @@ const ResetPassword = () => {
     firebase
       .auth()
       .sendPasswordResetEmail(email)
-      .then(async (res) => {
-        console.log(res);
+      .then(() => {
+        toast.success("E-mail de rééinitialisation envoyé.");
       })
       .catch((error) => {
-        setError(error.message);
+        toast.error(
+          "Une erreur est survenue lors de l'envoi, veuillez réessayer."
+        );
       })
       .finally(() => {
         setLoading("idle");

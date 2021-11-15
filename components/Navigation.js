@@ -1,4 +1,4 @@
-import React from "react";
+import { useState } from "react";
 import Image from "next/image";
 import NavigationItem from "./NavigationItem";
 import Logo from "../public/booklinik-logo.svg";
@@ -7,17 +7,20 @@ import { FaBars } from "react-icons/fa";
 import { VscLoading } from "react-icons/vsc";
 import firebase from "../firebase/clientApp";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { motion, AnimatePresence } from "framer-motion";
+import { BsPhone } from "react-icons/bs";
 
 export default function Navigation() {
-  const [menuOpen, setMenuOpen] = React.useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const [user, loading, error] = useAuthState(firebase.auth());
+  const [dropdownVisibility, setDropdownVisibility] = useState(false);
 
   return (
-    <div className="w-full">
-      <div className="flex flex-wrap py-2">
-        <div className="w-full px-2">
-          <nav className="relative flex flex-wrap items-center justify-between px-2 py-2">
-            <div className="container px-4 mx-auto flex flex-wrap items-center justify-between">
+    <div className="w-full mb-28 z-50 h-full">
+      <div className="flex flex-wrap">
+        <div className="w-full">
+          <nav className="flex flex-wrap items-center justify-between py-2 fixed w-full z-50 bg-white drop-shadow-sm">
+            <div className="container relative px-4 mx-auto flex flex-wrap items-center justify-between">
               <div className="w-full relative flex justify-between lg:w-auto px-4 lg:static lg:block lg:justify-start">
                 <Link href="/">
                   <a className="text-sm font-bold leading-relaxed inline-block mr-4 py-2 shamrockspace-nowrap uppercase text-shamrock">
@@ -34,22 +37,49 @@ export default function Navigation() {
               </div>
               <div
                 className={
-                  "lg:flex flex-grow items-center bg-white lg:bg-transparent shadow lg:shadow-none p-5" +
+                  "lg:flex flex-grow items-center bg-white lg:bg-transparent shadow lg:shadow-none p-5 absolute top-[calc(100%+1rem)] lg:static right-6 bg-white z-30 lg:bg-transparent" +
                   (menuOpen ? " flex" : " hidden")
                 }
-                id="example-navbar-info"
               >
                 <ul className="flex flex-col items-center lg:flex-row list-none lg:ml-auto transition">
                   <NavigationItem title="Opérations" target="/operations" />
                   <NavigationItem title="Cliniques" target="/cliniques" />
                   <NavigationItem title="Destinations" target="/destinations" />
-                  <NavigationItem title="Nos valeurs" target="/valeurs" />
+                  <div
+                    className="relative"
+                    onMouseEnter={() => setDropdownVisibility(true)}
+                    onMouseLeave={() => setDropdownVisibility(false)}
+                  >
+                    <NavigationItem title="À propos" target="/a-propos" />
+
+                    <AnimatePresence>
+                      {dropdownVisibility && (
+                        <motion.div
+                          initial={{ opacity: 0, y: "-6px" }}
+                          animate={{ opacity: 1, y: "0px" }}
+                          exit={{ opacity: 0, y: "-6px" }}
+                          className="absolute p-3 bg-white border border-shamrock rounded w-full gap-2 flex flex-col min-w-max shadow"
+                        >
+                          <Link href="/a-propos" className="">
+                            <a className="w-full p-2 transition hover:cursor-pointer hover:bg-gray-100 rounded">
+                              À propos de nous
+                            </a>
+                          </Link>
+                          <Link href="/etapes">
+                            <a className="w-full p-2 transition hover:cursor-pointer hover:bg-gray-100 rounded">
+                              Comment ça marche ?
+                            </a>
+                          </Link>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
                   <NavigationItem
                     title="Offres Spéciales"
                     extraStyle="text-shamrock"
                     target="/offres"
                   />
-                  <li>|</li>
+                  <li className="hidden lg:block">|</li>
                   {loading && (
                     <div className="ml-3 animate-spin">
                       <VscLoading />
@@ -65,6 +95,15 @@ export default function Navigation() {
                   ) : (
                     <NavigationItem title="Connexion" target="/login" />
                   )}
+                  <li className="hidden lg:flex group gap-1 items-center">
+                    |
+                    <Link href="tel:+33678901234">
+                      <a className="gap-1 items-center flex transition-colors group-hover:text-shamrock">
+                        <BsPhone className="stroke-1" />
+                        +33 6 78 90 12 34
+                      </a>
+                    </Link>
+                  </li>
                 </ul>
               </div>
             </div>

@@ -1,11 +1,12 @@
 import DashboardUi from "../../components/DashboardUi";
-import ProfileInput from "../../components/ProfileInput";
+import DashboardInput from "../../components/DashboardInput";
 import { checkAuth } from "../../utils/ServerHelpers";
 import ProfileSelect from "../../components/ProfileSelect";
 import DashboardButton from "../../components/DashboardButton";
 import { useState } from "react";
 import { formatDate } from "../../utils/ClientHelpers";
 import firebase from "../../firebase/clientApp";
+import { toast } from "react-toastify";
 
 export const getServerSideProps = checkAuth;
 
@@ -19,13 +20,11 @@ const ProfilePage = ({ userProfile, token }) => {
   const [profile, setProfile] = useState(userProfile);
 
   const handleChange = (e) => {
-    console.log(e.target.value);
-    console.log(e.target.name);
     setProfile({
       ...profile,
 
       // Trimming any whitespace
-      [e.target.name]: e.target.value.trim(),
+      [e.target.name]: e.target.value,
     });
   };
 
@@ -37,27 +36,31 @@ const ProfilePage = ({ userProfile, token }) => {
       .collection("users")
       .doc(token.uid)
       .update(profile)
+      .then(() => {
+        toast.success("Informations mises à jour");
+        setLoading("idle");
+      })
+      .catch((error) => {
+        toast.error("Erreur lors de la mise à jour");
+        setLoading("idle");
+      })
       .finally(setLoading("idle"));
   }
 
   return (
-    <DashboardUi>
+    <DashboardUi userProfile={userProfile} token={token}>
       <div className="col-span-10 space-y-4">
         <h1 className="text-4xl">Informations personnelles</h1>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua.
-        </p>
+        <p>Renseignez vos informations personnelles.</p>
         <div>
           <form
             className="grid grid-cols-12 gap-4"
             onSubmit={(e) => {
               e.preventDefault();
               doUpdate();
-              console.log(profile);
             }}
           >
-            <ProfileInput
+            <DashboardInput
               type="text"
               name="firstName"
               value={profile.firstName ?? ""}
@@ -65,7 +68,7 @@ const ProfilePage = ({ userProfile, token }) => {
               autoComplete="first-name"
               label="Prénom"
             />
-            <ProfileInput
+            <DashboardInput
               type="text"
               name="lastName"
               value={profile.lastName ?? ""}
@@ -73,7 +76,7 @@ const ProfilePage = ({ userProfile, token }) => {
               autoComplete="last-name"
               label="Nom de famille"
             />
-            <ProfileInput
+            <DashboardInput
               type="date"
               name="birthdate"
               value={formatDate(profile.birthdate) ?? ""}
@@ -88,7 +91,7 @@ const ProfilePage = ({ userProfile, token }) => {
               value={profile.gender}
               onChange={handleChange}
             />
-            <ProfileInput
+            <DashboardInput
               type="tel"
               name="mobilePhone"
               value={profile.mobilePhone}
@@ -96,7 +99,7 @@ const ProfilePage = ({ userProfile, token }) => {
               autoComplete="bday"
               label="Téléphone mobile"
             />
-            <ProfileInput
+            <DashboardInput
               type="tel"
               name="landlinePhone"
               value={profile.landlinePhone}
@@ -104,7 +107,7 @@ const ProfilePage = ({ userProfile, token }) => {
               autoComplete="tel-local"
               label="Téléphone fixe"
             />
-            <ProfileInput
+            <DashboardInput
               type="text"
               name="address"
               value={profile.address}
@@ -112,7 +115,7 @@ const ProfilePage = ({ userProfile, token }) => {
               autoComplete="tel-local"
               label="Adresse postale"
             />
-            <ProfileInput
+            <DashboardInput
               type="text"
               name="referer"
               value={profile.referer ?? ""}

@@ -8,6 +8,21 @@ import { useState } from "react";
 import DashboardButton from "../components/DashboardButton";
 import * as Yup from "yup";
 import { BiError } from "react-icons/bi";
+import { checkAuth, serverRedirect } from "utils/ServerHelpers";
+import errors from "utils/firebase_auth_errors";
+import * as Sentry from "@sentry/browser";
+import MD5 from "crypto-js/md5";
+
+export const getServerSideProps = async (ctx) => {
+  const auth = await checkAuth(ctx);
+  if (auth.props.userProfile) return serverRedirect("/dashboard");
+
+  return {
+    props: {
+      auth,
+    },
+  };
+};
 
 const SignUp = () => {
   const [formData, updateFormData] = useState({
@@ -68,10 +83,10 @@ const SignUp = () => {
             lastname: null,
             mobilePhone: null,
             role: "guest",
+            referalCode: `WELCOME-${MD5(email).toString().substring(0, 5)}`,
             signupDate: new Date().toUTCString(),
+            referalBalance: 0,
           };
-
-          console.log("user doesnt exist", userData);
 
           firebase
             .firestore()
@@ -79,11 +94,11 @@ const SignUp = () => {
             .doc(user.uid)
             .set(userData)
             .then((docRef) => {
-              router.push("dashboard");
+              router.push("/dashboard");
             })
             .catch((error) => {
-              console.log(error);
-              return setError(error.message);
+              Sentry.captureException(error);
+              setError("Une erreur est survenue");
             });
         }
 
@@ -91,7 +106,13 @@ const SignUp = () => {
         router.push("/dashboard");
       })
       .catch((error) => {
-        setError(error.message);
+        if (errors[error.code]) {
+          setError(errors[error.code]);
+        } else {
+          setError("Une erreur est survenue");
+        }
+        console.log(error);
+        Sentry.captureException(error);
       })
       .finally(() => {
         setLoading("idle");
@@ -108,7 +129,6 @@ const SignUp = () => {
   };
 
   const handleCChange = () => {
-    console.log(isChecked);
     setChecked(!isChecked);
   };
 
