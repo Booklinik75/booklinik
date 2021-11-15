@@ -391,7 +391,8 @@ const OperationPage = ({
               objectFit="cover"
             />
             <p className="text-3xl rounded shadow bg-shamrock py-2 px-4 absolute right-4 top-4 z-10 text-white">
-              {data.total}&nbsp;€
+              {data.alternativeTotal ? data.alternativeTotal : data.total}
+              &nbsp;€
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -453,18 +454,20 @@ const OperationPage = ({
               {data.roomName}
             </BookingDetailBox>
 
-            <div className="col-span-1 md:col-span-3 grid gap-4 grid-cols-1 md:grid-cols-3">
-              <p className="text-sm text-gray-500 uppercase col-span-1 md:col-span-3 -mb-3">
-                Options
-              </p>
-              {data.options.map((option) => {
-                return (
-                  option.isChecked && (
-                    <BookingDetailBox col={1}>{option.name}</BookingDetailBox>
-                  )
-                );
-              })}
-            </div>
+            {data.options && (
+              <div className="col-span-1 md:col-span-3 grid gap-4 grid-cols-1 md:grid-cols-3">
+                <p className="text-sm text-gray-500 uppercase col-span-1 md:col-span-3 -mb-3">
+                  Options
+                </p>
+                {data.options.map((option) => {
+                  return (
+                    option.isChecked && (
+                      <BookingDetailBox col={1}>{option.name}</BookingDetailBox>
+                    )
+                  );
+                })}
+              </div>
+            )}
           </div>
         </div>
         <div className="col-span-10 lg:col-span-3 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-4 grid-flow-column auto-rows-max">
@@ -524,10 +527,10 @@ const OperationPage = ({
               </Link>
             ))}
           </div>
-          <div className="col-span-1 flex flex-col gap-2 border border-blue-500 p-4 rounded">
-            <p className="text-3xl">Régler votre opération</p>
-            <p>Vous pouvez désormais régler votre opération.</p>
-            {data.status === "awaitingPayment" && (
+          {data.status === "awaitingPayment" && (
+            <div className="col-span-1 flex flex-col gap-2 border border-blue-500 p-4 rounded">
+              <p className="text-3xl">Régler votre opération</p>
+              <p>Vous pouvez désormais régler votre opération.</p>
               <Link href={`/checkout/${bookingId}`}>
                 <a>
                   <div className="transition h-max flex justify-between border border-blue-500 rounded py-2 px-4 items-center gap-4 hover:shadow hover:bg-blue-500 hover:cursor-pointer group">
@@ -536,8 +539,8 @@ const OperationPage = ({
                   </div>
                 </a>
               </Link>
-            )}
-          </div>
+            </div>
+          )}
         </div>
       </div>
     </DashboardUi>

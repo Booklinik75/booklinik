@@ -3,7 +3,7 @@ import Image from "next/image";
 import Logo from "public/booklinik-logo.svg";
 import { useEffect, useState } from "react";
 
-const BookingTopNavigation = ({ bookingData }) => {
+const BookingTopNavigation = ({ bookingData, priceOverride }) => {
   const [estimate, setEstimate] = useState(0);
 
   useEffect(() => {
@@ -32,7 +32,7 @@ const BookingTopNavigation = ({ bookingData }) => {
       <div className="flex items-center gap-2">
         <p>Estimation de votre voyage :</p>
         <p className="py-3 px-6 rounded bg-shamrock text-xl text-white">
-          {estimate === 0 ? "-" : estimate} €
+          {priceOverride ? priceOverride : estimate === 0 ? "-" : estimate}€
         </p>
       </div>
     </div>
