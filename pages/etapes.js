@@ -14,7 +14,7 @@ const KeySteps = () => {
   return (
     <div>
       <Head>
-        <title>Booklinik | Les étapes clés</title>
+        <title>Booklinik | Comment ça marche ?</title>
       </Head>
       <Navigation />
 
