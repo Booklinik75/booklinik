@@ -97,10 +97,10 @@ export default function Navigation() {
                   )}
                   <li className="hidden lg:flex group gap-1 items-center">
                     |
-                    <Link href="tel:+33678901234">
+                    <Link href="tel:0176350968">
                       <a className="gap-1 items-center flex transition-colors group-hover:text-shamrock">
                         <BsPhone className="stroke-1" />
-                        +33 6 78 90 12 34
+                        01 76 35 09 68
                       </a>
                     </Link>
                   </li>

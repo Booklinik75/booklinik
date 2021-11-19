@@ -63,9 +63,9 @@ const ContactHelper = () => {
           Nous sommes à votre disposition si vous avez la moindre question.
         </h2>
         <p className="mt-4 mb-2">Par téléphone au</p>
-        <Link href="tel:+33 6 78 90 12 34">
+        <Link href="tel:0176350968">
           <a className="hover:underline text-xl font-bold flex items-center">
-            +33 6 78 90 12 34
+            01 76 35 09 68
           </a>
         </Link>
       </div>
