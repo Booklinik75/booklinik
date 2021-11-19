@@ -13,7 +13,7 @@ const Footer = () => {
     <footer>
       <div className="bg-gray-100 p-10 mt-20">
         <div className="mx-4 xl:mx-auto max-w-7xl space-y-6">
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 space-y-6">
             <div className="col-span-2">
               <Link href="/">
                 <a className="block mb-6">
@@ -26,7 +26,7 @@ const Footer = () => {
               </p>
             </div>
             <div className="flex flex-col text-sm space-y-2">
-              <p className="uppercase text-sm mb-2">À propos</p>
+              <p className="uppercase text-sm mb-1">À propos</p>
               <Link href="/valeurs">
                 <a className="hover:underline">Nos valeurs</a>
               </Link>
@@ -41,7 +41,7 @@ const Footer = () => {
               </Link>
             </div>
             <div className="flex flex-col text-sm space-y-2">
-              <p className="uppercase text-sm mb-2">Assistance</p>
+              <p className="uppercase text-sm mb-1">Assistance</p>
               <Link href="#">
                 <a className="hover:underline">Nous contacter</a>
               </Link>
@@ -56,7 +56,7 @@ const Footer = () => {
               </Link>
             </div>
             <div className="col-span-2 space-y-2">
-              <p className="uppercase text-sm mb-4">Les opérations</p>
+              <p className="uppercase text-sm mb-3">Les opérations</p>
               <div className="flex space-x-5">
                 <div className="flex flex-col text-sm space-y-2">
                   <Link href="#">
