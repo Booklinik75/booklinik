@@ -106,10 +106,11 @@ const Footer = () => {
                   <a className="hover:underline">Conditions générales</a>
                 </Link>
                 <p className="hidden md:block">&bull;</p>
-                <Link href="/legal/informations" className="hover:underline">
-                  <a className="hover:underline">
-                    Informations d&apos;entreprises
-                  </a>
+                <Link
+                  href="/legal/mentions-legales"
+                  className="hover:underline"
+                >
+                  <a className="hover:underline">Mentions légales</a>
                 </Link>
               </div>
             </div>
