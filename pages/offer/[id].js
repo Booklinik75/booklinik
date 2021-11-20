@@ -80,8 +80,6 @@ export async function getServerSideProps(context) {
     );
   }
 
-  console.log(offerData);
-
   return {
     props: {
       id,
