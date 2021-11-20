@@ -105,6 +105,10 @@ const DashboardSideNav = ({ userProfile, token }) => {
                 title="Cliniques"
                 target="/dashboard/admin/clinics"
               />
+              <DashboardSideNavItem
+                title="Offres"
+                target="/dashboard/admin/offers"
+              />
             </div>
           )}
           <div className="flex flex-col">
