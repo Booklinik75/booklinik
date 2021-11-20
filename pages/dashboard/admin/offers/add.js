@@ -122,6 +122,7 @@ const AddOffer = ({ auth, groupedOptions, groupedHotelRooms }) => {
     hotelRoom: "",
     startDate: "",
     endDate: "",
+    dates: [],
   });
 
   const handleChange = (e) => {
@@ -338,65 +339,97 @@ const AddOffer = ({ auth, groupedOptions, groupedHotelRooms }) => {
                 de l&apos;offre.
               </p>
             </div>
-            {/* Wizard to create multiple date ranges */}
-            <div className="space-y-2">
-              <label
-                className="block text-gray-700 text-sm font-bold mb-2"
-                htmlFor="date"
-              >
-                Dates
-              </label>
-              <div className="flex flex-wrap">
-                <div className="w-full md:w-1/2 px-3">
-                  <label
-                    className="block text-gray-700 text-sm font-bold mb-2"
-                    htmlFor="startDate"
-                  >
-                    Début
-                  </label>
-                  <input
-                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    id="startDate"
-                    type="date"
-                    placeholder="Début"
-                    required
-                    value={offer.startDate}
-                    name="startDate"
-                    onChange={handleChange}
-                  />
-                  <p className="text-gray-500 text-xs italic">
-                    La date de début de l&apos;offre est affichée sur la page
-                    d&apos;accueil de l&apos;offre. La date de début de
-                    l&apos;offre est utilisée pour déterminer si l&apos;offre
-                    est disponible ou non.
-                  </p>
+
+            {/* Input where you define a start and end date, and add it to the state when pressing a button */}
+            <div className="p-2 bg-blue-50 rounded border border-blue-700">
+              <p className="block text-blue-700 text-sm font-bold mb-2">
+                Dates disponibles
+              </p>
+              {offer.dates.length > 0 && (
+                <div className="space-y-2">
+                  <p>Options choisies</p>
+                  <div className="grid grid-cols-3 gap-4">
+                    {offer.dates.map((date, index) => (
+                      <div
+                        key={index}
+                        className="col-span-1 p-2 bg-blue-100 rounded border border-blue-700 flex justify-between"
+                      >
+                        Option {index + 1} : {date.startDate} - {date.endDate}
+                        <button
+                          className="text-blue-700"
+                          onClick={() => {
+                            // Remove the date from the state
+                            setOffer({
+                              ...offer,
+                              dates: offer.dates.filter((_, i) => i !== index),
+                            });
+                          }}
+                        >
+                          X
+                        </button>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-                <div className="w-full md:w-1/2 px-3">
-                  <label
-                    className="block text-gray-700 text-sm font-bold mb-2"
-                    htmlFor="endDate"
-                  >
-                    Fin
-                  </label>
-                  <input
-                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    id="endDate"
-                    type="date"
-                    placeholder="Fin"
-                    required
-                    name="endDate"
-                    value={offer.endDate}
-                    onChange={handleChange}
-                  />
-                  <p className="text-gray-500 text-xs italic">
-                    La date de fin de l&apos;offre est affichée sur la page
-                    d&apos;accueil de l&apos;offre. La date de fin de
-                    l&apos;offre est utilisée pour déterminer si l&apos;offre
-                    est disponible ou non.
-                  </p>
-                </div>
+              )}
+              <div className="space-y-2 p-1">
+                <label
+                  className="block text-gray-700 text-sm font-bold mb-2"
+                  htmlFor="startDate"
+                >
+                  Date de début
+                </label>
+                <input
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  id="startDate"
+                  type="date"
+                  placeholder="Date de début"
+                  required
+                  value={offer.startDate}
+                  name="startDate"
+                  onChange={handleChange}
+                />
+                <label
+                  className="block text-gray-700 text-sm font-bold mb-2"
+                  htmlFor="endDate"
+                >
+                  Date de fin
+                </label>
+                <input
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  id="endDate"
+                  type="date"
+                  placeholder="Date de fin"
+                  required
+                  value={offer.endDate}
+                  name="endDate"
+                  onChange={handleChange}
+                />
+                <p className="text-gray-500 text-xs italic">
+                  La date de début et de fin sont utilisées pour déterminer si
+                  l&apos;offre est disponible ou non.
+                </p>
+
+                <button
+                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                  onClick={() => {
+                    setOffer({
+                      ...offer,
+                      dates: [
+                        ...offer.dates,
+                        {
+                          startDate: offer.startDate,
+                          endDate: offer.endDate,
+                        },
+                      ],
+                    });
+                  }}
+                >
+                  Ajouter
+                </button>
               </div>
             </div>
+
             {/* submit button */}
             <div className="flex ">
               <button
