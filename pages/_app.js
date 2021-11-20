@@ -11,7 +11,6 @@ import "moment/locale/fr";
 
 import "react-toastify/dist/ReactToastify.css";
 import "react-dropdown/style.css";
-import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 
 moment.locale("fr");
 

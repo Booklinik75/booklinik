@@ -63,15 +63,15 @@ const Login = () => {
 
   return (
     <div className="h-screen relative">
-      <div className="nav top-0 absolute flex flex-row w-full justify-between z-50 p-10 bg-white shadow-lg">
+      <div className="nav top-0 absolute flex w-full justify-between z-50 p-10 bg-white shadow-lg space-x-12 items-center">
         <Link href="/">
           <a>
             <Image src={Logo} alt="Booklinik" />
           </a>
         </Link>
 
-        <div className="flex flex-row gap-1 ">
-          <p>Vous n&apos;avez pas encore de compte ?</p>
+        <div className="flex flex-col md:flex-row gap-1 items-end">
+          <p className="text-right">Pas encore de compte ?</p>
           <Link href="/signup">
             <a className="text-gray-700 hover:underline">S&apos;inscrire</a>
           </Link>
@@ -79,7 +79,7 @@ const Login = () => {
       </div>
       <div className="grid grid-cols-10 h-full">
         <div className="flex items-center col-span-10 lg:col-span-6">
-          <div className="mx-auto w-1/2 space-y-6">
+          <div className="mx-auto w-2/3 md:w-1/2 space-y-6">
             <h1 className="text-4xl">Bonjour !</h1>
             {error && (
               <p className="text-red-500 flex items-center text-sm gap-1">
@@ -127,8 +127,8 @@ const Login = () => {
                   Mot de passe oublié ?
                 </a>
               </Link>
-              <div className="flex flex-row justify-between">
-                <div>
+              <div className="flex flex-col md:flex-row w-full justify-between space-y-4">
+                <div className="hidden md:block">
                   <p className="text-sm text-gray-700">
                     Vous n&apos;avez pas encore de compte ?
                   </p>
@@ -142,6 +142,7 @@ const Login = () => {
                   <DashboardButton
                     defaultText="Se&nbsp;connecter"
                     status={isLoading}
+                    className="w-full"
                   ></DashboardButton>
                 </div>
               </div>
