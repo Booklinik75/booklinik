@@ -115,7 +115,7 @@ const MedicalProfile = ({ auth, medicalQuestions }) => {
               <input
                 name="weight"
                 type="number"
-                placeholder="175 cm"
+                placeholder="95 kg"
                 min={0}
                 required={true}
                 onChange={(e) => handleInputChange(e, -1)}
@@ -130,7 +130,7 @@ const MedicalProfile = ({ auth, medicalQuestions }) => {
               <input
                 name="height"
                 type="number"
-                placeholder="95 kg"
+                placeholder="175cm"
                 min={0}
                 required={true}
                 onChange={(e) => handleInputChange(e, -1)}

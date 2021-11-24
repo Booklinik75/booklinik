@@ -195,7 +195,7 @@ export default function Home({
       <div className="mx-4 xl:mx-auto max-w-7xl py-10">
         <div className="flex flex-row items-baseline justify-between mb-2">
           <h3 className="text-xl mr-2">
-            Découvrez les offres Booklikik du moment
+            Découvrez les offres Booklinik du moment
           </h3>
           <Link href="#">
             <a className="text-bali text-xs font-bold hover:underline flex items-center">

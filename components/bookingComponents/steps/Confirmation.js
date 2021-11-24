@@ -8,7 +8,8 @@ const BookingConfirmation = ({ booking }) => {
       <div className="py-6 space-y-6">
         <p className="flex items-center">
           Vous souhaitez réaliser une{" "}
-          <BookingDataSpan string={booking.surgeryCategoryName} />
+          <BookingDataSpan string={booking.surgeryCategoryName} /> sur{" "}
+          <BookingDataSpan string={booking.surgeryName} />.
         </p>
         <p className="flex items-center">
           Votre voyage s&apos;étendra du{" "}

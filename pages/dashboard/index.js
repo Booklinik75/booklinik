@@ -138,7 +138,7 @@ export default function DashboardIndex({ userProfile, token }) {
                 )}
                 {bookings.some((b) => b.status === "awaitingDocuments") && (
                   <DashboardModal
-                    content="Vous devez ajoutez des documents dans une opération"
+                    content="Pour finaliser votre reservation vous devez ajouter des photos"
                     cta="Ajouter"
                     target="/dashboard/operations"
                   />
