@@ -11,10 +11,14 @@ const ContactHelper = () => {
     message: "",
   });
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formSent, setFormSent] = useState(false);
+
   const router = useRouter();
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
 
     fetch("/api/mail", {
       method: "post",
@@ -30,7 +34,7 @@ const ContactHelper = () => {
       }),
     })
       .then(() => {
-        toast.success("Message envoyé avec succès.");
+        setFormSent(true);
 
         fetch("/api/mail", {
           method: "post",
@@ -46,8 +50,10 @@ const ContactHelper = () => {
         });
       })
       .catch((error) => {
-        toast.error("Une erreur est survenue.");
         Sentry.captureException(error);
+      })
+      .finally(() => {
+        setIsSubmitting(false);
       });
   };
 
@@ -71,35 +77,47 @@ const ContactHelper = () => {
       </div>
       <form onSubmit={handleFormSubmit}>
         <div className="space-y-6">
-          <div>
-            <p className="uppercase text-sm mb-2">Votre email</p>
-            <input
-              type="email"
-              className="w-full bg-transparent placeholder-white border-b p-3"
-              placeholder="Email"
-              name="email"
-              value={form.email}
-              onChange={handleFormChange}
-            />
-          </div>
-          <div>
-            <p className="uppercase text-sm mb-2">Votre message</p>
-            <textarea
-              className="w-full h-24 bg-white bg-opacity-10 p-3 placeholder-white border-b border-white"
-              placeholder="J&lsquo;ai une question à propos de ..."
-              value={form.message}
-              name="message"
-              onChange={handleFormChange}
-            ></textarea>
-          </div>
-          <div className="w-full">
-            <button
-              type="submit"
-              className="float-right rounded bg-white bg-opacity-10 p-3 transition hover:bg-opacity-100 hover:text-shamrock"
-            >
-              Envoyer mon message
-            </button>
-          </div>
+          {!formSent ? (
+            <>
+              <div>
+                <p className="uppercase text-sm mb-2">Votre email</p>
+                <input
+                  type="email"
+                  className="w-full bg-transparent placeholder-white border-b p-3"
+                  placeholder="Email"
+                  name="email"
+                  value={form.email}
+                  onChange={handleFormChange}
+                />
+              </div>
+              <div>
+                <p className="uppercase text-sm mb-2">Votre message</p>
+                <textarea
+                  className="w-full h-24 bg-white bg-opacity-10 p-3 placeholder-white border-b border-white"
+                  placeholder="J&lsquo;ai une question à propos de ..."
+                  value={form.message}
+                  name="message"
+                  onChange={handleFormChange}
+                ></textarea>
+              </div>
+              <div className="w-full">
+                <button
+                  type="submit"
+                  className="float-right rounded bg-white bg-opacity-10 p-3 transition hover:bg-opacity-100 hover:text-shamrock"
+                  disabled={isSubmitting}
+                >
+                  Envoyer mon message
+                </button>
+              </div>
+            </>
+          ) : (
+            <div className="w-full h-full flex items-center justify-center">
+              <p className="text-center">
+                Votre message a bien été envoyé. Nous vous recontacterons dans
+                les plus brefs délais.
+              </p>
+            </div>
+          )}
         </div>
       </form>
     </div>

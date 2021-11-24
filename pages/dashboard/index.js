@@ -20,6 +20,8 @@ export default function DashboardIndex({ userProfile, token }) {
 
   const [bookings, setBookings] = useState([]);
   const [message, setMessage] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [hasSubmitted, setHasSubmitted] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -48,6 +50,7 @@ export default function DashboardIndex({ userProfile, token }) {
 
   const handleMessage = (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
 
     fetch("/api/mail", {
       method: "post",
@@ -63,7 +66,7 @@ export default function DashboardIndex({ userProfile, token }) {
       }),
     })
       .then(() => {
-        toast.success("Message envoyé avec succès.");
+        setHasSubmitted(true);
 
         fetch("/api/mail", {
           method: "post",
@@ -81,6 +84,9 @@ export default function DashboardIndex({ userProfile, token }) {
       .catch((error) => {
         toast.error("Une erreur est survenue.");
         Sentry.captureException(error);
+      })
+      .finally(() => {
+        setIsSubmitting(false);
       });
   };
 
@@ -184,21 +190,30 @@ export default function DashboardIndex({ userProfile, token }) {
                     question.
                   </p>
                   <p className="text-xs uppercase text-gray-700"></p>
-                  <textarea
-                    rows={3}
-                    className=" border-2 border-gray-300 bg-gray-100 p-3 w-full transition hover:border-bali focus:outline-none focus:border-shamrock rounded"
-                    placeholder="J&lsquo;ai une question à propos de..."
-                    value={message}
-                    name="message"
-                    onChange={(e) => setMessage(e.target.value)}
-                  />
-                  <button
-                    className="w-full text-bali transition hover:underline hover:text-shamrock"
-                    type="submit"
-                    onClick={handleMessage}
-                  >
-                    Envoyer mon message
-                  </button>
+                  {hasSubmitted ? (
+                    <p className="text-center text-gray-700 text-sm">
+                      Votre message a bien été envoyé.
+                    </p>
+                  ) : (
+                    <>
+                      <textarea
+                        rows={3}
+                        className="border-2 border-gray-300 bg-gray-100 p-3 w-full transition hover:border-bali focus:outline-none focus:border-shamrock rounded"
+                        placeholder="J&lsquo;ai une question à propos de..."
+                        value={message}
+                        name="message"
+                        onChange={(e) => setMessage(e.target.value)}
+                      />
+                      <button
+                        className="w-full text-bali transition hover:underline hover:text-shamrock"
+                        type="submit"
+                        onClick={handleMessage}
+                        disabled={message === "" || isSubmitting === true}
+                      >
+                        Envoyer mon message
+                      </button>
+                    </>
+                  )}
                 </div>
               </div>
             </div>
