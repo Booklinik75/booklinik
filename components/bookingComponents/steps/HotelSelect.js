@@ -17,7 +17,7 @@ const HotelSelectStep = ({
   return (
     <div className="space-y-6">
       <h1 className="text-2xl mb-6">
-        Il est de de choisir votre nid douillet pour le séjour.
+        Il est temps de choisir votre nid douillet pour le séjour.
       </h1>
       <p className="text-xs text-gray-500 uppercase">Hôtel</p>
       <div className="grid grid-cols-9 gap-4">
