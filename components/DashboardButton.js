@@ -35,16 +35,23 @@ const DashboardButton = ({
   }
 
   return (
-    <button
-      type="submit"
-      className={`min-w-max transition px-10 py-3 rounded border border-shamrock bg-shamrock text-white disabled:opacity-50 disabled:cursor-not-allowed disabled:col-span-full ${
-        !disabled && "hover:text-shamrock group hover:bg-white"
-      } ${className}`}
-      disabled={status === "loading" || disabled ? true : false}
-      onClick={onClick}
-    >
-      {contents}
-    </button>
+    <div className="flex flex-col gap-2 min-w-max">
+      <button
+        type="submit"
+        className={`min-w-max transition px-10 py-3 rounded border border-shamrock bg-shamrock text-white disabled:opacity-50 disabled:cursor-not-allowed disabled:col-span-full ${
+          !disabled && "hover:text-shamrock group hover:bg-white"
+        } ${className}`}
+        disabled={status === "loading" || disabled ? true : false}
+        onClick={onClick}
+      >
+        {contents}
+      </button>
+      {status === "done" && (
+        <p className="text-shamrock text-xs text-center">
+          Informations sauvgardées avec succès.
+        </p>
+      )}
+    </div>
   );
 };
 

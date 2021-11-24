@@ -88,7 +88,7 @@ const MedicalProfile = ({ auth, medicalQuestions }) => {
         setLoading("done");
         setTimeout(() => {
           setLoading("idle");
-        }, 1000);
+        }, 1500);
         router.push(`/dashboard`);
       });
   };

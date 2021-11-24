@@ -38,7 +38,10 @@ const ProfilePage = ({ userProfile, token }) => {
       .update(profile)
       .then(() => {
         toast.success("Informations mises à jour");
-        setLoading("idle");
+        setLoading("done");
+        setTimeout(() => {
+          setLoading("idle");
+        }, 2000);
       })
       .catch((error) => {
         toast.error("Erreur lors de la mise à jour");
