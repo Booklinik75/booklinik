@@ -181,7 +181,7 @@ const AddSurgery = ({ citiesOptions, categoriesOptions, auth }) => {
             min={0}
           />
           <ProfileSelect
-            label="Pays"
+            label="Ville(s)"
             name="country"
             options={citiesOptions}
             value={form.cities}

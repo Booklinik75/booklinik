@@ -229,7 +229,7 @@ const EditSurgery = ({
             min={0}
           />
           <ProfileSelect
-            label="Pays"
+            label="Ville(s)"
             name="country"
             options={citiesOptions}
             value={form.cities}
