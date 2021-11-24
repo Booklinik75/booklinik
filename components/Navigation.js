@@ -16,10 +16,10 @@ export default function Navigation() {
   const [dropdownVisibility, setDropdownVisibility] = useState(false);
 
   return (
-    <div className="w-full z-50 h-full">
+    <div className="w-full z-50 h-full mb-8 top-0 h-20">
       <div className="flex flex-wrap">
         <div className="w-full">
-          <nav className="flex flex-wrap items-center justify-between py-2 fixed w-full z-50 bg-white drop-shadow-sm">
+          <nav className="flex flex-wrap items-center justify-between py-2 top-0 fixed w-full z-50 bg-white drop-shadow-sm">
             <div className="container relative px-4 mx-auto flex flex-wrap items-center justify-between">
               <div className="w-full relative flex justify-between lg:w-auto px-4 lg:static lg:block lg:justify-start">
                 <Link href="/">

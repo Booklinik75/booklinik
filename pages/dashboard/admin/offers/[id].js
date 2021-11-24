@@ -114,6 +114,26 @@ export const getServerSideProps = async (ctx) => {
   // serialize createdAt and updatedAt to moment dates
   offer.createdAt = moment(offer.createdAt.toDate()).format("LLL");
 
+  // get clinics
+  async function getClinics() {
+    const snapshot = await firebase.firestore().collection("clinics").get();
+    return snapshot.docs.map((doc) => {
+      return { id: doc.id, ...doc.data() };
+    });
+  }
+
+  const clinics = await getClinics();
+
+  // build options for clinics select
+  const clinicOptions = [];
+  clinics.forEach((clinic) => {
+    clinicOptions.push({
+      value: clinic.id,
+      label: clinic.name,
+      slug: clinic.slug,
+    });
+  });
+
   return {
     props: {
       auth,
@@ -121,6 +141,7 @@ export const getServerSideProps = async (ctx) => {
       groupedHotelRooms,
       currentOffer: offer,
       id: ctx.params.id,
+      clinicOptions,
     },
   };
 };
@@ -131,6 +152,7 @@ const EditOffer = ({
   groupedHotelRooms,
   currentOffer,
   id,
+  clinicOptions,
 }) => {
   const router = useRouter();
   // has the image been uploaded?
@@ -152,6 +174,11 @@ const EditOffer = ({
     group.options.find((option) => option.value === currentOffer.hotelRoom)
   );
 
+  // determine offer clinic against clinicOptions using the id of the current offer
+  const currentOfferClinic = clinicOptions.find(
+    (option) => option.value === currentOffer.clinic
+  );
+
   // form state
   const [offer, setOffer] = useState({
     name: currentOffer.name,
@@ -162,6 +189,8 @@ const EditOffer = ({
     startDate: currentOffer.startDate,
     endDate: currentOffer.endDate,
     dates: currentOffer.dates,
+    clinic: currentOffer.clinic,
+    offerExpiration: currentOffer.offerExpiration,
   });
 
   const handleChange = (e) => {
@@ -221,9 +250,9 @@ const EditOffer = ({
     const offerData = {
       ...offer,
       imageUrl,
-      createdAt: new Date(),
-      createdBy: auth.props.token.uid,
     };
+
+    console.log(offerData);
 
     // update offer in firestore
     await firebase
@@ -266,7 +295,7 @@ const EditOffer = ({
     <DashboardUi userProfile={auth.props.userProfile} token={auth.props.token}>
       <div className="col-span-10 space-y-3">
         <div className="flex w-full justify-between items-center">
-          <h1 className="text-4xl mb-4">Créer une offre</h1>
+          <h1 className="text-4xl mb-4">Éditer une offre</h1>
         </div>
         <div className="space-y-6">
           <form className="space-y-6" onSubmit={handleSubmit}>
@@ -309,6 +338,25 @@ const EditOffer = ({
                 La description de l&apos;offre est affichée sur la page
                 d&apos;accueil de l&apos;offre.
               </p>
+            </div>
+            <div className="space-y-2">
+              <label
+                className="block text-gray-700 text-sm font-bold mb-2"
+                htmlFor="clinic"
+              >
+                Clinique
+              </label>
+              <Select
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                id="clinic"
+                options={clinicOptions}
+                placeholder="Clinique"
+                required
+                onChange={(selectedOption) =>
+                  handleSelectChange(selectedOption, "clinic")
+                }
+                defaultValue={currentOfferClinic}
+              />
             </div>
             <div className="space-y-2">
               <label
@@ -398,6 +446,28 @@ const EditOffer = ({
               <p className="text-gray-500 text-xs italic">
                 Le prix de l&apos;offre est affiché sur la page d&apos;accueil
                 de l&apos;offre.
+              </p>
+            </div>
+            <div className="space-y-2">
+              <label
+                className="block text-gray-700 text-sm font-bold mb-2"
+                htmlFor="offerExpiration"
+              >
+                Date d&apos;expiration
+              </label>
+              <input
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                id="offerExpiration"
+                type="date"
+                placeholder="Date d'expiration"
+                required
+                value={offer.offerExpiration}
+                name="offerExpiration"
+                onChange={handleChange}
+              />
+              <p className="text-gray-500 text-xs italic">
+                La date d&apos;expiration de l&apos;offre est affichée sur la
+                page d&apos;accueil de l&apos;offre.
               </p>
             </div>
 

@@ -73,10 +73,7 @@ const OffersList = ({ offersArray }) => {
             <div className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-5 row-gap-6 col-gap-4">
               {offersArray.map((offer) => {
                 // if today is after startDate and after endDate
-                if (
-                  new Date(offer.startDate) <= new Date() &&
-                  new Date(offer.endDate) >= new Date()
-                ) {
+                if (new Date(offer.offerExpiration) > new Date(Date.now())) {
                   return (
                     <div className="col-span-1">
                       <Offer data={offer} key={offer.id} />

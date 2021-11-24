@@ -14,6 +14,9 @@ import "react-dropdown/style.css";
 
 import "tippy.js/dist/tippy.css";
 
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+
 moment.locale("fr");
 
 function BooklinikClient({ Component, pageProps }) {

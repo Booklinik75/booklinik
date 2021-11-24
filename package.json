@@ -45,10 +45,11 @@
     "react-json-to-csv": "^1.0.4",
     "react-markdown": "^6.0.2",
     "react-moment": "^1.1.1",
-    "react-responsive-carousel": "^3.2.22",
     "react-select": "^4.3.1",
+    "react-slick": "^0.28.1",
     "react-table": "^7.7.0",
     "react-toastify": "^8.0.3",
+    "slick-carousel": "^1.8.1",
     "slugify": "^1.6.0",
     "stripe": "^8.183.0",
     "yup": "^0.32.9"

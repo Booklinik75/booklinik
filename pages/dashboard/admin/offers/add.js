@@ -98,12 +98,37 @@ export const getServerSideProps = async (ctx) => {
     });
   });
 
+  // get clinics
+  async function getClinics() {
+    const snapshot = await firebase.firestore().collection("clinics").get();
+    return snapshot.docs.map((doc) => {
+      return { id: doc.id, ...doc.data() };
+    });
+  }
+
+  const clinics = await getClinics();
+
+  // build options for clinics select
+  const clinicOptions = [];
+  clinics.forEach((clinic) => {
+    clinicOptions.push({
+      value: clinic.id,
+      label: clinic.name,
+      slug: clinic.slug,
+    });
+  });
+
   return {
-    props: { auth, groupedOptions, groupedHotelRooms },
+    props: { auth, groupedOptions, groupedHotelRooms, clinicOptions },
   };
 };
 
-const AddOffer = ({ auth, groupedOptions, groupedHotelRooms }) => {
+const AddOffer = ({
+  auth,
+  groupedOptions,
+  groupedHotelRooms,
+  clinicOptions,
+}) => {
   const router = useRouter();
   // has the image been uploaded?
   const [imageUploadComplete, setImageUploadComplete] = useState(false);
@@ -206,6 +231,8 @@ const AddOffer = ({ auth, groupedOptions, groupedHotelRooms }) => {
     }
   };
 
+  console.log(offer);
+
   return (
     <DashboardUi userProfile={auth.props.userProfile} token={auth.props.token}>
       <div className="col-span-10 space-y-3">
@@ -253,6 +280,24 @@ const AddOffer = ({ auth, groupedOptions, groupedHotelRooms }) => {
                 La description de l&apos;offre est affichée sur la page
                 d&apos;accueil de l&apos;offre.
               </p>
+            </div>
+            <div className="space-y-2">
+              <label
+                className="block text-gray-700 text-sm font-bold mb-2"
+                htmlFor="clinic"
+              >
+                Clinique
+              </label>
+              <Select
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                id="clinic"
+                options={clinicOptions}
+                placeholder="Clinique"
+                required
+                onChange={(selectedOption) =>
+                  handleSelectChange(selectedOption, "clinic")
+                }
+              />
             </div>
             <div className="space-y-2">
               <label
@@ -337,6 +382,28 @@ const AddOffer = ({ auth, groupedOptions, groupedHotelRooms }) => {
               <p className="text-gray-500 text-xs italic">
                 Le prix de l&apos;offre est affiché sur la page d&apos;accueil
                 de l&apos;offre.
+              </p>
+            </div>
+            <div className="space-y-2">
+              <label
+                className="block text-gray-700 text-sm font-bold mb-2"
+                htmlFor="offerExpiration"
+              >
+                Date d&apos;expiration
+              </label>
+              <input
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                id="offerExpiration"
+                type="date"
+                placeholder="Date d'expiration"
+                required
+                value={offer.offerExpiration}
+                name="offerExpiration"
+                onChange={handleChange}
+              />
+              <p className="text-gray-500 text-xs italic">
+                La date d&apos;expiration de l&apos;offre est affichée sur la
+                page d&apos;accueil de l&apos;offre.
               </p>
             </div>
 
