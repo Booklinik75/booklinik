@@ -12,6 +12,8 @@ import "moment/locale/fr";
 import "react-toastify/dist/ReactToastify.css";
 import "react-dropdown/style.css";
 
+import "tippy.js/dist/tippy.css";
+
 moment.locale("fr");
 
 function BooklinikClient({ Component, pageProps }) {

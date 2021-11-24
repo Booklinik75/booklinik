@@ -117,10 +117,10 @@ const ProfilePage = ({ userProfile, token }) => {
             />
             <DashboardInput
               type="text"
-              name="referer"
-              value={profile.referer ?? ""}
+              name="referalCode"
+              value={profile.referalCode}
               onChange={handleChange}
-              label="Code de parrainage"
+              label="Modifier votre code parrainage"
             />
             <DashboardButton
               defaultText="Sauvegarder mes informations"

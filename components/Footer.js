@@ -27,8 +27,8 @@ const Footer = () => {
             </div>
             <div className="flex flex-col text-sm space-y-2">
               <p className="uppercase text-sm mb-1">À propos</p>
-              <Link href="/valeurs">
-                <a className="hover:underline">Nos valeurs</a>
+              <Link href="/a-propos">
+                <a className="hover:underline">À propos de nous</a>
               </Link>
               <Link href="/mission">
                 <a className="hover:underline">Notre mission</a>
