@@ -24,7 +24,11 @@ const HotelSelectStep = ({
         {hotels.map((hotel) => {
           return hotel.city === booking.city ? (
             <div
-              className="col-span-9 lg:col-span-3 space-y-2"
+              className={`col-span-9 lg:col-span-3 space-y-2 transition-opacity ${
+                booking.hotel && hotel.slug !== booking.hotel
+                  ? "opacity-60"
+                  : "opacity-100"
+              }`}
               key={hotel.slug}
             >
               <input
@@ -57,7 +61,7 @@ const HotelSelectStep = ({
                     alt={hotel.name}
                     className="rounded transition brightness-90 hover:brightness-50 bg-gray-200"
                   />
-                  <div className="absolute  bottom-0 left-0 m-4">
+                  <div className="absolute bottom-0 left-0 m-4">
                     {hotel.slug === booking.hotel ? (
                       <p className="flex rounded items-center px-5 py-2 max-w-max mb-2 opacity-80 transition hover:opacity-100 bg-shamrock text-white gap-2">
                         <AiOutlineCheckCircle />

@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { AiOutlineCheckCircle } from "react-icons/ai";
+import { BsCircle } from "react-icons/bs";
 import { useEffect } from "react";
 
 const CitySelectStep = ({
@@ -27,7 +28,7 @@ const CitySelectStep = ({
             }).length;
 
             return city.country === country.slug ? (
-              <div className="col-span-9 lg:col-span-3 space-y-2">
+              <div className="col-span-9 lg:col-span-3 space-y-2 p-4 border bg-gray-100 border-gray-400 rounded">
                 <input
                   type="radio"
                   name="city"
@@ -40,8 +41,16 @@ const CitySelectStep = ({
                 />
                 <label
                   htmlFor={city.slug}
-                  className="transition hover:shadow hover:cursor-pointer"
+                  className="transition hover:shadow hover:cursor-pointer space-y-4"
                 >
+                  <div className="flex justify-between items-center">
+                    <p className="">
+                      {city.name}, {country.name} &bull;{" "}
+                      <span className="text-shamrock">
+                        {length} hôtels disponibles
+                      </span>
+                    </p>
+                  </div>
                   <div className="h-64 relative">
                     <Image
                       src={city.photo}
@@ -59,16 +68,12 @@ const CitySelectStep = ({
                         Selectionné
                       </p>
                     ) : (
-                      ""
+                      <p className="flex rounded items-center p-2 opacity-80 transition hover:opacity-100 text-shamrock gap-2 absolute bottom-0 left-0 m-2">
+                        <BsCircle className="text-4xl text-shamrock" />
+                      </p>
                     )}
                   </div>
                 </label>
-                <p className="text-xs">
-                  {city.name}, {country.name} &bull;{" "}
-                  <span className="text-shamrock">
-                    {length} hôtels disponibles
-                  </span>
-                </p>
               </div>
             ) : (
               ""
