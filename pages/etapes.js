@@ -19,7 +19,7 @@ const KeySteps = () => {
       <Navigation />
 
       <PhotoBanner
-        title="Les etapes clés"
+        title="Comment ça marche ?"
         body={body}
         fileName={fileName}
         discover={true}
