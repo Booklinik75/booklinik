@@ -180,9 +180,9 @@ const Checkout = ({ booking, stripeArgs, auth, stripeSession }) => {
               </h1>
               <p className="text-sm uppercase text-gray-400 flex gap-1">
                 Besoin d&apos;aide ? Appelez nous au
-                <Link href="tel:+33678901234">
+                <Link href="tel:+0176350968">
                   <a className="hover:text-shamrock transition-colors">
-                    +33 6 78 90 12 34
+                    01 76 35 09 68
                   </a>
                 </Link>
               </p>
