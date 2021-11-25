@@ -8,7 +8,7 @@ import { VscLoading } from "react-icons/vsc";
 import firebase from "../firebase/clientApp";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { motion, AnimatePresence } from "framer-motion";
-import { BsPhone } from "react-icons/bs";
+import { FaPhone } from "react-icons/fa";
 
 export default function Navigation() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -99,7 +99,7 @@ export default function Navigation() {
                     |
                     <Link href="tel:0176350968">
                       <a className="gap-1 items-center flex transition-colors group-hover:text-shamrock">
-                        <BsPhone className="stroke-1" />
+                        <FaPhone className="stroke-1 text-bali" />
                         01 76 35 09 68
                       </a>
                     </Link>
