@@ -1,6 +1,7 @@
 import Image from "next/image";
 import StarRating from "../../StarRating";
 import { AiOutlineCheckCircle } from "react-icons/ai";
+import { BsCircle } from "react-icons/bs";
 import { useEffect } from "react";
 
 const HotelSelectStep = ({
@@ -61,26 +62,32 @@ const HotelSelectStep = ({
                     alt={hotel.name}
                     className="rounded transition brightness-90 hover:brightness-50 bg-gray-200"
                   />
-                  <div className="absolute bottom-0 left-0 m-4">
+                  <div className="absolute bottom-0 left-0 p-4 h-full flex justify-between flex-col">
                     {hotel.slug === booking.hotel ? (
                       <p className="flex rounded items-center px-5 py-2 max-w-max mb-2 opacity-80 transition hover:opacity-100 bg-shamrock text-white gap-2">
                         <AiOutlineCheckCircle />
                         Selectionné
                       </p>
                     ) : (
-                      ""
-                    )}
-                    <h2 className="text-lg block w-full top-28 text-white text-left">
-                      {hotel.name}
-                    </h2>
-                    <div className="flex items-center gap-4">
-                      <StarRating value={hotel.rating} color="white" />
-                      <p className="text-white text-xs">&bull;</p>
-                      <p className="text-white text-xs capitalize">
-                        {hotel.city}
+                      <p className="flex rounded items-center opacity-80 transition hover:opacity-100 text-shamrock gap-2 max-w-max">
+                        <BsCircle className="text-4xl text-shamrock" />
                       </p>
-                      <p className="text-white text-xs">&bull;</p>
-                      <p className="text-white text-xs">+{hotel.extraPrice}€</p>
+                    )}
+                    <div>
+                      <h2 className="text-lg block w-full top-28 text-white text-left">
+                        {hotel.name}
+                      </h2>
+                      <div className="flex items-center gap-4">
+                        <StarRating value={hotel.rating} color="white" />
+                        <p className="text-white text-xs">&bull;</p>
+                        <p className="text-white text-xs capitalize">
+                          {hotel.city}
+                        </p>
+                        <p className="text-white text-xs">&bull;</p>
+                        <p className="text-white text-xs">
+                          +{hotel.extraPrice}€
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>

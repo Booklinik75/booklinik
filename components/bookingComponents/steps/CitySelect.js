@@ -63,12 +63,12 @@ const CitySelectStep = ({
                       {city.name}
                     </h2>
                     {city.slug === booking.city ? (
-                      <p className="flex rounded items-center px-5 py-2 opacity-80 transition hover:opacity-100 bg-shamrock text-white gap-2 absolute bottom-0 left-0 m-2">
+                      <p className="flex rounded items-center px-5 py-2 opacity-80 transition hover:opacity-100 bg-shamrock text-white gap-2 absolute top-0 left-0 m-2">
                         <AiOutlineCheckCircle />
                         Selectionné
                       </p>
                     ) : (
-                      <p className="flex rounded items-center p-2 opacity-80 transition hover:opacity-100 text-shamrock gap-2 absolute bottom-0 left-0 m-2">
+                      <p className="flex rounded items-center p-2 opacity-80 transition hover:opacity-100 text-shamrock gap-2 absolute top-0 left-0 m-2">
                         <BsCircle className="text-4xl text-shamrock" />
                       </p>
                     )}
