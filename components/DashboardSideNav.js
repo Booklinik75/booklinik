@@ -4,7 +4,7 @@ import { useAuth } from "../hooks/useAuth";
 import DashboardSideNavItem from "./DashboardSideNavItem";
 import firebase from "firebase/clientApp";
 
-const DashboardSideNav = ({ userProfile, token }) => {
+const DashboardSideNav = ({ userProfile, token, isSideNavOpen }) => {
   const router = useRouter();
   const isAdmin = userProfile.role === "admin" ? true : false;
   const isSales =
@@ -12,6 +12,7 @@ const DashboardSideNav = ({ userProfile, token }) => {
   const { signOut } = useAuth();
 
   const [bookings, setBookings] = useState([]);
+  console.log(isSideNavOpen);
 
   useEffect(() => {
     const asyncFunc = async () => {
@@ -37,9 +38,14 @@ const DashboardSideNav = ({ userProfile, token }) => {
   }, []);
 
   return (
-    <div className="z-10 h-full col-span-2 sticky w-full">
+    <div
+      className={`z-10 h-full lg:col-span-2 absolute lg:sticky 
+      bg-white lg:bg-transparent shadow lg:shadow-none border-r lg:border-0 border-gray-400 w-1/2 lg:w-full
+      ${isSideNavOpen ? "block" : "hidden lg:flex"}
+      `}
+    >
       <div
-        className="flex flex-col px-6 py-10 h-full justify-between"
+        className={`flex flex-col px-6 py-10 h-full justify-between absolute`}
         style={{ maxHeight: "95vh" }}
       >
         <div className="space-y-5">

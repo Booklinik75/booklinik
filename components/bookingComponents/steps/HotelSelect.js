@@ -23,7 +23,10 @@ const HotelSelectStep = ({
       <div className="grid grid-cols-9 gap-4">
         {hotels.map((hotel) => {
           return hotel.city === booking.city ? (
-            <div className="col-span-3 space-y-2" key={hotel.slug}>
+            <div
+              className="col-span-9 lg:col-span-3 space-y-2"
+              key={hotel.slug}
+            >
               <input
                 type="radio"
                 name="hotel"

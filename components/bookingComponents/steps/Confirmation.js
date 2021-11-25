@@ -6,26 +6,34 @@ const BookingConfirmation = ({ booking }) => {
     <div className="space-y-6 h-full">
       <h1 className="text-2xl mb-6">Parfait, on y est presque !</h1>
       <div className="py-6 space-y-6">
-        <p className="flex items-center">
+        <p className="flex flex-col items-start gap-2 lg:flex-row lg:items-center">
           Vous souhaitez réaliser une{" "}
-          <BookingDataSpan string={booking.surgeryCategoryName} /> sur{" "}
-          <BookingDataSpan string={booking.surgeryName} />.
+          <span>
+            <BookingDataSpan string={booking.surgeryCategoryName} /> sur{" "}
+          </span>
+          <BookingDataSpan string={booking.surgeryName} />
         </p>
-        <p className="flex items-center">
+        <p className="flex flex-col items-start gap-2 lg:flex-row lg:items-center">
           Votre voyage s&apos;étendra du{" "}
-          <BookingDataSpan>
-            <Moment format="DD MMM YYYY" date={booking.startDate} locale="fr" />
-          </BookingDataSpan>
-          au{" "}
-          <BookingDataSpan>
-            <Moment format="DD MMM YYYY" date={booking.endDate} locale="fr" />
-          </BookingDataSpan>
+          <span>
+            <BookingDataSpan>
+              <Moment
+                format="DD MMM YYYY"
+                date={booking.startDate}
+                locale="fr"
+              />
+            </BookingDataSpan>
+            au{" "}
+            <BookingDataSpan>
+              <Moment format="DD MMM YYYY" date={booking.endDate} locale="fr" />
+            </BookingDataSpan>
+          </span>
           pour une durée de {booking.totalSelectedNights} jours.
         </p>
         {booking.extraBabies > 0 ||
         booking.extraChilds > 0 ||
         booking.extraTravellers > 0 ? (
-          <p className="flex items-center">
+          <p className="flex flex-col items-start gap-2 lg:flex-row lg:items-center">
             Vous serez accompagné-e par{" "}
             {booking.extraTravellers > 0 ? (
               <BookingDataSpan
@@ -60,12 +68,12 @@ const BookingConfirmation = ({ booking }) => {
         ) : (
           ""
         )}{" "}
-        <p>
+        <p className="flex flex-col items-start gap-2 lg:flex-row lg:items-center">
           L&apos;hôtel dans lequel vous résiderez est au{" "}
           <BookingDataSpan string={booking.hotelName} /> (très bon choix) et
           vous logerez en <BookingDataSpan string={booking.roomName} />
         </p>
-        <p>
+        <p className="flex flex-col items-start gap-2 lg:flex-row lg:items-center">
           Vous avez selectionné les options suivantes :{" "}
           {booking.options.map((option) => {
             return option.isChecked === true ? (
@@ -76,7 +84,7 @@ const BookingConfirmation = ({ booking }) => {
           })}
         </p>
       </div>
-      <p className="py-6">
+      <p className="py-6 flex flex-col items-start gap-2 lg:flex-row lg:items-center">
         Le prix tout compris de votre voyage sur-mesure est de{" "}
         <span className="text-2xl rounded text-white px-4 py-2 mx-2 bg-shamrock">
           {Number(booking.surgeryPrice) +

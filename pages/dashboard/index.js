@@ -1,5 +1,4 @@
-import DashboardNavigation from "../../components/DashboardNavigation";
-import DashboardSideNav from "../../components/DashboardSideNav";
+import DashboardUi from "components/DashboardUi";
 import DashboardModal from "../../components/DashboardModal";
 import DashboardOperationCard from "../../components/DashboardOperationCard";
 import Link from "next/link";
@@ -96,128 +95,114 @@ export default function DashboardIndex({ userProfile, token }) {
         <Loader />
       ) : (
         <>
-          <DashboardNavigation />
-
-          <div
-            className="grid grid-cols-12"
-            style={{
-              height: "calc(100% - 75px)",
-            }}
-          >
-            <DashboardSideNav
-              userProfile={userProfile}
-              user={user}
-              token={token}
-            />
-            <div className="col-span-10 shadow-lg grid grid-cols-6 p-12 gap-10">
-              <div className="col-span-6 lg:col-span-4 flex flex-col gap-4">
-                <h1 className="text-4xl">
-                  Bonjour{" "}
-                  <span className="text-shamrock">
-                    {userProfile.firstName
-                      ? userProfile.firstName
-                      : userProfile.email}
-                  </span>
-                  ,
-                </h1>
-                <p>
-                  Bienvenue sur votre profil, renseignez vos informations
-                  personnelles.
+          <DashboardUi userProfile={userProfile} token={token}>
+            <div className="col-span-6 lg:col-span-4 flex flex-col gap-4">
+              <h1 className="text-4xl">
+                Bonjour{" "}
+                <span className="text-shamrock">
+                  {userProfile.firstName
+                    ? userProfile.firstName
+                    : userProfile.email}
+                </span>
+                ,
+              </h1>
+              <p>
+                Bienvenue sur votre profil, renseignez vos informations
+                personnelles.
+              </p>
+              {[
+                userProfile.firstName,
+                userProfile.lastName,
+                userProfile.email,
+                userProfile.address,
+                userProfile.mobilePhone,
+                userProfile.gender,
+                userProfile.landlinePhone,
+                userProfile.birthdate,
+              ].some((x) => x === null) ? (
+                <DashboardModal
+                  content="Vous devez remplir vos informations"
+                  cta="Compléter"
+                  target="/dashboard/profile"
+                />
+              ) : (
+                ""
+              )}
+              {bookings.some((b) => b.status === "awaitingDocuments") && (
+                <DashboardModal
+                  content="Pour finaliser votre reservation, vous devrez ajouter des photos"
+                  cta="Ajouter"
+                  target="/dashboard/operations"
+                />
+              )}
+              <div className="flex flex-col mt-4 gap-2">
+                <p className="text-sm text-gray-700 uppercase">
+                  Mes Opérations
                 </p>
-                {[
-                  userProfile.firstName,
-                  userProfile.lastName,
-                  userProfile.email,
-                  userProfile.address,
-                  userProfile.mobilePhone,
-                  userProfile.gender,
-                  userProfile.landlinePhone,
-                  userProfile.birthdate,
-                ].some((x) => x === null) ? (
-                  <DashboardModal
-                    content="Vous devez remplir vos informations"
-                    cta="Compléter"
-                    target="/dashboard/profile"
-                  />
-                ) : (
-                  ""
-                )}
-                {bookings.some((b) => b.status === "awaitingDocuments") && (
-                  <DashboardModal
-                    content="Pour finaliser votre reservation vous devez ajouter des photos"
-                    cta="Ajouter"
-                    target="/dashboard/operations"
-                  />
-                )}
-                <div className="flex flex-col mt-4 gap-2">
-                  <p className="text-sm text-gray-700 uppercase">
-                    Mes Opérations
-                  </p>
 
-                  {bookings !== [] &&
-                    bookings.map((booking) => {
-                      return (
-                        <DashboardOperationCard
-                          key={booking.id}
-                          booking={booking}
-                        />
-                      );
-                    })}
-                </div>
-              </div>
-              <div className="col-span-6 lg:col-span-2 flex flex-row lg:flex-col gap-6">
-                <div className="w-1/2 lg:w-full rounded border border-shamrock p-4 space-y-2">
-                  <h3 className="text-2xl">Parrainez un proche</h3>
-
-                  <p>
-                    Recommandez Booklinik à vos amis et recevez 100€ sur votre
-                    voyage. Vos amis profiteront aussi de 100€ sur leurs
-                    opérations.
-                  </p>
-                  <p className="w-full bg-shamrock text-white uppercase font-2xl text-center py-3 rounded">
-                    {userProfile.referalCode ? userProfile.referalCode : "null"}
-                  </p>
-                  <Link href="/dashboard/parrainage" className="w-full">
-                    <a className="w-full block text-center text-gray-700 text-xs hover:underline">
-                      Ajouter un code de parrainage
-                    </a>
-                  </Link>
-                </div>
-                <div className="w-1/2 lg:w-full rounded border border-gray-600 p-4 space-y-2">
-                  <h3 className="text-2xl">Assistance Booklinik</h3>
-                  <p>
-                    Nous sommes à votre disposition si vous avez la moindre
-                    question.
-                  </p>
-                  <p className="text-xs uppercase text-gray-700"></p>
-                  {hasSubmitted ? (
-                    <p className="text-center text-gray-700 text-sm">
-                      Votre message a bien été envoyé.
-                    </p>
-                  ) : (
-                    <>
-                      <textarea
-                        rows={3}
-                        className="border-2 border-gray-300 bg-gray-100 p-3 w-full transition hover:border-bali focus:outline-none focus:border-shamrock rounded"
-                        placeholder="J&lsquo;ai une question à propos de..."
-                        value={message}
-                        name="message"
-                        onChange={(e) => setMessage(e.target.value)}
+                {bookings !== [] &&
+                  bookings.map((booking) => {
+                    return (
+                      <DashboardOperationCard
+                        key={booking.id}
+                        booking={booking}
                       />
-                      <button
-                        className="w-full text-bali transition hover:underline hover:text-shamrock"
-                        type="submit"
-                        onClick={handleMessage}
-                        disabled={message === "" || isSubmitting === true}
-                      >
-                        Envoyer mon message
-                      </button>
-                    </>
-                  )}
-                </div>
+                    );
+                  })}
               </div>
             </div>
-          </div>
+            <div className="col-span-6 lg:col-span-2 flex flex-col gap-6 ">
+              <div className="w-full rounded border border-shamrock p-4 space-y-2">
+                <h3 className="text-2xl">Parrainez un proche</h3>
+
+                <p>
+                  Recommandez Booklinik à vos amis et recevez 100€ sur votre
+                  voyage. Vos amis profiteront aussi de 100€ sur leurs
+                  opérations.
+                </p>
+                <p className="w-full bg-shamrock text-white uppercase font-2xl text-center py-3 rounded">
+                  {userProfile.referalCode ? userProfile.referalCode : "null"}
+                </p>
+                <Link href="/dashboard/parrainage" className="w-full">
+                  <a className="w-full block text-center text-gray-700 text-xs hover:underline">
+                    Ajouter un code de parrainage
+                  </a>
+                </Link>
+              </div>
+              <div className="w-full rounded border border-gray-600 p-4 space-y-2">
+                <h3 className="text-2xl">Assistance Booklinik</h3>
+                <p>
+                  Nous sommes à votre disposition si vous avez la moindre
+                  question.
+                </p>
+                <p className="text-xs uppercase text-gray-700"></p>
+                {hasSubmitted ? (
+                  <p className="text-center text-gray-700 text-sm">
+                    Votre message a bien été envoyé.
+                  </p>
+                ) : (
+                  <>
+                    <textarea
+                      rows={3}
+                      className="border-2 border-gray-300 bg-gray-100 p-3 w-full transition hover:border-bali focus:outline-none focus:border-shamrock rounded"
+                      placeholder="J&lsquo;ai une question à propos de..."
+                      value={message}
+                      name="message"
+                      onChange={(e) => setMessage(e.target.value)}
+                    />
+                    <button
+                      className="w-full text-bali transition hover:underline hover:text-shamrock"
+                      type="submit"
+                      onClick={handleMessage}
+                      disabled={message === "" || isSubmitting === true}
+                    >
+                      Envoyer mon message
+                    </button>
+                  </>
+                )}
+              </div>
+            </div>
+          </DashboardUi>
         </>
       )}
     </div>

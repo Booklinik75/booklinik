@@ -225,7 +225,7 @@ const OperationPage = ({
       {picturesImporter.visibility &&
         createPortal(
           <div
-            className="absolute w-screen h-screen bg-black bg-opacity-30 flex items-center justify-center z-20"
+            className="fixed w-screen h-screen bg-black bg-opacity-30 flex items-center justify-center z-20"
             style={{ marginTop: "-100vh" }}
             onClick={(e) => {
               e.stopPropagation();
@@ -297,10 +297,11 @@ const OperationPage = ({
                   <section>
                     <div
                       {...getRootProps()}
-                      className="w-full flex flex-col gap-4 items-center justify-center bg-gray-100 border border-dashed border-gray-400 py-12"
+                      className="w-full flex flex-col gap-4 rounded items-center justify-center bg-gray-100 border overflow-hidden border-dashed border-gray-400 py-12 px-4
+                      transition-all hover:bg-gray-200 hover:border-gray-600 hover:cursor-pointer"
                     >
                       <input {...getInputProps()} />
-                      <p className="text-white p-4 rounded bg-shamrock">
+                      <p className="text-white p-4 rounded text-center bg-shamrock">
                         Cliquez ici pour ajouter des photos, ou glissez
                         directement vos photos
                       </p>

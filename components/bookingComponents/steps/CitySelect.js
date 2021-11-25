@@ -27,7 +27,7 @@ const CitySelectStep = ({
             }).length;
 
             return city.country === country.slug ? (
-              <div className="col-span-3 space-y-2">
+              <div className="col-span-9 lg:col-span-3 space-y-2">
                 <input
                   type="radio"
                   name="city"
