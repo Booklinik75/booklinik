@@ -138,7 +138,6 @@ const OfferBooking = ({ offer }) => {
   });
 
   function addDays(date, days) {
-    console.log(date, days);
     var result = new Date(date);
     result.setDate(result.getDate() + days);
 
@@ -183,7 +182,6 @@ const OfferBooking = ({ offer }) => {
         ...booking,
       })
       .then((e) => {
-        console.log(e);
         fetch("/api/mail", {
           method: "post",
           body: JSON.stringify({
@@ -193,8 +191,7 @@ const OfferBooking = ({ offer }) => {
         });
       })
       .then((e) => {
-        console.log(e);
-        // router.push("/dashboard/operations");
+        router.push("/dashboard/operations");
       })
       .catch((error) => {
         console.error(error);

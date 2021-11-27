@@ -12,7 +12,6 @@ const DashboardSideNav = ({ userProfile, token, isSideNavOpen }) => {
   const { signOut } = useAuth();
 
   const [bookings, setBookings] = useState([]);
-  console.log(isSideNavOpen);
 
   useEffect(() => {
     const asyncFunc = async () => {

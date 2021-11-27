@@ -231,8 +231,6 @@ const AddOffer = ({
     }
   };
 
-  console.log(offer);
-
   return (
     <DashboardUi userProfile={auth.props.userProfile} token={auth.props.token}>
       <div className="col-span-10 space-y-3">

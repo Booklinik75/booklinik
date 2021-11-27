@@ -111,7 +111,6 @@ const SignUp = () => {
         } else {
           setError("Une erreur est survenue");
         }
-        console.log(error);
         Sentry.captureException(error);
       })
       .finally(() => {

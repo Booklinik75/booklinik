@@ -35,9 +35,7 @@ export default async function handler(req, res) {
             coupon = body.promoCode;
           }
         }
-      } catch (error) {
-        console.log(error);
-      }
+      } catch (error) {}
 
       // Create Checkout Sessions from body params.
       const session = await stripe.checkout.sessions.create({

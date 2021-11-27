@@ -62,7 +62,7 @@ const Parrainage = ({ auth, referer }) => {
                 router.replace(router.asPath);
                 setRef(doc.data());
               })
-              .catch((err) => console.log(err));
+              .catch((err) => {});
 
             firebase
               .firestore()

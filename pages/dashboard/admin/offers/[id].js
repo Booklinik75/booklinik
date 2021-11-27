@@ -252,8 +252,6 @@ const EditOffer = ({
       imageUrl,
     };
 
-    console.log(offerData);
-
     // update offer in firestore
     await firebase
       .firestore()

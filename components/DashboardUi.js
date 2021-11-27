@@ -4,7 +4,6 @@ import DashboardSideNav from "./DashboardSideNav";
 
 const DashboardUi = ({ children, userProfile, token }) => {
   const [sideNavOpen, setSideNavOpen] = useState(false);
-  console.log(".", sideNavOpen);
 
   const openSideNav = () => {
     setSideNavOpen(!sideNavOpen);
