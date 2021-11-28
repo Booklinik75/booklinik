@@ -67,9 +67,6 @@ const DefineOptions = ({ auth, hotelName, id }) => {
       .collection("options")
       .doc(id)
       .set({ ...[inputList] })
-      .catch((err) => {
-        console.error(err);
-      })
       .finally(() => {
         setLoading("done");
         setTimeout(() => {

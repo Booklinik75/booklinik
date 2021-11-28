@@ -81,9 +81,6 @@ const MedicalProfile = ({ auth, medicalQuestions }) => {
       .collection("medicalAnswers")
       .doc(user.uid)
       .set(formData)
-      .catch((error) => {
-        console.error(error);
-      })
       .finally(() => {
         setLoading("done");
         setTimeout(() => {

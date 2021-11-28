@@ -44,9 +44,6 @@ const FormStepper = ({ children, booking, user, nextStep, setNextStep }) => {
       })
       .then(() => {
         router.push("/dashboard/operations");
-      })
-      .catch((error) => {
-        console.error(error);
       });
   };
 

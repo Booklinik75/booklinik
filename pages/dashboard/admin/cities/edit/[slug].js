@@ -69,9 +69,6 @@ const AddCity = ({ countriesOptions, data, id, token, userProfile }) => {
       .delete()
       .then(() => {
         router.push("/dashboard/admin/cities");
-      })
-      .catch((error) => {
-        console.error("Error removing document: ", error);
       });
   }
 

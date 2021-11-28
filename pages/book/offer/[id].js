@@ -192,9 +192,6 @@ const OfferBooking = ({ offer }) => {
       })
       .then((e) => {
         router.push("/dashboard/operations");
-      })
-      .catch((error) => {
-        console.error(error);
       });
   };
 

@@ -115,9 +115,6 @@ const EditSurgery = ({
       .delete()
       .then(() => {
         router.push("/dashboard/admin/surgeries");
-      })
-      .catch((error) => {
-        console.error("Error removing document: ", error);
       });
   }
 
