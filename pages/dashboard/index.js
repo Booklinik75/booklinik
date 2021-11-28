@@ -121,6 +121,7 @@ export default function DashboardIndex({ userProfile, token }) {
                 userProfile.birthdate,
               ].some((x) => x === null) ? (
                 <DashboardModal
+                  type="error"
                   content="Vous devez remplir vos informations"
                   cta="Compléter"
                   target="/dashboard/profile"
@@ -130,6 +131,7 @@ export default function DashboardIndex({ userProfile, token }) {
               )}
               {bookings.some((b) => b.status === "awaitingDocuments") && (
                 <DashboardModal
+                  type="error"
                   content="Pour finaliser votre reservation, vous devrez ajouter des photos"
                   cta="Ajouter"
                   target="/dashboard/operations"

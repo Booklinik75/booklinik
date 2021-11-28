@@ -82,6 +82,7 @@ const SignUp = () => {
             landlinePhone: null,
             lastname: null,
             mobilePhone: null,
+            isMobileVerified: false,
             role: "guest",
             referalCode: `WELCOME-${MD5(email).toString().substring(0, 5)}`,
             signupDate: new Date().toUTCString(),
@@ -94,6 +95,15 @@ const SignUp = () => {
             .doc(user.uid)
             .set(userData)
             .then((docRef) => {
+              // send confirmation email
+              fetch("/api/mail", {
+                method: "POST",
+                body: JSON.stringify({
+                  recipient: email,
+                  templateId: "d-51683413333641cc9bd64848bda8fa19",
+                }),
+              });
+
               router.push("/dashboard");
             })
             .catch((error) => {
