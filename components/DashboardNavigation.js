@@ -4,7 +4,7 @@ import Link from "next/link";
 
 const DashboardNavigation = () => {
   return (
-    <div className="flex flex-row w-full justify-between z-50 px-10 py-6 bg-white border-b border-gray-500">
+    <div className="relative flex flex-row w-full justify-between z-50 px-10 py-6 bg-white border-b border-gray-500">
       <div>
         <Link href="/">
           <a>
