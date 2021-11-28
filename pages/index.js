@@ -19,6 +19,7 @@ import {
 } from "../utils/ServerHelpers";
 import firebase from "firebase/clientApp";
 import moment from "moment";
+import { useEffect, useRef } from "react";
 
 // TODO: add unit test for weird characters like apostrophes and such
 
@@ -102,6 +103,29 @@ export default function Home({
   categoriesSettings,
   offers,
 }) {
+  const mainBox = useRef(null);
+  const discoverBookLinkText = useRef(null);
+
+  useEffect(() => {
+    // parallax effect
+    window.onscroll = () => {
+      if (mainBox.current) {
+        mainBox.current.style.transform = `translateY(-${
+          window.scrollY / 15
+        }%)`;
+        const { offsetTop, offsetHeight } = discoverBookLinkText.current;
+        console.log(-(offsetTop - offsetHeight - window.scrollY) / 3);
+        if (window.scrollY >= offsetTop - offsetHeight - 30) {
+          discoverBookLinkText.current.style.transform = `translateY(${
+            (offsetTop - offsetHeight - window.scrollY) / 5
+          }%)`;
+        } else {
+          discoverBookLinkText.current.style.transform = `translateY(0%)`;
+        }
+      }
+    };
+  }, []);
+
   return (
     <div className="container mx-auto max-w-full">
       <Head>
@@ -120,12 +144,17 @@ export default function Home({
           backgroundImage: "url(/assets/home-hero-background.jpg)",
           height: "100vh",
           marginTop: "-110px",
+          backgroundAttachment: "fixed",
           backgroundSize: "cover",
         }}
+        className="overflow-y-hidden"
       >
         <div className="flex h-screen items-center justify-center">
           <div className="mx-4 my-12 mt-[8rem] lg:mt-12 shadow md:shadow-none xl:mx-auto md:my-32">
-            <div className="bg-white bg-opacity-90 max-w-7xl p-10 md:p-20 rounded-xl">
+            <div
+              className="translate-y-0 transition ease-linear duration-75 bg-white bg-opacity-90 max-w-7xl p-10 md:p-20 rounded-xl"
+              ref={mainBox}
+            >
               <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-center">
                 Booklinik, l’unique service de réservation en ligne de tourisme
                 médical
@@ -177,10 +206,13 @@ export default function Home({
       <div
         className={
           styles.values +
-          " mx-4 xl:mx-auto max-w-7xl p-10 md:px-20 md:py-32 rounded-xl text-white"
+          " mx-4 xl:mx-auto max-w-7xl p-10 md:px-20 md:py-32 rounded-xl text-white bg-fixed"
         }
       >
-        <div className="md:w-1/2 lg:w-1/3">
+        <div
+          className="md:w-1/2 lg:w-1/3 translate-y-0 transition ease-linear duration-75"
+          ref={discoverBookLinkText}
+        >
           <p className="uppercase text-sm mb-2">Découvrez Booklinik</p>
           <h2 className="text-4xl">Parce que votre bien-être est notre</h2>
           <p className="mt-4 mb-2">Les 8 étapes clé de votre voyage</p>
