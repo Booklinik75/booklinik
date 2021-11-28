@@ -87,3 +87,71 @@ html {
     display: flex;
   }
 }
+
+/* zoomed img homecategory*/
+.destinationHotel__card:hover .destinationHotel__image,
+.clinic__card:hover .clinic__image,
+.homeCategory__card:hover > div:first-of-type {
+  transform: scale(1.1) !important;
+}
+
+/* loading animation */
+/* .loading-animation {
+  display: block;
+  position: relative;
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.loading-animation span,
+.loading-animation div {
+  display: block;
+  position: absolute;
+  width: 3.5rem;
+  height: 3.5rem;
+  border: 0.4rem solid #33C383;
+  border-radius: 50%;
+  animation: loading-animation 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  border-color: #33C383 #33c38320 #33c38320 #33c38320;
+}
+
+.loading-animation span:nth-child(1),
+.loading-animation div:nth-child(1) {
+  animation-delay: -0.45s;
+}
+.loading-animation span:nth-child(2),
+.loading-animation div:nth-child(2) {
+  animation-delay: -0.3s;
+}
+.loading-animation span:nth-child(3),
+.loading-animation div:nth-child(3) {
+  animation-delay: -0.15s;
+}
+
+
+@keyframes loading-animation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+} */
+
+.loading__plusAnimation {
+  animation: loading-animation 1.1s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+}
+
+@keyframes loading-animation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.sideNav__dashboard:hover button,
+.sideNav__dashboard:hover > svg {
+  opacity: 0.5;
+}
