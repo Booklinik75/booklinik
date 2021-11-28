@@ -1,5 +1,5 @@
 import DashboardUi from "components/DashboardUi";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { checkAuth } from "utils/ServerHelpers";
 import firebase from "firebase/clientApp";
 import JSONPretty from "react-json-pretty";
@@ -10,7 +10,8 @@ import Link from "next/link";
 import { FaExternalLinkAlt } from "react-icons/fa";
 import { useRouter } from "next/router";
 import DashboardInput from "Components/DashboardInput";
-import { FaEye } from "react-icons/fa";
+import { FaEye, FaPlus, FaMinus } from "react-icons/fa";
+import { motion, AnimatePresence } from "framer-motion";
 
 export const getServerSideProps = async (ctx) => {
   const auth = await checkAuth(ctx);
@@ -85,6 +86,83 @@ export const getServerSideProps = async (ctx) => {
 const Booking = ({ booking, auth, currentOperation }) => {
   const router = useRouter();
   const [isLoading, setLoading] = useState("idle");
+  const [openPopupData, setOpenPopupData] = useState(false);
+  const [operations, setOperations] = useState([
+    { id: "1", surgeryCategoryName: booking.surgeryCategoryName },
+  ]);
+  const [options, setOptions] = useState([...booking.options]);
+  const [startDate, setStartDate] = useState(booking.startDate);
+  const [endDate, setEndDate] = useState(booking.endDate);
+  const [voyageurs, setVoyageurs] = useState({
+    adults: booking.extraTravellers + 1,
+    babies: booking.extraBabies,
+    childs: booking.extraChilds,
+  });
+  const [openEditVoyageurs, setOpenEditVoyageurs] = useState(false);
+  const [city, setCity] = useState(booking.city);
+  const [hotelName, setHotelName] = useState(booking.hotelName);
+  const [roomName, setRoomName] = useState(booking.roomName);
+
+  console.log(booking);
+
+  const handleEditable = (e) => {
+    // get all input to edit
+    const inputs = document.querySelectorAll(
+      ".border.p-2.px-4.rounded.align-middle.mx-2"
+    );
+    if (e.target.id === "inputTravellers") {
+      setOpenEditVoyageurs((openEditVoyageurs) => !openEditVoyageurs);
+    } else {
+      inputs.forEach((input) => {
+        if (input.id === e.target.id && e.target.id !== "inputTravellers") {
+          input.setAttribute("contenteditable", "true");
+          input.classList.remove("border-shamrock");
+          input.classList.remove("cursor-pointer");
+          input.classList.add("border-black");
+          input.classList.add("cursor-text");
+        }
+      });
+    }
+  };
+  const handleAddNewSurgery = () => {
+    setOperations([
+      ...operations,
+      {
+        id: `${operations.length + 1}`,
+        surgeryCategoryName: "enter a new surgery",
+      },
+    ]);
+  };
+  const handleAddNewOptions = () => {
+    setOptions([
+      ...options,
+      {
+        isChecked: false,
+        name: "enter a new option",
+        price: 95,
+      },
+    ]);
+  };
+
+  const addCount = (category) => {
+    setVoyageurs({
+      ...voyageurs,
+      [category]: voyageurs[category] + 1,
+    });
+  };
+  const minusCount = (category) => {
+    setVoyageurs({
+      ...voyageurs,
+      [category]:
+        category === "adults"
+          ? voyageurs[category] === 1
+            ? 1
+            : voyageurs[category] - 1
+          : voyageurs[category] === 0
+          ? 0
+          : voyageurs[category] - 1,
+    });
+  };
 
   const statusOptions = [
     { value: "awaitingDocuments", label: "En attente de photos" },
@@ -187,6 +265,82 @@ const Booking = ({ booking, auth, currentOperation }) => {
     }
   };
 
+  useEffect(() => {
+    document.onclick = (e) => {
+      if (openPopupData) {
+        if (e.target.closest("#raw-data") === null) {
+          setOpenPopupData(false);
+        }
+      }
+      if (openEditVoyageurs) {
+        if (e.target.closest("#edit-voyageurs") === null) {
+          setOpenEditVoyageurs(false);
+        }
+      }
+
+      const inputs = document.querySelectorAll(
+        ".border.p-2.px-4.rounded.align-middle.mx-2"
+      );
+      inputs.forEach((input) => {
+        if (input.getAttribute("contenteditable")) {
+          if (e.target.closest(`#${input.id}`) === null) {
+            input.setAttribute("contenteditable", "false");
+            input.classList.add("border-shamrock");
+            input.classList.add("cursor-pointer");
+            input.classList.remove("border-black");
+            input.classList.remove("cursor-text");
+
+            // update the array and surgery name
+            if (input.id.includes("inputSurgery")) {
+              setOperations((operations) => {
+                return operations.map((operation, i) => {
+                  return input.id === `inputSurgery${i + 1}`
+                    ? { ...operation, surgeryCategoryName: input.innerText }
+                    : operation;
+                });
+              });
+            }
+
+            // if startDatae changed set thevalue
+            if (input.id === "inputStartDate") {
+              setStartDate(input.innerText);
+            }
+            // if endDatae changed set thevalue
+            if (input.id === "inputEndDate") {
+              setEndDate(input.innerText);
+            }
+
+            // if startDatae changed set thevalue
+
+            // if startDatae changed set thevalue
+            if (input.id === "inputCity") {
+              setCity(input.innerText);
+            }
+            // if hotel name changed set thevalue
+            if (input.id === "inputCity") {
+              setHotelName(input.innerText);
+            }
+            // if room name changed set thevalue
+            if (input.id === "inputRoomName") {
+              setRoomName(input.innerText);
+            }
+
+            // update the array and the text of the options
+            if (input.id.includes("inputOption")) {
+              setOptions((options) => {
+                return options.map((option, i) => {
+                  return input.id === `inputOption${i + 1}`
+                    ? { ...option, name: input.innerText }
+                    : option;
+                });
+              });
+            }
+          }
+        }
+      });
+    };
+  }, [openPopupData, openEditVoyageurs]);
+
   return (
     <DashboardUi userProfile={auth.props.userProfile} token={auth.props.token}>
       <div className="col-span-6">
@@ -195,13 +349,19 @@ const Booking = ({ booking, auth, currentOperation }) => {
             <span className="font-bold">Réservation&nbsp;:&nbsp;</span>
             {booking.id}
           </h1>
-          <p>
+          <p className="flex items-center gap-5">
             {/* See client's page */}
             <Link href={`/dashboard/sales/clients/${booking.customer.id}`}>
               <a className="text-blue-500 flex gap-1 items-center">
                 <FaEye /> Voir la fiche client
               </a>
             </Link>
+            <a
+              className="text-blue-500 flex gap-1 items-center cursor-pointer"
+              onClick={() => setOpenPopupData(true)}
+            >
+              <FaEye /> Voir raw data
+            </a>
           </p>
         </div>
         <div className="grid grid-cols-3 lg:grid-cols-6 gap-4">
@@ -299,11 +459,230 @@ const Booking = ({ booking, auth, currentOperation }) => {
             </div>
           </div>
           <div className="col-span-3 space-y-2">
-            <p className="text-sm text-gray-800 uppercase">Raw data</p>
-            <div className="h-96 overflow-y-scroll w-full bg-blue-50 border-blue-500 p-3 rounded">
-              <JSONPretty id="json-pretty" data={booking} />
+            <p className="text-sm text-gray-800 uppercase">
+              Modifier Les Donnes
+            </p>
+            <div className="h-96 overflow-scroll w-full bg-white border-blue-500 p-3 rounded">
+              <div className="flex items-center whitespace-nowrap mb-5">
+                Vous souhaitez réaliser une
+                {operations.map((operation, i) => (
+                  <span
+                    key={operation?.id}
+                    id={`inputSurgery${i + 1}`}
+                    onClick={handleEditable}
+                    className="border p-2 px-4 rounded align-middle mx-2 border-shamrock cursor-pointer "
+                    style={{
+                      width: "fit-content",
+                      minHeight: "30px",
+                    }}
+                  >
+                    {operation?.surgeryCategoryName}
+                  </span>
+                ))}
+                <span
+                  className="bg-shamrock p-1 rounded-full cursor-pointer"
+                  onClick={handleAddNewSurgery}
+                >
+                  <FaPlus color="white" size="10" />
+                </span>
+              </div>
+              <div className="flex items-center whitespace-nowrap mb-5">
+                Votre voyage s{"'"}étedra du
+                <span
+                  id="inputStartDate"
+                  onClick={handleEditable}
+                  className="border p-2 px-4 rounded align-middle mx-2 border-shamrock cursor-pointer"
+                  style={{
+                    width: "fit-content",
+                  }}
+                >
+                  {new Date(startDate).toLocaleDateString()}
+                </span>
+                au
+                <span
+                  onClick={handleEditable}
+                  id="inputEndDate"
+                  className="border p-2 px-4 rounded align-middle mx-2 border-shamrock cursor-pointer"
+                  style={{
+                    width: "fit-content",
+                  }}
+                >
+                  {new Date(endDate).toLocaleDateString()}
+                </span>
+                pour une dureé de 4 jours.
+              </div>
+              <div
+                className="flex items-center whitespace-nowrap mb-5"
+                id="edit-voyageurs"
+              >
+                Vous serez accompagné-e par
+                <div className="relative">
+                  <span
+                    onClick={handleEditable}
+                    className="border p-3 px-4 rounded align-middle mx-2 border-shamrock cursor-pointer"
+                    id="inputTravellers"
+                    style={{
+                      width: "fit-content",
+                    }}
+                  >
+                    {voyageurs.adults + voyageurs.babies + voyageurs.childs}{" "}
+                    voyageurs
+                  </span>
+                  {openEditVoyageurs && (
+                    <AnimatePresence>
+                      <motion.div
+                        initial={{ opacity: 0, y: "-6px" }}
+                        animate={{ opacity: 1, y: "0px" }}
+                        exit={{ opacity: 0, y: "-6px" }}
+                      >
+                        <ul
+                          className="absolute left-2 w-40 shadow-md rounded-md border-shamrock border"
+                          style={{ top: "calc(100% + 1rem)" }}
+                        >
+                          <li className="flex items-center bg-white p-3 justify-between w-100">
+                            <span>Adults</span>{" "}
+                            <div className="flex items-center gap-3">
+                              <span
+                                className="bg-shamrock p-1 rounded-full cursor-pointer"
+                                onClick={() => minusCount("adults")}
+                              >
+                                <FaMinus color="white" size="10" />
+                              </span>
+                              <span>{voyageurs.adults}</span>
+                              <span
+                                className="bg-shamrock p-1 rounded-full cursor-pointer"
+                                onClick={() => addCount("adults")}
+                              >
+                                <FaPlus color="white" size="10" />
+                              </span>
+                            </div>
+                          </li>
+                          <li className="flex items-center bg-white p-3 justify-between w-100">
+                            <span>Babies</span>{" "}
+                            <div className="flex items-center gap-3">
+                              <span
+                                className="bg-shamrock p-1 rounded-full cursor-pointer"
+                                onClick={() => minusCount("babies")}
+                              >
+                                <FaMinus color="white" size="10" />
+                              </span>
+                              <span>{voyageurs.babies}</span>
+                              <span
+                                className="bg-shamrock p-1 rounded-full cursor-pointer"
+                                onClick={() => addCount("babies")}
+                              >
+                                <FaPlus color="white" size="10" />
+                              </span>
+                            </div>
+                          </li>
+                          <li className="flex items-center bg-white p-3 justify-between w-100">
+                            <span>Childs</span>{" "}
+                            <div className="flex items-center gap-3">
+                              <span
+                                className="bg-shamrock p-1 rounded-full cursor-pointer"
+                                onClick={() => minusCount("childs")}
+                              >
+                                <FaMinus color="white" size="10" />
+                              </span>
+                              <span>{voyageurs.childs}</span>
+                              <span
+                                className="bg-shamrock p-1 rounded-full cursor-pointer"
+                                onClick={() => addCount("childs")}
+                              >
+                                <FaPlus color="white" size="10" />
+                              </span>
+                            </div>
+                          </li>
+                        </ul>
+                      </motion.div>
+                    </AnimatePresence>
+                  )}
+                </div>
+                de votre choix pour découvrir
+                <span
+                  onClick={handleEditable}
+                  className="border p-2 px-4 rounded align-middle mx-2 border-shamrock cursor-pointer"
+                  id="inputCity"
+                  style={{
+                    width: "fit-content",
+                  }}
+                >
+                  {city}
+                </span>
+              </div>
+              <div className="flex items-center whitespace-nowrap mb-5">
+                L{"'"}hôtel dans lequel vous résiderez est au
+                <span
+                  onClick={handleEditable}
+                  className="border p-2 px-4 rounded align-middle mx-2 border-shamrock cursor-pointer"
+                  id="inputHotelName"
+                  style={{
+                    width: "fit-content",
+                  }}
+                >
+                  {hotelName}
+                </span>
+                {"("}trés bon choiz{")"} et vous logerez en
+                <span
+                  onClick={handleEditable}
+                  className="border p-2 px-4 rounded align-middle mx-2 border-shamrock cursor-pointer"
+                  id="inputRoomName"
+                  style={{
+                    width: "fit-content",
+                  }}
+                >
+                  {roomName}
+                </span>
+              </div>
+              <div className="flex items-center whitespace-nowrap mb-5">
+                Vous avez selectuineé les options suivantes :
+                {options.map((option, i) => (
+                  <span
+                    key={i}
+                    onClick={handleEditable}
+                    className="border p-2 px-4 rounded align-middle mx-2 border-shamrock cursor-pointer"
+                    id={`inputOption${i + 1}`}
+                    style={{
+                      width: "fit-content",
+                      minHeight: "30px",
+                    }}
+                  >
+                    {option.name}
+                  </span>
+                ))}
+                <span
+                  className="bg-shamrock p-1 rounded-full cursor-pointer"
+                  onClick={handleAddNewOptions}
+                >
+                  <FaPlus color="white" size="10" />
+                </span>
+              </div>
+              <div className="flex items-center mt-14">
+                Le prix tout compris de votre voyage sur-mesure est de{" "}
+                <span className="border text-white whitespace-nowrap block p-2 px-4 border-shamrock bg-shamrock rounded  mx-3">
+                  {booking.total}€
+                </span>
+              </div>
+              <button className="min-w-max transition px-5 py-3 mt-10 rounded border border-shamrock bg-shamrock text-white hover:text-shamrock group hover:bg-white">
+                Mettre à jour
+              </button>
+              {/* <JSONPretty id="json-pretty" data={booking} /> */}
             </div>
           </div>
+          {/* open popup data */}
+          {openPopupData && (
+            <div
+              className="fixed inset-0 z-50 "
+              style={{ background: "#000a" }}
+            >
+              <div
+                id="raw-data"
+                className="h-5/6 overflow-scroll w-8/12 lg:w-5/12 m-auto absolute bg-white border-blue-500 p-3 rounded top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2"
+              >
+                <JSONPretty id="json-pretty" data={booking} />
+              </div>
+            </div>
+          )}
           <div className="col-span-1 lg:col-span-2">
             <div className="border rounded p-3 flex flex-col gap-4">
               <div className="flex justify-between items-center">
