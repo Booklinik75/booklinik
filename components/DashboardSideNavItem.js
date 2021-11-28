@@ -14,9 +14,12 @@ export default function DashboardSideNavItem({
       <Link passHref={true} href={target}>
         <button
           className={
-            "text-left leading-snug hover:underline disabled:opacity-50 disabled:cursor-not-allowed disabled:no-underline" +
-            extraStyle +
-            (router.pathname == target ? " underline" : "")
+            `text-left leading-snug my-2  hover:opacity-50 disabled:opacity-50 ${
+              router.pathname == target ? "opacity-50" : ""
+            } disabled:cursor-not-allowed disabled:no-underline ${
+              title === "Dashboard" &&
+              "text-sm text-gray-700 uppercase font-bold tracking-wide mr-2 cursor-pointer"
+            }` + extraStyle
           }
           disabled={disabled ? true : false}
         >
