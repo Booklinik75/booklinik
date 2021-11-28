@@ -12,6 +12,7 @@ const DashboardInput = ({
   max,
   multiple,
   className,
+  placeholder,
 }) => {
   return (
     <div className="col-span-12 flex-grow md:col-span-6 flex flex-col gap-2">
@@ -25,7 +26,7 @@ const DashboardInput = ({
         value={value}
         onChange={onChange}
         autoComplete={autoComplete}
-        placeholder={label}
+        placeholder={placeholder ?? label}
         disabled={disabled}
         required={required}
         min={min}
