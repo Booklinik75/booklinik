@@ -24,7 +24,7 @@ export default function Navigation() {
               <div className="w-full relative flex justify-between lg:w-auto px-4 lg:static lg:block lg:justify-start">
                 <Link href="/">
                   <a className="text-sm font-bold leading-relaxed inline-block mr-4 py-2 shamrockspace-nowrap uppercase text-shamrock">
-                    <Image src={Logo} alt="Booklinik+ Logo"></Image>
+                    <Image src={Logo} alt="Booklinik+ Logo" />
                   </a>
                 </Link>
                 <button
