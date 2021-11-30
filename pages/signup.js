@@ -84,7 +84,11 @@ const SignUp = () => {
             mobilePhone: null,
             isMobileVerified: false,
             role: "guest",
-            referalCode: `WELCOME-${MD5(email).toString().substring(0, 5)}`,
+            referalCode: `${email.split("@")[0].substring(0, 5)}-${MD5(
+              Math.random().toString()
+            )
+              .toString()
+              .substring(0, 5)}`,
             signupDate: new Date().toUTCString(),
             referalBalance: 0,
           };
