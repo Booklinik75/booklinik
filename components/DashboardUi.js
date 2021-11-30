@@ -23,7 +23,7 @@ const DashboardUi = ({ children, userProfile, token }) => {
           token={token}
           isSideNavOpen={sideNavOpen}
         />
-        <div className="col-span-12 lg:col-span-10 shadow-lg grid grid-cols-6 p-12 gap-10">
+        <div className="col-span-12 lg:col-span-10 shadow-lg grid grid-cols-6 p-12 gap-10 overflow-x-hidden overflow-y-scroll">
           {children}
         </div>
       </div>
