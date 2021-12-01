@@ -62,7 +62,10 @@ const ContactHelper = () => {
   };
 
   return (
-    <div className="mx-4 xl:mx-auto max-w-7xl py-14 my-10 rounded-xl bg-shamrock grid gric-cols-1 lg:grid-cols-2 gap-10 px-10 items-center text-white placeholder-white">
+    <div
+      className="mx-4 xl:mx-auto max-w-7xl py-14 my-10 rounded-xl bg-shamrock grid gric-cols-1 lg:grid-cols-2 gap-10 px-10 items-center text-white placeholder-white"
+      id="contact"
+    >
       <div className="text-white">
         <p className="uppercase text-sm mb-2">Une question ?</p>
         <h2 className="text-4xl">

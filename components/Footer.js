@@ -37,10 +37,10 @@ const Footer = () => {
             </div>
             <div className="flex flex-col text-sm space-y-2">
               <p className="uppercase text-sm mb-1">Assistance</p>
-              <Link href="#">
+              <Link href="#contact">
                 <a className="hover:underline">Nous contacter</a>
               </Link>
-              <Link href="#">
+              <Link href="/legal/faq">
                 <a className="hover:underline">FAQ</a>
               </Link>
               <Link href="/legal/annulations">
