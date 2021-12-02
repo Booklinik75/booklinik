@@ -62,7 +62,10 @@ const DashboardSideNav = ({ userProfile, token }) => {
   }, []);
 
   return (
-    <div className="z-10 h-full col-span-2 sticky w-full">
+    <div
+      className="z-10 h-full col-span-2 sticky w-full"
+      style={{ zIndex: "1" }}
+    >
       <div
         className="flex flex-col px-6 py-10 h-full shadow"
         // style={{ background: "#F5FFFB", boxShadow: "2px 3px 5px #0001" }}
