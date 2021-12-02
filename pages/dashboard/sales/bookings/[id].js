@@ -201,6 +201,7 @@ const Booking = ({ booking, auth, currentOperation }) => {
       });
   };
 
+  // ,aybe use like this?
   const definedStatusUpdate = (status) => {
     setLoading("loading");
     firebase
@@ -356,17 +357,11 @@ const Booking = ({ booking, auth, currentOperation }) => {
                 <FaEye /> Voir la fiche client
               </a>
             </Link>
-            <a
-              className="text-blue-500 flex gap-1 items-center cursor-pointer"
-              onClick={() => setOpenPopupData(true)}
-            >
-              <FaEye /> Voir raw data
-            </a>
           </p>
         </div>
         <div className="grid grid-cols-3 lg:grid-cols-6 gap-4">
           <div className="col-span-3 space-y-2">
-            <p className="text-sm text-gray-800 uppercase">Données</p>
+            <p className="text-sm text-gray-800 font-bold uppercase">Données</p>
             <div className="h-96 rounded w-full p-4 overflow-y-auto bg-gray-50 border border-gray-500 border-dashed flex">
               <div className="flex flex-col space-y-4">
                 <div>
@@ -459,10 +454,19 @@ const Booking = ({ booking, auth, currentOperation }) => {
             </div>
           </div>
           <div className="col-span-3 space-y-2">
-            <p className="text-sm text-gray-800 uppercase">
-              Modifier Les Donnes
+            <p className="text-sm font-bold text-gray-800 uppercase">
+              Raw Data
             </p>
             <div className="h-96 overflow-scroll w-full bg-white border-blue-500 p-3 rounded">
+              <JSONPretty id="json-pretty" data={booking} />
+            </div>
+          </div>
+
+          <div className="col-span-6 my-10 ">
+            <p className="text-sm font-bold text-gray-800 uppercase mb-5">
+              Modifier Les Donnes
+            </p>
+            <div className="bg-white border-gray-200 p-5 rounded border">
               <div className="flex items-center whitespace-nowrap mb-5">
                 Vous souhaitez réaliser une
                 {operations.map((operation, i) => (
@@ -666,23 +670,8 @@ const Booking = ({ booking, auth, currentOperation }) => {
               <button className="min-w-max transition px-5 py-3 mt-10 rounded border border-shamrock bg-shamrock text-white hover:text-shamrock group hover:bg-white">
                 Mettre à jour
               </button>
-              {/* <JSONPretty id="json-pretty" data={booking} /> */}
             </div>
           </div>
-          {/* open popup data */}
-          {openPopupData && (
-            <div
-              className="fixed inset-0 z-50 "
-              style={{ background: "#000a" }}
-            >
-              <div
-                id="raw-data"
-                className="h-5/6 overflow-scroll w-8/12 lg:w-5/12 m-auto absolute bg-white border-blue-500 p-3 rounded top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2"
-              >
-                <JSONPretty id="json-pretty" data={booking} />
-              </div>
-            </div>
-          )}
           <div className="col-span-1 lg:col-span-2">
             <div className="border rounded p-3 flex flex-col gap-4">
               <div className="flex justify-between items-center">

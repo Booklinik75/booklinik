@@ -7,7 +7,6 @@ import Link from "next/link";
 
 const Offer = ({ data }) => {
   const { imageUrl, name, endDate, price, hotelData, id } = data;
-  const { rating, name: hotelName } = hotelData;
 
   return (
     <Link href={`/offer/${id}`}>
@@ -27,11 +26,11 @@ const Offer = ({ data }) => {
             <p className="flex-grow text-bali">
               Reste {moment().to(moment(endDate), true)}
             </p>
-            <StarRating value={rating} color="bali" />
+            <StarRating value={hotelData?.rating} color="bali" />
           </div>
           <p className="font-bold group-hover:underline">{name}</p>
           <div className="flex space-x-1 text-sm text-bali font-bold">
-            <p>{hotelName}</p>
+            <p>{hotelData?.name}</p>
             <p>&bull;</p>
             <p>{price}€</p>
           </div>
