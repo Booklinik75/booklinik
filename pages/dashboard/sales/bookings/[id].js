@@ -464,7 +464,7 @@ const Booking = ({ booking, auth, currentOperation }) => {
 
           <div className="col-span-6 my-10 ">
             <p className="text-sm font-bold text-gray-800 uppercase mb-5">
-              Modifier Les Donnes
+              Modifier Les Données
             </p>
             <div className="bg-white border-gray-200 p-5 rounded border">
               <div className="flex items-center whitespace-nowrap mb-5">
