@@ -26,7 +26,6 @@ const EditCity = ({ operations, city, setCity, cities }) => {
     ));
   };
 
-
   const handleClick = (cty) => {
     setCity(cty.toLowerCase());
     setOpenCities(false);
@@ -43,7 +42,7 @@ const EditCity = ({ operations, city, setCity, cities }) => {
   }, [openCities]);
 
   return (
-    <div className="relative" style={{ zIndex: "5" }}>
+    <div >
       <span
         className="border p-2 py-3 px-4 rounded align-middle mx-2 border-shamrock cursor-pointer"
         id={`inputCity-${city}`}

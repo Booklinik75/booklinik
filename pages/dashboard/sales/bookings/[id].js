@@ -9,14 +9,14 @@ import slugify from "slugify";
 import Link from "next/link";
 import { FaExternalLinkAlt } from "react-icons/fa";
 import { useRouter } from "next/router";
-import DashboardInput from "Components/DashboardInput";
+import DashboardInput from "components/DashboardInput";
 import { FaEye, FaPlus } from "react-icons/fa";
-import EditOperations from "Components/editComponents/EditOperations";
-import EditTravellers from "Components/editComponents/EditTravellers";
-import EditCity from "Components/editComponents/EditCity";
-import EditHotels from "Components/editComponents/EditHotels";
-import EditRooms from "Components/editComponents/EditRooms";
-import EditOptions from "Components/editComponents/EditOptions";
+import EditOperations from "components/editComponents/EditOperations";
+import EditTravellers from "components/editComponents/EditTravellers";
+import EditCity from "components/editComponents/EditCity";
+import EditHotels from "components/editComponents/EditHotels";
+import EditRooms from "components/editComponents/EditRooms";
+import EditOptions from "components/editComponents/EditOptions";
 import ReactDatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -184,7 +184,6 @@ const Booking = ({
       },
     ]);
   };
-
 
   const statusOptions = [
     { value: "awaitingDocuments", label: "En attente de photos" },
@@ -491,17 +490,11 @@ const Booking = ({
                   <FaPlus color="white" size="10" />
                 </span>
               </div>
-              <div
-                className="flex items-center whitespace-nowrap mb-5 relative"
-                style={{ zIndex: "6" }}
-              >
-                Votre voyage s{"'"}étedra du
+              <div className="flex items-center whitespace-nowrap mb-5">
+                Votre voyage s&apos;étedra du
                 <span
                   id="inputStartDate"
-                  className="border p-2 px-4 rounded align-middle mx-2 border-shamrock cursor-pointer"
-                  style={{
-                    width: "fit-content",
-                  }}
+                  className="border p-2 px-4 rounded align-middle mx-2 border-shamrock cursor-pointer w-max"
                 >
                   <ReactDatePicker
                     selected={new Date(startDate)}
@@ -511,14 +504,11 @@ const Booking = ({
                 au
                 <span
                   id="inputEndDate"
-                  className="border p-2 px-4 rounded align-middle mx-2 border-shamrock cursor-pointer"
-                  style={{
-                    width: "fit-content",
-                  }}
+                  className="border p-2 px-4 rounded align-middle mx-2 border-shamrock cursor-pointer w-max"
                 >
                   <ReactDatePicker
                     selected={new Date(endDate)}
-                    onChange={(date) => setEndDate  (date)}
+                    onChange={(date) => setEndDate(date)}
                   />
                 </span>
                 pour une dureé de 4 jours.
@@ -541,7 +531,7 @@ const Booking = ({
                 />
               </div>
               <div className="flex items-center whitespace-nowrap mt-7 mb-7">
-                L{"'"}hôtel dans lequel vous résiderez est au
+                L&apos;hôtel dans lequel vous résiderez est au
                 <EditHotels hotel={hotel} setHotel={setHotel} city={city} />
                 {"("}trés bon choiz{")"} et vous logerez en
                 <EditRooms

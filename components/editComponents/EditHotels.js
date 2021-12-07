@@ -41,7 +41,7 @@ const EditHotels = ({ hotel, setHotel, city }) => {
   }, [openHotels, city]);
 
   return (
-    <div className="relative" style={{ zIndex: "4" }}>
+    <div>
       <span
         className="border p-2 py-3 px-4 rounded align-middle mx-2 border-shamrock cursor-pointer"
         id="inputHotelName"

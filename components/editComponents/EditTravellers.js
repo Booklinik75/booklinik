@@ -37,7 +37,7 @@ const EditTravellers = ({ voyageurs, setVoyageurs }) => {
 
   return (
     <div>
-      <div className="relative" style={{ zIndex: "5" }}>
+      <div >
         <span
           onClick={() => setOpenEditVoyageurs(openEditVoyageurs => !openEditVoyageurs)}
           className="border p-3 px-4 rounded align-middle mx-2 border-shamrock cursor-pointer"

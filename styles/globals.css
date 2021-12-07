@@ -146,7 +146,7 @@ html {
 .react-datepicker__input-container input {
   outline: none;
   cursor: pointer;
-  width: 4.5rem;
+  width: 5rem;
 }
 
 .react-datepicker-popper[data-placement^="bottom"]

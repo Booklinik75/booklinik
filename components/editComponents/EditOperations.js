@@ -43,7 +43,7 @@ const EditOperations = ({
   }, [id, openOperations]);
 
   return (
-    <div className="relative" style={{ zIndex: "8" }} key={operation?.id}>
+    <div key={operation.id} className="relative z-20">
       <span
         id={`inputSurgery${id}`}
         onClick={() => setOpenOperations((openOperations) => !openOperations)}

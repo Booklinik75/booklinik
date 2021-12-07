@@ -34,7 +34,7 @@ const EditOptions = ({ option, id, setOptions, options, optionLists }) => {
   }, [id, openOptions]);
 
   return (
-    <div className="relative" style={{ zIndex: "3" }}>
+    <div >
       <span
         id={`inputOption${id}`}
         onClick={() => setOpenOptions((openOptions) => !openOptions)}
