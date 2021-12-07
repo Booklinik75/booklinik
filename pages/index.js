@@ -141,7 +141,7 @@ export default function Home({
 
       <div
         style={{
-          backgroundImage: "url(/assets/home-hero-background.jpg)",
+          backgroundImage: "url(/assets/background-booklinik.jpeg)",
           height: "100vh",
           marginTop: "-110px",
           backgroundAttachment: "fixed",

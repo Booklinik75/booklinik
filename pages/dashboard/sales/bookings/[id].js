@@ -10,8 +10,15 @@ import Link from "next/link";
 import { FaExternalLinkAlt } from "react-icons/fa";
 import { useRouter } from "next/router";
 import DashboardInput from "Components/DashboardInput";
-import { FaEye, FaPlus, FaMinus } from "react-icons/fa";
-import { motion, AnimatePresence } from "framer-motion";
+import { FaEye, FaPlus } from "react-icons/fa";
+import EditOperations from "Components/editComponents/EditOperations";
+import EditTravellers from "Components/editComponents/EditTravellers";
+import EditCity from "Components/editComponents/EditCity";
+import EditHotels from "Components/editComponents/EditHotels";
+import EditRooms from "Components/editComponents/EditRooms";
+import EditOptions from "Components/editComponents/EditOptions";
+import ReactDatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 export const getServerSideProps = async (ctx) => {
   const auth = await checkAuth(ctx);
@@ -43,6 +50,18 @@ export const getServerSideProps = async (ctx) => {
   booking.startDate = new Date(booking.startDate.toDate()).toString();
   booking.endDate = new Date(booking.endDate.toDate()).toString();
 
+  const operationCategories = [];
+  await firebase
+    .firestore()
+    .collection("surgeries")
+    .get()
+    .then((snapshot) => {
+      snapshot.docs.forEach((doc) => {
+        operationCategories.push({ ...doc.data(), id: doc.id });
+      });
+    })
+    .catch((err) => {});
+
   const currentOperation = [];
   await firebase
     .firestore()
@@ -52,6 +71,18 @@ export const getServerSideProps = async (ctx) => {
     .then((snapshot) => {
       snapshot.forEach((doc) => {
         currentOperation.push(doc.data());
+      });
+    })
+    .catch((err) => {});
+
+  const cities = [];
+  await firebase
+    .firestore()
+    .collection("cities")
+    .get()
+    .then((snapshot) => {
+      snapshot.forEach((doc) => {
+        cities.push(doc.data());
       });
     })
     .catch((err) => {});
@@ -78,18 +109,27 @@ export const getServerSideProps = async (ctx) => {
     props: {
       auth,
       booking,
+      operationCategories,
+      cities,
       currentOperation: currentOperation[0],
     },
   };
 };
 
-const Booking = ({ booking, auth, currentOperation }) => {
+const Booking = ({
+  booking,
+  cities,
+  auth,
+  currentOperation,
+  operationCategories,
+}) => {
   const router = useRouter();
   const [isLoading, setLoading] = useState("idle");
   const [openPopupData, setOpenPopupData] = useState(false);
   const [operations, setOperations] = useState([
-    { id: "1", surgeryCategoryName: booking.surgeryCategoryName },
+    { id: "1", surgeryName: booking.surgeryName },
   ]);
+  const [optionLists, setOptionLists] = useState([]);
   const [options, setOptions] = useState([...booking.options]);
   const [startDate, setStartDate] = useState(booking.startDate);
   const [endDate, setEndDate] = useState(booking.endDate);
@@ -98,12 +138,12 @@ const Booking = ({ booking, auth, currentOperation }) => {
     babies: booking.extraBabies,
     childs: booking.extraChilds,
   });
-  const [openEditVoyageurs, setOpenEditVoyageurs] = useState(false);
   const [city, setCity] = useState(booking.city);
-  const [hotelName, setHotelName] = useState(booking.hotelName);
+  const [hotel, setHotel] = useState({
+    name: booking.hotelName,
+    slug: booking.hotel,
+  });
   const [roomName, setRoomName] = useState(booking.roomName);
-
-  console.log(booking);
 
   const handleEditable = (e) => {
     // get all input to edit
@@ -129,7 +169,8 @@ const Booking = ({ booking, auth, currentOperation }) => {
       ...operations,
       {
         id: `${operations.length + 1}`,
-        surgeryCategoryName: "enter a new surgery",
+        surgeryName: "enter a new surgery",
+        cities: [],
       },
     ]);
   };
@@ -144,25 +185,6 @@ const Booking = ({ booking, auth, currentOperation }) => {
     ]);
   };
 
-  const addCount = (category) => {
-    setVoyageurs({
-      ...voyageurs,
-      [category]: voyageurs[category] + 1,
-    });
-  };
-  const minusCount = (category) => {
-    setVoyageurs({
-      ...voyageurs,
-      [category]:
-        category === "adults"
-          ? voyageurs[category] === 1
-            ? 1
-            : voyageurs[category] - 1
-          : voyageurs[category] === 0
-          ? 0
-          : voyageurs[category] - 1,
-    });
-  };
 
   const statusOptions = [
     { value: "awaitingDocuments", label: "En attente de photos" },
@@ -273,74 +295,57 @@ const Booking = ({ booking, auth, currentOperation }) => {
           setOpenPopupData(false);
         }
       }
-      if (openEditVoyageurs) {
-        if (e.target.closest("#edit-voyageurs") === null) {
-          setOpenEditVoyageurs(false);
-        }
-      }
-
-      const inputs = document.querySelectorAll(
-        ".border.p-2.px-4.rounded.align-middle.mx-2"
-      );
-      inputs.forEach((input) => {
-        if (input.getAttribute("contenteditable")) {
-          if (e.target.closest(`#${input.id}`) === null) {
-            input.setAttribute("contenteditable", "false");
-            input.classList.add("border-shamrock");
-            input.classList.add("cursor-pointer");
-            input.classList.remove("border-black");
-            input.classList.remove("cursor-text");
-
-            // update the array and surgery name
-            if (input.id.includes("inputSurgery")) {
-              setOperations((operations) => {
-                return operations.map((operation, i) => {
-                  return input.id === `inputSurgery${i + 1}`
-                    ? { ...operation, surgeryCategoryName: input.innerText }
-                    : operation;
-                });
-              });
-            }
-
-            // if startDatae changed set thevalue
-            if (input.id === "inputStartDate") {
-              setStartDate(input.innerText);
-            }
-            // if endDatae changed set thevalue
-            if (input.id === "inputEndDate") {
-              setEndDate(input.innerText);
-            }
-
-            // if startDatae changed set thevalue
-
-            // if startDatae changed set thevalue
-            if (input.id === "inputCity") {
-              setCity(input.innerText);
-            }
-            // if hotel name changed set thevalue
-            if (input.id === "inputCity") {
-              setHotelName(input.innerText);
-            }
-            // if room name changed set thevalue
-            if (input.id === "inputRoomName") {
-              setRoomName(input.innerText);
-            }
-
-            // update the array and the text of the options
-            if (input.id.includes("inputOption")) {
-              setOptions((options) => {
-                return options.map((option, i) => {
-                  return input.id === `inputOption${i + 1}`
-                    ? { ...option, name: input.innerText }
-                    : option;
-                });
-              });
-            }
-          }
-        }
-      });
     };
-  }, [openPopupData, openEditVoyageurs]);
+
+    // options lists
+    const getOperations = async () => {
+      const options = [];
+      await firebase
+        .firestore()
+        .collection("options")
+        .get()
+        .then((snapshot) => {
+          snapshot.forEach((doc) => {
+            doc.data()[0].forEach((data) => {
+              options.push(data);
+            });
+          });
+        })
+        .catch((err) => {});
+      setOptionLists(options);
+    };
+    getOperations();
+
+    // first I tried to get All the cities that first booking surgery have
+    const getSurgeryCity = async () => {
+      await firebase
+        .firestore()
+        .collection("surgeries")
+        .where("name", "==", booking.surgeryName)
+        .get()
+        .then((snapshot) => {
+          snapshot.forEach((doc) => {
+            setOperations((operations) => {
+              if (operations[0].surgeryName === booking.surgeryName) {
+                const isExists = operations.find(
+                  (operation) => operation.surgeryName === doc.data().name
+                );
+                if (isExists) {
+                  return operations.map((operation) => {
+                    return operation.surgeryName === doc.data().name
+                      ? { ...operation, cities: doc.data().cities }
+                      : operation;
+                  });
+                }
+              }
+              return operations;
+            });
+          });
+        })
+        .catch((err) => {});
+    };
+    getSurgeryCity();
+  }, [openPopupData, booking]);
 
   return (
     <DashboardUi userProfile={auth.props.userProfile} token={auth.props.token}>
@@ -467,21 +472,17 @@ const Booking = ({ booking, auth, currentOperation }) => {
               Modifier Les Donnes
             </p>
             <div className="bg-white border-gray-200 p-5 rounded border">
-              <div className="flex items-center whitespace-nowrap mb-5">
+              <div className="flex items-center whitespace-nowrap mb-5 edit-operations">
                 Vous souhaitez réaliser une
-                {operations.map((operation, i) => (
-                  <span
-                    key={operation?.id}
-                    id={`inputSurgery${i + 1}`}
-                    onClick={handleEditable}
-                    className="border p-2 px-4 rounded align-middle mx-2 border-shamrock cursor-pointer "
-                    style={{
-                      width: "fit-content",
-                      minHeight: "30px",
-                    }}
-                  >
-                    {operation?.surgeryCategoryName}
-                  </span>
+                {operations?.map((operation, i) => (
+                  <EditOperations
+                    operation={operation}
+                    key={i}
+                    id={operation.id}
+                    operations={operations}
+                    setOperations={setOperations}
+                    operationCategories={operationCategories}
+                  />
                 ))}
                 <span
                   className="bg-shamrock p-1 rounded-full cursor-pointer"
@@ -490,28 +491,35 @@ const Booking = ({ booking, auth, currentOperation }) => {
                   <FaPlus color="white" size="10" />
                 </span>
               </div>
-              <div className="flex items-center whitespace-nowrap mb-5">
+              <div
+                className="flex items-center whitespace-nowrap mb-5 relative"
+                style={{ zIndex: "6" }}
+              >
                 Votre voyage s{"'"}étedra du
                 <span
                   id="inputStartDate"
-                  onClick={handleEditable}
                   className="border p-2 px-4 rounded align-middle mx-2 border-shamrock cursor-pointer"
                   style={{
                     width: "fit-content",
                   }}
                 >
-                  {new Date(startDate).toLocaleDateString()}
+                  <ReactDatePicker
+                    selected={new Date(startDate)}
+                    onChange={(date) => setStartDate(date)}
+                  />
                 </span>
                 au
                 <span
-                  onClick={handleEditable}
                   id="inputEndDate"
                   className="border p-2 px-4 rounded align-middle mx-2 border-shamrock cursor-pointer"
                   style={{
                     width: "fit-content",
                   }}
                 >
-                  {new Date(endDate).toLocaleDateString()}
+                  <ReactDatePicker
+                    selected={new Date(endDate)}
+                    onChange={(date) => setEndDate  (date)}
+                  />
                 </span>
                 pour une dureé de 4 jours.
               </div>
@@ -520,146 +528,49 @@ const Booking = ({ booking, auth, currentOperation }) => {
                 id="edit-voyageurs"
               >
                 Vous serez accompagné-e par
-                <div className="relative">
-                  <span
-                    onClick={handleEditable}
-                    className="border p-3 px-4 rounded align-middle mx-2 border-shamrock cursor-pointer"
-                    id="inputTravellers"
-                    style={{
-                      width: "fit-content",
-                    }}
-                  >
-                    {voyageurs.adults + voyageurs.babies + voyageurs.childs}{" "}
-                    voyageurs
-                  </span>
-                  {openEditVoyageurs && (
-                    <AnimatePresence>
-                      <motion.div
-                        initial={{ opacity: 0, y: "-6px" }}
-                        animate={{ opacity: 1, y: "0px" }}
-                        exit={{ opacity: 0, y: "-6px" }}
-                      >
-                        <ul
-                          className="absolute left-2 w-40 shadow-md rounded-md border-shamrock border"
-                          style={{ top: "calc(100% + 1rem)" }}
-                        >
-                          <li className="flex items-center bg-white p-3 justify-between w-100">
-                            <span>Adults</span>{" "}
-                            <div className="flex items-center gap-3">
-                              <span
-                                className="bg-shamrock p-1 rounded-full cursor-pointer"
-                                onClick={() => minusCount("adults")}
-                              >
-                                <FaMinus color="white" size="10" />
-                              </span>
-                              <span>{voyageurs.adults}</span>
-                              <span
-                                className="bg-shamrock p-1 rounded-full cursor-pointer"
-                                onClick={() => addCount("adults")}
-                              >
-                                <FaPlus color="white" size="10" />
-                              </span>
-                            </div>
-                          </li>
-                          <li className="flex items-center bg-white p-3 justify-between w-100">
-                            <span>Babies</span>{" "}
-                            <div className="flex items-center gap-3">
-                              <span
-                                className="bg-shamrock p-1 rounded-full cursor-pointer"
-                                onClick={() => minusCount("babies")}
-                              >
-                                <FaMinus color="white" size="10" />
-                              </span>
-                              <span>{voyageurs.babies}</span>
-                              <span
-                                className="bg-shamrock p-1 rounded-full cursor-pointer"
-                                onClick={() => addCount("babies")}
-                              >
-                                <FaPlus color="white" size="10" />
-                              </span>
-                            </div>
-                          </li>
-                          <li className="flex items-center bg-white p-3 justify-between w-100">
-                            <span>Childs</span>{" "}
-                            <div className="flex items-center gap-3">
-                              <span
-                                className="bg-shamrock p-1 rounded-full cursor-pointer"
-                                onClick={() => minusCount("childs")}
-                              >
-                                <FaMinus color="white" size="10" />
-                              </span>
-                              <span>{voyageurs.childs}</span>
-                              <span
-                                className="bg-shamrock p-1 rounded-full cursor-pointer"
-                                onClick={() => addCount("childs")}
-                              >
-                                <FaPlus color="white" size="10" />
-                              </span>
-                            </div>
-                          </li>
-                        </ul>
-                      </motion.div>
-                    </AnimatePresence>
-                  )}
-                </div>
+                <EditTravellers
+                  voyageurs={voyageurs}
+                  setVoyageurs={setVoyageurs}
+                />
                 de votre choix pour découvrir
-                <span
-                  onClick={handleEditable}
-                  className="border p-2 px-4 rounded align-middle mx-2 border-shamrock cursor-pointer"
-                  id="inputCity"
-                  style={{
-                    width: "fit-content",
-                  }}
-                >
-                  {city}
-                </span>
+                <EditCity
+                  city={city}
+                  operations={operations}
+                  cities={cities}
+                  setCity={setCity}
+                />
               </div>
-              <div className="flex items-center whitespace-nowrap mb-5">
+              <div className="flex items-center whitespace-nowrap mt-7 mb-7">
                 L{"'"}hôtel dans lequel vous résiderez est au
-                <span
-                  onClick={handleEditable}
-                  className="border p-2 px-4 rounded align-middle mx-2 border-shamrock cursor-pointer"
-                  id="inputHotelName"
-                  style={{
-                    width: "fit-content",
-                  }}
-                >
-                  {hotelName}
-                </span>
+                <EditHotels hotel={hotel} setHotel={setHotel} city={city} />
                 {"("}trés bon choiz{")"} et vous logerez en
-                <span
-                  onClick={handleEditable}
-                  className="border p-2 px-4 rounded align-middle mx-2 border-shamrock cursor-pointer"
-                  id="inputRoomName"
-                  style={{
-                    width: "fit-content",
-                  }}
-                >
-                  {roomName}
-                </span>
+                <EditRooms
+                  roomName={roomName}
+                  setRoomName={setRoomName}
+                  hotel={hotel}
+                />
               </div>
               <div className="flex items-center whitespace-nowrap mb-5">
                 Vous avez selectuineé les options suivantes :
                 {options.map((option, i) => (
-                  <span
+                  <EditOptions
                     key={i}
-                    onClick={handleEditable}
-                    className="border p-2 px-4 rounded align-middle mx-2 border-shamrock cursor-pointer"
-                    id={`inputOption${i + 1}`}
-                    style={{
-                      width: "fit-content",
-                      minHeight: "30px",
-                    }}
-                  >
-                    {option.name}
-                  </span>
+                    id={i + 1}
+                    option={option}
+                    options={options}
+                    optionLists={optionLists}
+                    setOptions={setOptions}
+                  />
                 ))}
-                <span
-                  className="bg-shamrock p-1 rounded-full cursor-pointer"
-                  onClick={handleAddNewOptions}
-                >
-                  <FaPlus color="white" size="10" />
-                </span>
+                {optionLists.length - booking.options.length !==
+                  options.length && (
+                  <span
+                    className="bg-shamrock p-1 rounded-full cursor-pointer"
+                    onClick={handleAddNewOptions}
+                  >
+                    <FaPlus color="white" size="10" />
+                  </span>
+                )}
               </div>
               <div className="flex items-center mt-14">
                 Le prix tout compris de votre voyage sur-mesure est de{" "}
