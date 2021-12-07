@@ -37,11 +37,17 @@ export const getServerSideProps = async (ctx) => {
       );
     });
 
-    console.log("user ->",bookings[1]);
+  console.log("user ->", bookings[1]);
 
   bookings.map((userBooking) => {
-    userBooking.startDate = typeof userBooking.startDate === 'string' ? userBooking.startDate : new Date(userBooking.startDate.toDate()).toString();
-    userBooking.endDate = typeof userBooking.endDate === 'string' ? userBooking.endDate : new Date(userBooking.endDate.toDate()).toString();
+    userBooking.startDate =
+      typeof userBooking.startDate === "string"
+        ? userBooking.startDate
+        : new Date(userBooking.startDate.toDate()).toString();
+    userBooking.endDate =
+      typeof userBooking.endDate === "string"
+        ? userBooking.endDate
+        : new Date(userBooking.endDate.toDate()).toString();
   });
 
   return {
@@ -142,7 +148,7 @@ const BookingsList = ({ auth, bookings }) => {
           row.values.dates.toLowerCase().includes(search)
       );
     }
-    
+
     // check first if search result still empty so use original rows
     setNewRows(search.trim() === "" ? rows : newRowLists);
   };
@@ -161,7 +167,7 @@ const BookingsList = ({ auth, bookings }) => {
   useEffect(() => {
     // shrink or close dropdown if we clicked outside the filter or filter lists
     document.onclick = (e) => {
-      if (e.target.closest(".bookings__filter") === null) {
+      if (e.target.closest("#bookings-filter") === null) {
         setOpenFilter(false);
       }
     };
@@ -193,8 +199,8 @@ const BookingsList = ({ auth, bookings }) => {
           <div className="relative">
             <button
               type="button"
-              className="min-w-max transition px-6 py-3 rounded text-shamrock flex items-center gap-2 border-shamrock bookings__filter"
-              style={{ background: "#D6F4E6", border: "1.5px solid #D6F4E6" }}
+              className="min-w-max transition px-6 py-3 rounded text-shamrock flex items-center gap-2 bg-lightGreen border-lightGreen"
+              id="bookings-filter"
               onClick={() => setOpenFilter((openFilter) => !openFilter)}
             >
               <svg
@@ -217,19 +223,18 @@ const BookingsList = ({ auth, bookings }) => {
                   fill="#33C783"
                 />
               </svg>
-              Filter By {filter === "All" ? "" : filter}
+              Filter By {filter === "Tout" ? "" : filter}
             </button>
             <ul
-              className={`absolute bg-white shadow-lg rounded overflow-hidden ${
+              className={`absolute bg-white shadow-lg rounded overflow-hidden w-[calc(100%+5rem)] top-[calc(100%+0.5rem)] ${
                 openFilter ? "block" : "hidden"
               }`}
-              style={{ width: "calc(100% + 5rem)", top: "calc(100% + .5rem)" }}
             >
               <li
                 className="py-3 px-6 cursor-pointer whitespace-nowrap hover:bg-gray-100"
-                onClick={() => handleFilter("All")}
+                onClick={() => handleFilter("Tout")}
               >
-                All
+                Tout
               </li>
               {headerGroups[0].headers.map((value) => (
                 <li

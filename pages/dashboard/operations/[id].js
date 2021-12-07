@@ -390,10 +390,7 @@ const OperationPage = ({
               alt={data.room}
               objectFit="cover"
             />
-            <p
-              className="text-3xl rounded shadow bg-shamrock py-2 px-4 absolute right-4 top-4 text-white"
-              style={{ zIndex: 9 }}
-            >
+            <p className="text-3xl rounded shadow bg-shamrock py-2 px-4 absolute right-4 top-4 text-white z-10">
               {data.alternativeTotal ? data.alternativeTotal : data.total}
               &nbsp;€
             </p>

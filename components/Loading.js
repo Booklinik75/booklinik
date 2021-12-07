@@ -2,17 +2,8 @@ import React from "react";
 
 export default function Loading() {
   return (
-    <div
-      className="fixed inset-0 w-screen h-screen flex-col bg-white flex items-center justify-center"
-      style={{ zIndex: "9" }}
-    >
+    <div className="fixed inset-0 w-screen h-screen flex-col bg-white flex items-center justify-center z-20">
       <div className="flex flex-col items-center">
-        {/* <div className="loading-animation m-auto">
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-        </div> */}
         <div className="relative">
           <svg
             width="185"
@@ -33,7 +24,7 @@ export default function Loading() {
               </clipPath>
             </defs>
           </svg>
-          <div className="loading__plusAnimation absolute top-0 right-0">
+          <div className="animate-spin absolute top-0 right-0">
             <svg
               width="20"
               height="20"
@@ -58,7 +49,7 @@ export default function Loading() {
         </div>
 
         <p className="mt-3 font-bold text-xl tracking-wide">
-          Patientez s{"'"}il-vous-plait...
+          Patientez s&apos;il-vous-plait...
         </p>
       </div>
     </div>

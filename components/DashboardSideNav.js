@@ -62,19 +62,12 @@ const DashboardSideNav = ({ userProfile, token }) => {
   }, []);
 
   return (
-    <div
-      className="z-10 h-full col-span-2 sticky w-full"
-      style={{ zIndex: "1" }}
-    >
-      <div
-        className="flex flex-col px-6 py-10 h-full shadow"
-        // style={{ background: "#F5FFFB", boxShadow: "2px 3px 5px #0001" }}
-        style={{ background: "rgb(251 255 253)" }}
-      >
-        <div className="space-y-5 mb-4">
-          <div className="flex items-center sideNav__dashboard">
+    <div className="z-10 h-full col-span-2 sticky w-full">
+      <div className="flex flex-col px-6 py-10 h-full shadow bg-sidebar">
+        <div className="space-y-5 mb-5">
+          <div className="flex items-center group">
             <FaChartPie
-              className={`mr-3 mb-1 block ${
+              className={`mr-3 mb-1 block group-hover:opacity-50 ${
                 router.pathname == "/dashboard" && "opacity-50"
               }`}
               size="16"
@@ -98,10 +91,9 @@ const DashboardSideNav = ({ userProfile, token }) => {
               />
             </div>
             <div
-              className="pl-8 h-100 overflow-hidden"
+              className="pl-8 h-100 overflow-hidden transition-all duration-300"
               style={{
                 maxHeight: `${expand.operations ? "50rem" : "0"}`,
-                transition: "max-height 0.5s",
               }}
             >
               <DashboardSideNavItem
@@ -129,10 +121,9 @@ const DashboardSideNav = ({ userProfile, token }) => {
                 />
               </div>
               <div
-                className="pl-8 h-100 overflow-hidden"
+                className="pl-8 h-100 overflow-hidden transition-all duration-300"
                 style={{
                   maxHeight: `${expand.sales ? "50rem" : "0"}`,
-                  transition: "max-height 0.5s",
                 }}
               >
                 <DashboardSideNavItem
@@ -164,10 +155,9 @@ const DashboardSideNav = ({ userProfile, token }) => {
                 />
               </div>
               <div
-                className="pl-8 h-100 overflow-hidden"
+                className="pl-8 h-100 overflow-hidden transition-all duration-300"
                 style={{
                   maxHeight: `${expand.admin ? "50rem" : "0"}`,
-                  transition: "max-height 0.5s",
                 }}
               >
                 <DashboardSideNavItem
@@ -226,10 +216,9 @@ const DashboardSideNav = ({ userProfile, token }) => {
               />
             </div>
             <div
-              className="pl-8 h-100 overflow-hidden"
+              className="pl-8 h-100 overflow-hidden transition-all duration-300"
               style={{
                 maxHeight: `${expand.profile ? "50rem" : "0"}`,
-                transition: "max-height 0.5s",
               }}
             >
               <DashboardSideNavItem
@@ -258,10 +247,9 @@ const DashboardSideNav = ({ userProfile, token }) => {
               />
             </div>
             <div
-              className="pl-8 h-100 overflow-hidden"
+              className="pl-8 h-100 overflow-hidden transition-all duration-300"
               style={{
                 maxHeight: `${expand.security ? "50rem" : "0"}`,
-                transition: "max-height 0.5s",
               }}
             >
               <DashboardSideNavItem

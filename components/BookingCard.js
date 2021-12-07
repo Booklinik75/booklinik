@@ -54,7 +54,7 @@ const BookingCard = ({ booking }) => {
                 className="bg-gray-100 "
               />
               {bookingStatus && (
-                <div className="absolute bg-white rounded p-3 m-4 flex gap-2 items-center drop-shadow-sm" style={{zIndex: "8"}}>
+                <div className="absolute bg-white rounded p-3 m-4 flex gap-2 items-center drop-shadow-sm z-10">
                   <p className={`text-${bookingStatus.color}`}>
                     {bookingStatus.icon}
                   </p>
