@@ -71,11 +71,11 @@ const BookingSideNavigation = ({ step, bookingData }) => {
       </div>
       <BookingStep currentStep={step} stepId={4}>
         <FaBuilding />
-        <p>Hôtel</p>
+        <p>{bookingData.hotelName ? bookingData.hotelName : "Chambres"}</p>
       </BookingStep>
       <BookingStep currentStep={step} stepId={5}>
         <FaBed />
-        <p>Chambres</p>
+        <p>{bookingData.roomName ? bookingData.roomName : "Chambres"}</p>
       </BookingStep>
       <BookingStep currentStep={step} stepId={6}>
         <BsThreeDots />

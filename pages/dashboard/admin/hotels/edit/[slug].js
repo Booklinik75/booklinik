@@ -85,9 +85,6 @@ const EditHotel = ({ data, id, citiesOptions, auth }) => {
       .delete()
       .then(() => {
         router.push("/dashboard/admin/hotels");
-      })
-      .catch((error) => {
-        console.error("Error removing document: ", error);
       });
   }
 

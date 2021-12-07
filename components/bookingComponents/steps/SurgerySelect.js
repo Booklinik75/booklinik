@@ -32,7 +32,7 @@ const SurgerySelectStep = ({
             return (
               <div
                 key={surgeryCategory.slug}
-                className="col-span-2 h-full relative"
+                className="col-span-6 lg:col-span-2 h-full relative"
               >
                 {booking.surgeryCategory === surgeryCategory.slug ? (
                   <button
@@ -92,7 +92,7 @@ const SurgerySelectStep = ({
             return booking.surgeryCategory !== "" &&
               surgery.category === booking.surgeryCategory ? (
               <div
-                className="flex flex-col items-center col-span-3"
+                className="flex flex-col items-center col-span-6 lg:col-span-3"
                 key={surgery.slug}
               >
                 <input

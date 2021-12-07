@@ -43,9 +43,6 @@ const EditCountry = ({ data, id, auth }) => {
       .delete()
       .then(() => {
         router.push("/dashboard/admin/countries");
-      })
-      .catch((error) => {
-        console.error("Error removing document: ", error);
       });
   }
 

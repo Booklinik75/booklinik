@@ -1,12 +1,12 @@
-import DashboardUi from "../../components/DashboardUi";
-import DashboardInput from "../../components/DashboardInput";
-import { checkAuth } from "../../utils/ServerHelpers";
-import ProfileSelect from "../../components/ProfileSelect";
-import DashboardButton from "../../components/DashboardButton";
+import DashboardUi from "components/DashboardUi";
+import DashboardInput from "components/DashboardInput";
+import { checkAuth } from "utils/ServerHelpers";
+import DashboardButton from "components/DashboardButton";
 import { useState } from "react";
-import { formatDate } from "../../utils/ClientHelpers";
 import firebase from "firebase/clientApp";
 import { useRouter } from "next/router";
+import { FaCopy } from "react-icons/fa";
+import Tippy from "@tippyjs/react";
 
 export const getServerSideProps = async (ctx) => {
   const auth = await checkAuth(ctx);
@@ -28,7 +28,7 @@ export const getServerSideProps = async (ctx) => {
   }
 
   return {
-    props: { auth, referer },
+    props: { auth, referer: referer || null },
   };
 };
 
@@ -62,7 +62,7 @@ const Parrainage = ({ auth, referer }) => {
                 router.replace(router.asPath);
                 setRef(doc.data());
               })
-              .catch((err) => console.log(err));
+              .catch((err) => {});
 
             firebase
               .firestore()
@@ -93,16 +93,27 @@ const Parrainage = ({ auth, referer }) => {
             <p className="text-xs uppercase text-gray-500">
               Votre code de parrainage
             </p>
-            <p className="px-6 py-3 bg-shamrock text-white uppercase text-2xl text-center rounded max-w-max">
-              {userProfile.referalCode ? userProfile.referalCode : "null"}
-            </p>
+            <Tippy content="Cliquez pour copier">
+              <p
+                className="px-6 py-3 bg-shamrock text-white uppercase text-2xl text-center rounded max-w-max 
+            transition hover:bg-shamrock/70 hover:cursor-pointer w-max flex items-center gap-2"
+                onClick={() => {
+                  navigator.clipboard.writeText(
+                    userProfile.referalCode ? userProfile.referalCode : ""
+                  );
+                }}
+              >
+                {userProfile.referalCode ? userProfile.referalCode : "null"}
+                <FaCopy />
+              </p>
+            </Tippy>
           </div>
           <div className="flex flex-col gap-2">
             <div>
               <div className="flex flex-col gap-2">
                 <DashboardInput
                   className="w-[24rem] flex-grow-0"
-                  label="Ajouter un code de parrainage"
+                  label="Entrer le code promotionnel de votre parrain"
                   onChange={(e) => {
                     setCode(e.target.value.trim());
                   }}
@@ -122,7 +133,7 @@ const Parrainage = ({ auth, referer }) => {
             <p className="text-xs uppercase text-gray-500">Historique</p>
             {referer && (
               <>
-                <p>Vous avez été parrainé par :</p>
+                <p>Entrez le code promotionnel de votre parrain :</p>
                 <p>
                   -{" "}
                   {referer.firstName && referer.lastName

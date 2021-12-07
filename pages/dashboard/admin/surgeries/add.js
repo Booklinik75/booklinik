@@ -52,6 +52,8 @@ const AddSurgery = ({ citiesOptions, categoriesOptions, auth }) => {
   const [selectedCities, setselectedCities] = useState([]);
   const router = useRouter();
   const [mdValue, setMdValue] = useState("");
+  const [isUploading, setIsUploading] = useState(false);
+  const [imageUrl, setImageUrl] = useState("");
 
   const handleChange = (e) => {
     if (e.target.name === "name") {
@@ -100,6 +102,32 @@ const AddSurgery = ({ citiesOptions, categoriesOptions, auth }) => {
     ]);
   };
 
+  const handlePhotoUpload = (e) => {
+    const file = e.target.files[0];
+    const storageRef = firebase.storage().ref();
+    const uploadTask = storageRef.child(`surgery/${file.name}`).put(file);
+
+    // upload file then store it in its state
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        setIsUploading(true);
+      },
+      (error) => {
+        console.log(error);
+      },
+      () => {
+        setIsUploading(false);
+        storageRef
+          .child(`surgery/${file.name}`)
+          .getDownloadURL()
+          .then((url) => {
+            setImageUrl(url);
+          });
+      }
+    );
+  };
+
   async function doAdd() {
     setLoading("loading");
     const root = "surgeries";
@@ -114,6 +142,7 @@ const AddSurgery = ({ citiesOptions, categoriesOptions, auth }) => {
       startingPrice: form.startingPrice,
       additionalDocuments: inputList,
       descriptionBody: mdValue,
+      photoUrl: imageUrl,
     };
 
     firebase
@@ -161,6 +190,15 @@ const AddSurgery = ({ citiesOptions, categoriesOptions, auth }) => {
             required={true}
           />
           <DashboardInput
+            type="file"
+            name="photo"
+            value={form.photo}
+            onChange={handlePhotoUpload}
+            disabled={false}
+            label="Photo"
+            required={true}
+          />
+          <DashboardInput
             type="number"
             name="startingPrice"
             value={form.startingPrice}
@@ -181,7 +219,7 @@ const AddSurgery = ({ citiesOptions, categoriesOptions, auth }) => {
             min={0}
           />
           <ProfileSelect
-            label="Pays"
+            label="Ville(s)"
             name="country"
             options={citiesOptions}
             value={form.cities}
@@ -293,7 +331,11 @@ const AddSurgery = ({ citiesOptions, categoriesOptions, auth }) => {
               </button>
             </div>
           )}
-          <DashboardButton defaultText="Ajouter" status={isLoading} />
+          <DashboardButton
+            defaultText="Ajouter"
+            status={isLoading}
+            disabled={isUploading}
+          />
         </form>
       </div>
     </DashboardUi>

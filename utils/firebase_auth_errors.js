@@ -15,6 +15,7 @@ const errors = {
     "Votre navigateur est incompatible avec Booklinik",
   "auth/weak-password":
     "Votre mot de passe doit contenir au moins 6 caractères",
+  "auth/wrong-password": "L'email ou le mot de passe est incorrect ou inconnu",
 };
 
 export default errors;

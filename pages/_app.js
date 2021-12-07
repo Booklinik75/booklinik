@@ -14,6 +14,11 @@ import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a lo
 import Loading from "Components/Loading";
 import { useRouter } from "node_modules/next/dist/client/router";
 
+import "tippy.js/dist/tippy.css";
+
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+
 moment.locale("fr");
 
 function BooklinikClient({ Component, pageProps }) {

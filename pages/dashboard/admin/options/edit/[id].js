@@ -62,9 +62,6 @@ const EditOptions = ({ hotelName, id, options, auth }) => {
       .delete()
       .then(() => {
         router.push("/dashboard/admin/options");
-      })
-      .catch((error) => {
-        console.error("Error removing document: ", error);
       });
   }
 

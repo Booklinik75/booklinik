@@ -75,9 +75,31 @@ const NewBookingContainer = ({
   const [user, loading] = useAuthState(firebase.auth());
   const router = useRouter();
 
-  if (user === null && loading === false) {
-    router.push("/signup?i=anonBooking");
-  }
+  if (user === null && loading === false) router.push("/signup?i=anonBooking");
+
+  // fetch user profile
+  const [userProfile, setUserProfile] = useState(null);
+  useEffect(() => {
+    if (user) {
+      firebase
+        .firestore()
+        .collection("users")
+        .doc(user.uid)
+        .get()
+        .then((doc) => {
+          if (doc.exists) {
+            setUserProfile(doc.data());
+          }
+        })
+        .catch((error) => {});
+    }
+  }, [user]);
+
+  // redirect to profile page if user doesnt have a phone number
+  if (userProfile && !userProfile.mobilePhone)
+    router.push("/dashboard/profile?error=mpn");
+  else if (userProfile && !userProfile.isMobileVerified)
+    router.push("/verify/mobile");
 
   const [booking, setBooking] = useState({
     surgeryCategory: "",
@@ -210,7 +232,10 @@ const NewBookingContainer = ({
           <VscLoading />
         </div>
       )}
-      {loading === false && user !== null ? (
+      {loading === false &&
+      user !== null &&
+      userProfile &&
+      userProfile?.isMobileVerified ? (
         <FormStepper
           booking={booking}
           user={user}

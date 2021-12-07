@@ -50,9 +50,6 @@ const EditOperationCategory = ({ auth, data, id }) => {
       .delete()
       .then(() => {
         router.push("/dashboard/admin/operations");
-      })
-      .catch((error) => {
-        console.error("Error removing document: ", error);
       });
   }
 

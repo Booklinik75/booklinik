@@ -394,17 +394,19 @@ const Booking = ({ booking, auth, currentOperation }) => {
                   <p className="text-gray-600 flex gap-1">
                     <span
                       className={`${
+                        booking.alternativeTotal &&
                         booking.total !== booking.alternativeTotal &&
                         "line-through"
                       }`}
                     >
                       {booking.total}€
                     </span>
-                    {booking.total !== booking.alternativeTotal && (
-                      <span className="text-green-500">
-                        (devis&nbsp;:&nbsp;{booking.alternativeTotal}€)
-                      </span>
-                    )}
+                    {booking.alternativeTotal &&
+                      booking.total !== booking.alternativeTotal && (
+                        <span className="text-green-500">
+                          (devis&nbsp;:&nbsp;{booking.alternativeTotal}€)
+                        </span>
+                      )}
                   </p>
                 </div>
                 <div>
@@ -712,7 +714,7 @@ const Booking = ({ booking, auth, currentOperation }) => {
                     <p className="first-letter:capitalize font-bold">
                       {pictureSet.title}
                     </p>
-                    {booking.picturesSet?.[slugify(pictureSet.title)].map(
+                    {booking.picturesSet?.[slugify(pictureSet?.title)]?.map(
                       (link, index) => (
                         <Link key={index} href={link}>
                           <a className="hover:underline hover:text-shamrock hover:cursor-pointer flex flex-row items-center gap-2">

@@ -13,7 +13,7 @@ import {
   FaChevronDown,
 } from "react-icons/fa";
 
-const DashboardSideNav = ({ userProfile, token }) => {
+const DashboardSideNav = ({ userProfile, token, isSideNavOpen }) => {
   const router = useRouter();
   const isAdmin = userProfile.role === "admin" ? true : false;
   const isSales =
@@ -271,6 +271,10 @@ const DashboardSideNav = ({ userProfile, token }) => {
               <DashboardSideNavItem
                 title="Code de parrainage"
                 target="/dashboard/parrainage"
+              />
+              <DashboardSideNavItem
+                title="Offres"
+                target="/dashboard/admin/offers"
               />
               <a
                 onClick={signOut}

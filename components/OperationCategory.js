@@ -32,7 +32,10 @@ const OpCategory = ({ operation, surgeries }) => {
               </div>
             </div>
           </div>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 col-span-2 h-2/3">
+          <div
+            className="grid grid-cols-1 lg:grid-cols-2 gap-6 col-span-2"
+            style={{ height: "min-content" }}
+          >
             {surgeries.map((surgery) => {
               return surgery.category === operation.slug ? (
                 <div key={surgery.id}>
