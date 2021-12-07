@@ -185,7 +185,7 @@ const BookingsList = ({ auth, bookings }) => {
           onSubmit={handleSearch}
         >
           <input
-            placeholder="Search..."
+            placeholder="Rechercher ..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="w-full rounded bg-transparent border p-3 outline-none"
@@ -217,7 +217,7 @@ const BookingsList = ({ auth, bookings }) => {
                   fill="#33C783"
                 />
               </svg>
-              Filter By {filter === "All" ? "" : filter}
+              Filtrer par {filter === "Tout" ? "" : filter}
             </button>
             <ul
               className={`absolute bg-white shadow-lg rounded overflow-hidden ${
@@ -227,9 +227,9 @@ const BookingsList = ({ auth, bookings }) => {
             >
               <li
                 className="py-3 px-6 cursor-pointer whitespace-nowrap hover:bg-gray-100"
-                onClick={() => handleFilter("All")}
+                onClick={() => handleFilter("Tout")}
               >
-                All
+                Tout
               </li>
               {headerGroups[0].headers.map((value) => (
                 <li

@@ -201,7 +201,6 @@ const Booking = ({ booking, auth, currentOperation }) => {
       });
   };
 
-  // ,aybe use like this?
   const definedStatusUpdate = (status) => {
     setLoading("loading");
     firebase
@@ -464,7 +463,7 @@ const Booking = ({ booking, auth, currentOperation }) => {
 
           <div className="col-span-6 my-10 ">
             <p className="text-sm font-bold text-gray-800 uppercase mb-5">
-              Modifier Les Donnes
+              Modifier les données
             </p>
             <div className="bg-white border-gray-200 p-5 rounded border">
               <div className="flex items-center whitespace-nowrap mb-5">

@@ -201,7 +201,7 @@ const CustomersList = ({ auth, users }) => {
                   fill="#33C783"
                 />
               </svg>
-              Filter By {filter === "All" ? "" : filter}
+              Filtrer par {filter === "Tout" ? "" : filter}
             </button>
             <ul
               className={`absolute bg-white shadow-lg rounded overflow-hidden ${
@@ -211,9 +211,9 @@ const CustomersList = ({ auth, users }) => {
             >
               <li
                 className="py-3 px-6 cursor-pointer whitespace-nowrap hover:bg-gray-100"
-                onClick={() => handleFilter("All")}
+                onClick={() => handleFilter("Tout")}
               >
-                All
+                Tout
               </li>
               {headerGroups[0].headers.map((value) => (
                 <li
