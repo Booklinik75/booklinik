@@ -13,7 +13,7 @@ import {
   FaChevronDown,
 } from "react-icons/fa";
 
-const DashboardSideNav = ({ userProfile, token }) => {
+const DashboardSideNav = ({ userProfile, token, isSideNavOpen }) => {
   const router = useRouter();
   const isAdmin = userProfile.role === "admin" ? true : false;
   const isSales =

@@ -44,9 +44,6 @@ const FormStepper = ({ children, booking, user, nextStep, setNextStep }) => {
       })
       .then(() => {
         router.push("/dashboard/operations");
-      })
-      .catch((error) => {
-        console.error(error);
       });
   };
 
@@ -61,7 +58,7 @@ const FormStepper = ({ children, booking, user, nextStep, setNextStep }) => {
             Sauvegarde en cours ...
           </div>
         )}
-        <div className="p-10">
+        <div className="p-12 lg:p-10">
           <form
             onSubmit={(e) => {
               e.preventDefault();

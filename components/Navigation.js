@@ -8,7 +8,7 @@ import { VscLoading } from "react-icons/vsc";
 import firebase from "../firebase/clientApp";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { motion, AnimatePresence } from "framer-motion";
-import { BsPhone } from "react-icons/bs";
+import { FaPhone } from "react-icons/fa";
 
 export default function Navigation() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -16,15 +16,15 @@ export default function Navigation() {
   const [dropdownVisibility, setDropdownVisibility] = useState(false);
 
   return (
-    <div className="w-full mb-28 z-50 h-full">
+    <div className="w-full z-50 h-full mb-8 top-0 h-20">
       <div className="flex flex-wrap">
         <div className="w-full">
-          <nav className="flex flex-wrap items-center justify-between py-2 fixed w-full z-50 bg-white drop-shadow-sm">
+          <nav className="flex flex-wrap items-center justify-between py-2 top-0 fixed w-full z-50 bg-white drop-shadow-sm">
             <div className="container relative px-4 mx-auto flex flex-wrap items-center justify-between">
               <div className="w-full relative flex justify-between lg:w-auto px-4 lg:static lg:block lg:justify-start">
                 <Link href="/">
                   <a className="text-sm font-bold leading-relaxed inline-block mr-4 py-2 shamrockspace-nowrap uppercase text-shamrock">
-                    <Image src={Logo} alt="Booklinik+ Logo"></Image>
+                    <Image src={Logo} alt="Booklinik+ Logo" />
                   </a>
                 </Link>
                 <button
@@ -58,7 +58,7 @@ export default function Navigation() {
                           initial={{ opacity: 0, y: "-6px" }}
                           animate={{ opacity: 1, y: "0px" }}
                           exit={{ opacity: 0, y: "-6px" }}
-                          className="absolute p-3 bg-white border border-shamrock rounded w-full gap-2 flex flex-col min-w-max shadow"
+                          className="absolute p-3 bg-white border border-shamrock rounded w-full gap-2 flex flex-col min-w-max shadow right-0"
                         >
                           <Link href="/a-propos" className="">
                             <a className="w-full p-2 transition hover:cursor-pointer hover:bg-gray-100 rounded">
@@ -97,10 +97,10 @@ export default function Navigation() {
                   )}
                   <li className="hidden lg:flex group gap-1 items-center">
                     |
-                    <Link href="tel:+33678901234">
+                    <Link href="tel:0176350968">
                       <a className="gap-1 items-center flex transition-colors group-hover:text-shamrock">
-                        <BsPhone className="stroke-1" />
-                        +33 6 78 90 12 34
+                        <FaPhone className="stroke-1 text-bali" />
+                        01 76 35 09 68
                       </a>
                     </Link>
                   </li>

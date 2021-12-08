@@ -41,7 +41,7 @@ const DashboardOperations = ({ userProfile, token }) => {
         </div>
         <div className="grid grid-cols-6 gap-8">
           {bookings.map((booking) => (
-            <div key={booking.id} className="col-span-2">
+            <div key={booking.id} className="col-span-6 lg:col-span-2">
               <BookingCard booking={booking} />
             </div>
           ))}

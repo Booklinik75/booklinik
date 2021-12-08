@@ -1,19 +1,14 @@
 import Link from "next/link";
 import Image from "next/image";
 import Logo from "../public/booklinik-logo.svg";
-import {
-  FaInstagram,
-  FaFacebookSquare,
-  FaYoutube,
-  FaWhatsapp,
-} from "react-icons/fa";
+import { FaInstagram, FaFacebookSquare, FaLinkedin } from "react-icons/fa";
 
 const Footer = () => {
   return (
     <footer>
       <div className="bg-gray-100 p-10 mt-20">
         <div className="mx-4 xl:mx-auto max-w-7xl space-y-6">
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 space-y-6">
             <div className="col-span-2">
               <Link href="/">
                 <a className="block mb-6">
@@ -26,9 +21,9 @@ const Footer = () => {
               </p>
             </div>
             <div className="flex flex-col text-sm space-y-2">
-              <p className="uppercase text-sm mb-2">À propos</p>
-              <Link href="/valeurs">
-                <a className="hover:underline">Nos valeurs</a>
+              <p className="uppercase text-sm mb-1">À propos</p>
+              <Link href="/a-propos">
+                <a className="hover:underline">À propos de nous</a>
               </Link>
               <Link href="/mission">
                 <a className="hover:underline">Notre mission</a>
@@ -41,11 +36,11 @@ const Footer = () => {
               </Link>
             </div>
             <div className="flex flex-col text-sm space-y-2">
-              <p className="uppercase text-sm mb-2">Assistance</p>
-              <Link href="#">
+              <p className="uppercase text-sm mb-1">Assistance</p>
+              <Link href="#contact">
                 <a className="hover:underline">Nous contacter</a>
               </Link>
-              <Link href="#">
+              <Link href="/legal/faq">
                 <a className="hover:underline">FAQ</a>
               </Link>
               <Link href="/legal/annulations">
@@ -56,7 +51,7 @@ const Footer = () => {
               </Link>
             </div>
             <div className="col-span-2 space-y-2">
-              <p className="uppercase text-sm mb-4">Les opérations</p>
+              <p className="uppercase text-sm mb-3">Les opérations</p>
               <div className="flex space-x-5">
                 <div className="flex flex-col text-sm space-y-2">
                   <Link href="#">
@@ -106,10 +101,11 @@ const Footer = () => {
                   <a className="hover:underline">Conditions générales</a>
                 </Link>
                 <p className="hidden md:block">&bull;</p>
-                <Link href="/legal/informations" className="hover:underline">
-                  <a className="hover:underline">
-                    Informations d&apos;entreprises
-                  </a>
+                <Link
+                  href="/legal/mentions-legales"
+                  className="hover:underline"
+                >
+                  <a className="hover:underline">Mentions légales</a>
                 </Link>
               </div>
             </div>
@@ -125,6 +121,13 @@ const Footer = () => {
                 <a>
                   <div className="cursor-pointer transition hover:text-shamrock">
                     <FaFacebookSquare size={24} />
+                  </div>
+                </a>
+              </Link>
+              <Link href="https://www.linkedin.com/company/booklinik">
+                <a>
+                  <div className="cursor-pointer transition hover:text-shamrock">
+                    <FaLinkedin size={24} />
                   </div>
                 </a>
               </Link>

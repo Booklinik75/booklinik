@@ -225,7 +225,7 @@ const OperationPage = ({
       {picturesImporter.visibility &&
         createPortal(
           <div
-            className="absolute w-screen h-screen bg-black bg-opacity-30 flex items-center justify-center z-20"
+            className="fixed w-screen h-screen bg-black bg-opacity-30 flex items-center justify-center z-20"
             style={{ marginTop: "-100vh" }}
             onClick={(e) => {
               e.stopPropagation();
@@ -297,10 +297,11 @@ const OperationPage = ({
                   <section>
                     <div
                       {...getRootProps()}
-                      className="w-full flex flex-col gap-4 items-center justify-center bg-gray-100 border border-dashed border-gray-400 py-12"
+                      className="w-full flex flex-col gap-4 rounded items-center justify-center bg-gray-100 border overflow-hidden border-dashed border-gray-400 py-12 px-4
+                      transition-all hover:bg-gray-200 hover:border-gray-600 hover:cursor-pointer"
                     >
                       <input {...getInputProps()} />
-                      <p>
+                      <p className="text-white p-4 rounded text-center bg-shamrock">
                         Cliquez ici pour ajouter des photos, ou glissez
                         directement vos photos
                       </p>
@@ -471,43 +472,51 @@ const OperationPage = ({
           </div>
         </div>
         <div className="col-span-10 lg:col-span-3 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-4 grid-flow-column auto-rows-max">
-          <div className="col-span-1 flex flex-col gap-2 border border-gray-800 p-4 rounded">
-            <p className="text-3xl">Documents requis</p>
-            <p>
-              Afin de finaliser votre séjour, vous devez remplir ces documents.
-            </p>
-            {currentOperation.requiredPictures.map((requiredPicturesSet, i) => (
-              <div
-                key={`${slugify(requiredPicturesSet.title)}_${i}`}
-                className={`transition h-max flex border justify-between rounded py-2 px-4 items-center gap-4 group ${
-                  requiredPicturesSet.done
-                    ? "border-green-500 bg-green-500 text-white"
-                    : "border-red-500 hover:shadow hover:bg-red-500 hover:cursor-pointer hover:animate-pulse"
-                }`}
-                onClick={() => {
-                  if (!requiredPicturesSet.done) {
-                    setPicturesImporter({
-                      set: requiredPicturesSet,
-                      visibility: true,
-                    });
-                  }
-                }}
-              >
-                <p className="transition group-hover:text-white">
-                  {requiredPicturesSet.photosCount}
-                  <span className="lowercase">
-                    {" "}
-                    {requiredPicturesSet.title}
-                  </span>
-                </p>
-                {requiredPicturesSet.done ? (
-                  <FaCheck />
-                ) : (
-                  <FaUpload className="transition text-red-500 group-hover:text-white" />
-                )}
-              </div>
-            ))}
-          </div>
+          {currentOperation.requiredPictures.length > 0 && (
+            <div className="col-span-1 flex flex-col gap-2 border border-gray-800 p-4 rounded">
+              <p className="text-3xl">Documents requis</p>
+              <p>
+                Afin de finaliser votre séjour, vous devez remplir ces
+                documents.
+              </p>
+              {currentOperation.requiredPictures.map(
+                (requiredPicturesSet, i) => (
+                  <div
+                    key={`${slugify(requiredPicturesSet.title)}_${i}`}
+                    className={`transition h-max flex border justify-between rounded py-2 px-4 items-center gap-4 group ${
+                      requiredPicturesSet.done
+                        ? "border-green-500 bg-green-500 text-white"
+                        : "border-red-500 hover:shadow hover:bg-red-500 hover:cursor-pointer hover:animate-pulse"
+                    }`}
+                    onClick={() => {
+                      if (!requiredPicturesSet.done) {
+                        setPicturesImporter({
+                          set: requiredPicturesSet,
+                          visibility: true,
+                        });
+                      }
+                    }}
+                  >
+                    <p className="transition group-hover:text-white">
+                      {requiredPicturesSet.photosCount}
+                      <span className="lowercase">
+                        {" "}
+                        {requiredPicturesSet.title}
+                      </span>
+                    </p>
+                    {requiredPicturesSet.done ? (
+                      <FaCheck />
+                    ) : (
+                      <FaUpload className="transition text-red-500 group-hover:text-white" />
+                    )}
+                  </div>
+                )
+              )}
+              <p className="text-sm text-gray-500 uppercase text-center">
+                Photos accessible uniquement par votre chirurgien.
+              </p>
+            </div>
+          )}
           <div className="col-span-1 flex flex-col gap-2 border border-shamrock p-4 rounded">
             <p className="text-3xl">Préparez votre voyage</p>
             <p>

@@ -39,7 +39,7 @@ const OptionsSelectStep = ({
         complémentaires ?
       </h1>
       <div className="grid grid-cols-9 gap-12 h-3/4 max-h-full">
-        <div className="col-span-3 space-y-3">
+        <div className="col-span-9 lg:col-span-3 space-y-3">
           <p className="text-xs text-gray-500 uppercase pt-2">Hôtel</p>
           <div className="h-64 relative">
             <Image
@@ -81,14 +81,14 @@ const OptionsSelectStep = ({
             </div>
           </div>
         </div>
-        <div className="col-span-6 ">
+        <div className="col-span-9 lg:col-span-6">
           <p className="text-xs text-gray-500 uppercase pt-2 grid-cols-2 mb-3">
             Options
           </p>
           <div className="grid grid-cols-2 gap-4">
             {optionsList.map((option, index) => {
               return (
-                <div key={index} className="col-span-1">
+                <div key={index} className="col-span-2 lg:col-span-1">
                   <label
                     htmlFor={slugify(option.name)}
                     className={`border-2 px-6 py-3 rounded w-full flex justify-between items-center hover:border-bali ${

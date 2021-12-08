@@ -6,7 +6,9 @@ import { useState } from "react";
 import Link from "next/link";
 
 const Offer = ({ data }) => {
-  const { imageUrl, name, endDate, price, hotelData, id } = data;
+  const { imageUrl, name, endDate, price, hotelData, id, offerExpiration } =
+    data;
+  const { rating, name: hotelName } = hotelData;
 
   return (
     <Link href={`/offer/${id}`}>
@@ -24,13 +26,13 @@ const Offer = ({ data }) => {
           <div className="flex space-x-2 items-center text-xs font-bold uppercase">
             <p className="text-white py-1 px-2 rounded bg-bali">Offre</p>
             <p className="flex-grow text-bali">
-              Reste {moment().to(moment(endDate), true)}
+              Reste {moment().to(moment(offerExpiration), true)}
             </p>
-            <StarRating value={hotelData?.rating} color="bali" />
+            <StarRating value={rating} color="bali" />
           </div>
           <p className="font-bold group-hover:underline">{name}</p>
           <div className="flex space-x-1 text-sm text-bali font-bold">
-            <p>{hotelData?.name}</p>
+            <p>{hotelName}</p>
             <p>&bull;</p>
             <p>{price}€</p>
           </div>

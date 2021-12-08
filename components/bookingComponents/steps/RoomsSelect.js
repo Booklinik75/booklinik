@@ -18,7 +18,7 @@ const RoomsSelectStep = ({ booking, rooms, handleRoomSelect, setNextStep }) => {
         <span className="text-shamrock">{booking.hotelName}</span> !
       </h1>
       <div className="grid grid-cols-9 gap-12 h-3/4 max-h-full">
-        <div className="col-span-3 space-y-3">
+        <div className="col-span-9 lg:col-span-3 space-y-3">
           <p className="text-xs text-gray-500 uppercase pt-2">Hôtel</p>
           <div className="h-64 relative">
             <Image
@@ -99,7 +99,7 @@ const RoomsSelectStep = ({ booking, rooms, handleRoomSelect, setNextStep }) => {
             })}
           </div>
         </div>
-        <div className="col-span-6 space-y-6 max-h-192 overflow-y-scroll">
+        <div className="col-span-9 lg:col-span-6 space-y-6 max-h-192 overflow-y-scroll">
           {rooms.map((room) => {
             return room.hotel === booking.hotel ? (
               <div className="space-y-2">

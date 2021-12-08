@@ -29,6 +29,7 @@ module.exports = {
     },
     maxHeight: {
       192: "44rem",
+      content: "max-content",
     },
     extend: {
       colors: {

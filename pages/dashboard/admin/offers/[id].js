@@ -114,6 +114,26 @@ export const getServerSideProps = async (ctx) => {
   // serialize createdAt and updatedAt to moment dates
   offer.createdAt = moment(offer.createdAt.toDate()).format("LLL");
 
+  // get clinics
+  async function getClinics() {
+    const snapshot = await firebase.firestore().collection("clinics").get();
+    return snapshot.docs.map((doc) => {
+      return { id: doc.id, ...doc.data() };
+    });
+  }
+
+  const clinics = await getClinics();
+
+  // build options for clinics select
+  const clinicOptions = [];
+  clinics.forEach((clinic) => {
+    clinicOptions.push({
+      value: clinic.id,
+      label: clinic.name,
+      slug: clinic.slug,
+    });
+  });
+
   return {
     props: {
       auth,
@@ -121,6 +141,7 @@ export const getServerSideProps = async (ctx) => {
       groupedHotelRooms,
       currentOffer: offer,
       id: ctx.params.id,
+      clinicOptions,
     },
   };
 };
@@ -131,6 +152,7 @@ const EditOffer = ({
   groupedHotelRooms,
   currentOffer,
   id,
+  clinicOptions,
 }) => {
   const router = useRouter();
   // has the image been uploaded?
@@ -152,6 +174,11 @@ const EditOffer = ({
     group.options.find((option) => option.value === currentOffer.hotelRoom)
   );
 
+  // determine offer clinic against clinicOptions using the id of the current offer
+  const currentOfferClinic = clinicOptions.find(
+    (option) => option.value === currentOffer.clinic
+  );
+
   // form state
   const [offer, setOffer] = useState({
     name: currentOffer.name,
@@ -161,6 +188,9 @@ const EditOffer = ({
     surgery: currentOffer.surgery,
     startDate: currentOffer.startDate,
     endDate: currentOffer.endDate,
+    dates: currentOffer.dates,
+    clinic: currentOffer.clinic,
+    offerExpiration: currentOffer.offerExpiration,
   });
 
   const handleChange = (e) => {
@@ -220,8 +250,6 @@ const EditOffer = ({
     const offerData = {
       ...offer,
       imageUrl,
-      createdAt: new Date(),
-      createdBy: auth.props.token.uid,
     };
 
     // update offer in firestore
@@ -265,7 +293,7 @@ const EditOffer = ({
     <DashboardUi userProfile={auth.props.userProfile} token={auth.props.token}>
       <div className="col-span-10 space-y-3">
         <div className="flex w-full justify-between items-center">
-          <h1 className="text-4xl mb-4">Créer une offre</h1>
+          <h1 className="text-4xl mb-4">Éditer une offre</h1>
         </div>
         <div className="space-y-6">
           <form className="space-y-6" onSubmit={handleSubmit}>
@@ -308,6 +336,25 @@ const EditOffer = ({
                 La description de l&apos;offre est affichée sur la page
                 d&apos;accueil de l&apos;offre.
               </p>
+            </div>
+            <div className="space-y-2">
+              <label
+                className="block text-gray-700 text-sm font-bold mb-2"
+                htmlFor="clinic"
+              >
+                Clinique
+              </label>
+              <Select
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                id="clinic"
+                options={clinicOptions}
+                placeholder="Clinique"
+                required
+                onChange={(selectedOption) =>
+                  handleSelectChange(selectedOption, "clinic")
+                }
+                defaultValue={currentOfferClinic}
+              />
             </div>
             <div className="space-y-2">
               <label
@@ -399,65 +446,119 @@ const EditOffer = ({
                 de l&apos;offre.
               </p>
             </div>
-            {/* Wizard to create multiple date ranges */}
             <div className="space-y-2">
               <label
                 className="block text-gray-700 text-sm font-bold mb-2"
-                htmlFor="date"
+                htmlFor="offerExpiration"
               >
-                Dates
+                Date d&apos;expiration
               </label>
-              <div className="flex flex-wrap">
-                <div className="w-full md:w-1/2 px-3">
-                  <label
-                    className="block text-gray-700 text-sm font-bold mb-2"
-                    htmlFor="startDate"
-                  >
-                    Début
-                  </label>
-                  <input
-                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    id="startDate"
-                    type="date"
-                    placeholder="Début"
-                    required
-                    value={offer.startDate}
-                    name="startDate"
-                    onChange={handleChange}
-                  />
-                  <p className="text-gray-500 text-xs italic">
-                    La date de début de l&apos;offre est affichée sur la page
-                    d&apos;accueil de l&apos;offre. La date de début de
-                    l&apos;offre est utilisée pour déterminer si l&apos;offre
-                    est disponible ou non.
-                  </p>
+              <input
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                id="offerExpiration"
+                type="date"
+                placeholder="Date d'expiration"
+                required
+                value={offer.offerExpiration}
+                name="offerExpiration"
+                onChange={handleChange}
+              />
+              <p className="text-gray-500 text-xs italic">
+                La date d&apos;expiration de l&apos;offre est affichée sur la
+                page d&apos;accueil de l&apos;offre.
+              </p>
+            </div>
+
+            {/* Input where you define a start and end date, and add it to the state when pressing a button */}
+            <div className="p-2 bg-blue-50 rounded border border-blue-700">
+              <p className="block text-blue-700 text-sm font-bold mb-2">
+                Dates disponibles
+              </p>
+              {offer.dates.length > 0 && (
+                <div className="space-y-2">
+                  <p>Options choisies</p>
+                  <div className="grid grid-cols-3 gap-4">
+                    {offer.dates.map((date, index) => (
+                      <div
+                        key={index}
+                        className="col-span-1 p-2 bg-blue-100 rounded border border-blue-700 flex justify-between"
+                      >
+                        Option {index + 1} : {date.startDate} - {date.endDate}
+                        <button
+                          className="text-blue-700"
+                          onClick={() => {
+                            // Remove the date from the state
+                            setOffer({
+                              ...offer,
+                              dates: offer.dates.filter((_, i) => i !== index),
+                            });
+                          }}
+                        >
+                          X
+                        </button>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-                <div className="w-full md:w-1/2 px-3">
-                  <label
-                    className="block text-gray-700 text-sm font-bold mb-2"
-                    htmlFor="endDate"
-                  >
-                    Fin
-                  </label>
-                  <input
-                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    id="endDate"
-                    type="date"
-                    placeholder="Fin"
-                    required
-                    name="endDate"
-                    value={offer.endDate}
-                    onChange={handleChange}
-                  />
-                  <p className="text-gray-500 text-xs italic">
-                    La date de fin de l&apos;offre est affichée sur la page
-                    d&apos;accueil de l&apos;offre. La date de fin de
-                    l&apos;offre est utilisée pour déterminer si l&apos;offre
-                    est disponible ou non.
-                  </p>
-                </div>
+              )}
+              <div className="space-y-2 p-1">
+                <label
+                  className="block text-gray-700 text-sm font-bold mb-2"
+                  htmlFor="startDate"
+                >
+                  Date de début
+                </label>
+                <input
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  id="startDate"
+                  type="date"
+                  placeholder="Date de début"
+                  required
+                  value={offer.startDate}
+                  name="startDate"
+                  onChange={handleChange}
+                />
+                <label
+                  className="block text-gray-700 text-sm font-bold mb-2"
+                  htmlFor="endDate"
+                >
+                  Date de fin
+                </label>
+                <input
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  id="endDate"
+                  type="date"
+                  placeholder="Date de fin"
+                  required
+                  value={offer.endDate}
+                  name="endDate"
+                  onChange={handleChange}
+                />
+                <p className="text-gray-500 text-xs italic">
+                  La date de début et de fin sont utilisées pour déterminer si
+                  l&apos;offre est disponible ou non.
+                </p>
+
+                <button
+                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                  onClick={() => {
+                    setOffer({
+                      ...offer,
+                      dates: [
+                        ...offer.dates,
+                        {
+                          startDate: offer.startDate,
+                          endDate: offer.endDate,
+                        },
+                      ],
+                    });
+                  }}
+                >
+                  Ajouter
+                </button>
               </div>
             </div>
+
             {/* submit button */}
             <div className="flex gap-2">
               <button
