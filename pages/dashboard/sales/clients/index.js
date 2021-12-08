@@ -143,7 +143,7 @@ const CustomersList = ({ auth, users }) => {
   useEffect(() => {
     // shrink or close dropdown if we clicked outside the filter or filter lists
     document.onclick = (e) => {
-      if (e.target.closest("#clients-filter") === null) {
+      if (e.target.closest("#client-filter") === null) {
         setOpenFilter(false);
       }
     };
@@ -177,7 +177,7 @@ const CustomersList = ({ auth, users }) => {
           <div className="relative">
             <button
               type="button"
-              className="min-w-max transition px-6 py-3 rounded text-lightGreen flex items-center gap-2 border-lightGreen"
+              className="min-w-max transition px-6 py-3 rounded text-shamrock flex items-center gap-2 bg-lightGreen border-lightGreen"
               id="client-filter"
               onClick={() => setOpenFilter((openFilter) => !openFilter)}
             >
