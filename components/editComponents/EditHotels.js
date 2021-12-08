@@ -8,8 +8,12 @@ const EditHotels = ({ hotel, setHotel, city }) => {
 
   const handleClick = (hotel) => {
     setHotel({
-      name: hotel.name,
-      slug: hotel.slug,
+      hotelName: hotel.name,
+      hotel: hotel.slug,
+      hotelPrice: Number(hotel.extraPrice),
+      hotelId: hotel.id,
+      hotelPhotoLink: hotel.photo,
+      hotelRating: hotel.rating,
     });
     setOpenHotels(false);
   };
@@ -31,7 +35,7 @@ const EditHotels = ({ hotel, setHotel, city }) => {
         .get()
         .then((snapshot) => {
           snapshot.forEach((doc) => {
-            hotels.push(doc.data());
+            hotels.push({ ...doc.data(), id: doc.id });
           });
         })
         .catch((err) => {});
@@ -39,6 +43,7 @@ const EditHotels = ({ hotel, setHotel, city }) => {
     };
     getHotels();
   }, [openHotels, city]);
+
 
   return (
     <div>
@@ -50,7 +55,7 @@ const EditHotels = ({ hotel, setHotel, city }) => {
           width: "fit-content",
         }}
       >
-        {hotel.name}
+        {hotel.hotelName}
       </span>
       {openHotels && (
         <AnimatePresence>
@@ -70,7 +75,7 @@ const EditHotels = ({ hotel, setHotel, city }) => {
             >
               {hotels.map((htl) => (
                 <li
-                  key={htl.slug}
+                  key={htl.hotel}
                   onClick={() => handleClick(htl)}
                   className="p-3 py-2 w-100 hover:bg-gray-100"
                 >

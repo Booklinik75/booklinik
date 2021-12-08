@@ -4,7 +4,13 @@ import { useEffect, useState } from "react";
 const EditOperations = ({ operation, operationCategories, setOperation }) => {
   const [openOperations, setOpenOperations] = useState(false);
   const handleChangeOperation = (getOp) => {
-    setOperation(getOp.name);
+    setOperation({
+      surgeryName: getOp.name,
+      surgeryPrice: getOp.startingPrice,
+      surgery: getOp.slug,
+      surgeryMinDays: getOp.minimumNights,
+      surgeryCategory: getOp.category,
+    });
     setOpenOperations(false);
   };
 
@@ -29,7 +35,7 @@ const EditOperations = ({ operation, operationCategories, setOperation }) => {
           minHeight: "30px",
         }}
       >
-        {operation}
+        {operation.surgeryName}
       </span>
       {openOperations && (
         <AnimatePresence>

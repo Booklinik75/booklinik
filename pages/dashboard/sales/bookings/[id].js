@@ -47,8 +47,14 @@ export const getServerSideProps = async (ctx) => {
         });
     });
 
-  booking.startDate = new Date(booking.startDate.toDate()).toString();
-  booking.endDate = new Date(booking.endDate.toDate()).toString();
+  booking.startDate =
+    typeof booking.startDate === "string"
+      ? booking.startDate
+      : new Date(booking.startDate.toDate()).toString();
+  booking.endDate =
+    typeof booking.endDate === "string"
+      ? booking.endDate
+      : new Date(booking.endDate.toDate()).toString();
 
   const operationCategories = [];
   await firebase
@@ -126,9 +132,16 @@ const Booking = ({
   const router = useRouter();
   const [isLoading, setLoading] = useState("idle");
   const [openPopupData, setOpenPopupData] = useState(false);
-  const [operation, setOperation] = useState(booking.surgeryName);
+  const [operation, setOperation] = useState({
+    surgeryName: booking.surgeryName,
+    surgery: booking.surgery,
+    surgeryCategory: booking.surgeryCategory,
+    surgeryPrice: booking.surgeryPrice,
+    surgeryMinDays: booking.surgeryMinDays,
+  });
   const [operationCities, setOperationCities] = useState([]);
   const [optionLists, setOptionLists] = useState([]);
+  const [optionsListsIndex, setOptionsListsIndex] = useState(0);
   const [options, setOptions] = useState([...booking.options]);
   const [startDate, setStartDate] = useState(booking.startDate);
   const [endDate, setEndDate] = useState(booking.endDate);
@@ -139,20 +152,32 @@ const Booking = ({
   });
   const [city, setCity] = useState(booking.city);
   const [hotel, setHotel] = useState({
-    name: booking.hotelName,
-    slug: booking.hotel,
+    hotelId: booking.hotelId,
+    hotelName: booking.hotelName,
+    hotel: booking.hotel,
+    hotelPrice: booking.hotelPrice,
+    hotelRating: booking.hotelRating,
+    hotelPhotoLink: booking.hotelPhotoLink,
   });
-  const [roomName, setRoomName] = useState(booking.roomName);
+  const [room, setRoom] = useState({
+    roomName: booking.roomName,
+    room: booking.room,
+    roomPrice: booking.roomPrice,
+    roomPhotoLink: booking.roomPhotoLink,
+  });
 
   const handleAddNewOptions = () => {
     setOptions([
       ...options,
       {
         isChecked: false,
-        name: "enter a new option",
-        price: 95,
+        name: optionLists.length
+          ? optionLists[optionsListsIndex].name
+          : "Choose new option",
+        price: optionLists.length ? optionLists[optionsListsIndex].price : 0,
       },
     ]);
+    setOptionsListsIndex((optionsListsIndex) => optionsListsIndex + 1);
   };
 
   const statusOptions = [
@@ -174,6 +199,8 @@ const Booking = ({
 
   const [useReferalBalance, setUseReferalBalance] = useState(false);
   // const [estimateFile, setEstimateFile] = useState("");
+
+  console.log(booking);
 
   const updateStatus = () => {
     setLoading("loading");
@@ -257,6 +284,50 @@ const Booking = ({
     }
   };
 
+  const handleUpdate = () => {
+    const totalOptionsPrice = options.reduce(
+      (prev, curr) => prev + curr.price,
+      0
+    );
+    const total =
+      totalOptionsPrice +
+      operation.surgeryPrice +
+      room.roomPrice +
+      hotel.hotelPrice;
+
+    firebase
+      .firestore()
+      .collection("bookings")
+      .doc(booking.id)
+      .update({
+        surgeryName: operation.surgeryName,
+        surgery: operation.surgery,
+        surgeryCategory: operation.surgeryCategory,
+        surgeryPrice: operation.surgeryPrice,
+        surgeryMinDays: operation.surgeryMinDays,
+        hotelId: hotel.hotelId,
+        hotelName: hotel.hotelName,
+        hotel: hotel.hotel,
+        hotelPrice: hotel.hotelPrice,
+        hotelRating: hotel.hotelRating,
+        hotelPhotoLink: hotel.hotelPhotoLink,
+        roomName: room.roomName,
+        room: room.room,
+        roomPrice: room.roomPrice,
+        roomPhotoLink: room.roomPhotoLink,
+        city,
+        total,
+        extraTravellers: voyageurs.adults - 1,
+        extraBabies: voyageurs.babies,
+        extraChilds: voyageurs.childs,
+        endDate,
+        startDate,
+      })
+      .then(() => {
+        alert("success");
+      });
+  };
+
   useEffect(() => {
     document.onclick = (e) => {
       if (openPopupData) {
@@ -303,10 +374,6 @@ const Booking = ({
     };
     getSurgeryCity();
   }, [openPopupData, booking]);
-
-  console.log(operationCities);
-  console.log(booking);
-
 
   return (
     <DashboardUi userProfile={auth.props.userProfile} token={auth.props.token}>
@@ -485,11 +552,7 @@ const Booking = ({
                 L&apos;hôtel dans lequel vous résiderez est au
                 <EditHotels hotel={hotel} setHotel={setHotel} city={city} />
                 {"("}trés bon choiz{")"} et vous logerez en
-                <EditRooms
-                  roomName={roomName}
-                  setRoomName={setRoomName}
-                  hotel={hotel}
-                />
+                <EditRooms room={room} setRoom={setRoom} hotel={hotel} />
               </div>
               <div className="flex items-center whitespace-nowrap mb-5">
                 Vous avez selectuineé les options suivantes :
@@ -503,7 +566,7 @@ const Booking = ({
                     setOptions={setOptions}
                   />
                 ))}
-                {optionLists.length - booking.options.length !==
+                {optionLists.length - booking.options.length + 1 !==
                   options.length && (
                   <span
                     className="bg-shamrock p-1 rounded-full cursor-pointer"
@@ -519,7 +582,10 @@ const Booking = ({
                   {booking.total}€
                 </span>
               </div>
-              <button className="min-w-max transition px-5 py-3 mt-10 rounded border border-shamrock bg-shamrock text-white hover:text-shamrock group hover:bg-white">
+              <button
+                className="min-w-max transition px-5 py-3 mt-10 rounded border border-shamrock bg-shamrock text-white hover:text-shamrock group hover:bg-white"
+                onClick={handleUpdate}
+              >
                 Mettre à jour
               </button>
             </div>
@@ -593,7 +659,7 @@ const Booking = ({
                   Cette action entrainera l&apos;envoi du devis par e-mail,
                   ainsi que d&apos;un lien pour procéder au règlement.
                 </p>
-                <p className="text-sm flex items-center items-center gap-2">
+                <p className="text-sm flex items-center gap-2">
                   <span className="font-bold">Utiliser solde parrainage :</span>{" "}
                   {booking.customer.referalBalance || 0} €
                   <input

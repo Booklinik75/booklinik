@@ -2,12 +2,17 @@ import { motion, AnimatePresence } from "framer-motion";
 import firebase from "firebase/clientApp";
 import { useEffect, useState } from "react";
 
-const EditRooms = ({ roomName, setRoomName, hotel }) => {
+const EditRooms = ({ room: bookingRoom, setRoom, hotel }) => {
   const [openRooms, setOpenRooms] = useState(false);
   const [rooms, setRooms] = useState([]);
 
   const handleClick = (room) => {
-    setRoomName(room);
+    setRoom({
+      roomName: room.name,
+      room: room.slug,
+      roomPrice: Number(room.extraPrice),
+      roomPhotoLink: room.photos ? room.photos[0] : null,
+    });
     setOpenRooms(false);
   };
 
@@ -25,7 +30,7 @@ const EditRooms = ({ roomName, setRoomName, hotel }) => {
       await firebase
         .firestore()
         .collection("rooms")
-        .where("hotel", "==", hotel.slug)
+        .where("hotel", "==", hotel.hotel)
         .get()
         .then((snapshot) => {
           snapshot.forEach((doc) => {
@@ -38,11 +43,12 @@ const EditRooms = ({ roomName, setRoomName, hotel }) => {
     getRooms();
   }, [openRooms, hotel]);
 
+
   return (
     <div>
       <span
         className={`border p-2 px-4 py-3 rounded align-middle mx-2 ${
-          rooms.find((room) => room.name === roomName)
+          rooms.find((room) => room.name === bookingRoom.roomName)
             ? "border-shamrock"
             : "border-red-600"
         }  cursor-pointer`}
@@ -52,7 +58,7 @@ const EditRooms = ({ roomName, setRoomName, hotel }) => {
           width: "fit-content",
         }}
       >
-        {roomName}
+        {bookingRoom.roomName}
       </span>
       {openRooms && rooms.length !== 0 && (
         <AnimatePresence>
@@ -73,7 +79,7 @@ const EditRooms = ({ roomName, setRoomName, hotel }) => {
               {rooms.map((room) => (
                 <li
                   key={room.slug}
-                  onClick={() => handleClick(room.name)}
+                  onClick={() => handleClick(room)}
                   className="p-3 py-2 w-100 hover:bg-gray-100"
                 >
                   {room.name}
