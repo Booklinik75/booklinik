@@ -312,8 +312,6 @@ const Booking = ({ booking, auth, currentOperation }) => {
             }
 
             // if startDatae changed set thevalue
-
-            // if startDatae changed set thevalue
             if (input.id === "inputCity") {
               setCity(input.innerText);
             }
