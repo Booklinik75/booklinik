@@ -126,9 +126,8 @@ const Booking = ({
   const router = useRouter();
   const [isLoading, setLoading] = useState("idle");
   const [openPopupData, setOpenPopupData] = useState(false);
-  const [operations, setOperations] = useState([
-    { id: "1", surgeryName: booking.surgeryName },
-  ]);
+  const [operation, setOperation] = useState(booking.surgeryName);
+  const [operationCities, setOperationCities] = useState([]);
   const [optionLists, setOptionLists] = useState([]);
   const [options, setOptions] = useState([...booking.options]);
   const [startDate, setStartDate] = useState(booking.startDate);
@@ -145,35 +144,6 @@ const Booking = ({
   });
   const [roomName, setRoomName] = useState(booking.roomName);
 
-  const handleEditable = (e) => {
-    // get all input to edit
-    const inputs = document.querySelectorAll(
-      ".border.p-2.px-4.rounded.align-middle.mx-2"
-    );
-    if (e.target.id === "inputTravellers") {
-      setOpenEditVoyageurs((openEditVoyageurs) => !openEditVoyageurs);
-    } else {
-      inputs.forEach((input) => {
-        if (input.id === e.target.id && e.target.id !== "inputTravellers") {
-          input.setAttribute("contenteditable", "true");
-          input.classList.remove("border-shamrock");
-          input.classList.remove("cursor-pointer");
-          input.classList.add("border-black");
-          input.classList.add("cursor-text");
-        }
-      });
-    }
-  };
-  const handleAddNewSurgery = () => {
-    setOperations([
-      ...operations,
-      {
-        id: `${operations.length + 1}`,
-        surgeryName: "enter a new surgery",
-        cities: [],
-      },
-    ]);
-  };
   const handleAddNewOptions = () => {
     setOptions([
       ...options,
@@ -324,20 +294,8 @@ const Booking = ({
         .get()
         .then((snapshot) => {
           snapshot.forEach((doc) => {
-            setOperations((operations) => {
-              if (operations[0].surgeryName === booking.surgeryName) {
-                const isExists = operations.find(
-                  (operation) => operation.surgeryName === doc.data().name
-                );
-                if (isExists) {
-                  return operations.map((operation) => {
-                    return operation.surgeryName === doc.data().name
-                      ? { ...operation, cities: doc.data().cities }
-                      : operation;
-                  });
-                }
-              }
-              return operations;
+            setOperationCities((operationCities) => {
+              return [...operationCities, ...doc.data().cities];
             });
           });
         })
@@ -345,6 +303,10 @@ const Booking = ({
     };
     getSurgeryCity();
   }, [openPopupData, booking]);
+
+  console.log(operationCities);
+  console.log(booking);
+
 
   return (
     <DashboardUi userProfile={auth.props.userProfile} token={auth.props.token}>
@@ -473,22 +435,11 @@ const Booking = ({
             <div className="bg-white border-gray-200 p-5 rounded border">
               <div className="flex items-center whitespace-nowrap mb-5 edit-operations">
                 Vous souhaitez réaliser une
-                {operations?.map((operation, i) => (
-                  <EditOperations
-                    operation={operation}
-                    key={i}
-                    id={operation.id}
-                    operations={operations}
-                    setOperations={setOperations}
-                    operationCategories={operationCategories}
-                  />
-                ))}
-                <span
-                  className="bg-shamrock p-1 rounded-full cursor-pointer"
-                  onClick={handleAddNewSurgery}
-                >
-                  <FaPlus color="white" size="10" />
-                </span>
+                <EditOperations
+                  operation={operation}
+                  setOperation={setOperation}
+                  operationCategories={operationCategories}
+                />
               </div>
               <div className="flex items-center whitespace-nowrap mb-5">
                 Votre voyage s&apos;étedra du
@@ -525,7 +476,7 @@ const Booking = ({
                 de votre choix pour découvrir
                 <EditCity
                   city={city}
-                  operations={operations}
+                  operationCities={operationCities}
                   cities={cities}
                   setCity={setCity}
                 />

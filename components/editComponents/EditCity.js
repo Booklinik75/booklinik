@@ -1,12 +1,12 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
 
-const EditCity = ({ operations, city, setCity, cities }) => {
+const EditCity = ({ operationCities, city, setCity, cities }) => {
   const [openCities, setOpenCities] = useState(false);
   const isCitiesExists = (cty) => {
     const newCityDatas = [];
-    operations.map((operation) => {
-      if (operation?.cities?.includes(cty.name.toLowerCase())) {
+    operationCities.map((operation) => {
+      if (operation?.includes(cty.name.toLowerCase())) {
         newCityDatas.push(cty.name);
       }
     });
@@ -30,6 +30,7 @@ const EditCity = ({ operations, city, setCity, cities }) => {
     setCity(cty.toLowerCase());
     setOpenCities(false);
   };
+
 
   useEffect(() => {
     document.onclick = (e) => {
