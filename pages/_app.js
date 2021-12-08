@@ -10,9 +10,13 @@ import moment from "moment";
 import "moment/locale/fr";
 import "react-toastify/dist/ReactToastify.css";
 import "react-dropdown/style.css";
-import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
+
 import Loading from "components/Loading";
 import { useRouter } from "node_modules/next/dist/client/router";
+
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+
 
 moment.locale("fr");
 
