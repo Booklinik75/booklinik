@@ -52,6 +52,7 @@
     "slick-carousel": "^1.8.1",
     "slugify": "^1.6.0",
     "stripe": "^8.183.0",
+    "tippy.js": "^6.3.7",
     "twilio": "^3.71.2",
     "yup": "^0.32.9"
   },
