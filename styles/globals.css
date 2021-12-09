@@ -87,3 +87,60 @@ html {
     display: flex;
   }
 }
+/* to change to scrollbar style */
+.dropdown-options,
+.dropdown-hotels,
+.dropdown-cities,
+.edit-operations ul {
+  scrollbar-width: 0.5rem;
+}
+
+.dropdown-options::-webkit-scrollbar,
+.dropdown-hotels::-webkit-scrollbar,
+.dropdown-cities::-webkit-scrollbar,
+.edit-operations ul::-webkit-scrollbar {
+  width: 0.5rem;
+  cursor: pointer;
+}
+
+.dropdown-options::-webkit-scrollbar-track,
+.dropdown-hotels::-webkit-scrollbar-track,
+.dropdown-cities::-webkit-scrollbar-track,
+.edit-operations ul::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+.dropdown-options::-webkit-scrollbar-thumb,
+.dropdown-hotels::-webkit-scrollbar-thumb,
+.dropdown-cities::-webkit-scrollbar-thumb,
+.edit-operations ul::-webkit-scrollbar-thumb {
+  background: #33c383;
+  border-radius: 3rem;
+}
+
+/* to edit react datepicker */
+.react-datepicker__input-container input {
+  outline: none;
+  cursor: pointer;
+  width: 5rem;
+}
+
+.react-datepicker-popper[data-placement^="bottom"]
+  .react-datepicker__triangle::before,
+.react-datepicker-popper[data-placement^="bottom"]
+  .react-datepicker__triangle::after {
+  border-bottom-color: #33c383 !important;
+}
+
+.react-datepicker__day--selected {
+  background: #33c383 !important;
+}
+
+html body .react-datepicker__day-name,
+html body .react-datepicker__current-month {
+  color: #fff;
+  font-family: "Circular", "Montserrat", "sans-serif" !important;
+}
+html body .react-datepicker__header {
+  background: #33c383;
+}

@@ -37,8 +37,6 @@ export const getServerSideProps = async (ctx) => {
       );
     });
 
-  console.log("user ->", bookings[1]);
-
   bookings.map((userBooking) => {
     userBooking.startDate =
       typeof userBooking.startDate === "string"

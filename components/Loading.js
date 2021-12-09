@@ -2,7 +2,7 @@ import React from "react";
 
 export default function Loading() {
   return (
-    <div className="fixed inset-0 w-screen h-screen flex-col bg-white flex items-center justify-center z-20">
+    <div className="fixed inset-0 w-screen h-screen flex-col bg-white flex items-center justify-center z-40">
       <div className="flex flex-col items-center">
         <div className="relative">
           <svg
