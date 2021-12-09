@@ -19,6 +19,9 @@ import EditRooms from "components/editComponents/EditRooms";
 import EditOptions from "components/editComponents/EditOptions";
 import ReactDatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import UpdateSuccessPopup from "Components/UpdateSuccessPopup";
+import { set } from "date-fns";
+import Loading from "Components/Loading";
 
 export const getServerSideProps = async (ctx) => {
   const auth = await checkAuth(ctx);
@@ -165,6 +168,7 @@ const Booking = ({
     roomPrice: booking.roomPrice,
     roomPhotoLink: booking.roomPhotoLink,
   });
+  const [updateSuccess, setUpdateSuccess] = useState(false);
 
   const handleAddNewOptions = () => {
     setOptions([
@@ -199,8 +203,6 @@ const Booking = ({
 
   const [useReferalBalance, setUseReferalBalance] = useState(false);
   // const [estimateFile, setEstimateFile] = useState("");
-
-  console.log(booking);
 
   const updateStatus = () => {
     setLoading("loading");
@@ -295,6 +297,8 @@ const Booking = ({
       room.roomPrice +
       hotel.hotelPrice;
 
+    setLoadingUpdate(true);
+
     firebase
       .firestore()
       .collection("bookings")
@@ -324,7 +328,8 @@ const Booking = ({
         startDate,
       })
       .then(() => {
-        alert("success");
+        window.location.reload();
+        setUpdateSuccess(true);
       });
   };
 
@@ -588,6 +593,9 @@ const Booking = ({
               >
                 Mettre à jour
               </button>
+              {updateSuccess && (
+                <UpdateSuccessPopup close={() => setUpdateSuccess(false)} />
+              )}
             </div>
           </div>
           <div className="col-span-1 lg:col-span-2">
