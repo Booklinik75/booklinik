@@ -183,6 +183,35 @@ export default function Home({
           </div>
         </div>
       </div>
+
+      <div className="mx-4 xl:mx-auto max-w-7xl py-10">
+        <div className="flex flex-row items-baseline justify-between mb-2">
+          <h3 className="text-xl mr-2">
+            Découvrez les offres Booklinik du moment
+          </h3>
+          <Link href="#">
+            <a className="text-bali text-xs font-bold hover:underline flex items-center">
+              Découvrir toutres les offres{" "}
+              <FaChevronRight size={10} className="ml-1" />
+            </a>
+          </Link>
+        </div>
+        <div className="xl:w-10/12">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {offers.map((offer) => {
+              // if today is before offerExpiration
+              if (new Date(offer.offerExpiration) > new Date(Date.now())) {
+                return (
+                  <div className="col-span-1 lg:col-span-2" key={offer.id}>
+                    <Offer data={offer} />
+                  </div>
+                );
+              }
+            })}
+          </div>
+        </div>
+      </div>
+
       <div className="max-w-7xl px-4 xl:px-0 xl:mx-auto w-full my-12">
         <div className="max-w-5xl grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <Category
@@ -221,34 +250,6 @@ export default function Home({
               Découvrir <FaChevronRight size={12} />
             </a>
           </Link>
-        </div>
-      </div>
-
-      <div className="mx-4 xl:mx-auto max-w-7xl py-10">
-        <div className="flex flex-row items-baseline justify-between mb-2">
-          <h3 className="text-xl mr-2">
-            Découvrez les offres Booklinik du moment
-          </h3>
-          <Link href="#">
-            <a className="text-bali text-xs font-bold hover:underline flex items-center">
-              Découvrir toutres les offres{" "}
-              <FaChevronRight size={10} className="ml-1" />
-            </a>
-          </Link>
-        </div>
-        <div className="xl:w-10/12">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {offers.map((offer) => {
-              // if today is before offerExpiration
-              if (new Date(offer.offerExpiration) > new Date(Date.now())) {
-                return (
-                  <div className="col-span-1 lg:col-span-2" key={offer.id}>
-                    <Offer data={offer} />
-                  </div>
-                );
-              }
-            })}
-          </div>
         </div>
       </div>
 
