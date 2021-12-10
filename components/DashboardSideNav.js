@@ -196,6 +196,10 @@ const DashboardSideNav = ({ userProfile, token, isSideNavOpen }) => {
                   title="Cliniques"
                   target="/dashboard/admin/clinics"
                 />
+                <DashboardSideNavItem
+                  title="Offres"
+                  target="/dashboard/admin/offers"
+                />
               </div>
             </div>
           )}
