@@ -197,7 +197,7 @@ export default function Home({
           </Link>
         </div>
         <div className="xl:w-10/12">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-6">
             {offers.map((offer) => {
               // if today is before offerExpiration
               if (new Date(offer.offerExpiration) > new Date(Date.now())) {
