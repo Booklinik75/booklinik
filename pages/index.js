@@ -189,7 +189,7 @@ export default function Home({
           <h3 className="text-xl mr-2">
             Découvrez les offres Booklinik du moment
           </h3>
-          <Link href="#">
+          <Link href="/offres">
             <a className="text-bali text-xs font-bold hover:underline flex items-center">
               Découvrir toutres les offres{" "}
               <FaChevronRight size={10} className="ml-1" />
