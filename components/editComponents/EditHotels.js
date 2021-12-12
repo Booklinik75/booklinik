@@ -1,18 +1,23 @@
 import { motion, AnimatePresence } from "framer-motion";
 import firebase from "firebase/clientApp";
 import { useEffect, useState } from "react";
+import { getBackEndAsset } from "utils/ClientHelpers";
 
-const EditHotels = ({ hotel, setHotel, city }) => {
+const EditHotels = ({
+  hotel,
+  setHotel,
+  city,
+}) => {
   const [openHotels, setOpenHotels] = useState(false);
   const [hotels, setHotels] = useState([]);
 
-  const handleClick = (hotel) => {
+  const handleClick = async (hotel) => {
     setHotel({
       hotelName: hotel.name,
       hotel: hotel.slug,
       hotelPrice: Number(hotel.extraPrice),
       hotelId: hotel.id,
-      hotelPhotoLink: hotel.photo,
+      hotelPhotoLink: await getBackEndAsset(hotel.photo),
       hotelRating: hotel.rating,
     });
     setOpenHotels(false);
