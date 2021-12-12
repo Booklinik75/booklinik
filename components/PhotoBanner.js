@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { FaChevronDown } from "react-icons/fa";
 import PropTypes from "prop-types";
+import { useEffect, useRef } from "react";
 
 const PhotoBanner = ({
   title,
@@ -15,8 +16,22 @@ const PhotoBanner = ({
     backgroundImage: `url(${fileName})`,
     backgroundColor: "#ccc",
     backgroundSize: "cover",
+    backgroundAttachment: "fixed",
     backgroundPosition: "50%",
   };
+
+  const photoBannerTitle = useRef(null);
+
+  useEffect(() => {
+    // parallax effect
+    window.onscroll = () => {
+      if (photoBannerTitle.current) {
+        photoBannerTitle.current.style.transform = `translateY(-${
+          window.scrollY / 2
+        }%)`;
+      }
+    };
+  }, []);
 
   return (
     <div
@@ -30,6 +45,7 @@ const PhotoBanner = ({
       <h1
         className="text-7xl md:text-8xl my-10 font-decorative text-center"
         style={{ display: title ? "block" : "none" }}
+        ref={photoBannerTitle}
       >
         {title}
       </h1>
