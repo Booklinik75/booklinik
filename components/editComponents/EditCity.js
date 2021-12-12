@@ -1,12 +1,12 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
 
-const EditCity = ({ operationCities, city, setCity, cities }) => {
+const EditCity = ({ operations, city, setCity, cities }) => {
   const [openCities, setOpenCities] = useState(false);
   const isCitiesExists = (cty) => {
     const newCityDatas = [];
-    operationCities.map((operation) => {
-      if (operation?.includes(cty.name.toLowerCase())) {
+    operations.map((operation) => {
+      if (operation?.cities?.includes(cty.name.toLowerCase())) {
         newCityDatas.push(cty.name);
       }
     });
@@ -31,7 +31,6 @@ const EditCity = ({ operationCities, city, setCity, cities }) => {
     setOpenCities(false);
   };
 
-
   useEffect(() => {
     document.onclick = (e) => {
       if (openCities) {
@@ -43,7 +42,7 @@ const EditCity = ({ operationCities, city, setCity, cities }) => {
   }, [openCities]);
 
   return (
-    <div >
+    <div>
       <span
         className="border p-2 py-3 px-4 rounded align-middle mx-2 border-shamrock cursor-pointer"
         id={`inputCity-${city}`}
