@@ -63,7 +63,7 @@ const EditOperations = ({
         <span
           id="inputSurgery"
           onClick={() => setOpenOperations((openOperations) => !openOperations)}
-          className="border p-2 py-3 px-4 rounded align-middle mx-2 border-shamrock cursor-pointer "
+          className="border p-2 px-4 rounded align-middle mx-2 border-shamrock cursor-pointer "
           style={{
             width: "fit-content",
             minHeight: "30px",
