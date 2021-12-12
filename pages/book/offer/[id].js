@@ -13,6 +13,7 @@ import { AiFillInfoCircle } from "react-icons/ai";
 import DashboardButton from "Components/DashboardButton";
 import { useRouter } from "next/router";
 import Select from "react-select";
+import formatPrice from "utils/formatPrice";
 
 moment.locale("fr");
 
@@ -175,7 +176,12 @@ const OfferBooking = ({ offer }) => {
         alternativeTotal: offer.price,
         offer: offer.id,
         total:
-          Number(booking.surgeryPrice) +
+          Number(
+            booking.surgeries.reduce(
+              (prev, curr) => prev + curr.surgeryPrice,
+              0
+            )
+          ) +
           Number(booking.totalExtraTravellersPrice) +
           Number(booking.hotelPrice) * Number(booking.totalSelectedNights) +
           Number(booking.roomPrice) * Number(booking.totalSelectedNights),
@@ -205,6 +211,14 @@ const OfferBooking = ({ offer }) => {
     };
   });
 
+  const surgeryCategoriesName = () => {
+    const surgeryNameCategories = [];
+    booking.surgeries.map((operation) =>
+      surgeryNameCategories.push(operation.surgeryCategoryName)
+    );
+    return surgeryNameCategories.join(", ");
+  };
+
   return (
     <div>
       <Head>
@@ -219,7 +233,7 @@ const OfferBooking = ({ offer }) => {
       {loading === false && user !== null ? (
         <div className="max-h-screen w-full overflow-hidden">
           {isSaving && (
-            <div className="w-full h-full absolute z-50 bg-opacity-20 bg-black flex flex-col gap-4 items-center justify-center">
+            <div className="w-full h-full absolute z-30 bg-opacity-20 bg-black flex flex-col gap-4 items-center justify-center">
               <span className="animate-spin">
                 <VscLoading size={48} />
               </span>
@@ -240,7 +254,7 @@ const OfferBooking = ({ offer }) => {
                 <div className="py-6 space-y-6">
                   <p className="flex items-center">
                     Vous souhaitez réaliser une{" "}
-                    <BookingDataSpan string={booking.surgeryCategoryName} />
+                    <BookingDataSpan string={surgeryCategoriesName()} />
                   </p>
                   <p className="flex items-center gap-2">
                     Votre voyage s&apos;étendra du{" "}
@@ -272,7 +286,7 @@ const OfferBooking = ({ offer }) => {
                 <p className="py-6">
                   Le prix tout compris de votre voyage sur-mesure est de{" "}
                   <span className="text-2xl rounded text-white px-4 py-2 mx-2 bg-shamrock">
-                    {offer.price}€
+                    {formatPrice(offer.price)} €
                   </span>
                 </p>
                 {/* if dates are selected, show a button */}
