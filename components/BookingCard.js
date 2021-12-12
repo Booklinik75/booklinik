@@ -41,6 +41,14 @@ const BookingCard = ({ booking }) => {
 
   const bookingStatus = generateBookingStatus(booking.status);
 
+  const surgeriesName = () => {
+    const surgeryNames = [];
+    booking.surgeries.map((operation) =>
+      surgeryNames.push(operation.surgeryName)
+    );
+    return surgeryNames.join(", ");
+  };
+
   return (
     <Link href={`/dashboard/operations/${booking.id}`}>
       <a>
@@ -71,7 +79,7 @@ const BookingCard = ({ booking }) => {
           </div>
           <div className="flex flex-col gap-1">
             <p className="text-lg transition group-hover:underline">
-              {booking.surgeryName} à {booking.city}
+              {surgeriesName()} à {booking.city}
             </p>
             <p className="text-sm text-bali font-bold">
               Witt Istanbul Suites &bull;{" "}

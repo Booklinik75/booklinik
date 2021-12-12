@@ -40,6 +40,24 @@ export const getServerSideProps = async (ctx) => {
         });
     });
 
+  // to get all names surgeries
+  const surgeriesName = () => {
+    const surgeryNames = [];
+    booking.surgeries.map((operation) =>
+      surgeryNames.push(operation.surgeryName)
+    );
+    return surgeryNames.join(", ");
+  };
+
+  // to get all names surgeries category
+  const surgeryCategoriesName = () => {
+    const surgeryNameCategories = [];
+    booking.surgeries.map((operation) =>
+      surgeryNameCategories.push(operation.surgeryCategoryName)
+    );
+    return surgeryNameCategories.join(", ");
+  };
+
   const stripeSession = await fetch(
     `${process.env.ABSOLUTE_URL_ORIGIN}/api/retrieve_stripe_session/${session_id}`,
     {
@@ -67,8 +85,8 @@ export const getServerSideProps = async (ctx) => {
               dynamicTemplateData: {
                 booking: {
                   id: booking.id,
-                  surgeryName: booking.surgeryName,
-                  surgeryCategoryName: booking.surgeryCategoryName,
+                  surgeryName: surgeriesName(),
+                  surgeryCategoryName: surgeryCategoriesName(),
                   link: `https://${process.env.ABSOLUTE_URL_ORIGIN}/dashboard/operations/${booking.id}`,
                 },
                 payment: {
@@ -130,7 +148,7 @@ const Checkout = ({ booking, stripeArgs, auth, stripeSession }) => {
         price: booking.alternativeTotal
           ? booking.alternativeTotal
           : booking.total,
-        product: booking.surgeryName,
+        product: surgeriesName(),
         image: booking.hotelPhotoLink,
         id: booking.id,
         promoCode,
@@ -191,7 +209,7 @@ const Checkout = ({ booking, stripeArgs, auth, stripeSession }) => {
             <div className="w-full flex gap-2 flex-col">
               <p className="text-xl font-bold">Résumé</p>
               <p>
-                {booking.surgeryCategoryName}, {booking.surgeryName}
+                {bsurgeryCategoriesName()}, {surgeriesName()}
               </p>
               <p>
                 À <span className="capitalize">{booking.city}</span>, du{" "}

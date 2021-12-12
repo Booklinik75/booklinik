@@ -41,6 +41,14 @@ const DashboardOperationCard = ({ booking, noActions, salesMode, withId }) => {
 
   const bookingStatus = generateBookingStatus(booking.status);
 
+  const surgeryCategoriesName = () => {
+    const surgeryNameCategories = [];
+    booking.surgeries.map((operation) =>
+      surgeryNameCategories.push(operation.surgeryCategoryName)
+    );
+    return surgeryNameCategories.join(", ");
+  };
+
   return (
     <Link
       href={`/dashboard/${salesMode ? "sales/bookings/" : "operations/"}${
@@ -61,7 +69,7 @@ const DashboardOperationCard = ({ booking, noActions, salesMode, withId }) => {
             {withId && <p className="text-xs ">id : {booking.id}</p>}
 
             <p className="text-leading">
-              {booking.surgeryCategoryName} -{" "}
+              {surgeryCategoriesName()} -{" "}
               <span className="capitalize">{booking.city}</span>
             </p>
             <p className="text-xs text-bali">
