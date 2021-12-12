@@ -3,12 +3,10 @@ import { useEffect, useState } from "react";
 
 const EditCity = ({ operations, city, setCity, cities }) => {
   const [openCities, setOpenCities] = useState(false);
-  const isCitiesExists = (cty) => {
-    const newCityDatas = [];
+  let newCityDatas;
+  const isCitiesExists = () => {
     operations.map((operation) => {
-      if (operation?.cities?.includes(cty.name.toLowerCase())) {
-        newCityDatas.push(cty.name);
-      }
+      newCityDatas = [].concat.apply([], operation.cities);
     });
 
     let uniqueCities = newCityDatas.filter((cityData, index) => {
@@ -69,7 +67,7 @@ const EditCity = ({ operations, city, setCity, cities }) => {
                 maxHeight: "10rem",
               }}
             >
-              {cities?.map((city) => isCitiesExists(city))}
+              {isCitiesExists()}
             </ul>
           </motion.div>
         </AnimatePresence>
