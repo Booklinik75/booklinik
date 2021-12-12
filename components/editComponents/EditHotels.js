@@ -7,6 +7,12 @@ const EditHotels = ({
   hotel,
   setHotel,
   city,
+  operations,
+  room,
+  options,
+  setTotalPrice,
+  voyageurs,
+  totalSelectedNights,
 }) => {
   const [openHotels, setOpenHotels] = useState(false);
   const [hotels, setHotels] = useState([]);
@@ -20,6 +26,15 @@ const EditHotels = ({
       hotelPhotoLink: await getBackEndAsset(hotel.photo),
       hotelRating: hotel.rating,
     });
+    setTotalPrice(
+      options
+        .map((option) => option.isChecked && Number(option.price))
+        .reduce((a, b) => a + b) +
+        operations.reduce((prev, curr) => prev + curr.surgeryPrice, 0) +
+        room.roomPrice * totalSelectedNights +
+        hotel.hotelPrice * totalSelectedNights +
+        (voyageurs.childs + (voyageurs.adults - 1) + voyageurs.babies) * 450
+    );
     setOpenHotels(false);
   };
 
@@ -48,7 +63,6 @@ const EditHotels = ({
     };
     getHotels();
   }, [openHotels, city]);
-
 
   return (
     <div>

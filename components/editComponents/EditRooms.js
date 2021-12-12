@@ -2,9 +2,18 @@ import { motion, AnimatePresence } from "framer-motion";
 import firebase from "firebase/clientApp";
 import { useEffect, useState } from "react";
 
-const EditRooms = ({ room: bookingRoom, setRoom, hotel }) => {
+const EditRooms = ({
+  rooms,
+  room: bookingRoom,
+  setRoom,
+  hotel,
+  operations,
+  options,
+  setTotalPrice,
+  voyageurs,
+  totalSelectedNights,
+}) => {
   const [openRooms, setOpenRooms] = useState(false);
-  const [rooms, setRooms] = useState([]);
 
   const handleClick = (room) => {
     setRoom({
@@ -13,6 +22,17 @@ const EditRooms = ({ room: bookingRoom, setRoom, hotel }) => {
       roomPrice: Number(room.extraPrice),
       roomPhotoLink: room.photos ? room.photos[0] : null,
     });
+
+    setTotalPrice(
+      options
+        .map((option) => option.isChecked && Number(option.price))
+        .reduce((a, b) => a + b) +
+        operations.reduce((prev, curr) => prev + curr.surgeryPrice, 0) +
+        room.roomPrice * totalSelectedNights +
+        hotel.hotelPrice * totalSelectedNights +
+        (voyageurs.childs + (voyageurs.adults - 1) + voyageurs.babies) * 450
+    );
+
     setOpenRooms(false);
   };
 
@@ -24,25 +44,7 @@ const EditRooms = ({ room: bookingRoom, setRoom, hotel }) => {
         }
       }
     };
-
-    const getRooms = async () => {
-      const rooms = [];
-      await firebase
-        .firestore()
-        .collection("rooms")
-        .where("hotel", "==", hotel.hotel)
-        .get()
-        .then((snapshot) => {
-          snapshot.forEach((doc) => {
-            rooms.push(doc.data());
-          });
-        })
-        .catch((err) => {});
-      setRooms(rooms);
-    };
-    getRooms();
-  }, [openRooms, hotel]);
-
+  }, [openRooms]);
 
   return (
     <div>

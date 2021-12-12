@@ -7,6 +7,12 @@ const EditOperations = ({
   operationCategories,
   setOperations,
   operations,
+  hotel,
+  room,
+  options,
+  setTotalPrice,
+  voyageurs,
+  totalSelectedNights,
 }) => {
   const [openOperations, setOpenOperations] = useState(false);
   const handleChangeOperation = (getOp) => {
@@ -28,14 +34,23 @@ const EditOperations = ({
             : opt
         )
       );
+
     }
 
-    
+    setTotalPrice(
+      options
+        .map((option) => option.isChecked && Number(option.price))
+        .reduce((a, b) => a + b) +
+        operations.reduce((prev, curr) => prev + curr.surgeryPrice, 0) +
+        room.roomPrice * totalSelectedNights +
+        hotel.hotelPrice * totalSelectedNights +
+        (voyageurs.childs + (voyageurs.adults - 1) + voyageurs.babies) * 450
+    );
 
     setOpenOperations(false);
   };
 
-  console.log(operations);
+  console.log(operationCategories);
 
   const isSelected = (op) => {
     return operations.find((oper) => oper.surgery === op.slug);

@@ -1,27 +1,55 @@
 import { motion, AnimatePresence } from "framer-motion";
-import firebase from "firebase/clientApp";
 import { useEffect, useState } from "react";
+import { FaTimes } from "react-icons/fa";
 
-const EditOptions = ({ option, id, setOptions, options, optionLists }) => {
+const EditOptions = ({
+  option,
+  id,
+  setOptions,
+  options,
+  operations,
+  room,
+  hotel,
+  setTotalPrice,
+  voyageurs,
+  totalSelectedNights,
+}) => {
   const [openOptions, setOpenOptions] = useState(false);
   const handleChangeOptions = (getOp) => {
     const existOptions = options.find((opt) => option.name === opt.name);
     if (existOptions) {
       setOptions((options) =>
-        options.map((opt) =>
-          opt.name === option.name
-            ? { ...opt, name: getOp.name, price: getOp.price }
-            : opt
-        )
+        options
+          .filter((opt) => opt.name !== getOp.name)
+          .map((opt) =>
+            opt.name === option.name
+              ? {
+                  ...opt,
+                  isChecked: true,
+                  name: getOp.name,
+                  price: getOp.price,
+                }
+              : opt
+          )
       );
     }
+
+   
+
     setOpenOptions(false);
   };
 
-  const isSelected = (op) => {
-    return options.find((oper) => oper.name === op.name);
-  };
+  const handleRemove = () => {
+    const existOptions = options.find((opt) => option.name === opt.name);
+    if (existOptions) {
+      setOptions((options) =>
+        options.map((opt) =>
+          opt.name === option.name ? { ...opt, isChecked: false } : opt
+        )
+      );
+    }
 
+  };
 
   useEffect(() => {
     document.onclick = (e) => {
@@ -34,18 +62,26 @@ const EditOptions = ({ option, id, setOptions, options, optionLists }) => {
   }, [id, openOptions]);
 
   return (
-    <div >
-      <span
-        id={`inputOption${id}`}
-        onClick={() => setOpenOptions((openOptions) => !openOptions)}
-        className="border p-2 py-3 px-4 rounded align-middle mx-2 border-shamrock cursor-pointer "
-        style={{
-          width: "fit-content",
-          minHeight: "30px",
-        }}
-      >
-        {option?.name}
-      </span>
+    <div>
+      <div className="flex items-center">
+        <span
+          id={`inputOption${id}`}
+          onClick={() => setOpenOptions((openOptions) => !openOptions)}
+          className="border p-2 px-4 rounded align-middle mx-2 border-shamrock cursor-pointer "
+          style={{
+            width: "fit-content",
+            minHeight: "30px",
+          }}
+        >
+          {option?.name}
+        </span>
+        <span
+          className="bg-red-600 p-1 mr-2 rounded-full inline-block cursor-pointer"
+          onClick={handleRemove}
+        >
+          <FaTimes color="white" size="10" />
+        </span>
+      </div>
       {openOptions && (
         <AnimatePresence>
           <motion.div
@@ -62,9 +98,10 @@ const EditOptions = ({ option, id, setOptions, options, optionLists }) => {
                 maxHeight: "10rem",
               }}
             >
-              {optionLists.map(
+              {options.map(
                 (op) =>
-                  !isSelected(op) && (
+                  !op.isChecked &&
+                  op.name !== "Choose new option" && (
                     <li
                       key={op.name}
                       onClick={() => handleChangeOptions(op)}

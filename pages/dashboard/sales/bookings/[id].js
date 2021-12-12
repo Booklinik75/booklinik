@@ -21,6 +21,7 @@ import ReactDatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import UpdateSuccessPopup from "Components/UpdateSuccessPopup";
 import { set } from "date-fns";
+import formatPrice from "utils/formatPrice";
 
 export const getServerSideProps = async (ctx) => {
   const auth = await checkAuth(ctx);
@@ -57,6 +58,11 @@ export const getServerSideProps = async (ctx) => {
     typeof booking.endDate === "string"
       ? booking.endDate
       : new Date(booking.endDate.toDate()).toString();
+  booking.created = booking.created
+    ? typeof booking.created === "string"
+      ? booking.created
+      : new Date(booking?.created?.toDate()).toString()
+    : "";
 
   const operationCategories = [];
   await firebase
@@ -74,7 +80,7 @@ export const getServerSideProps = async (ctx) => {
   await firebase
     .firestore()
     .collection("surgeries")
-    .where("slug", "==", booking.surgery)
+    .where("slug", "==", booking.surgeries[0].surgery)
     .get()
     .then((snapshot) => {
       snapshot.forEach((doc) => {
@@ -134,17 +140,17 @@ const Booking = ({
   const router = useRouter();
   const [isLoading, setLoading] = useState("idle");
   const [openPopupData, setOpenPopupData] = useState(false);
-  const [operation, setOperation] = useState({
-    surgeryName: booking.surgeryName,
-    surgery: booking.surgery,
-    surgeryCategory: booking.surgeryCategory,
-    surgeryPrice: booking.surgeryPrice,
-    surgeryMinDays: booking.surgeryMinDays,
-  });
-  const [operationCities, setOperationCities] = useState([]);
-  const [optionLists, setOptionLists] = useState([]);
-  const [optionsListsIndex, setOptionsListsIndex] = useState(0);
-  const [options, setOptions] = useState([...booking.options]);
+  const [operations, setOperations] = useState([...booking.surgeries]);
+  // const [operation, setOperation] = useState({
+  //   surgeryName: booking.surgeryName,
+  //   surgery: booking.surgery,
+  //   surgeryCategory: booking.surgeryCategory,
+  //   surgeryPrice: booking.surgeryPrice,
+  //   surgeryMinDays: booking.surgeryMinDays,
+  // });
+  const [options, setOptions] = useState(
+    booking.options ? booking.options : []
+  );
   const [startDate, setStartDate] = useState(booking.startDate);
   const [endDate, setEndDate] = useState(booking.endDate);
   const [voyageurs, setVoyageurs] = useState({
@@ -161,6 +167,7 @@ const Booking = ({
     hotelRating: booking.hotelRating,
     hotelPhotoLink: booking.hotelPhotoLink,
   });
+  const [rooms, setRooms] = useState([]);
   const [room, setRoom] = useState({
     roomName: booking.roomName,
     room: booking.room,
@@ -169,19 +176,32 @@ const Booking = ({
   });
   const [updateSuccess, setUpdateSuccess] = useState(false);
   const [loadingUpdate, setLoadingUpdate] = useState(false);
+  const [totalSelectedNights, setTotalSelectedNights] = useState(
+    booking.totalSelectedNights
+  );
+  const [totalPrice, setTotalPrice] = useState(booking.total);
 
   const handleAddNewOptions = () => {
     setOptions([
       ...options,
       {
         isChecked: false,
-        name: optionLists.length
-          ? optionLists[optionsListsIndex].name
-          : "Choose new option",
-        price: optionLists.length ? optionLists[optionsListsIndex].price : 0,
+        name: "Choose new option",
+        price: 0,
       },
     ]);
-    setOptionsListsIndex((optionsListsIndex) => optionsListsIndex + 1);
+  };
+  const handleAddNewOperations = () => {
+    setOperations([
+      ...operations,
+      {
+        surgeryName: "Choose new surgery",
+        surgery: "",
+        surgeryCategory: "",
+        surgeryPrice: 0,
+        surgeryMinDays: 0,
+      },
+    ]);
   };
 
   const statusOptions = [
@@ -221,7 +241,6 @@ const Booking = ({
       });
   };
 
-  // ,aybe use like this?
   const definedStatusUpdate = (status) => {
     setLoading("loading");
     firebase
@@ -286,18 +305,14 @@ const Booking = ({
     }
   };
 
+  function addDays(date, days) {
+    var result = new Date(date);
+    result.setDate(result.getDate() + days);
+    return result;
+  }
+
   const handleUpdate = () => {
     if (!loadingUpdate) {
-      const totalOptionsPrice = options.reduce(
-        (prev, curr) => prev + curr.price,
-        0
-      );
-      const total =
-        totalOptionsPrice +
-        operation.surgeryPrice +
-        room.roomPrice +
-        hotel.hotelPrice;
-
       setLoadingUpdate(true);
 
       firebase
@@ -305,11 +320,7 @@ const Booking = ({
         .collection("bookings")
         .doc(booking.id)
         .update({
-          surgeryName: operation.surgeryName,
-          surgery: operation.surgery,
-          surgeryCategory: operation.surgeryCategory,
-          surgeryPrice: operation.surgeryPrice,
-          surgeryMinDays: operation.surgeryMinDays,
+          surgeries: operations,
           hotelId: hotel.hotelId,
           hotelName: hotel.hotelName,
           hotel: hotel.hotel,
@@ -321,12 +332,16 @@ const Booking = ({
           roomPrice: room.roomPrice,
           roomPhotoLink: room.roomPhotoLink,
           city,
-          total,
+          total: totalPrice,
           extraTravellers: voyageurs.adults - 1,
           extraBabies: voyageurs.babies,
           extraChilds: voyageurs.childs,
           endDate,
           startDate,
+          totalExtraTravellersPrice:
+            (voyageurs.childs + (voyageurs.adults - 1) + voyageurs.babies) *
+            450,
+          totalSelectedNights,
         })
         .then(() => {
           window.location.reload();
@@ -337,53 +352,56 @@ const Booking = ({
     }
   };
 
+  const surgeriesName = () => {
+    const surgeryNames = [];
+    operations.map((operation) => surgeryNames.push(operation.surgeryName));
+    return surgeryNames.join(", ");
+  };
+
   useEffect(() => {
-    document.onclick = (e) => {
-      if (openPopupData) {
-        if (e.target.closest("#raw-data") === null) {
-          setOpenPopupData(false);
-        }
-      }
-    };
+    setTotalPrice(
+      options
+        .map((option) => option.isChecked && Number(option.price))
+        .reduce((a, b) => a + b) +
+        operations.reduce((prev, curr) => prev + curr.surgeryPrice, 0) +
+        room.roomPrice * totalSelectedNights +
+        hotel.hotelPrice * totalSelectedNights +
+        (voyageurs.childs + (voyageurs.adults - 1) + voyageurs.babies) * 450
+    );
 
-    // options lists
-    const getOperations = async () => {
-      const options = [];
+    // get rooms
+    const getRooms = async () => {
+      const rooms = [];
       await firebase
         .firestore()
-        .collection("options")
+        .collection("rooms")
+        .where("hotel", "==", hotel.hotel)
         .get()
         .then((snapshot) => {
           snapshot.forEach((doc) => {
-            doc.data()[0].forEach((data) => {
-              options.push(data);
-            });
+            rooms.push(doc.data());
           });
         })
         .catch((err) => {});
-      setOptionLists(options);
+      setRooms(rooms);
     };
-    getOperations();
+    getRooms();
 
-    // first I tried to get All the cities that first booking surgery have
-    const getSurgeryCity = async () => {
-      await firebase
-        .firestore()
-        .collection("surgeries")
-        .where("name", "==", booking.surgeryName)
-        .get()
-        .then((snapshot) => {
-          snapshot.forEach((doc) => {
-            setOperationCities((operationCities) => {
-              return [...operationCities, ...doc.data().cities];
-            });
-          });
-        })
-        .catch((err) => {});
-    };
-    getSurgeryCity();
-  }, [openPopupData, booking]);
+  }, [
+    openPopupData,
+    booking,
+    hotel,
+    options,
+    operations,
+    setTotalPrice,
+    room,
+    totalSelectedNights,
+    voyageurs,
+  ]);
 
+  console.log(options);
+  console.log(operations);
+  console.log(booking);
   return (
     <DashboardUi userProfile={auth.props.userProfile} token={auth.props.token}>
       <div className="col-span-6">
@@ -428,7 +446,7 @@ const Booking = ({
                   <p className="text-sm text-gray-800 uppercase font-medium">
                     Opération
                   </p>
-                  <p className="text-gray-600">{booking.surgery}</p>
+                  <p className="text-gray-600">{surgeriesName()}</p>
                 </div>
                 <div>
                   <p className="text-sm text-gray-800 uppercase font-medium">
@@ -511,13 +529,32 @@ const Booking = ({
               Modifier Les Données
             </p>
             <div className="bg-white border-gray-200 p-5 rounded border">
-              <div className="flex items-center whitespace-nowrap mb-5 edit-operations">
+              <div className="flex items-center whitespace-nowrap mb-5 edit-operations flex-wrap gap-2">
                 Vous souhaitez réaliser une
-                <EditOperations
-                  operation={operation}
-                  setOperation={setOperation}
-                  operationCategories={operationCategories}
-                />
+                {operations.map((operation) => (
+                  <EditOperations
+                    key={operation.surgery}
+                    operation={operation}
+                    setOperations={setOperations}
+                    operationCategories={operationCategories}
+                    operations={operations}
+                    hotel={hotel}
+                    room={room}
+                    options={options}
+                    setTotalPrice={setTotalPrice}
+                    voyageurs={voyageurs}
+                    totalSelectedNights={totalSelectedNights}
+                  />
+                ))}
+                <button
+                  className="bg-shamrock p-1 rounded-full ml-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                  onClick={handleAddNewOperations}
+                  disabled={operations.find(
+                    (opt) => opt.surgeryName === "Choose new surgery"
+                  )}
+                >
+                  <FaPlus color="white" size="10" />
+                </button>
               </div>
               <div className="flex items-center whitespace-nowrap mb-5">
                 Votre voyage s&apos;étedra du
@@ -526,6 +563,8 @@ const Booking = ({
                   className="border p-2 px-4 rounded align-middle mx-2 border-shamrock cursor-pointer w-max"
                 >
                   <ReactDatePicker
+                    minDate={new Date()}
+                    locale="fr"
                     selected={new Date(startDate)}
                     onChange={(date) => setStartDate(date)}
                   />
@@ -536,8 +575,22 @@ const Booking = ({
                   className="border p-2 px-4 rounded align-middle mx-2 border-shamrock cursor-pointer w-max"
                 >
                   <ReactDatePicker
+                    minDate={addDays(
+                      startDate,
+                      parseInt(booking.minimumNights)
+                    )}
+                    locale="fr"
                     selected={new Date(endDate)}
-                    onChange={(date) => setEndDate(date)}
+                    onChange={(date) => {
+                      let timeDiff = Math.abs(
+                        e.getTime() - booking.startDate.getTime()
+                      );
+                      let numberOfNights = Math.ceil(
+                        timeDiff / (1000 * 3600 * 24)
+                      );
+                      setTotalSelectedNights(numberOfNights);
+                      setEndDate(date);
+                    }}
                   />
                 </span>
                 pour une dureé de 4 jours.
@@ -554,51 +607,90 @@ const Booking = ({
                 de votre choix pour découvrir
                 <EditCity
                   city={city}
-                  operationCities={operationCities}
+                  operations={operations}
                   cities={cities}
                   setCity={setCity}
                 />
               </div>
               <div className="flex items-center whitespace-nowrap mt-7 mb-7">
                 L&apos;hôtel dans lequel vous résiderez est au
-                <EditHotels hotel={hotel} setHotel={setHotel} city={city} />
+                <EditHotels
+                  hotel={hotel}
+                  setHotel={setHotel}
+                  city={city}
+                  operations={operations}
+                  room={room}
+                  options={options}
+                  setTotalPrice={setTotalPrice}
+                  voyageurs={voyageurs}
+                  totalSelectedNights={totalSelectedNights}
+                />
                 {"("}trés bon choiz{")"} et vous logerez en
-                <EditRooms room={room} setRoom={setRoom} hotel={hotel} />
+                <EditRooms
+                  rooms={rooms}
+                  room={room}
+                  setRoom={setRoom}
+                  hotel={hotel}
+                  operations={operations}
+                  options={options}
+                  setTotalPrice={setTotalPrice}
+                  voyageurs={voyageurs}
+                  totalSelectedNights={totalSelectedNights}
+                />
               </div>
-              <div className="flex items-center whitespace-nowrap mb-5">
+              <div className="flex items-center whitespace-nowrap mb-5 flex-wrap gap-2">
                 Vous avez selectuineé les options suivantes :
-                {options.map((option, i) => (
-                  <EditOptions
-                    key={i}
-                    id={i + 1}
-                    option={option}
-                    options={options}
-                    optionLists={optionLists}
-                    setOptions={setOptions}
-                  />
-                ))}
-                {optionLists.length - booking.options.length + 1 !==
-                  options.length && (
-                  <span
-                    className="bg-shamrock p-1 rounded-full cursor-pointer"
+                {options.length
+                  ? options.map(
+                      (option, i) =>
+                        (option.isChecked ||
+                          option.name === "Choose new option") && (
+                          <EditOptions
+                            key={i}
+                            id={i + 1}
+                            option={option}
+                            options={options}
+                            setOptions={setOptions}
+                            operations={operations}
+                            room={room}
+                            hotel={hotel}
+                            setTotalPrice={setTotalPrice}
+                            voyageurs={voyageurs}
+                            totalSelectedNights={totalSelectedNights}
+                          />
+                        )
+                    )
+                  : " aucune option"}
+                {options.find((option) => option.isChecked === false) && (
+                  <button
+                    className="bg-shamrock p-1 rounded-full ml-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                     onClick={handleAddNewOptions}
+                    disabled={options.find(
+                      (opt) => opt.name === "Choose new option"
+                    )}
                   >
                     <FaPlus color="white" size="10" />
-                  </span>
+                  </button>
                 )}
               </div>
               <div className="flex items-center mt-14">
                 Le prix tout compris de votre voyage sur-mesure est de{" "}
                 <span className="border text-white whitespace-nowrap block p-2 px-4 border-shamrock bg-shamrock rounded  mx-3">
-                  {booking.total}€
+                  {formatPrice(totalPrice)} €
                 </span>
               </div>
               <button
-                className={`min-w-max transition px-5 py-3 mt-10 rounded border border-shamrock   hover:text-shamrock group hover:bg-white ${
+                disabled={
+                  !rooms.find(
+                    (bookingRoom) => room.roomName === bookingRoom.name
+                  ) ||
+                  options.find((opt) => opt.name === "Choose new option") ||
+                  operations.find(
+                    (opt) => opt.surgeryName === "Choose new surgery"
+                  ) ||
                   loadingUpdate
-                    ? "cursor-not-allowed text-shamrock bg-white"
-                    : "cursor-pointer bg-shamrock text-white"
-                }`}
+                }
+                className="min-w-max transition px-5 py-3 mt-10 bg-shamrock text-white rounded border cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-shamrock disabled:text-white group hover:bg-white border-shamrock hover:text-shamrock"
                 onClick={handleUpdate}
               >
                 {loadingUpdate ? (
