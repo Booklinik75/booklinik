@@ -16,7 +16,7 @@ export default function Navigation() {
   const [dropdownVisibility, setDropdownVisibility] = useState(false);
 
   return (
-    <div className="w-full z-50 h-full mb-8 top-0 h-20">
+    <div className="w-full z-50 mb-8 top-0 h-20">
       <div className="flex flex-wrap">
         <div className="w-full">
           <nav className="flex flex-wrap items-center justify-between py-2 top-0 fixed w-full z-50 bg-white drop-shadow-sm">
