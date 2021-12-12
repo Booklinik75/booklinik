@@ -105,7 +105,8 @@ const SurgerySelectStep = ({
                       surgery.slug,
                       surgery.startingPrice,
                       surgery.name,
-                      surgery.minimumNights
+                      surgery.minimumNights,
+                      surgery.cities
                     )
                   }
                   name="surgery"
