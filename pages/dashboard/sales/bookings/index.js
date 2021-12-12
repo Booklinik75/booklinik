@@ -46,6 +46,11 @@ export const getServerSideProps = async (ctx) => {
       typeof userBooking.endDate === "string"
         ? userBooking.endDate
         : new Date(userBooking.endDate.toDate()).toString();
+    userBooking.created = userBooking.created
+      ? typeof userBooking.created === "string"
+        ? userBooking.created
+        : new Date(userBooking?.created?.toDate()).toString()
+      : "";
   });
 
   return {
@@ -77,25 +82,47 @@ const BookingsList = ({ auth, bookings }) => {
       { Header: "Catégorie", accessor: "category" },
       { Header: "E-mail", accessor: "email" },
       { Header: "Dates", accessor: "dates" },
+      { Header: "Date de la demande", accessor: "created" },
     ],
     []
   );
+
+  function truncate(str, n) {
+    return str.length > n ? str.substr(0, n - 1) + "..." : str;
+  }
+  const surgeriesName = (surgeries) => {
+    const surgeryNames = [];
+    surgeries.map((operation) => surgeryNames.push(operation.surgeryName));
+    return truncate(surgeryNames.join(", "), 40);
+  };
+
+  const surgeryCategoriesName = (surgeries) => {
+    const surgeryNameCategories = [];
+    surgeries.map((operation) =>
+      surgeryNameCategories.push(operation.surgeryCategoryName)
+    );
+    return truncate(surgeryNameCategories.join(", "), 40);
+  };
 
   const memoizedData = useMemo(
     () => [
       bookings.map((booking) => {
         return {
           id: booking.id,
-          surgery: booking.surgeryName,
+          surgery: surgeriesName(booking.surgeries),
           status:
             statusOptions.filter(
               (option) => option.value === booking?.status
             )[0]?.label || "—",
-          category: booking.surgeryCategoryName,
+          category: surgeryCategoriesName(booking.surgeries),
           email: booking.customer.email,
           dates: `${moment(booking.startDate).format(
             "DD[/]MM[/]YY"
           )} - ${moment(booking.endDate).format("DD[/]MM[/]YY")}`,
+          created:
+            booking.created === ""
+              ? "-"
+              : moment(booking.created).format("DD[/]MM[/]YY"),
         };
       }),
     ],
@@ -170,6 +197,9 @@ const BookingsList = ({ auth, bookings }) => {
       }
     };
   }, []);
+
+  console.log("rows", rows);
+  console.log(bookings);
 
   return (
     <DashboardUi userProfile={auth.props.userProfile} token={auth.props.token}>
