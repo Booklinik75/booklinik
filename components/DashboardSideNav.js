@@ -67,8 +67,8 @@ const DashboardSideNav = ({ userProfile, token, isSideNavOpen }) => {
         <div className="space-y-5 mb-5">
           <div className="flex items-center group">
             <FaChartPie
-              className={`mr-3 mb-1 block group-hover:opacity-50 ${
-                router.pathname == "/dashboard" && "opacity-50"
+              className={`mr-3 mb-1 block group-hover:opacity-50 text-shamrock  ${
+                router.pathname == "/dashboard" && "text-shamrock"
               }`}
               size="16"
             />
@@ -81,7 +81,7 @@ const DashboardSideNav = ({ userProfile, token, isSideNavOpen }) => {
               onClick={() => handleExpand("operations")}
             >
               <div className="flex items-center">
-                <FaPlus className="mr-3 mb-1 block" size="16" />
+                <FaPlus className="mr-3 mb-1 block text-shamrock" size="16" />
                 <p className="text-sm text-gray-700 uppercase font-bold tracking-wide mr-2 cursor-pointer">
                   Opérations
                 </p>
@@ -111,7 +111,7 @@ const DashboardSideNav = ({ userProfile, token, isSideNavOpen }) => {
                 onClick={() => handleExpand("sales")}
               >
                 <div className="flex items-center">
-                  <FaChartArea size="16" className="mr-3 mb-1 block" />
+                  <FaChartArea size="16" className="mr-3 mb-1 block text-shamrock" />
                   <p className="text-sm text-gray-700 uppercase font-bold tracking-wide mr-2">
                     Sales
                   </p>
@@ -144,7 +144,7 @@ const DashboardSideNav = ({ userProfile, token, isSideNavOpen }) => {
                 onClick={() => handleExpand("admin")}
               >
                 <div className="flex items-center">
-                  <FaUserCog className="mr-3 mb-1 block" size="16" />
+                  <FaUserCog className="mr-3 mb-1 block text-shamrock" size="16" />
 
                   <p className="text-sm text-gray-700 uppercase font-bold tracking-wide mr-2 cursor-pointer">
                     Admin
@@ -209,7 +209,7 @@ const DashboardSideNav = ({ userProfile, token, isSideNavOpen }) => {
               onClick={() => handleExpand("profile")}
             >
               <div className="flex items-center">
-                <FaUserAlt className="mr-3 mb-1 block" size="14" />
+                <FaUserAlt className="mr-3 mb-1 block text-shamrock" size="14" />
 
                 <p className="text-sm text-gray-700 uppercase font-bold tracking-wide mr-2 cursor-pointer">
                   Mon profil
@@ -241,7 +241,7 @@ const DashboardSideNav = ({ userProfile, token, isSideNavOpen }) => {
               onClick={() => handleExpand("security")}
             >
               <div className="flex items-center">
-                <FaCog className="mr-3 mb-1 block" size="15" />
+                <FaCog className="mr-3 mb-1 block text-shamrock" size="15" />
                 <p className="text-sm text-gray-700 uppercase font-bold tracking-wide mr-2 cursor-pointer">
                   Mon compte
                 </p>
