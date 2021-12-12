@@ -102,12 +102,17 @@ const NewBookingContainer = ({
     router.push("/verify/mobile");
 
   const [booking, setBooking] = useState({
-    surgeryCategory: "",
-    surgeryCategoryName: "",
-    surgery: "",
-    surgeryPrice: 0,
-    surgeryName: "",
-    surgeryMinDays: 0,
+    surgeries: [
+      {
+        surgeryCategory: "",
+        surgeryCategoryName: "",
+        surgery: "",
+        surgeryPrice: 0,
+        surgeryName: "",
+        surgeryMinDays: 0,
+        cities: [],
+      },
+    ],
     startDate: new Date(),
     endDate: "",
     totalSelectedNights: 0,
@@ -126,6 +131,7 @@ const NewBookingContainer = ({
     roomName: "",
     roomPrice: 0,
     roomPhotoLink: "",
+    created: firebase.firestore.FieldValue.serverTimestamp(),
   });
 
   const extraTravellersSupplement = 450;
@@ -133,6 +139,10 @@ const NewBookingContainer = ({
   const extraBabiesSupplement = 450;
 
   const [nextStep, setNextStep] = useState(false);
+  const [surgeryCategory, setSurgeryCategory] = useState({
+    surgeryCategory: "",
+    surgeryCategoryName: "",
+  });
 
   useEffect(() => {
     let totalExtraTravellers =
@@ -176,8 +186,7 @@ const NewBookingContainer = ({
   }
 
   const handleSurgeryCategorySelect = (category, name) => {
-    setBooking({
-      ...booking,
+    setSurgeryCategory({
       surgeryCategory: category,
       surgeryCategoryName: name,
     });
@@ -186,9 +195,16 @@ const NewBookingContainer = ({
   const handleSurgerySelect = (surgery, price, name, minimumNights) => {
     setBooking({
       ...booking,
-      surgery: surgery,
-      surgeryPrice: parseInt(price),
-      surgeryName: name,
+      surgeries: [
+        {
+          ...surgeryCategory,
+          surgery: surgery,
+          surgeryPrice: parseInt(price),
+          surgeryName: name,
+          surgeryMinDays: 0,
+          cities: cities.map((city) => city.name),
+        },
+      ],
       minimumNights: parseInt(minimumNights),
     });
   };
@@ -251,6 +267,7 @@ const NewBookingContainer = ({
             handleSurgerySelect={handleSurgerySelect}
             handleSurgeryCategorySelect={handleSurgeryCategorySelect}
             setNextStep={setNextStep}
+            surgeryCategory={surgeryCategory}
           />
 
           <DatesSelectStep
