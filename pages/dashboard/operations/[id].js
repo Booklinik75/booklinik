@@ -36,6 +36,7 @@ import { useRouter } from "next/router";
 
 // utils
 import { getBackEndAsset, doFileUpload } from "utils/ClientHelpers";
+import formatPrice from "utils/formatPrice";
 
 export const getServerSideProps = async (ctx) => {
   const auth = await checkAuth(ctx);
@@ -184,6 +185,10 @@ const OperationPage = ({
     oldPictures.splice(index, 1);
     setPictures([...oldPictures]);
   };
+
+  function truncate(str, n) {
+    return str.length > n ? str.substr(0, n - 1) + "..." : str;
+  }
 
   const surgeriesName = () => {
     const surgeryNames = [];
@@ -424,7 +429,9 @@ const OperationPage = ({
               objectFit="cover"
             />
             <p className="text-3xl rounded shadow bg-shamrock py-2 px-4 absolute right-4 top-4 text-white z-10">
-              {data.alternativeTotal ? data.alternativeTotal : data.total}
+              {formatPrice(
+                data.alternativeTotal ? data.alternativeTotal : data.total
+              )}
               &nbsp;€
             </p>
           </div>
@@ -441,7 +448,7 @@ const OperationPage = ({
               title={"Opérations"}
               col={1}
             >
-              {data.surgeryName}
+              {truncate(surgeriesName(), 40)}
             </BookingDetailBox>
 
             <BookingDetailBox
