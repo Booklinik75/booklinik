@@ -355,7 +355,11 @@ const Booking = ({
   const surgeriesName = () => {
     const surgeryNames = [];
     operations.map((operation) => surgeryNames.push(operation.surgeryName));
-    return surgeryNames.join(", ");
+    if (surgeryNames.length === 1) {
+      return surgeryNames.join(", ");
+    } else {
+      return surgeryNames[0];
+    }
   };
 
   useEffect(() => {
@@ -386,7 +390,6 @@ const Booking = ({
       setRooms(rooms);
     };
     getRooms();
-
   }, [
     openPopupData,
     booking,

@@ -46,7 +46,11 @@ export const getServerSideProps = async (ctx) => {
     booking.surgeries.map((operation) =>
       surgeryNames.push(operation.surgeryName)
     );
-    return surgeryNames.join(", ");
+    if (surgeryNames.length === 1) {
+      return surgeryNames.join(", ");
+    } else {
+      return surgeryNames[0];
+    }
   };
 
   // to get all names surgeries category
@@ -55,7 +59,11 @@ export const getServerSideProps = async (ctx) => {
     booking.surgeries.map((operation) =>
       surgeryNameCategories.push(operation.surgeryCategoryName)
     );
-    return surgeryNameCategories.join(", ");
+    if (surgeryNameCategories.length === 1) {
+      return surgeryNameCategories.join(", ");
+    } else {
+      return surgeryNameCategories[0];
+    }
   };
 
   const stripeSession = await fetch(

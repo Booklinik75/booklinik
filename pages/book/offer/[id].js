@@ -216,7 +216,11 @@ const OfferBooking = ({ offer }) => {
     booking.surgeries.map((operation) =>
       surgeryNameCategories.push(operation.surgeryCategoryName)
     );
-    return surgeryNameCategories.join(", ");
+    if (surgeryNameCategories.length === 1) {
+      return surgeryNameCategories.join(", ");
+    } else {
+      return surgeryNameCategories[0];
+    }
   };
 
   return (

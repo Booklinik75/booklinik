@@ -51,15 +51,26 @@ export const getServerSideProps = async (ctx) => {
   if (!doc.exists || doc.data().user !== userId) return serverRedirect("/404");
 
   const data = doc.data();
-  data.startDate = new Date(data.startDate.toDate()).toString();
-  data.endDate = new Date(data.endDate.toDate()).toString();
+  data.startDate =
+    typeof data.startDate === "string"
+      ? data.startDate
+      : new Date(data.startDate.toDate()).toString();
+  data.endDate =
+    typeof data.endDate === "string"
+      ? data.endDate
+      : new Date(data.endDate.toDate()).toString();
+  data.created = data.created
+    ? typeof data.created === "string"
+      ? data.created
+      : new Date(data?.created?.toDate()).toString()
+    : "";
 
   const currentOperationCategory = [];
 
   await firebase
     .firestore()
     .collection("operationCategories")
-    .where("slug", "==", data.surgeryCategory)
+    .where("slug", "==", data.surgeries[0].surgeryCategory)
     .get()
     .then((snapshot) => {
       snapshot.forEach((doc) => {
@@ -72,7 +83,7 @@ export const getServerSideProps = async (ctx) => {
   await firebase
     .firestore()
     .collection("surgeries")
-    .where("slug", "==", data.surgery)
+    .where("slug", "==", data.surgeries[0].surgery)
     .get()
     .then((snapshot) => {
       snapshot.forEach((doc) => {
@@ -172,6 +183,27 @@ const OperationPage = ({
     let oldPictures = pictures;
     oldPictures.splice(index, 1);
     setPictures([...oldPictures]);
+  };
+
+  const surgeriesName = () => {
+    const surgeryNames = [];
+    data.surgeries.map((operation) => surgeryNames.push(operation.surgeryName));
+    if (surgeryNames.length === 1) {
+      return surgeryNames.join(", ");
+    } else {
+      return surgeryNames[0];
+    }
+  };
+  const surgeryCategoriesName = () => {
+    const surgeryNameCategories = [];
+    data.surgeries.map((operation) =>
+      surgeryNameCategories.push(operation.surgeryCategoryName)
+    );
+    if (surgeryNameCategories.length === 1) {
+      return surgeryNameCategories.join(", ");
+    } else {
+      return surgeryNameCategories[0];
+    }
   };
 
   const uploadPictureSet = async () => {
@@ -366,12 +398,12 @@ const OperationPage = ({
           <div className="flex justify-between gap-4 flex-col items-start md:flex-row md:items-center">
             <div>
               <h1 className="text-4xl">
-                {`${data.surgeryCategoryName} `}à
+                {`${surgeryCategoriesName()} `}à
                 <span className="capitalize">{` ${data.city}`}</span>
                 {data.clinicName && `- ${data.clinicName}`}
               </h1>
               <h2 className="text uppercase text-shamrock">
-                {data.surgeryName}
+                {surgeriesName()}
               </h2>
             </div>
             {/* <div className="transition h-max flex border border-red-500 rounded py-2 px-4 items-center gap-4 group">
