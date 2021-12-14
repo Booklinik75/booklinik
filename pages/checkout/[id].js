@@ -46,7 +46,7 @@ export const getServerSideProps = async (ctx) => {
     booking.surgeries.map((operation) =>
       surgeryNames.push(operation.surgeryName)
     );
-    if (surgeryNames.length === 1) {
+    if (surgeryNames.length > 1) {
       return surgeryNames.join(", ");
     } else {
       return surgeryNames[0];
@@ -59,7 +59,7 @@ export const getServerSideProps = async (ctx) => {
     booking.surgeries.map((operation) =>
       surgeryNameCategories.push(operation.surgeryCategoryName)
     );
-    if (surgeryNameCategories.length === 1) {
+    if (surgeryNameCategories.length > 1) {
       return surgeryNameCategories.join(", ");
     } else {
       return surgeryNameCategories[0];

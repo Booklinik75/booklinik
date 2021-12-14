@@ -193,7 +193,7 @@ const OperationPage = ({
   const surgeriesName = () => {
     const surgeryNames = [];
     data.surgeries.map((operation) => surgeryNames.push(operation.surgeryName));
-    if (surgeryNames.length === 1) {
+    if (surgeryNames.length > 1) {
       return surgeryNames.join(", ");
     } else {
       return surgeryNames[0];
@@ -204,7 +204,7 @@ const OperationPage = ({
     data.surgeries.map((operation) =>
       surgeryNameCategories.push(operation.surgeryCategoryName)
     );
-    if (surgeryNameCategories.length === 1) {
+    if (surgeryNameCategories.length > 1) {
       return surgeryNameCategories.join(", ");
     } else {
       return surgeryNameCategories[0];

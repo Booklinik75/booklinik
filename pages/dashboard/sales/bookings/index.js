@@ -93,7 +93,7 @@ const BookingsList = ({ auth, bookings }) => {
   const surgeriesName = (surgeries) => {
     const surgeryNames = [];
     surgeries.map((operation) => surgeryNames.push(operation.surgeryName));
-    if (surgeryNames.length === 1) {
+    if (surgeryNames.length > 1) {
       return truncate(surgeryNames.join(", "), 40);
     } else {
       return surgeryNames[0];
@@ -105,7 +105,7 @@ const BookingsList = ({ auth, bookings }) => {
     surgeries.map((operation) =>
       surgeryNameCategories.push(operation.surgeryCategoryName)
     );
-    if (surgeryNameCategories.length === 1) {
+    if (surgeryNameCategories.length > 1) {
       return truncate(surgeryNameCategories.join(", "), 40);
     } else {
       return surgeryNameCategories[0];

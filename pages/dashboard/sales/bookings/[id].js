@@ -355,7 +355,7 @@ const Booking = ({
   const surgeriesName = () => {
     const surgeryNames = [];
     operations.map((operation) => surgeryNames.push(operation.surgeryName));
-    if (surgeryNames.length === 1) {
+    if (surgeryNames.length > 1) {
       return surgeryNames.join(", ");
     } else {
       return surgeryNames[0];
