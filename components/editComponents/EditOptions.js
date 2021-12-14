@@ -5,11 +5,16 @@ import { FaTimes } from "react-icons/fa";
 const EditOptions = ({ option, id, setOptions, options }) => {
   const [openOptions, setOpenOptions] = useState(false);
   const handleChangeOptions = (getOp) => {
-    const existOptions = options.find((opt) => option.name === opt.name);
+    const existOptions = options.find((opt) => getOp.name === opt.name);
     if (existOptions) {
       setOptions((options) => {
         let newOptions = options.map((opt) =>
-          opt.name === getOp.name
+          opt.name === option.name
+            ? {
+                ...opt,
+                isChecked: false,
+              }
+            : opt.name === getOp.name
             ? {
                 ...opt,
                 isChecked: true,
@@ -18,8 +23,11 @@ const EditOptions = ({ option, id, setOptions, options }) => {
               }
             : opt
         );
-        let popped = options.pop();
-        return newOptions;
+        const existChange = newOptions.find((opt) => option.name === opt.name);
+        const index = newOptions.findIndex((opt) => option.name === opt.name);
+        newOptions.splice(index, 1);
+        newOptions.push(existChange);
+        return newOptions.filter((opt) => opt.name !== "Choose new option");
       });
     }
 
