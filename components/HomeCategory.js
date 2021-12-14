@@ -12,7 +12,7 @@ const Category = ({ href, title, imageSrc }) => {
               backgroundPosition: "50%",
               width: "33%",
             }}
-            className="rounded-l-lg scale-100 group-hover:scale-105 transition duration-500"
+            className="rounded-l-lg scale-100 lg:group-hover:scale-105 mr-4 lg:mr-0 transition duration-500"
           ></div>
           <div className="py-8 px-0 lg:px-2">
             <p className="font-bold text-lg">{title}</p>

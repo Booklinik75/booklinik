@@ -15,20 +15,28 @@ const PhotoBanner = ({
   var divStyle = {
     backgroundImage: `url(${fileName})`,
     backgroundColor: "#ccc",
-    backgroundSize: "cover",
+    backgroundSize: "145rem",
     backgroundRepeat: "no-repeat",
     backgroundAttachment: "fixed",
-    backgroundPosition: "center",
+    backgroundPosition: "42.5% 50%",
   };
 
   const photoBannerTitle = useRef(null);
+  const photoBannerBody = useRef(null);
+  const photoBannerDiscover = useRef(null);
 
   useEffect(() => {
     // parallax effect
     window.onscroll = () => {
-      if (photoBannerTitle.current) {
+      if (photoBannerTitle.current || photoBannerBody || photoBannerDiscover) {
         photoBannerTitle.current.style.transform = `translateY(-${
           window.scrollY / 2
+        }%)`;
+        photoBannerBody.current.style.transform = `translateY(-${
+          window.scrollY / 1.8
+        }%)`;
+        photoBannerDiscover.current.style.transform = `translateY(-${
+          window.scrollY / 1.5
         }%)`;
       }
     };
@@ -53,10 +61,14 @@ const PhotoBanner = ({
       <p
         className="w-11/12 md:w-2/3 lg:w-1/3 text-center mb-10"
         style={{ display: body ? "block" : "none" }}
+        ref={photoBannerBody}
       >
         {body}
       </p>
-      <div style={{ display: discover ? "block" : "none" }}>
+      <div
+        style={{ display: discover ? "block" : "none" }}
+        ref={photoBannerDiscover}
+      >
         <Link href="#content">
           <a className="text-xs uppercase text-center items-center flex flex-col">
             Découvrir{" "}
