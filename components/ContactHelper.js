@@ -113,6 +113,7 @@ const ContactHelper = () => {
                   className="w-full bg-transparent placeholder-white border-b p-3"
                   placeholder="Numéro de téléphone"
                   name="phoneNumber"
+                  maxLength={15}
                   value={form.phoneNumber}
                   onChange={handleFormChange}
                 />
