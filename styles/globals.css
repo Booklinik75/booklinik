@@ -136,11 +136,15 @@ html {
   background: #33c383 !important;
 }
 
-html body .react-datepicker__day-name,
-html body .react-datepicker__current-month {
-  color: #fff;
+.react-datepicker__day-name,
+.react-datepicker__current-month {
+  color: #fff !important;
   font-family: "Circular", "Montserrat", "sans-serif" !important;
 }
-html body .react-datepicker__header {
-  background: #33c383;
+.react-datepicker__header {
+  background: #33c383 !important;
+}
+
+.react-datepicker-popper {
+  z-index: 21 !important;
 }
