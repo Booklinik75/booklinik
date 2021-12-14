@@ -16,8 +16,9 @@ const PhotoBanner = ({
     backgroundImage: `url(${fileName})`,
     backgroundColor: "#ccc",
     backgroundSize: "cover",
+    backgroundRepeat: "no-repeat",
     backgroundAttachment: "fixed",
-    backgroundPosition: "50%",
+    backgroundPosition: "center",
   };
 
   const photoBannerTitle = useRef(null);
