@@ -227,7 +227,7 @@ const BookingsList = ({ auth, bookings }) => {
           onSubmit={handleSearch}
         >
           <input
-            placeholder="Search..."
+            placeholder="Chercher ..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="w-full rounded bg-transparent border p-3 outline-none"
@@ -259,7 +259,7 @@ const BookingsList = ({ auth, bookings }) => {
                   fill="#33C783"
                 />
               </svg>
-              Filter By {filter === "Tout" ? "" : filter}
+              Filtre {filter === "Tout" ? "" : filter}
             </button>
             <ul
               className={`absolute bg-white shadow-lg rounded overflow-hidden w-[calc(100%+5rem)] top-[calc(100%+0.5rem)] ${
@@ -285,7 +285,7 @@ const BookingsList = ({ auth, bookings }) => {
           </div>
 
           <button className="min-w-max transition px-10 py-3 rounded border border-shamrock bg-shamrock text-white hover:text-shamrock group hover:bg-white">
-            Search
+            Chercher
           </button>
         </form>
         <table {...getTableProps()} className="w-full">
