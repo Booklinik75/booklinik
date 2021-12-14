@@ -46,6 +46,7 @@ export const getServerSideProps = async (ctx) => {
     },
   ];
 
+
   // get all offers from firestore
   const offers = await firebase.firestore().collection("offers").get();
 
@@ -114,7 +115,6 @@ export default function Home({
           window.scrollY / 15
         }%)`;
         const { offsetTop, offsetHeight } = discoverBookLinkText.current;
-        console.log(-(offsetTop - offsetHeight - window.scrollY) / 3);
         if (window.scrollY >= offsetTop - offsetHeight - 30) {
           discoverBookLinkText.current.style.transform = `translateY(${
             (offsetTop - offsetHeight - window.scrollY) / 5
