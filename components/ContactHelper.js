@@ -9,8 +9,9 @@ const ContactHelper = () => {
   const [form, setForm] = useState({
     email: "",
     message: "",
+    name: "",
+    phoneNumber: "",
   });
-
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formSent, setFormSent] = useState(false);
 
@@ -27,6 +28,8 @@ const ContactHelper = () => {
         templateId: "d-6b9ed961cfdc44228824603584a8b740",
         dynamicTemplateData: {
           email: form.email,
+          name: form.name,
+          phoneNumber: form.phoneNumber,
           datetime: moment(new Date()).format("LLLL"),
           message: form.message,
           path: router.asPath,
@@ -43,6 +46,8 @@ const ContactHelper = () => {
             templateId: "d-57cbc54b5ac345beb1bfc6509381ccee",
             dynamicTemplateData: {
               email: form.email,
+              name: form.name,
+              phoneNumber: form.phoneNumber,
               datetime: moment(new Date()).format("LLLL"),
               message: form.message,
             },
@@ -58,12 +63,20 @@ const ContactHelper = () => {
   };
 
   const handleFormChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value.trim() });
+    setForm({
+      ...form,
+      [e.target.name]:
+        e.target.name === "phoneNumber"
+          ? e.target.value
+              .replace(/\D+/g, "")
+              .replace(/(\d{3})(\d{3})(\d{4})/, "($1) $2-$3")
+          : e.target.value.trim(),
+    });
   };
 
   return (
     <div
-      className="mx-4 xl:mx-auto max-w-7xl py-14 my-10 rounded-xl bg-shamrock grid gric-cols-1 lg:grid-cols-2 gap-10 px-10 items-center text-white placeholder-white"
+      className="mx-4 xl:mx-auto max-w-7xl py-14 my-10 rounded-xl bg-shamrock grid gric-cols-1 lg:grid-cols-2 gap-10 px-10 text-white placeholder-white"
       id="contact"
     >
       <div className="text-white">
@@ -82,6 +95,28 @@ const ContactHelper = () => {
         <div className="space-y-6">
           {!formSent ? (
             <>
+              <div>
+                <p className="uppercase text-sm mb-2">Nom</p>
+                <input
+                  type="text"
+                  className="w-full bg-transparent placeholder-white border-b p-3"
+                  placeholder="Nom"
+                  name="nom"
+                  value={form.name}
+                  onChange={handleFormChange}
+                />
+              </div>
+              <div>
+                <p className="uppercase text-sm mb-2">Numéro de téléphone</p>
+                <input
+                  type="text"
+                  className="w-full bg-transparent placeholder-white border-b p-3"
+                  placeholder="Numéro de téléphone"
+                  name="phoneNumber"
+                  value={form.phoneNumber}
+                  onChange={handleFormChange}
+                />
+              </div>
               <div>
                 <p className="uppercase text-sm mb-2">Votre email</p>
                 <input
