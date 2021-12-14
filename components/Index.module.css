@@ -7,4 +7,6 @@
 .values {
   background-image: url("../public/assets/home-values-background@2x.jpg");
   background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
