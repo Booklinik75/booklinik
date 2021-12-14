@@ -113,7 +113,7 @@ const DashboardSideNav = ({ userProfile, token, isSideNavOpen }) => {
                 <div className="flex items-center">
                   <FaChartArea size="16" className="mr-3 mb-1 block text-shamrock" />
                   <p className="text-sm text-gray-700 uppercase font-bold tracking-wide mr-2">
-                    Clients / Résas
+                    Clients / Réservations
                   </p>
                 </div>
                 <FaChevronDown
