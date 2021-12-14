@@ -201,7 +201,7 @@ const NewBookingContainer = ({
           surgery: surgery,
           surgeryPrice: parseInt(price),
           surgeryName: name,
-          surgeryMinDays: 0,
+          surgeryMinDays: parseInt(minimumNights),
           cities: cities.map((city) => city.name),
         },
       ],

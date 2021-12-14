@@ -7,7 +7,6 @@ const EditOperations = ({
   operationCategories,
   setOperations,
   operations,
-
 }) => {
   const [openOperations, setOpenOperations] = useState(false);
   const handleChangeOperation = (getOp) => {
@@ -22,7 +21,7 @@ const EditOperations = ({
                 surgeryName: getOp.name,
                 surgeryPrice: getOp.startingPrice,
                 surgery: getOp.slug,
-                surgeryMinDays: 0,
+                surgeryMinDays: getOp.minimumNights,
                 surgeryCategory: getOp.category,
                 cities: getOp.cities,
               }

@@ -180,6 +180,7 @@ const Booking = ({
     booking.totalSelectedNights
   );
   const [totalPrice, setTotalPrice] = useState(booking.total);
+  const [minimumNights, setMinimumNights] = useState(booking.minimumNights);
 
   const handleAddNewOptions = () => {
     setOptions([
@@ -340,6 +341,7 @@ const Booking = ({
           endDate,
           startDate,
           operations,
+          minimumNights,
           totalExtraTravellersPrice:
             (voyageurs.childs + (voyageurs.adults - 1) + voyageurs.babies) *
             450,
@@ -356,7 +358,9 @@ const Booking = ({
 
   const surgeriesName = () => {
     const surgeryNames = [];
-    operations.map((operation) => surgeryNames.push(operation.surgeryName));
+    booking.surgeries.map((operation) =>
+      surgeryNames.push(operation.surgeryName)
+    );
     if (surgeryNames.length > 1) {
       return surgeryNames.join(", ");
     } else {
@@ -374,6 +378,15 @@ const Booking = ({
         hotel.hotelPrice * totalSelectedNights +
         (voyageurs.childs + (voyageurs.adults - 1) + voyageurs.babies) * 450
     );
+
+    // set minimumNight
+    setMinimumNights(() => {
+      let minimumNightsTime = [];
+      operations.forEach((operation) => {
+        minimumNightsTime.push(operation.surgeryMinDays);
+      });
+      return Math.max(...minimumNightsTime);
+    });
 
     // get rooms
     const getRooms = async () => {
@@ -561,6 +574,7 @@ const Booking = ({
                   <ReactDatePicker
                     minDate={new Date()}
                     locale="fr"
+                    dateFormat="dd/MM/yyyy"
                     selected={new Date(startDate)}
                     onChange={(date) => setStartDate(date)}
                   />
@@ -571,25 +585,23 @@ const Booking = ({
                   className="border p-2 px-4 rounded align-middle mx-2 border-shamrock cursor-pointer w-max"
                 >
                   <ReactDatePicker
-                    minDate={addDays(
-                      startDate,
-                      parseInt(booking.minimumNights)
-                    )}
+                    minDate={addDays(startDate, parseInt(minimumNights))}
                     locale="fr"
                     selected={new Date(endDate)}
+                    dateFormat="dd/MM/yyyy"
                     onChange={(date) => {
                       let timeDiff = Math.abs(
-                        e.getTime() - booking.startDate.getTime()
+                        date.getTime() - new Date(booking.startDate).getTime()
                       );
                       let numberOfNights = Math.ceil(
                         timeDiff / (1000 * 3600 * 24)
                       );
-                      setTotalSelectedNights(numberOfNights);
                       setEndDate(date);
+                      setTotalSelectedNights(numberOfNights);
                     }}
                   />
                 </span>
-                pour une dureé de 4 jours.
+                pour une dureé de {totalSelectedNights} jours.
               </div>
               <div
                 className="flex items-center whitespace-nowrap mb-5"
