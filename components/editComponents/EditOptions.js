@@ -2,39 +2,26 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
 import { FaTimes } from "react-icons/fa";
 
-const EditOptions = ({
-  option,
-  id,
-  setOptions,
-  options,
-  operations,
-  room,
-  hotel,
-  setTotalPrice,
-  voyageurs,
-  totalSelectedNights,
-}) => {
+const EditOptions = ({ option, id, setOptions, options }) => {
   const [openOptions, setOpenOptions] = useState(false);
   const handleChangeOptions = (getOp) => {
     const existOptions = options.find((opt) => option.name === opt.name);
     if (existOptions) {
-      setOptions((options) =>
-        options
-          .filter((opt) => opt.name !== getOp.name)
-          .map((opt) =>
-            opt.name === option.name
-              ? {
-                  ...opt,
-                  isChecked: true,
-                  name: getOp.name,
-                  price: getOp.price,
-                }
-              : opt
-          )
-      );
+      setOptions((options) => {
+        let newOptions = options.map((opt) =>
+          opt.name === getOp.name
+            ? {
+                ...opt,
+                isChecked: true,
+                name: getOp.name,
+                price: getOp.price,
+              }
+            : opt
+        );
+        let popped = options.pop();
+        return newOptions;
+      });
     }
-
-   
 
     setOpenOptions(false);
   };
@@ -48,7 +35,6 @@ const EditOptions = ({
         )
       );
     }
-
   };
 
   useEffect(() => {

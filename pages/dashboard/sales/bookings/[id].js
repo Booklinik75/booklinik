@@ -332,12 +332,14 @@ const Booking = ({
           roomPrice: room.roomPrice,
           roomPhotoLink: room.roomPhotoLink,
           city,
+          options,
           total: totalPrice,
           extraTravellers: voyageurs.adults - 1,
           extraBabies: voyageurs.babies,
           extraChilds: voyageurs.childs,
           endDate,
           startDate,
+          operations,
           totalExtraTravellersPrice:
             (voyageurs.childs + (voyageurs.adults - 1) + voyageurs.babies) *
             450,
@@ -366,7 +368,7 @@ const Booking = ({
     setTotalPrice(
       options
         .map((option) => option.isChecked && Number(option.price))
-        .reduce((a, b) => a + b) +
+        .reduce((a, b) => a + b, 0) +
         operations.reduce((prev, curr) => prev + curr.surgeryPrice, 0) +
         room.roomPrice * totalSelectedNights +
         hotel.hotelPrice * totalSelectedNights +
@@ -402,9 +404,6 @@ const Booking = ({
     voyageurs,
   ]);
 
-  console.log(options);
-  console.log(operations);
-  console.log(booking);
   return (
     <DashboardUi userProfile={auth.props.userProfile} token={auth.props.token}>
       <div className="col-span-6">
@@ -498,9 +497,9 @@ const Booking = ({
                     </p>
                     <p className="text-gray-600">
                       {booking.options.map(
-                        (option) =>
+                        (option, i) =>
                           option.isChecked &&
-                          `${option.name} (+${option.price}€)`
+                          `${i !== 0 && ", "}${option.name} (+${option.price}€)`
                       )}
                     </p>
                   </div>
@@ -541,12 +540,6 @@ const Booking = ({
                     setOperations={setOperations}
                     operationCategories={operationCategories}
                     operations={operations}
-                    hotel={hotel}
-                    room={room}
-                    options={options}
-                    setTotalPrice={setTotalPrice}
-                    voyageurs={voyageurs}
-                    totalSelectedNights={totalSelectedNights}
                   />
                 ))}
                 <button
@@ -617,29 +610,9 @@ const Booking = ({
               </div>
               <div className="flex items-center whitespace-nowrap mt-7 mb-7">
                 L&apos;hôtel dans lequel vous résiderez est au
-                <EditHotels
-                  hotel={hotel}
-                  setHotel={setHotel}
-                  city={city}
-                  operations={operations}
-                  room={room}
-                  options={options}
-                  setTotalPrice={setTotalPrice}
-                  voyageurs={voyageurs}
-                  totalSelectedNights={totalSelectedNights}
-                />
+                <EditHotels hotel={hotel} setHotel={setHotel} city={city} />
                 {"("}trés bon choiz{")"} et vous logerez en
-                <EditRooms
-                  rooms={rooms}
-                  room={room}
-                  setRoom={setRoom}
-                  hotel={hotel}
-                  operations={operations}
-                  options={options}
-                  setTotalPrice={setTotalPrice}
-                  voyageurs={voyageurs}
-                  totalSelectedNights={totalSelectedNights}
-                />
+                <EditRooms rooms={rooms} room={room} setRoom={setRoom} />
               </div>
               <div className="flex items-center whitespace-nowrap mb-5 flex-wrap gap-2">
                 Vous avez selectuineé les options suivantes :
@@ -654,12 +627,6 @@ const Booking = ({
                             option={option}
                             options={options}
                             setOptions={setOptions}
-                            operations={operations}
-                            room={room}
-                            hotel={hotel}
-                            setTotalPrice={setTotalPrice}
-                            voyageurs={voyageurs}
-                            totalSelectedNights={totalSelectedNights}
                           />
                         )
                     )

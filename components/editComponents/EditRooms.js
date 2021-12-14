@@ -2,17 +2,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import firebase from "firebase/clientApp";
 import { useEffect, useState } from "react";
 
-const EditRooms = ({
-  rooms,
-  room: bookingRoom,
-  setRoom,
-  hotel,
-  operations,
-  options,
-  setTotalPrice,
-  voyageurs,
-  totalSelectedNights,
-}) => {
+const EditRooms = ({ rooms, room: bookingRoom, setRoom }) => {
   const [openRooms, setOpenRooms] = useState(false);
 
   const handleClick = (room) => {
@@ -22,16 +12,6 @@ const EditRooms = ({
       roomPrice: Number(room.extraPrice),
       roomPhotoLink: room.photos ? room.photos[0] : null,
     });
-
-    setTotalPrice(
-      options
-        .map((option) => option.isChecked && Number(option.price))
-        .reduce((a, b) => a + b) +
-        operations.reduce((prev, curr) => prev + curr.surgeryPrice, 0) +
-        room.roomPrice * totalSelectedNights +
-        hotel.hotelPrice * totalSelectedNights +
-        (voyageurs.childs + (voyageurs.adults - 1) + voyageurs.babies) * 450
-    );
 
     setOpenRooms(false);
   };
