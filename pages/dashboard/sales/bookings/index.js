@@ -6,6 +6,7 @@ import firebase from "firebase/clientApp";
 import { useTable } from "react-table";
 import Link from "next/link";
 import moment from "moment";
+import { FaTimes } from "react-icons/fa";
 import CsvDownload from "react-json-to-csv";
 
 export const getServerSideProps = async (ctx) => {
@@ -87,14 +88,11 @@ const BookingsList = ({ auth, bookings }) => {
     []
   );
 
-  function truncate(str, n) {
-    return str.length > n ? str.substr(0, n - 1) + "..." : str;
-  }
   const surgeriesName = (surgeries) => {
     const surgeryNames = [];
     surgeries.map((operation) => surgeryNames.push(operation.surgeryName));
     if (surgeryNames.length > 1) {
-      return truncate(surgeryNames.join(", "), 40);
+      return surgeryNames.join(", ");
     } else {
       return surgeryNames[0];
     }
@@ -106,7 +104,8 @@ const BookingsList = ({ auth, bookings }) => {
       surgeryNameCategories.push(operation.surgeryCategoryName)
     );
     if (surgeryNameCategories.length > 1) {
-      return truncate(surgeryNameCategories.join(", "), 40);
+      let uniqueCategories = [...new Set(surgeryNameCategories)];
+      return uniqueCategories.join(", ");
     } else {
       return surgeryNameCategories[0];
     }
@@ -117,12 +116,12 @@ const BookingsList = ({ auth, bookings }) => {
       bookings.map((booking) => {
         return {
           id: booking.id,
-          surgery: surgeriesName(booking.surgeries),
+          surgery: booking.surgeries[0].surgeryName,
           status:
             statusOptions.filter(
               (option) => option.value === booking?.status
             )[0]?.label || "—",
-          category: surgeryCategoriesName(booking.surgeries),
+          category: booking.surgeries[0].surgeryCategoryName,
           email: booking.customer.email,
           dates: `${moment(booking.startDate).format(
             "DD[/]MM[/]YY"
@@ -143,6 +142,7 @@ const BookingsList = ({ auth, bookings }) => {
     tableInstance;
 
   const [newRows, setNewRows] = useState(rows);
+  console.log(rows);
 
   const getFilter = (value) => {
     let newRowLists;
@@ -155,16 +155,18 @@ const BookingsList = ({ auth, bookings }) => {
         row.values.email.toLowerCase().includes(search)
       );
     } else if (value === "Opération") {
-      newRowLists = rows.filter((row) =>
-        row.values.surgery.toLowerCase().includes(search)
+      newRowLists = rows.filter((row, index) =>
+        surgeriesName(bookings[index].surgeries).toLowerCase().includes(search)
       );
     } else if (value === "Status") {
       newRowLists = rows.filter((row) =>
         row.values.status.toLowerCase().includes(search)
       );
     } else if (value === "Catégorie") {
-      newRowLists = rows.filter((row) =>
-        row.values.category.toLowerCase().includes(search)
+      newRowLists = rows.filter((row, index) =>
+        surgeryCategoriesName(bookings[index].surgeries)
+          .toLowerCase()
+          .includes(search)
       );
     } else if (value === "Dates") {
       newRowLists = rows.filter((row) =>
@@ -172,18 +174,23 @@ const BookingsList = ({ auth, bookings }) => {
       );
     } else {
       newRowLists = rows.filter(
-        (row) =>
-          row.values.category.toLowerCase().includes(search) ||
+        (row, index) =>
+          surgeriesName(bookings[index].surgeries)
+            .toLowerCase()
+            .includes(search) ||
           row.values.email.toLowerCase().includes(search) ||
           row.values.id.toLowerCase().includes(search) ||
           row.values.status.toLowerCase().includes(search) ||
-          row.values.surgery.toLowerCase().includes(search) ||
+          surgeryCategoriesName(bookings[index].surgeries)
+            .toLowerCase()
+            .includes(search) ||
           row.values.dates.toLowerCase().includes(search)
       );
     }
 
     // check first if search result still empty so use original rows
     setNewRows(search.trim() === "" ? rows : newRowLists);
+    setSearch("");
   };
 
   const handleSearch = (e) => {
@@ -223,12 +230,24 @@ const BookingsList = ({ auth, bookings }) => {
           className="flex items-center w-full gap-5 mt-7 mb-7"
           onSubmit={handleSearch}
         >
-          <input
-            placeholder="Chercher ..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="w-full rounded bg-transparent border p-3 outline-none"
-          />
+          <div className="w-full relative">
+            <input
+              placeholder="Chercher ..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="w-full rounded bg-transparent border p-3 outline-none"
+            />
+            {search !== "" ? (
+              <span
+                className="bg-gray-400 p-1 mr-2 rounded-full inline-block cursor-pointer -translate-y-1/2 absolute right-0 top-1/2 "
+                onClick={() => setSearch("")}
+              >
+                <FaTimes color="white" size="10" />
+              </span>
+            ) : (
+              ""
+            )}
+          </div>
           <div className="relative">
             <button
               type="button"
@@ -298,7 +317,7 @@ const BookingsList = ({ auth, bookings }) => {
             ))}
           </thead>
           <tbody {...getTableBodyProps()}>
-            {newRows.map((row) => {
+            {newRows.map((row, index) => {
               prepareRow(row);
               return (
                 <Link
@@ -315,13 +334,41 @@ const BookingsList = ({ auth, bookings }) => {
                           {...cell.getCellProps()}
                           className="p-1 text-center"
                         >
-                          <div
-                            className={`${
-                              cell.column.Header === "ID" &&
-                              "bg-gray-200 font-mono text-red-900 text-xs p-2 rounded max-w-max"
-                            }`}
-                          >
-                            {cell.render("Cell")}
+                          <div className="flex items-center justify-center">
+                            <div
+                              className={`${
+                                cell.column.Header === "ID" &&
+                                "bg-gray-200 font-mono text-red-900 text-xs p-2 rounded max-w-max"
+                              }`}
+                            >
+                              {cell.render("Cell")}
+                            </div>
+                            {cell.column.Header === "Opération" ? (
+                              <span className="relative group block ml-2">
+                                {bookings[index].surgeries.length > 1
+                                  ? `+${bookings[index].surgeries.length - 1}`
+                                  : ""}
+                                <div className="text-sm mt-2 bg-gray-600 w-max max-w-xs text-gray-100 p-2 z-20 right-1/2 translate-x-1/2 bottom-[calc(100%+.25rem)] opacity-0 pointer-events-none absolute rounded shadow-2xl group-hover:opacity-100">
+                                  {surgeriesName(bookings[index].surgeries)}
+                                </div>
+                              </span>
+                            ) : (
+                              ""
+                            )}
+                            {cell.column.Header === "Catégorie" ? (
+                              <span className="relative group block ml-2">
+                                {bookings[index].surgeries.length > 1
+                                  ? `+${bookings[index].surgeries.length - 1}`
+                                  : ""}
+                                <div className="text-sm mt-2 bg-gray-600 w-max max-w-xs text-gray-100 p-2 z-20 right-1/2 translate-x-1/2 bottom-[calc(100%+.25rem)] opacity-0 pointer-events-none absolute rounded shadow-2xl group-hover:opacity-100">
+                                  {surgeryCategoriesName(
+                                    bookings[index].surgeries
+                                  )}
+                                </div>
+                              </span>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </td>
                       );
