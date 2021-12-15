@@ -206,9 +206,6 @@ const BookingsList = ({ auth, bookings }) => {
     };
   }, []);
 
-  console.log("rows", rows);
-  console.log(bookings);
-
   return (
     <DashboardUi userProfile={auth.props.userProfile} token={auth.props.token}>
       <div className="col-span-6 flex flex-col w-full gap-6">
