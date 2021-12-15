@@ -68,17 +68,20 @@ export const getServerSideProps = async (ctx) => {
 
   const currentOperationCategory = [];
 
-  await firebase
-    .firestore()
-    .collection("operationCategories")
-    .where("slug", "==", data.surgeries[0].surgeryCategory)
-    .get()
-    .then((snapshot) => {
-      snapshot.forEach((doc) => {
-        currentOperationCategory.push(doc.data());
-      });
-    })
-    .catch((err) => {});
+  data.surgeries.forEach(
+    async (surgery) =>
+      await firebase
+        .firestore()
+        .collection("operationCategories")
+        .where("slug", "==", surgery.surgeryCategory)
+        .get()
+        .then((snapshot) => {
+          snapshot.forEach((doc) => {
+            currentOperationCategory.push(doc.data());
+          });
+        })
+        .catch((err) => {})
+  );
 
   const currentOperation = [];
   await firebase
@@ -153,7 +156,7 @@ export const getServerSideProps = async (ctx) => {
       bookingId: id,
       data: data,
       auth,
-      currentOperationCategory: currentOperationCategory[0],
+      currentOperationCategory,
       currentOperation: currentOperation[0],
       currentCountry: currentCountry[0],
     },
@@ -185,10 +188,6 @@ const OperationPage = ({
     oldPictures.splice(index, 1);
     setPictures([...oldPictures]);
   };
-
-  function truncate(str, n) {
-    return str.length > n ? str.substr(0, n - 1) + "..." : str;
-  }
 
   const surgeriesName = () => {
     const surgeryNames = [];
@@ -436,20 +435,34 @@ const OperationPage = ({
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <BookingDetailBox
-              icon={
-                <Image
-                  src={currentOperationCategory.icon}
-                  width={18}
-                  height={18}
-                  alt=""
-                />
-              }
-              title={"Opérations"}
-              col={1}
-            >
-              {truncate(surgeriesName(), 40)}
-            </BookingDetailBox>
+            <div className="col-span-1 md:col-span-3 grid gap-4 grid-cols-1 md:grid-cols-3">
+              <p className="text-sm text-gray-500 uppercase col-span-1 md:col-span-3 -mb-3">
+                Opérations
+              </p>
+              {data.surgeries.map((surgery) => {
+                return (
+                  <BookingDetailBox
+                    icon={currentOperationCategory.map((currentOpCategory, i) =>
+                      currentOpCategory.slug === surgery.surgeryCategory ? (
+                        <Image
+                          src={currentOpCategory.icon}
+                          width={18}
+                          height={18}
+                          alt=""
+                          key={currentOpCategory.slug}
+                        />
+                      ) : (
+                        ""
+                      )
+                    )}
+                    key={surgery.surgery}
+                    col={1}
+                  >
+                    {surgery.surgeryName}
+                  </BookingDetailBox>
+                );
+              })}
+            </div>
 
             <BookingDetailBox
               icon={<FaCalendar className="text-bali" size={18} />}
@@ -464,7 +477,7 @@ const OperationPage = ({
             <BookingDetailBox
               icon={<FaHotel className="text-bali" size={18} />}
               title="Hôtel"
-              col={1}
+              col={2}
             >
               {data.hotelName}
             </BookingDetailBox>
