@@ -46,7 +46,11 @@ const BookingCard = ({ booking }) => {
     booking.surgeries.map((operation) =>
       surgeryNames.push(operation.surgeryName)
     );
-    return surgeryNames.join(", ");
+    if (surgeryNames.length > 1) {
+      return surgeryNames.join(", ");
+    } else {
+      return surgeryNames[0];
+    }
   };
 
   return (
