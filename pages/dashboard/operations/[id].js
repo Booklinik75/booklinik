@@ -83,18 +83,22 @@ export const getServerSideProps = async (ctx) => {
         .catch((err) => {})
   );
 
-  const currentOperation = [];
-  await firebase
-    .firestore()
-    .collection("surgeries")
-    .where("slug", "==", data.surgeries[0].surgery)
-    .get()
-    .then((snapshot) => {
-      snapshot.forEach((doc) => {
-        currentOperation.push(doc.data());
-      });
-    })
-    .catch((err) => {});
+  const currentOperations = [];
+  data.surgeries.forEach(
+    async (surgery) =>
+      await firebase
+        .firestore()
+        .collection("surgeries")
+        .where("slug", "==", surgery.surgery)
+        .get()
+        .then((snapshot) => {
+          snapshot.forEach((doc) => {
+            console.log("all data", doc.data());
+            currentOperations.push(doc.data());
+          });
+        })
+        .catch((err) => {})
+  );
 
   const currentCity = [];
   await firebase
@@ -135,20 +139,22 @@ export const getServerSideProps = async (ctx) => {
     );
   }
 
-  currentOperation[0].requiredPictures.map((set, index) => {
-    let slug = slugify(set.title);
+  currentOperations.map((currentOperation) => {
+    currentOperation.requiredPictures.map((set, index) => {
+      let slug = slugify(set.title);
 
-    if (data.picturesSet?.[slug]) {
-      currentOperation[0].requiredPictures[index] = {
-        ...currentOperation[0].requiredPictures[index],
-        done: true,
-      };
-    } else {
-      currentOperation[0].requiredPictures[index] = {
-        ...currentOperation[0].requiredPictures[index],
-        done: false,
-      };
-    }
+      if (data.picturesSet?.[slug]) {
+        currentOperation.requiredPictures[index] = {
+          ...currentOperation[0].requiredPictures[index],
+          done: true,
+        };
+      } else {
+        currentOperation.requiredPictures[index] = {
+          ...currentOperation.requiredPictures[index],
+          done: false,
+        };
+      }
+    });
   });
 
   return {
@@ -157,7 +163,7 @@ export const getServerSideProps = async (ctx) => {
       data: data,
       auth,
       currentOperationCategory,
-      currentOperation: currentOperation[0],
+      currentOperations: currentOperations,
       currentCountry: currentCountry[0],
     },
   };
@@ -168,7 +174,7 @@ const OperationPage = ({
   data,
   bookingId,
   currentOperationCategory,
-  currentOperation,
+  currentOperations,
   currentCountry,
 }) => {
   const [isLoading, setIsLoading] = useState("idle");
@@ -525,51 +531,57 @@ const OperationPage = ({
           </div>
         </div>
         <div className="col-span-10 lg:col-span-3 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-4 grid-flow-column auto-rows-max">
-          {currentOperation.requiredPictures.length > 0 && (
-            <div className="col-span-1 flex flex-col gap-2 border border-gray-800 p-4 rounded">
-              <p className="text-3xl">Documents requis</p>
-              <p>
-                Afin de finaliser votre séjour, vous devez remplir ces
-                documents.
-              </p>
-              {currentOperation.requiredPictures.map(
-                (requiredPicturesSet, i) => (
-                  <div
-                    key={`${slugify(requiredPicturesSet.title)}_${i}`}
-                    className={`transition h-max flex border justify-between rounded py-2 px-4 items-center gap-4 group ${
-                      requiredPicturesSet.done
-                        ? "border-green-500 bg-green-500 text-white"
-                        : "border-red-500 hover:shadow hover:bg-red-500 hover:cursor-pointer hover:animate-pulse"
-                    }`}
-                    onClick={() => {
-                      if (!requiredPicturesSet.done) {
-                        setPicturesImporter({
-                          set: requiredPicturesSet,
-                          visibility: true,
-                        });
-                      }
-                    }}
-                  >
-                    <p className="transition group-hover:text-white">
-                      {requiredPicturesSet.photosCount}
-                      <span className="lowercase">
-                        {" "}
-                        {requiredPicturesSet.title}
-                      </span>
+          {currentOperations.length > 0 &&
+            currentOperations.map(
+              (currentOperation) =>
+                currentOperation.requiredPictures.length > 0 && (
+                  <div className="col-span-1 flex flex-col gap-2 border border-gray-800 p-4 rounded">
+                    <p className="text-3xl">
+                      Documents requis ({currentOperation.name})
                     </p>
-                    {requiredPicturesSet.done ? (
-                      <FaCheck />
-                    ) : (
-                      <FaUpload className="transition text-red-500 group-hover:text-white" />
+                    <p>
+                      Afin de finaliser votre séjour, vous devez remplir ces
+                      documents.
+                    </p>
+                    {currentOperation.requiredPictures.map(
+                      (requiredPicturesSet, i) => (
+                        <div
+                          key={`${slugify(requiredPicturesSet.title)}_${i}`}
+                          className={`transition h-max flex border justify-between rounded py-2 px-4 items-center gap-4 group ${
+                            requiredPicturesSet.done
+                              ? "border-green-500 bg-green-500 text-white"
+                              : "border-red-500 hover:shadow hover:bg-red-500 hover:cursor-pointer hover:animate-pulse"
+                          }`}
+                          onClick={() => {
+                            if (!requiredPicturesSet.done) {
+                              setPicturesImporter({
+                                set: requiredPicturesSet,
+                                visibility: true,
+                              });
+                            }
+                          }}
+                        >
+                          <p className="transition group-hover:text-white">
+                            {requiredPicturesSet.photosCount}
+                            <span className="lowercase">
+                              {" "}
+                              {requiredPicturesSet.title}
+                            </span>
+                          </p>
+                          {requiredPicturesSet.done ? (
+                            <FaCheck />
+                          ) : (
+                            <FaUpload className="transition text-red-500 group-hover:text-white" />
+                          )}
+                        </div>
+                      )
                     )}
+                    <p className="text-sm text-gray-500 uppercase text-center">
+                      Photos accessible uniquement par votre chirurgien.
+                    </p>
                   </div>
                 )
-              )}
-              <p className="text-sm text-gray-500 uppercase text-center">
-                Photos accessible uniquement par votre chirurgien.
-              </p>
-            </div>
-          )}
+            )}
           <div className="col-span-1 flex flex-col gap-2 border border-shamrock p-4 rounded">
             <p className="text-3xl">Préparez votre voyage</p>
             <p>
