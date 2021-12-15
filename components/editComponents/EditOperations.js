@@ -7,12 +7,18 @@ const EditOperations = ({
   operationCategories,
   setOperations,
   operations,
+  allOperation,
 }) => {
   const [openOperations, setOpenOperations] = useState(false);
+
   const handleChangeOperation = (getOp) => {
     const existOptions = operations.find(
       (opt) => operation.surgery === opt.surgery
     );
+    const getCategoryName = operationCategories.find(
+      (opCategory) => opCategory.slug === getOp.category
+    );
+    console.log(getOp);
     if (existOptions) {
       setOperations((operations) =>
         operations.map((opt) =>
@@ -23,6 +29,7 @@ const EditOperations = ({
                 surgery: getOp.slug,
                 surgeryMinDays: getOp.minimumNights,
                 surgeryCategory: getOp.category,
+                surgeryCategoryName: getCategoryName.name,
                 cities: getOp.cities,
               }
             : opt
@@ -92,7 +99,7 @@ const EditOperations = ({
                 maxHeight: "10rem",
               }}
             >
-              {operationCategories.map(
+              {allOperation.map(
                 (op) =>
                   !isSelected(op) && (
                     <li
