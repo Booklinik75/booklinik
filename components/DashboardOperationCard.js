@@ -46,7 +46,7 @@ const DashboardOperationCard = ({ booking, noActions, salesMode, withId }) => {
     booking.surgeries.map((operation) =>
       surgeryNameCategories.push(operation.surgeryCategoryName)
     );
-    if (surgeryNameCategories.length === 1) {
+    if (surgeryNameCategories.length > 1) {
       return surgeryNameCategories.join(", ");
     } else {
       return surgeryNameCategories[0];
@@ -65,11 +65,11 @@ const DashboardOperationCard = ({ booking, noActions, salesMode, withId }) => {
             src={booking.hotelPhotoLink}
             width={97}
             height={80}
-            className="rounded"
+            className="rounded flex-initial w-3/12"
             alt="TBD"
             objectFit="cover"
           />
-          <div className="p-3">
+          <div className="p-3 flex-initial w-9/12">
             {withId && <p className="text-xs ">id : {booking.id}</p>}
 
             <p className="text-leading">
