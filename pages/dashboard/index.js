@@ -16,7 +16,7 @@ export const getServerSideProps = checkAuth;
 
 export default function DashboardIndex({ userProfile, token }) {
   const [user, loading] = useAuthState(firebase.auth());
-
+  
   const [bookings, setBookings] = useState([]);
   const [message, setMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
