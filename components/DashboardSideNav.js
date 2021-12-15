@@ -63,8 +63,8 @@ const DashboardSideNav = ({ userProfile, token, isSideNavOpen }) => {
 
   return (
     <div
-      className={`z-10 h-full lg:col-span-2 absolute lg:sticky 
-    bg-white lg:bg-transparent shadow lg:shadow-none border-r lg:border-0 border-gray-400 w-1/2 lg:w-96
+      className={`z-30 h-full lg:col-span-2 absolute lg:sticky 
+    bg-white lg:bg-transparent shadow lg:shadow-none border-r lg:border-0 border-gray-400 w-3/5 lg:w-96
     ${isSideNavOpen ? "block" : "hidden lg:flex"}
     `}
     >
