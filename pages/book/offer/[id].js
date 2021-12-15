@@ -217,7 +217,8 @@ const OfferBooking = ({ offer }) => {
       surgeryNameCategories.push(operation.surgeryCategoryName)
     );
     if (surgeryNameCategories.length > 1) {
-      return surgeryNameCategories.join(", ");
+      let uniqueCategories = [...new Set(surgeryNameCategories)];
+      return uniqueCategories.join(", ");
     } else {
       return surgeryNameCategories[0];
     }
