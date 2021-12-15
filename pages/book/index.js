@@ -153,7 +153,7 @@ const NewBookingContainer = ({
     setBooking({
       ...booking,
       totalExtraTravellersPrice: totalExtraTravellers,
-    });
+  });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [booking.extraTravellers, booking.extraChilds, booking.extraBabies]);
 
