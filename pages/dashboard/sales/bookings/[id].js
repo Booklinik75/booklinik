@@ -1,6 +1,10 @@
 import DashboardUi from "components/DashboardUi";
 import { useEffect, useState } from "react";
-import { checkAuth } from "utils/ServerHelpers";
+import {
+  checkAuth,
+  getOperationCategories,
+  getSurgeries,
+} from "utils/ServerHelpers";
 import firebase from "firebase/clientApp";
 import JSONPretty from "react-json-pretty";
 import Dropdown from "react-dropdown";
@@ -50,6 +54,9 @@ export const getServerSideProps = async (ctx) => {
         });
     });
 
+  const operationCategories = await getOperationCategories();
+  const allOperation = await getSurgeries();
+
   booking.startDate =
     typeof booking.startDate === "string"
       ? booking.startDate
@@ -63,18 +70,6 @@ export const getServerSideProps = async (ctx) => {
       ? booking.created
       : new Date(booking?.created?.toDate()).toString()
     : "";
-
-  const operationCategories = [];
-  await firebase
-    .firestore()
-    .collection("surgeries")
-    .get()
-    .then((snapshot) => {
-      snapshot.docs.forEach((doc) => {
-        operationCategories.push({ ...doc.data(), id: doc.id });
-      });
-    })
-    .catch((err) => {});
 
   const currentOperation = [];
   await firebase
@@ -125,17 +120,19 @@ export const getServerSideProps = async (ctx) => {
       booking,
       operationCategories,
       cities,
+      allOperation,
       currentOperation: currentOperation[0],
     },
   };
 };
 
 const Booking = ({
-  booking,
-  cities,
   auth,
-  currentOperation,
+  booking,
   operationCategories,
+  cities,
+  allOperation,
+  currentOperation,
 }) => {
   const router = useRouter();
   const [isLoading, setLoading] = useState("idle");
@@ -512,7 +509,9 @@ const Booking = ({
                       {booking.options.map(
                         (option, i) =>
                           option.isChecked &&
-                          `${i !== 0 && ", "}${option.name} (+${option.price}€)`
+                          `${i !== 0 ? ", " : ""}${option.name} (+${
+                            option.price
+                          }€)`
                       )}
                     </p>
                   </div>
@@ -553,6 +552,7 @@ const Booking = ({
                     setOperations={setOperations}
                     operationCategories={operationCategories}
                     operations={operations}
+                    allOperation={allOperation}
                   />
                 ))}
                 <button
