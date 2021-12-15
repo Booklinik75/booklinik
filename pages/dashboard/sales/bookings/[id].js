@@ -582,7 +582,11 @@ const Booking = ({
                 au
                 <span
                   id="inputEndDate"
-                  className="border p-2 px-4 rounded align-middle mx-2 border-shamrock cursor-pointer w-max"
+                  className={`border p-2 px-4 rounded align-middle mx-2 cursor-pointer w-max ${
+                    minimumNights > totalSelectedNights
+                      ? "border-red-600"
+                      : "border-shamrock"
+                  }`}
                 >
                   <ReactDatePicker
                     minDate={addDays(startDate, parseInt(minimumNights))}
@@ -670,7 +674,8 @@ const Booking = ({
                   operations.find(
                     (opt) => opt.surgeryName === "Choose new surgery"
                   ) ||
-                  loadingUpdate
+                  loadingUpdate ||
+                  minimumNights > totalSelectedNights
                 }
                 className="min-w-max transition px-5 py-3 mt-10 bg-shamrock text-white rounded border cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-shamrock disabled:text-white group hover:bg-white border-shamrock hover:text-shamrock"
                 onClick={handleUpdate}
