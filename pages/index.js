@@ -142,7 +142,7 @@ export default function Home({
       <div
         style={{
           backgroundImage: "url(/assets/background-booklinik.jpeg)",
-          height: "100vh",
+          height: "90vh",
           marginTop: "-110px",
           backgroundAttachment: "fixed",
           backgroundSize: "cover",
@@ -162,7 +162,7 @@ export default function Home({
               <h2 className="text-xl md:text-2xl lg:text-3xl text-center mb-12">
                 Estimez et réservez votre voyage esthétique médical
               </h2>
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-10 gap-6">
+              <div className="grid grid-cols-3 md:grid-cols-3 lg:grid-cols-10 gap-6 home-hero-surgery-categories">
                 {categoriesSettings.map((orderedCategory) => {
                   return categories.map((category) => {
                     return Object.keys(orderedCategory)[0].toString() ===
