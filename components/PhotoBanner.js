@@ -15,7 +15,7 @@ const PhotoBanner = ({
   var divStyle = {
     backgroundImage: `url(${fileName})`,
     backgroundColor: "#ccc",
-    backgroundSize: "145rem",
+    backgroundSize: "cover",
     backgroundRepeat: "no-repeat",
     backgroundAttachment: "fixed",
     backgroundPosition: "42.5% 50%",
