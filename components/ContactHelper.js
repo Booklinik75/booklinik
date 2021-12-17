@@ -79,9 +79,11 @@ const ContactHelper = () => {
           ? e.target.value
               .replace(/\D+/g, "")
               .replace(/(\d{3})(\d{3})(\d{4})/, "($1) $2-$3")
-          : e.target.value.trim(),
+          : e.target.value,
     });
   };
+
+  console.log(form);
 
   return (
     <div
@@ -137,6 +139,7 @@ const ContactHelper = () => {
                   name="phoneNumber"
                   value={form.phoneNumber}
                   onChange={handleFormChange}
+                  maxLength={15}
                 />
                 {errors && errors.phoneNumber ? (
                   <span className="text-red-600 text-sm mt-3">
