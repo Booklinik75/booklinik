@@ -38,14 +38,14 @@ const DestinationsList = ({ countries, cities, hotels }) => {
   return (
     <div>
       <Head>
-        <title>Booklinik | Les Destinations</title>
+        <title>Booklinik | Destinations</title>
       </Head>
       <Navigation />
       <PhotoBanner
         fileName={fileName}
         fullWidth={true}
         extraLarge={true}
-        title="Les Destinations"
+        title="Destinations"
       />
 
       <div className="mx-4 xl:mx-auto max-w-7xl">
