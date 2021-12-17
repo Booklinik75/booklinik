@@ -45,7 +45,7 @@ const ClinicsList = ({ countries, cities, clinics }) => {
         fileName={fileName}
         fullWidth={true}
         extraLarge={true}
-        title="Les Cliniques"
+        title="Cliniques"
       />
 
       <div className="mx-4 xl:mx-auto max-w-7xl">

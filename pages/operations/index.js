@@ -65,7 +65,7 @@ const OperationsList = ({
         fileName={fileName}
         fullWidth={true}
         overlay={true}
-        title="Les opérations"
+        title="Opérations"
       />
 
       <div className="hidden lg:flex w-full bg-shamrock space-x-2 space-y-2 justify-center p-5 text-white">
