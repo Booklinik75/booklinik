@@ -337,7 +337,6 @@ const Booking = ({
           extraChilds: voyageurs.childs,
           endDate,
           startDate,
-          operations,
           minimumNights,
           totalExtraTravellersPrice:
             (voyageurs.childs + (voyageurs.adults - 1) + voyageurs.babies) *
