@@ -413,6 +413,8 @@ const Booking = ({
     voyageurs,
   ]);
 
+  console.log(booking);
+
   return (
     <DashboardUi userProfile={auth.props.userProfile} token={auth.props.token}>
       <div className="col-span-6">
@@ -604,7 +606,12 @@ const Booking = ({
                     }}
                   />
                 </span>
-                pour une durée de {totalSelectedNights} jours.
+                pour une durée de {totalSelectedNights} jours.{" "}
+                <span className="ml-2 text-red-400">
+                  {minimumNights > totalSelectedNights
+                    ? `${minimumNights} jours minimum requis`
+                    : ""}
+                </span>
               </div>
               <div
                 className="flex items-center whitespace-nowrap mb-5"
