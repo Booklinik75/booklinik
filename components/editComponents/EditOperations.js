@@ -18,7 +18,7 @@ const EditOperations = ({
     const getCategoryName = operationCategories.find(
       (opCategory) => opCategory.slug === getOp.category
     );
-    console.log(getOp);
+
     if (existOptions) {
       setOperations((operations) =>
         operations.map((opt) =>
