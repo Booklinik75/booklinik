@@ -77,8 +77,9 @@ const ContactHelper = () => {
       [e.target.name]:
         e.target.name === "phoneNumber"
           ? e.target.value
-              .replace(/\D+/g, "")
-              .replace(/(\d{3})(\d{3})(\d{4})/, "($1) $2-$3")
+              .replace(/[^0-9.]/g, "")
+              .replace(/(\..*?)\..*/g, "$1")
+              .trim()
           : e.target.value,
     });
   };
@@ -139,7 +140,7 @@ const ContactHelper = () => {
                   name="phoneNumber"
                   value={form.phoneNumber}
                   onChange={handleFormChange}
-                  maxLength={15}
+                  maxLength={10}
                 />
                 {errors && errors.phoneNumber ? (
                   <span className="text-red-600 text-sm mt-3">
