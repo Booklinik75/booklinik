@@ -3,14 +3,31 @@ import firebase from "firebase/clientApp";
 import { useEffect, useState } from "react";
 import { getBackEndAsset } from "utils/ClientHelpers";
 
-const EditHotels = ({
-  hotel,
-  setHotel,
-  city,
- 
-}) => {
+const EditHotels = ({ hotel, setHotel, city, setOptions }) => {
   const [openHotels, setOpenHotels] = useState(false);
   const [hotels, setHotels] = useState([]);
+
+  const getOptions = async () => {
+    await firebase
+      .firestore()
+      .collection("options")
+      .doc(hotel.hotelId)
+      .get()
+      .then((snapshot) => {
+        setOptions((opts) => {
+          return snapshot.data()[0].map((data) => {
+            const isExist = opts.find((opt) => opt.name === data.name);
+            if (isExist) {
+              return data.name === isExist?.name
+                ? isExist
+                : { ...data, isChecked: false };
+            }
+            return { ...data, isChecked: false };
+          });
+        });
+      })
+      .catch((err) => {});
+  };
 
   const handleClick = async (hotel) => {
     setHotel({
@@ -22,6 +39,8 @@ const EditHotels = ({
       hotelRating: hotel.rating,
     });
     setOpenHotels(false);
+
+    getOptions();
   };
 
   useEffect(() => {

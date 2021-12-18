@@ -413,8 +413,6 @@ const Booking = ({
     voyageurs,
   ]);
 
-  console.log(booking);
-
   return (
     <DashboardUi userProfile={auth.props.userProfile} token={auth.props.token}>
       <div className="col-span-6">
@@ -510,9 +508,13 @@ const Booking = ({
                       {booking.options.map(
                         (option, i) =>
                           option.isChecked &&
-                          `${i !== 0 ? ", " : ""}${option.name} (+${
-                            option.price
-                          }€)`
+                          `${
+                            i !== 0 &&
+                            booking.options.filter((opt) => opt.isChecked)
+                              .length > 1
+                              ? ", "
+                              : ""
+                          }${option.name} (+${option.price}€)`
                       )}
                     </p>
                   </div>
@@ -632,12 +634,23 @@ const Booking = ({
               </div>
               <div className="flex items-center whitespace-nowrap mt-7 mb-7">
                 L&apos;hôtel dans lequel vous résiderez est au
-                <EditHotels hotel={hotel} setHotel={setHotel} city={city} />
+                <EditHotels
+                  hotel={hotel}
+                  setHotel={setHotel}
+                  city={city}
+                  setOptions={setOptions}
+                />
                 {"("}très bon choix{")"} et vous logerez en
                 <EditRooms rooms={rooms} room={room} setRoom={setRoom} />
               </div>
               <div className="flex items-center whitespace-nowrap mb-5 flex-wrap gap-2">
                 Vous avez selectioné les options suivantes :
+                {!options.find(
+                  (option) =>
+                    option.isChecked || option.name === "Choisir une option"
+                )
+                  ? " ajouter une nouvelle option"
+                  : ""}
                 {options.length
                   ? options.map(
                       (option, i) =>

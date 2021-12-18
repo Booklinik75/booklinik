@@ -27,7 +27,7 @@ const EditOptions = ({ option, id, setOptions, options }) => {
         const index = newOptions.findIndex((opt) => option.name === opt.name);
         newOptions.splice(index, 1);
         newOptions.push(existChange);
-        return newOptions.filter((opt) => opt.name !== "Choose new option");
+        return newOptions.filter((opt) => opt.name !== "Choisir une option");
       });
     }
 
@@ -37,11 +37,21 @@ const EditOptions = ({ option, id, setOptions, options }) => {
   const handleRemove = () => {
     const existOptions = options.find((opt) => option.name === opt.name);
     if (existOptions) {
-      setOptions((options) =>
-        options.map((opt) =>
-          opt.name === option.name ? { ...opt, isChecked: false } : opt
-        )
-      );
+      if (existOptions.name === "Choisir une option") {
+        setOptions((options) => {
+          const index = options.findIndex((opt) => option.name === opt.name);
+          if (index > -1) {
+            options.splice(index, 1);
+          }
+          return options;
+        });
+      } else {
+        setOptions((options) =>
+          options.map((opt) =>
+            opt.name === option.name ? { ...opt, isChecked: false } : opt
+          )
+        );
+      }
     }
   };
 
@@ -95,7 +105,7 @@ const EditOptions = ({ option, id, setOptions, options }) => {
               {options.map(
                 (op) =>
                   !op.isChecked &&
-                  op.name !== "Choose new option" && (
+                  op.name !== "Choisir une option" && (
                     <li
                       key={op.name}
                       onClick={() => handleChangeOptions(op)}
