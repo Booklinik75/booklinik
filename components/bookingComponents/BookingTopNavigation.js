@@ -31,8 +31,10 @@ const BookingTopNavigation = ({ bookingData, priceOverride }) => {
         </Link>
       </div>
       <div className="flex items-center gap-2">
-        <p>Estimation de votre voyage :</p>
-        <p className="py-3 px-6 rounded bg-shamrock text-xl text-white">
+        <p className="whitespace-nowrap text-xs sm:text-base">
+          Estimation de votre voyage :
+        </p>
+        <p className="py-3 px-3 lg:px-6 rounded bg-shamrock text-base whitespace-nowrap sm:text-xl text-white">
           {priceOverride
             ? priceOverride
             : estimate === 0
