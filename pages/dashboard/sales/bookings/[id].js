@@ -184,7 +184,7 @@ const Booking = ({
       ...options,
       {
         isChecked: false,
-        name: "Choose new option",
+        name: "Choisir une option",
         price: 0,
       },
     ]);
@@ -193,7 +193,7 @@ const Booking = ({
     setOperations([
       ...operations,
       {
-        surgeryName: "Choose new surgery",
+        surgeryName: "Choisir une opération",
         surgery: "",
         surgeryCategory: "",
         surgeryPrice: 0,
@@ -539,7 +539,7 @@ const Booking = ({
 
           <div className="col-span-6 my-10 ">
             <p className="text-sm font-bold text-gray-800 uppercase mb-5">
-              Modifier Les Données
+              Modifier les données
             </p>
             <div className="bg-white border-gray-200 p-5 rounded border">
               <div className="flex items-center whitespace-nowrap mb-5 edit-operations flex-wrap gap-2">
@@ -558,14 +558,14 @@ const Booking = ({
                   className="bg-shamrock p-1 rounded-full ml-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                   onClick={handleAddNewOperations}
                   disabled={operations.find(
-                    (opt) => opt.surgeryName === "Choose new surgery"
+                    (opt) => opt.surgeryName === "Choisir une opération"
                   )}
                 >
                   <FaPlus color="white" size="10" />
                 </button>
               </div>
               <div className="flex items-center whitespace-nowrap mb-5">
-                Votre voyage s&apos;étedra du
+                Votre voyage s&apos;étendra du
                 <span
                   id="inputStartDate"
                   className="border p-2 px-4 rounded align-middle mx-2 border-shamrock cursor-pointer w-max"
@@ -604,7 +604,7 @@ const Booking = ({
                     }}
                   />
                 </span>
-                pour une dureé de {totalSelectedNights} jours.
+                pour une durée de {totalSelectedNights} jours.
               </div>
               <div
                 className="flex items-center whitespace-nowrap mb-5"
@@ -626,16 +626,16 @@ const Booking = ({
               <div className="flex items-center whitespace-nowrap mt-7 mb-7">
                 L&apos;hôtel dans lequel vous résiderez est au
                 <EditHotels hotel={hotel} setHotel={setHotel} city={city} />
-                {"("}trés bon choiz{")"} et vous logerez en
+                {"("}très bon choix{")"} et vous logerez en
                 <EditRooms rooms={rooms} room={room} setRoom={setRoom} />
               </div>
               <div className="flex items-center whitespace-nowrap mb-5 flex-wrap gap-2">
-                Vous avez selectuineé les options suivantes :
+                Vous avez selectioné les options suivantes :
                 {options.length
                   ? options.map(
                       (option, i) =>
                         (option.isChecked ||
-                          option.name === "Choose new option") && (
+                          option.name === "Choisir une option") && (
                           <EditOptions
                             key={i}
                             id={i + 1}
@@ -651,7 +651,7 @@ const Booking = ({
                     className="bg-shamrock p-1 rounded-full ml-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                     onClick={handleAddNewOptions}
                     disabled={options.find(
-                      (opt) => opt.name === "Choose new option"
+                      (opt) => opt.name === "Choisir une option"
                     )}
                   >
                     <FaPlus color="white" size="10" />
@@ -669,9 +669,9 @@ const Booking = ({
                   !rooms.find(
                     (bookingRoom) => room.roomName === bookingRoom.name
                   ) ||
-                  options.find((opt) => opt.name === "Choose new option") ||
+                  options.find((opt) => opt.name === "Choisir une option") ||
                   operations.find(
-                    (opt) => opt.surgeryName === "Choose new surgery"
+                    (opt) => opt.surgeryName === "Choisir une opération"
                   ) ||
                   loadingUpdate ||
                   minimumNights > totalSelectedNights
