@@ -235,7 +235,7 @@ export default function Home({
       <div
         className={
           styles.values +
-          " mx-4 xl:mx-auto max-w-7xl p-10 md:px-20 md:py-32 rounded-xl text-white bg-fixed"
+          " mx-4 xl:mx-auto max-w-7xl p-10 md:px-20 md:py-32 rounded-xl text-white"
         }
       >
         <div
