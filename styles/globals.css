@@ -148,3 +148,9 @@ html {
 .react-datepicker-popper {
   z-index: 21 !important;
 }
+
+@supports (background-attachment: fixed) {
+  .home__banner {
+    background-attachment: fixed;
+  }
+}

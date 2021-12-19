@@ -6,17 +6,15 @@
 
 .values {
   background-image: url("../public/assets/home-values-background@2x.jpg");
-  background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  background-attachment: unset;
+  background-size: contain;
 }
 
 @supports (background-attachment: fixed) {
   .values {
-    background-image: url("../public/assets/home-values-background@2x.jpg");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
     background-attachment: fixed;
+    background-size: cover;
   }
 }

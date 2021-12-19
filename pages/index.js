@@ -46,7 +46,6 @@ export const getServerSideProps = async (ctx) => {
     },
   ];
 
-
   // get all offers from firestore
   const offers = await firebase.firestore().collection("offers").get();
 
@@ -144,10 +143,9 @@ export default function Home({
           backgroundImage: "url(/assets/background-booklinik.jpeg)",
           height: "90vh",
           marginTop: "-110px",
-          backgroundAttachment: "fixed",
           backgroundSize: "cover",
         }}
-        className="overflow-y-hidden"
+        className="overflow-y-hidden home__banner"
       >
         <div className="flex h-screen items-center justify-center">
           <div className="mx-4 my-12 mt-[8rem] lg:mt-12 shadow md:shadow-none xl:mx-auto md:my-32">
