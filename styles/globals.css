@@ -62,10 +62,14 @@ html {
   content: ", ";
 }
 
-.home-hero-surgery-categories > div:nth-child(6),
+/* .home-hero-surgery-categories > div:nth-child(6),
 .home-hero-surgery-categories > div:nth-child(7),
 .home-hero-surgery-categories > div:nth-child(8),
 .home-hero-surgery-categories > div:nth-child(9) {
+  display: none;
+} */
+
+.home-hero-surgery-categories > div:nth-child(7) {
   display: none;
 }
 
