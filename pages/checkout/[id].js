@@ -120,8 +120,19 @@ export const getServerSideProps = async (ctx) => {
 
   if (stripeSession.redirect) return stripeSession;
 
-  booking.startDate = new Date(booking.startDate.toDate()).toString();
-  booking.endDate = new Date(booking.endDate.toDate()).toString();
+  booking.startDate =
+    typeof booking.startDate === "string"
+      ? booking.startDate
+      : new Date(booking.startDate.toDate()).toString();
+  booking.endDate =
+    typeof booking.endDate === "string"
+      ? booking.endDate
+      : new Date(booking.endDate.toDate()).toString();
+  booking.created = booking.created
+    ? typeof booking.created === "string"
+      ? booking.created
+      : new Date(booking?.created?.toDate()).toString()
+    : "";
 
   const stripeArgs = {
     success: success || null,
