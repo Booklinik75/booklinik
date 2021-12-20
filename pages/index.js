@@ -141,7 +141,7 @@ export default function Home({
       <div
         style={{
           backgroundImage: "url(/assets/background-booklinik.jpeg)",
-          height: "90vh",
+          height: "95vh",
           marginTop: "-110px",
           backgroundSize: "cover",
         }}
