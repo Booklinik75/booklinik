@@ -155,6 +155,35 @@ const Checkout = ({ booking, stripeArgs, auth, stripeSession }) => {
   const [promoCode, setPromoCode] = useState(null);
   const [promoCodeInput, setPromoCodeInput] = useState(false);
 
+  
+  // to get all names surgeries
+  const surgeriesName = () => {
+    const surgeryNames = [];
+    booking.surgeries.map((operation) =>
+      surgeryNames.push(operation.surgeryName)
+    );
+    if (surgeryNames.length > 1) {
+      return surgeryNames.join(", ");
+    } else {
+      return surgeryNames[0];
+    }
+  };
+
+  // to get all names surgeries category
+  const surgeryCategoriesName = () => {
+    const surgeryNameCategories = [];
+    booking.surgeries.map((operation) =>
+      surgeryNameCategories.push(operation.surgeryCategoryName)
+    );
+    if (surgeryNameCategories.length > 1) {
+      let uniqueCategories = [...new Set(surgeryNameCategories)];
+      return uniqueCategories.join(", ");
+    } else {
+      return surgeryNameCategories[0];
+    }
+  };
+
+
   const initiatePayment = async () => {
     const stripe = await loadStripe(
       process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
@@ -229,7 +258,7 @@ const Checkout = ({ booking, stripeArgs, auth, stripeSession }) => {
             <div className="w-full flex gap-2 flex-col">
               <p className="text-xl font-bold">Résumé</p>
               <p>
-                {bsurgeryCategoriesName()}, {surgeriesName()}
+                {surgeryCategoriesName()}, {surgeriesName()}
               </p>
               <p>
                 À <span className="capitalize">{booking.city}</span>, du{" "}
