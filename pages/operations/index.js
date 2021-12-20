@@ -68,7 +68,7 @@ const OperationsList = ({
         title="Opérations"
       />
 
-      <div className="hidden lg:flex w-full bg-shamrock space-x-2 space-y-2 justify-center p-5 text-white">
+      <div className="hidden lg:flex w-full bg-shamrock bg-opacity-75 space-x-2 space-y-2 justify-center p-5 text-white">
         {operationCategories.map((category) => (
           <div
             key={`${category.slug}-nav`}

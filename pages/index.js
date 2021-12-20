@@ -141,14 +141,14 @@ export default function Home({
       <div
         style={{
           backgroundImage: "url(/assets/background-booklinik.jpeg)",
-          height: "90vh",
+          height: "95vh",
           marginTop: "-110px",
           backgroundSize: "cover",
         }}
         className="overflow-y-hidden home__banner"
       >
         <div className="flex h-screen items-center justify-center">
-          <div className="mx-4 my-12 mt-[8rem] lg:mt-12 shadow md:shadow-none xl:mx-auto md:my-32">
+          <div className="mx-4 my-12 mt-[6rem] lg:mt-12 shadow md:shadow-none xl:mx-auto md:my-32">
             <div
               className="translate-y-0 transition ease-linear duration-75 bg-white bg-opacity-90 max-w-7xl p-10 md:p-20 rounded-xl"
               ref={mainBox}
