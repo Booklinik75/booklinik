@@ -109,7 +109,7 @@ export default function Home({
   useEffect(() => {
     // parallax effect
     window.onscroll = () => {
-      if (mainBox.current) {
+      if (mainBox.current && window.innerWidth > 768) {
         mainBox.current.style.transform = `translateY(-${
           window.scrollY / 15
         }%)`;

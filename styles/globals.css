@@ -150,7 +150,9 @@ html {
 }
 
 @supports (background-attachment: fixed) {
-  .home__banner {
-    background-attachment: fixed;
+  @media (min-width: 768px) {
+    .home__banner {
+      background-attachment: fixed;
+    }
   }
 }

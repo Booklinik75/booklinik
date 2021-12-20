@@ -9,12 +9,13 @@
   background-position: center;
   background-repeat: no-repeat;
   background-attachment: unset;
-  background-size: contain;
 }
 
 @supports (background-attachment: fixed) {
-  .values {
-    background-attachment: fixed;
-    background-size: cover;
+  @media (min-width: 768px) {
+    .values {
+      background-attachment: fixed;
+      background-size: cover;
+    }
   }
 }
