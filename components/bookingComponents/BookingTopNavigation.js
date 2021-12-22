@@ -2,13 +2,14 @@ import Link from "next/link";
 import Image from "next/image";
 import Logo from "public/booklinik-logo.svg";
 import { useEffect, useState } from "react";
+import formatPrice from "../../utils/formatPrice.js";
 
 const BookingTopNavigation = ({ bookingData, priceOverride }) => {
   const [estimate, setEstimate] = useState(0);
 
   useEffect(() => {
     setEstimate(
-      Number(bookingData.surgeryPrice) +
+      Number(bookingData.surgeries[0].surgeryPrice) +
         Number(bookingData.totalExtraTravellersPrice) +
         Number(bookingData.hotelPrice) *
           Number(bookingData.totalSelectedNights) +
@@ -30,9 +31,16 @@ const BookingTopNavigation = ({ bookingData, priceOverride }) => {
         </Link>
       </div>
       <div className="flex items-center gap-2">
-        <p>Estimation de votre voyage :</p>
-        <p className="py-3 px-6 rounded bg-shamrock text-xl text-white">
-          {priceOverride ? priceOverride : estimate === 0 ? "-" : estimate}€
+        <p className="whitespace-nowrap text-xs sm:text-base">
+          Estimation de votre voyage :
+        </p>
+        <p className="py-3 px-3 lg:px-6 rounded bg-shamrock text-base whitespace-nowrap sm:text-xl text-white">
+          {priceOverride
+            ? priceOverride
+            : estimate === 0
+            ? "-"
+            : formatPrice(estimate)}{" "}
+          €
         </p>
       </div>
     </div>

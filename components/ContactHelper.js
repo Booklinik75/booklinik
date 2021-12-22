@@ -4,15 +4,18 @@ import { toast } from "react-toastify";
 import * as Sentry from "@sentry/browser";
 import moment from "moment";
 import { useRouter } from "next/router";
+import validateContactForm from "../utils/validateContactForm";
 
 const ContactHelper = () => {
   const [form, setForm] = useState({
     email: "",
     message: "",
+    name: "",
+    phoneNumber: "",
   });
-
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formSent, setFormSent] = useState(false);
+  const [errors, setErrros] = useState({});
 
   const router = useRouter();
 
@@ -20,50 +23,70 @@ const ContactHelper = () => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    fetch("/api/mail", {
-      method: "post",
-      body: JSON.stringify({
-        recipient: "info@booklinik.com",
-        templateId: "d-6b9ed961cfdc44228824603584a8b740",
-        dynamicTemplateData: {
-          email: form.email,
-          datetime: moment(new Date()).format("LLLL"),
-          message: form.message,
-          path: router.asPath,
-        },
-      }),
-    })
-      .then(() => {
-        setFormSent(true);
+    const { errors, valid } = validateContactForm(form);
+    if (!valid) {
+      setErrros(errors);
+      setIsSubmitting(false);
+    } else {
+      fetch("/api/mail", {
+        method: "post",
+        body: JSON.stringify({
+          recipient: "info@booklinik.com",
+          templateId: "d-6b9ed961cfdc44228824603584a8b740",
+          dynamicTemplateData: {
+            email: form.email,
+            name: form.name,
+            phoneNumber: form.phoneNumber,
+            datetime: moment(new Date()).format("LLLL"),
+            message: form.message,
+            path: router.asPath,
+          },
+        }),
+      })
+        .then(() => {
+          setFormSent(true);
 
-        fetch("/api/mail", {
-          method: "post",
-          body: JSON.stringify({
-            recipient: form.email,
-            templateId: "d-57cbc54b5ac345beb1bfc6509381ccee",
-            dynamicTemplateData: {
-              email: form.email,
-              datetime: moment(new Date()).format("LLLL"),
-              message: form.message,
-            },
-          }),
+          fetch("/api/mail", {
+            method: "post",
+            body: JSON.stringify({
+              recipient: form.email,
+              templateId: "d-57cbc54b5ac345beb1bfc6509381ccee",
+              dynamicTemplateData: {
+                email: form.email,
+                name: form.name,
+                phoneNumber: form.phoneNumber,
+                datetime: moment(new Date()).format("LLLL"),
+                message: form.message,
+              },
+            }),
+          });
+        })
+        .catch((error) => {
+          Sentry.captureException(error);
+        })
+        .finally(() => {
+          setIsSubmitting(false);
+          setErrros({});
         });
-      })
-      .catch((error) => {
-        Sentry.captureException(error);
-      })
-      .finally(() => {
-        setIsSubmitting(false);
-      });
+    }
   };
 
   const handleFormChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value.trim() });
+    setForm({
+      ...form,
+      [e.target.name]:
+        e.target.name === "phoneNumber"
+          ? e.target.value
+              .replace(/[^0-9.]/g, "")
+              .replace(/(\..*?)\..*/g, "$1")
+              .trim()
+          : e.target.value,
+    });
   };
 
   return (
     <div
-      className="mx-4 xl:mx-auto max-w-7xl py-14 my-10 rounded-xl bg-shamrock grid gric-cols-1 lg:grid-cols-2 gap-10 px-10 items-center text-white placeholder-white"
+      className="mx-4 xl:mx-auto max-w-7xl py-14 my-10 rounded-xl bg-shamrock grid gric-cols-1 lg:grid-cols-2 gap-10 px-10 text-white placeholder-white"
       id="contact"
     >
       <div className="text-white">
@@ -83,25 +106,89 @@ const ContactHelper = () => {
           {!formSent ? (
             <>
               <div>
+                <p className="uppercase text-sm mb-2">Nom</p>
+                <input
+                  type="text"
+                  className={`w-full bg-transparent border-b outline-none placeholder-white ${
+                    errors && errors.name ? "border-red-600 " : "border-white"
+                  } p-3`}
+                  placeholder="Nom"
+                  name="name"
+                  value={form.name}
+                  onChange={handleFormChange}
+                />
+                {errors && errors.name ? (
+                  <span className="text-red-600 text-sm mt-3">
+                    {errors.name}
+                  </span>
+                ) : (
+                  ""
+                )}
+              </div>
+              <div>
+                <p className="uppercase text-sm mb-2">Numéro de téléphone</p>
+                <input
+                  type="text"
+                  className={`w-full bg-transparent border-b outline-none placeholder-white ${
+                    errors && errors.phoneNumber
+                      ? "border-red-600 "
+                      : "border-white"
+                  } p-3`}
+                  placeholder="Numéro de téléphone"
+                  name="phoneNumber"
+                  value={form.phoneNumber}
+                  onChange={handleFormChange}
+                  maxLength={10}
+                />
+                {errors && errors.phoneNumber ? (
+                  <span className="text-red-600 text-sm mt-3">
+                    {errors.phoneNumber}
+                  </span>
+                ) : (
+                  ""
+                )}
+              </div>
+              <div>
                 <p className="uppercase text-sm mb-2">Votre email</p>
                 <input
                   type="email"
-                  className="w-full bg-transparent placeholder-white border-b p-3"
+                  className={`w-full bg-transparent border-b outline-none placeholder-white ${
+                    errors && errors.email ? "border-red-600 " : "border-white"
+                  } p-3`}
                   placeholder="Email"
                   name="email"
                   value={form.email}
                   onChange={handleFormChange}
                 />
+                {errors && errors.email ? (
+                  <span className="text-red-600 text-sm mt-3">
+                    {errors.email}
+                  </span>
+                ) : (
+                  ""
+                )}
               </div>
               <div>
                 <p className="uppercase text-sm mb-2">Votre message</p>
+
                 <textarea
-                  className="w-full h-24 bg-white bg-opacity-10 p-3 placeholder-white border-b border-white"
+                  className={`w-full h-24 bg-white bg-opacity-10 border-b outline-none placeholder-white ${
+                    errors && errors.message
+                      ? "border-red-600 "
+                      : "border-white"
+                  } p-3`}
                   placeholder="J&lsquo;ai une question à propos de ..."
                   value={form.message}
                   name="message"
                   onChange={handleFormChange}
                 ></textarea>
+                {errors && errors.message ? (
+                  <span className="text-red-600 text-sm mt-3">
+                    {errors.message}
+                  </span>
+                ) : (
+                  ""
+                )}
               </div>
               <div className="w-full">
                 <button

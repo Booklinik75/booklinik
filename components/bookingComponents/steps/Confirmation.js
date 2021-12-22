@@ -1,5 +1,6 @@
 import BookingDataSpan from "../BookingDataSpan";
 import Moment from "react-moment";
+import formatPrice from "utils/formatPrice";
 
 const BookingConfirmation = ({ booking }) => {
   return (
@@ -9,9 +10,9 @@ const BookingConfirmation = ({ booking }) => {
         <p className="flex flex-col items-start gap-2 lg:flex-row lg:items-center">
           Vous souhaitez réaliser une{" "}
           <span>
-            <BookingDataSpan string={booking.surgeryCategoryName} /> sur{" "}
+            <BookingDataSpan string={booking.surgeries[0].surgeryCategoryName} /> sur{" "}
           </span>
-          <BookingDataSpan string={booking.surgeryName} />
+          <BookingDataSpan string={booking.surgeries[0].surgeryName} />
         </p>
         <p className="flex flex-col items-start gap-2 lg:flex-row lg:items-center">
           Votre voyage s&apos;étendra du{" "}
@@ -87,13 +88,15 @@ const BookingConfirmation = ({ booking }) => {
       <p className="py-6 flex flex-col items-start gap-2 lg:flex-row lg:items-center">
         Le prix tout compris de votre voyage sur-mesure est de{" "}
         <span className="text-2xl rounded text-white px-4 py-2 mx-2 bg-shamrock">
-          {Number(booking.surgeryPrice) +
-            Number(booking.totalExtraTravellersPrice) +
-            Number(booking.hotelPrice) * Number(booking.totalSelectedNights) +
-            Number(booking.roomPrice) * Number(booking.totalSelectedNights) +
-            booking.options
-              ?.map((option) => option.isChecked && Number(option.price))
-              .reduce((a, b) => a + b)}
+          {formatPrice(
+            Number(booking.surgeries[0].surgeryPrice) +
+              Number(booking.totalExtraTravellersPrice) +
+              Number(booking.hotelPrice) * Number(booking.totalSelectedNights) +
+              Number(booking.roomPrice) * Number(booking.totalSelectedNights) +
+              booking.options
+                ?.map((option) => option.isChecked && Number(option.price))
+                .reduce((a, b) => a + b)
+          )}{" "}
           €
         </span>
       </p>

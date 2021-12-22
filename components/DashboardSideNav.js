@@ -3,6 +3,15 @@ import { useRouter } from "next/router";
 import { useAuth } from "../hooks/useAuth";
 import DashboardSideNavItem from "./DashboardSideNavItem";
 import firebase from "firebase/clientApp";
+import {
+  FaUserCog,
+  FaChartPie,
+  FaChartArea,
+  FaPlus,
+  FaUserAlt,
+  FaCog,
+  FaChevronDown,
+} from "react-icons/fa";
 
 const DashboardSideNav = ({ userProfile, token, isSideNavOpen }) => {
   const router = useRouter();
@@ -12,6 +21,17 @@ const DashboardSideNav = ({ userProfile, token, isSideNavOpen }) => {
   const { signOut } = useAuth();
 
   const [bookings, setBookings] = useState([]);
+  const [expand, setExpand] = useState({
+    operations: false,
+    sales: false,
+    admin: false,
+    profile: false,
+    security: false,
+  });
+
+  const handleExpand = (menu) => {
+    setExpand({ ...expand, [menu]: !expand[menu] });
+  };
 
   useEffect(() => {
     const asyncFunc = async () => {
@@ -34,116 +54,238 @@ const DashboardSideNav = ({ userProfile, token, isSideNavOpen }) => {
     };
 
     asyncFunc();
+
+    setExpand({
+      ...expand,
+      [router.pathname.split("/")[2]]: !expand[router.pathname.split("/")[2]],
+    });
   }, []);
 
   return (
     <div
-      className={`z-10 h-full lg:col-span-2 absolute lg:sticky 
-      bg-white lg:bg-transparent shadow lg:shadow-none border-r lg:border-0 border-gray-400 w-1/2 lg:w-full
-      ${isSideNavOpen ? "block" : "hidden lg:flex"}
-      `}
+      className={`z-30 h-full lg:col-span-2 absolute lg:sticky 
+    bg-white lg:bg-transparent shadow lg:shadow-none border-r lg:border-0 border-gray-400 w-3/5 lg:w-96
+    ${isSideNavOpen ? "block" : "hidden lg:flex"}
+    `}
     >
-      <div
-        className={`flex flex-col px-6 py-10 h-full justify-between absolute`}
-        style={{ maxHeight: "95vh" }}
-      >
-        <div className="space-y-5">
-          <DashboardSideNavItem title="Dashboard" target="/dashboard" />
-          <div className="flex flex-col">
-            <p className="text-sm text-gray-700 uppercase">Opérations</p>
-            <DashboardSideNavItem
-              title={`Mes opérations (${bookings.length})`}
-              target="/dashboard/operations"
+      <div className="flex flex-col px-6 py-10 h-full shadow bg-sidebar">
+        <div className="space-y-5 mb-5">
+          <div className="flex items-center group">
+            <FaChartPie
+              className={`mr-3 mb-1 block group-hover:opacity-50 text-shamrock  ${
+                router.pathname == "/dashboard" && "text-shamrock"
+              }`}
+              size="16"
             />
+
+            <DashboardSideNavItem title="Dashboard" target="/dashboard" />
+          </div>
+          <div className="flex flex-col">
+            <div
+              className="flex items-center mb-2 justify-between cursor-pointer"
+              onClick={() => handleExpand("operations")}
+            >
+              <div className="flex items-center">
+                <FaPlus className="mr-3 mb-1 block text-shamrock" size="16" />
+                <p className="text-sm text-gray-700 uppercase font-bold tracking-wide mr-2 cursor-pointer">
+                  Opérations
+                </p>
+              </div>
+              <FaChevronDown
+                className={`${expand.operations && "-rotate-180"} transition`}
+              />
+            </div>
+            <div
+              className="pl-8 h-100 overflow-hidden transition-all duration-300"
+              style={{
+                maxHeight: `${expand.operations ? "50rem" : "0"}`,
+              }}
+            >
+              <DashboardSideNavItem
+                title={`Mes opérations (${bookings.length})`}
+                target="/dashboard/operations"
+              />
+            </div>
           </div>
         </div>
         <div className="space-y-5">
           {isSales && (
             <div className="flex flex-col">
-              <p className="text-sm text-gray-700 uppercase">Sales</p>
-              <DashboardSideNavItem
-                title="Clients"
-                target="/dashboard/sales/clients"
-              />
-              <DashboardSideNavItem
-                title="Réservations"
-                target="/dashboard/sales/bookings"
-              />
+              <div
+                className="flex items-center mb-2 cursor-pointer justify-between"
+                onClick={() => handleExpand("sales")}
+              >
+                <div className="flex items-center">
+                  <FaChartArea
+                    size="16"
+                    className="mr-3 mb-1 block text-shamrock"
+                  />
+                  <p className="text-sm text-gray-700 uppercase font-bold tracking-wide mr-2">
+                    Clients / Réservations
+                  </p>
+                </div>
+                <FaChevronDown
+                  className={`${expand.sales && "-rotate-180"} transition`}
+                />
+              </div>
+              <div
+                className="pl-8 h-100 overflow-hidden transition-all duration-300"
+                style={{
+                  maxHeight: `${expand.sales ? "50rem" : "0"}`,
+                }}
+              >
+                <DashboardSideNavItem
+                  title="Clients"
+                  target="/dashboard/sales/clients"
+                />
+                <DashboardSideNavItem
+                  title="Réservations"
+                  target="/dashboard/sales/bookings"
+                />
+              </div>
             </div>
           )}
           {isAdmin && (
             <div className="flex flex-col">
-              <p className="text-sm text-gray-700 uppercase">Admin</p>
-              <DashboardSideNavItem
-                title="Questions médicales"
-                target="/dashboard/admin/medical-questions"
-              />
-              <DashboardSideNavItem
-                title="Cat. opérations"
-                target="/dashboard/admin/operations"
-              />
-              <DashboardSideNavItem
-                title="Opérations"
-                target="/dashboard/admin/surgeries"
-              />
-              <DashboardSideNavItem
-                title="Pays"
-                target="/dashboard/admin/countries"
-              />
-              <DashboardSideNavItem
-                title="Villes"
-                target="/dashboard/admin/cities"
-              />
-              <DashboardSideNavItem
-                title="Hôtels"
-                target="/dashboard/admin/hotels"
-              />
-              <DashboardSideNavItem
-                title="Options d'hôtel"
-                target="/dashboard/admin/options"
-              />
-              <DashboardSideNavItem
-                title="Chambres"
-                target="/dashboard/admin/rooms"
-              />
-              <DashboardSideNavItem
-                title="Cliniques"
-                target="/dashboard/admin/clinics"
-              />
-              <DashboardSideNavItem
-                title="Offres"
-                target="/dashboard/admin/offers"
-              />
+              <div
+                className="flex items-center mb-2 justify-between cursor-pointer"
+                onClick={() => handleExpand("admin")}
+              >
+                <div className="flex items-center">
+                  <FaUserCog
+                    className="mr-3 mb-1 block text-shamrock"
+                    size="16"
+                  />
+
+                  <p className="text-sm text-gray-700 uppercase font-bold tracking-wide mr-2 cursor-pointer">
+                    Admin
+                  </p>
+                </div>
+                <FaChevronDown
+                  className={`${expand.admin && "-rotate-180"} transition`}
+                />
+              </div>
+              <div
+                className="pl-8 h-100 overflow-hidden transition-all duration-300"
+                style={{
+                  maxHeight: `${expand.admin ? "50rem" : "0"}`,
+                }}
+              >
+                <DashboardSideNavItem
+                  title="Questions médicales"
+                  target="/dashboard/admin/medical-questions"
+                />
+                <DashboardSideNavItem
+                  title="Cat. opérations"
+                  target="/dashboard/admin/operations"
+                />
+                <DashboardSideNavItem
+                  title="Opérations"
+                  target="/dashboard/admin/surgeries"
+                />
+                <DashboardSideNavItem
+                  title="Pays"
+                  target="/dashboard/admin/countries"
+                />
+                <DashboardSideNavItem
+                  title="Villes"
+                  target="/dashboard/admin/cities"
+                />
+                <DashboardSideNavItem
+                  title="Hôtels"
+                  target="/dashboard/admin/hotels"
+                />
+                <DashboardSideNavItem
+                  title="Options d'hôtel"
+                  target="/dashboard/admin/options"
+                />
+                <DashboardSideNavItem
+                  title="Chambres"
+                  target="/dashboard/admin/rooms"
+                />
+                <DashboardSideNavItem
+                  title="Cliniques"
+                  target="/dashboard/admin/clinics"
+                />
+                <DashboardSideNavItem
+                  title="Offres"
+                  target="/dashboard/admin/offers"
+                />
+              </div>
             </div>
           )}
           <div className="flex flex-col">
-            <p className="text-sm text-gray-700 uppercase">Mon profil</p>
-            <DashboardSideNavItem
-              title="Informations personnelles"
-              target="/dashboard/profile"
-            />
-            <DashboardSideNavItem
-              title="Informations médicales"
-              target="/dashboard/medical"
-            />
+            <div
+              className="flex items-center mb-2 justify-between cursor-pointer"
+              onClick={() => handleExpand("profile")}
+            >
+              <div className="flex items-center">
+                <FaUserAlt
+                  className="mr-3 mb-1 block text-shamrock"
+                  size="14"
+                />
+
+                <p className="text-sm text-gray-700 uppercase font-bold tracking-wide mr-2 cursor-pointer">
+                  Mon profil
+                </p>
+              </div>
+              <FaChevronDown
+                className={`${expand.profile && "-rotate-180"} transition`}
+              />
+            </div>
+            <div
+              className="pl-8 h-100 overflow-hidden transition-all duration-300"
+              style={{
+                maxHeight: `${expand.profile ? "50rem" : "0"}`,
+              }}
+            >
+              <DashboardSideNavItem
+                title="Informations personnelles"
+                target="/dashboard/profile"
+              />
+              <DashboardSideNavItem
+                title="Informations médicales"
+                target="/dashboard/medical"
+              />
+            </div>
           </div>
           <div className="flex flex-col">
-            <p className="text-sm text-gray-700 uppercase">Mon compte</p>
-            <DashboardSideNavItem
-              title="Mot de passe et email"
-              target="/dashboard/security"
-            />
-            <DashboardSideNavItem
-              title="Code de parrainage"
-              target="/dashboard/parrainage"
-            />
+            <div
+              className="flex items-center mb-2 justify-between cursor-pointer"
+              onClick={() => handleExpand("security")}
+            >
+              <div className="flex items-center">
+                <FaCog className="mr-3 mb-1 block text-shamrock" size="15" />
+                <p className="text-sm text-gray-700 uppercase font-bold tracking-wide mr-2 cursor-pointer">
+                  Mon compte
+                </p>
+              </div>
+              <FaChevronDown
+                className={`${expand.security && "-rotate-180"} transition`}
+              />
+            </div>
+            <div
+              className="pl-8 h-100 overflow-hidden transition-all duration-300"
+              style={{
+                maxHeight: `${expand.security ? "50rem" : "0"}`,
+              }}
+            >
+              <DashboardSideNavItem
+                title="Mot de passe et email"
+                target="/dashboard/security"
+              />
+              <DashboardSideNavItem
+                title="Code de parrainage"
+                target="/dashboard/parrainage"
+              />
+              <a
+                onClick={signOut}
+                className="text-gray-500 mt-2 block cursor-pointer hover:underline"
+              >
+                Se déconnecter
+              </a>
+            </div>
           </div>
-          <a
-            onClick={signOut}
-            className="text-gray-500 cursor-pointer hover:underline"
-          >
-            Se déconnecter
-          </a>
         </div>
       </div>
     </div>

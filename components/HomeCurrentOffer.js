@@ -13,7 +13,7 @@ const Offer = ({ data }) => {
   return (
     <Link href={`/offer/${id}`}>
       <a className="group hover:cursor-pointer">
-        <div className="space-y-1">
+        <div className="space-y-1 pr-4">
           <div className="w-full h-52 relative rounded-xl overflow-hidden mb-3">
             <Image
               src={imageUrl}

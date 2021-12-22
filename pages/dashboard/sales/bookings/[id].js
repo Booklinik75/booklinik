@@ -1,6 +1,10 @@
 import DashboardUi from "components/DashboardUi";
-import { useState } from "react";
-import { checkAuth } from "utils/ServerHelpers";
+import { useEffect, useState } from "react";
+import {
+  checkAuth,
+  getOperationCategories,
+  getSurgeries,
+} from "utils/ServerHelpers";
 import firebase from "firebase/clientApp";
 import JSONPretty from "react-json-pretty";
 import Dropdown from "react-dropdown";
@@ -9,8 +13,19 @@ import slugify from "slugify";
 import Link from "next/link";
 import { FaExternalLinkAlt } from "react-icons/fa";
 import { useRouter } from "next/router";
-import DashboardInput from "Components/DashboardInput";
-import { FaEye } from "react-icons/fa";
+import DashboardInput from "components/DashboardInput";
+import { FaEye, FaPlus, FaCircleNotch } from "react-icons/fa";
+import EditOperations from "components/editComponents/EditOperations";
+import EditTravellers from "components/editComponents/EditTravellers";
+import EditCity from "components/editComponents/EditCity";
+import EditHotels from "components/editComponents/EditHotels";
+import EditRooms from "components/editComponents/EditRooms";
+import EditOptions from "components/editComponents/EditOptions";
+import ReactDatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import UpdateSuccessPopup from "Components/UpdateSuccessPopup";
+import { set } from "date-fns";
+import formatPrice from "utils/formatPrice";
 
 export const getServerSideProps = async (ctx) => {
   const auth = await checkAuth(ctx);
@@ -39,18 +54,44 @@ export const getServerSideProps = async (ctx) => {
         });
     });
 
-  booking.startDate = new Date(booking.startDate.toDate()).toString();
-  booking.endDate = new Date(booking.endDate.toDate()).toString();
+  const operationCategories = await getOperationCategories();
+  const allOperation = await getSurgeries();
+
+  booking.startDate =
+    typeof booking.startDate === "string"
+      ? booking.startDate
+      : new Date(booking.startDate.toDate()).toString();
+  booking.endDate =
+    typeof booking.endDate === "string"
+      ? booking.endDate
+      : new Date(booking.endDate.toDate()).toString();
+  booking.created = booking.created
+    ? typeof booking.created === "string"
+      ? booking.created
+      : new Date(booking?.created?.toDate()).toString()
+    : "";
 
   const currentOperation = [];
   await firebase
     .firestore()
     .collection("surgeries")
-    .where("slug", "==", booking.surgery)
+    .where("slug", "==", booking.surgeries[0].surgery)
     .get()
     .then((snapshot) => {
       snapshot.forEach((doc) => {
         currentOperation.push(doc.data());
+      });
+    })
+    .catch((err) => {});
+
+  const cities = [];
+  await firebase
+    .firestore()
+    .collection("cities")
+    .get()
+    .then((snapshot) => {
+      snapshot.forEach((doc) => {
+        cities.push(doc.data());
       });
     })
     .catch((err) => {});
@@ -77,14 +118,89 @@ export const getServerSideProps = async (ctx) => {
     props: {
       auth,
       booking,
+      operationCategories,
+      cities,
+      allOperation,
       currentOperation: currentOperation[0],
     },
   };
 };
 
-const Booking = ({ booking, auth, currentOperation }) => {
+const Booking = ({
+  auth,
+  booking,
+  operationCategories,
+  cities,
+  allOperation,
+  currentOperation,
+}) => {
   const router = useRouter();
   const [isLoading, setLoading] = useState("idle");
+  const [openPopupData, setOpenPopupData] = useState(false);
+  const [operations, setOperations] = useState([...booking.surgeries]);
+  // const [operation, setOperation] = useState({
+  //   surgeryName: booking.surgeryName,
+  //   surgery: booking.surgery,
+  //   surgeryCategory: booking.surgeryCategory,
+  //   surgeryPrice: booking.surgeryPrice,
+  //   surgeryMinDays: booking.surgeryMinDays,
+  // });
+  const [options, setOptions] = useState(
+    booking.options ? booking.options : []
+  );
+  const [startDate, setStartDate] = useState(booking.startDate);
+  const [endDate, setEndDate] = useState(booking.endDate);
+  const [voyageurs, setVoyageurs] = useState({
+    adults: booking.extraTravellers + 1,
+    babies: booking.extraBabies,
+    childs: booking.extraChilds,
+  });
+  const [city, setCity] = useState(booking.city);
+  const [hotel, setHotel] = useState({
+    hotelId: booking.hotelId,
+    hotelName: booking.hotelName,
+    hotel: booking.hotel,
+    hotelPrice: booking.hotelPrice,
+    hotelRating: booking.hotelRating,
+    hotelPhotoLink: booking.hotelPhotoLink,
+  });
+  const [rooms, setRooms] = useState([]);
+  const [room, setRoom] = useState({
+    roomName: booking.roomName,
+    room: booking.room,
+    roomPrice: booking.roomPrice,
+    roomPhotoLink: booking.roomPhotoLink,
+  });
+  const [updateSuccess, setUpdateSuccess] = useState(false);
+  const [loadingUpdate, setLoadingUpdate] = useState(false);
+  const [totalSelectedNights, setTotalSelectedNights] = useState(
+    booking.totalSelectedNights
+  );
+  const [totalPrice, setTotalPrice] = useState(booking.total);
+  const [minimumNights, setMinimumNights] = useState(booking.minimumNights);
+
+  const handleAddNewOptions = () => {
+    setOptions([
+      ...options,
+      {
+        isChecked: false,
+        name: "Choisir une option",
+        price: 0,
+      },
+    ]);
+  };
+  const handleAddNewOperations = () => {
+    setOperations([
+      ...operations,
+      {
+        surgeryName: "Choisir une opération",
+        surgery: "",
+        surgeryCategory: "",
+        surgeryPrice: 0,
+        surgeryMinDays: 0,
+      },
+    ]);
+  };
 
   const statusOptions = [
     { value: "awaitingDocuments", label: "En attente de photos" },
@@ -187,6 +303,116 @@ const Booking = ({ booking, auth, currentOperation }) => {
     }
   };
 
+  function addDays(date, days) {
+    var result = new Date(date);
+    result.setDate(result.getDate() + days);
+    return result;
+  }
+
+  const handleUpdate = () => {
+    if (!loadingUpdate) {
+      setLoadingUpdate(true);
+
+      firebase
+        .firestore()
+        .collection("bookings")
+        .doc(booking.id)
+        .update({
+          surgeries: operations,
+          hotelId: hotel.hotelId,
+          hotelName: hotel.hotelName,
+          hotel: hotel.hotel,
+          hotelPrice: hotel.hotelPrice,
+          hotelRating: hotel.hotelRating,
+          hotelPhotoLink: hotel.hotelPhotoLink,
+          roomName: room.roomName,
+          room: room.room,
+          roomPrice: room.roomPrice,
+          roomPhotoLink: room.roomPhotoLink,
+          city,
+          options,
+          total: totalPrice,
+          extraTravellers: voyageurs.adults - 1,
+          extraBabies: voyageurs.babies,
+          extraChilds: voyageurs.childs,
+          endDate,
+          startDate,
+          minimumNights,
+          totalExtraTravellersPrice:
+            (voyageurs.childs + (voyageurs.adults - 1) + voyageurs.babies) *
+            450,
+          totalSelectedNights,
+        })
+        .then(() => {
+          window.location.reload();
+          setUpdateSuccess(true);
+          setLoadingUpdate(false);
+        })
+        .catch((err) => {});
+    }
+  };
+
+  const surgeriesName = () => {
+    const surgeryNames = [];
+    booking.surgeries.map((operation) =>
+      surgeryNames.push(operation.surgeryName)
+    );
+    if (surgeryNames.length > 1) {
+      return surgeryNames.join(", ");
+    } else {
+      return surgeryNames[0];
+    }
+  };
+
+  useEffect(() => {
+    setTotalPrice(
+      options
+        .map((option) => option.isChecked && Number(option.price))
+        .reduce((a, b) => a + b, 0) +
+        operations.reduce((prev, curr) => prev + curr.surgeryPrice, 0) +
+        room.roomPrice * totalSelectedNights +
+        hotel.hotelPrice * totalSelectedNights +
+        (voyageurs.childs + (voyageurs.adults - 1) + voyageurs.babies) * 450
+    );
+
+    // set minimumNight
+    setMinimumNights(() => {
+      let minimumNightsTime = [];
+      operations.forEach((operation) => {
+        minimumNightsTime.push(operation.surgeryMinDays);
+      });
+      return Math.max(...minimumNightsTime);
+    });
+
+    // get rooms
+    const getRooms = async () => {
+      const rooms = [];
+      await firebase
+        .firestore()
+        .collection("rooms")
+        .where("hotel", "==", hotel.hotel)
+        .get()
+        .then((snapshot) => {
+          snapshot.forEach((doc) => {
+            rooms.push(doc.data());
+          });
+        })
+        .catch((err) => {});
+      setRooms(rooms);
+    };
+    getRooms();
+  }, [
+    openPopupData,
+    booking,
+    hotel,
+    options,
+    operations,
+    setTotalPrice,
+    room,
+    totalSelectedNights,
+    voyageurs,
+  ]);
+
   return (
     <DashboardUi userProfile={auth.props.userProfile} token={auth.props.token}>
       <div className="col-span-6">
@@ -195,7 +421,7 @@ const Booking = ({ booking, auth, currentOperation }) => {
             <span className="font-bold">Réservation&nbsp;:&nbsp;</span>
             {booking.id}
           </h1>
-          <p>
+          <p className="flex items-center gap-5">
             {/* See client's page */}
             <Link href={`/dashboard/sales/clients/${booking.customer.id}`}>
               <a className="text-blue-500 flex gap-1 items-center">
@@ -206,7 +432,7 @@ const Booking = ({ booking, auth, currentOperation }) => {
         </div>
         <div className="grid grid-cols-3 lg:grid-cols-6 gap-4">
           <div className="col-span-3 space-y-2">
-            <p className="text-sm text-gray-800 uppercase">Données</p>
+            <p className="text-sm text-gray-800 font-bold uppercase">Données</p>
             <div className="h-96 rounded w-full p-4 overflow-y-auto bg-gray-50 border border-gray-500 border-dashed flex">
               <div className="flex flex-col space-y-4">
                 <div>
@@ -231,7 +457,7 @@ const Booking = ({ booking, auth, currentOperation }) => {
                   <p className="text-sm text-gray-800 uppercase font-medium">
                     Opération
                   </p>
-                  <p className="text-gray-600">{booking.surgery}</p>
+                  <p className="text-gray-600">{surgeriesName()}</p>
                 </div>
                 <div>
                   <p className="text-sm text-gray-800 uppercase font-medium">
@@ -280,9 +506,15 @@ const Booking = ({ booking, auth, currentOperation }) => {
                     </p>
                     <p className="text-gray-600">
                       {booking.options.map(
-                        (option) =>
+                        (option, i) =>
                           option.isChecked &&
-                          `${option.name} (+${option.price}€)`
+                          `${
+                            i !== 0 &&
+                            booking.options.filter((opt) => opt.isChecked)
+                              .length > 1
+                              ? ", "
+                              : ""
+                          }${option.name} (+${option.price}€)`
                       )}
                     </p>
                   </div>
@@ -301,9 +533,184 @@ const Booking = ({ booking, auth, currentOperation }) => {
             </div>
           </div>
           <div className="col-span-3 space-y-2">
-            <p className="text-sm text-gray-800 uppercase">Raw data</p>
-            <div className="h-96 overflow-y-scroll w-full bg-blue-50 border-blue-500 p-3 rounded">
+            <p className="text-sm font-bold text-gray-800 uppercase">
+              Raw Data
+            </p>
+            <div className="h-96 overflow-scroll w-full bg-white border-blue-500 p-3 rounded">
               <JSONPretty id="json-pretty" data={booking} />
+            </div>
+          </div>
+
+          <div className="col-span-6 my-10 ">
+            <p className="text-sm font-bold text-gray-800 uppercase mb-5">
+              Modifier les données
+            </p>
+            <div className="bg-white border-gray-200 p-5 rounded border">
+              <div className="flex items-center whitespace-nowrap mb-5 edit-operations flex-wrap gap-2">
+                Vous souhaitez réaliser une
+                {operations.map((operation) => (
+                  <EditOperations
+                    key={operation.surgery}
+                    operation={operation}
+                    setOperations={setOperations}
+                    operationCategories={operationCategories}
+                    operations={operations}
+                    allOperation={allOperation}
+                  />
+                ))}
+                <button
+                  className="bg-shamrock p-1 rounded-full ml-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                  onClick={handleAddNewOperations}
+                  disabled={operations.find(
+                    (opt) => opt.surgeryName === "Choisir une opération"
+                  )}
+                >
+                  <FaPlus color="white" size="10" />
+                </button>
+              </div>
+              <div className="flex items-center whitespace-nowrap mb-5">
+                Votre voyage s&apos;étendra du
+                <span
+                  id="inputStartDate"
+                  className="border p-2 px-4 rounded align-middle mx-2 border-shamrock cursor-pointer w-max"
+                >
+                  <ReactDatePicker
+                    minDate={new Date()}
+                    locale="fr"
+                    dateFormat="dd/MM/yyyy"
+                    selected={new Date(startDate)}
+                    onChange={(date) => setStartDate(date)}
+                  />
+                </span>
+                au
+                <span
+                  id="inputEndDate"
+                  className={`border p-2 px-4 rounded align-middle mx-2 cursor-pointer w-max ${
+                    minimumNights > totalSelectedNights
+                      ? "border-red-600"
+                      : "border-shamrock"
+                  }`}
+                >
+                  <ReactDatePicker
+                    minDate={addDays(startDate, parseInt(minimumNights))}
+                    locale="fr"
+                    selected={new Date(endDate)}
+                    dateFormat="dd/MM/yyyy"
+                    onChange={(date) => {
+                      let timeDiff = Math.abs(
+                        date.getTime() - new Date(booking.startDate).getTime()
+                      );
+                      let numberOfNights = Math.ceil(
+                        timeDiff / (1000 * 3600 * 24)
+                      );
+                      setEndDate(date);
+                      setTotalSelectedNights(numberOfNights);
+                    }}
+                  />
+                </span>
+                pour une durée de {totalSelectedNights} jours.{" "}
+                <span className="ml-2 text-red-400">
+                  {minimumNights > totalSelectedNights
+                    ? `${minimumNights} jours minimum requis`
+                    : ""}
+                </span>
+              </div>
+              <div
+                className="flex items-center whitespace-nowrap mb-5"
+                id="edit-voyageurs"
+              >
+                Vous serez accompagné-e par
+                <EditTravellers
+                  voyageurs={voyageurs}
+                  setVoyageurs={setVoyageurs}
+                />
+                de votre choix pour découvrir
+                <EditCity
+                  city={city}
+                  operations={operations}
+                  cities={cities}
+                  setCity={setCity}
+                />
+              </div>
+              <div className="flex items-center whitespace-nowrap mt-7 mb-7">
+                L&apos;hôtel dans lequel vous résiderez est au
+                <EditHotels
+                  hotel={hotel}
+                  setHotel={setHotel}
+                  city={city}
+                  setOptions={setOptions}
+                />
+                {"("}très bon choix{")"} et vous logerez en
+                <EditRooms rooms={rooms} room={room} setRoom={setRoom} />
+              </div>
+              <div className="flex items-center whitespace-nowrap mb-5 flex-wrap gap-2">
+                Vous avez selectioné les options suivantes :
+                {!options.find(
+                  (option) =>
+                    option.isChecked || option.name === "Choisir une option"
+                )
+                  ? " ajouter une nouvelle option"
+                  : ""}
+                {options.length
+                  ? options.map(
+                      (option, i) =>
+                        (option.isChecked ||
+                          option.name === "Choisir une option") && (
+                          <EditOptions
+                            key={i}
+                            id={i + 1}
+                            option={option}
+                            options={options}
+                            setOptions={setOptions}
+                          />
+                        )
+                    )
+                  : " aucune option"}
+                {options.find((option) => option.isChecked === false) && (
+                  <button
+                    className="bg-shamrock p-1 rounded-full ml-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                    onClick={handleAddNewOptions}
+                    disabled={options.find(
+                      (opt) => opt.name === "Choisir une option"
+                    )}
+                  >
+                    <FaPlus color="white" size="10" />
+                  </button>
+                )}
+              </div>
+              <div className="flex items-center mt-14">
+                Le prix tout compris de votre voyage sur-mesure est de{" "}
+                <span className="border text-white whitespace-nowrap block p-2 px-4 border-shamrock bg-shamrock rounded  mx-3">
+                  {formatPrice(totalPrice)} €
+                </span>
+              </div>
+              <button
+                disabled={
+                  !rooms.find(
+                    (bookingRoom) => room.roomName === bookingRoom.name
+                  ) ||
+                  options.find((opt) => opt.name === "Choisir une option") ||
+                  operations.find(
+                    (opt) => opt.surgeryName === "Choisir une opération"
+                  ) ||
+                  loadingUpdate ||
+                  minimumNights > totalSelectedNights
+                }
+                className="min-w-max transition px-5 py-3 mt-10 bg-shamrock text-white rounded border cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-shamrock disabled:text-white group hover:bg-white border-shamrock hover:text-shamrock"
+                onClick={handleUpdate}
+              >
+                {loadingUpdate ? (
+                  <span className="flex items-center">
+                    Chargement en cours
+                    <FaCircleNotch className="animate-spin ml-2" />
+                  </span>
+                ) : (
+                  "Mettre à jour"
+                )}
+              </button>
+              {updateSuccess && (
+                <UpdateSuccessPopup close={() => setUpdateSuccess(false)} />
+              )}
             </div>
           </div>
           <div className="col-span-1 lg:col-span-2">
@@ -375,7 +782,7 @@ const Booking = ({ booking, auth, currentOperation }) => {
                   Cette action entrainera l&apos;envoi du devis par e-mail,
                   ainsi que d&apos;un lien pour procéder au règlement.
                 </p>
-                <p className="text-sm flex items-center items-center gap-2">
+                <p className="text-sm flex items-center gap-2">
                   <span className="font-bold">Utiliser solde parrainage :</span>{" "}
                   {booking.customer.referalBalance || 0} €
                   <input

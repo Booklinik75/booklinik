@@ -40,6 +40,33 @@ export const getServerSideProps = async (ctx) => {
         });
     });
 
+  // to get all names surgeries
+  const surgeriesName = () => {
+    const surgeryNames = [];
+    booking.surgeries.map((operation) =>
+      surgeryNames.push(operation.surgeryName)
+    );
+    if (surgeryNames.length > 1) {
+      return surgeryNames.join(", ");
+    } else {
+      return surgeryNames[0];
+    }
+  };
+
+  // to get all names surgeries category
+  const surgeryCategoriesName = () => {
+    const surgeryNameCategories = [];
+    booking.surgeries.map((operation) =>
+      surgeryNameCategories.push(operation.surgeryCategoryName)
+    );
+    if (surgeryNameCategories.length > 1) {
+      let uniqueCategories = [...new Set(surgeryNameCategories)];
+      return uniqueCategories.join(", ");
+    } else {
+      return surgeryNameCategories[0];
+    }
+  };
+
   const stripeSession = await fetch(
     `${process.env.ABSOLUTE_URL_ORIGIN}/api/retrieve_stripe_session/${session_id}`,
     {
@@ -67,8 +94,8 @@ export const getServerSideProps = async (ctx) => {
               dynamicTemplateData: {
                 booking: {
                   id: booking.id,
-                  surgeryName: booking.surgeryName,
-                  surgeryCategoryName: booking.surgeryCategoryName,
+                  surgeryName: surgeriesName(),
+                  surgeryCategoryName: surgeryCategoriesName(),
                   link: `https://${process.env.ABSOLUTE_URL_ORIGIN}/dashboard/operations/${booking.id}`,
                 },
                 payment: {
@@ -93,8 +120,19 @@ export const getServerSideProps = async (ctx) => {
 
   if (stripeSession.redirect) return stripeSession;
 
-  booking.startDate = new Date(booking.startDate.toDate()).toString();
-  booking.endDate = new Date(booking.endDate.toDate()).toString();
+  booking.startDate =
+    typeof booking.startDate === "string"
+      ? booking.startDate
+      : new Date(booking.startDate.toDate()).toString();
+  booking.endDate =
+    typeof booking.endDate === "string"
+      ? booking.endDate
+      : new Date(booking.endDate.toDate()).toString();
+  booking.created = booking.created
+    ? typeof booking.created === "string"
+      ? booking.created
+      : new Date(booking?.created?.toDate()).toString()
+    : "";
 
   const stripeArgs = {
     success: success || null,
@@ -117,6 +155,35 @@ const Checkout = ({ booking, stripeArgs, auth, stripeSession }) => {
   const [promoCode, setPromoCode] = useState(null);
   const [promoCodeInput, setPromoCodeInput] = useState(false);
 
+  
+  // to get all names surgeries
+  const surgeriesName = () => {
+    const surgeryNames = [];
+    booking.surgeries.map((operation) =>
+      surgeryNames.push(operation.surgeryName)
+    );
+    if (surgeryNames.length > 1) {
+      return surgeryNames.join(", ");
+    } else {
+      return surgeryNames[0];
+    }
+  };
+
+  // to get all names surgeries category
+  const surgeryCategoriesName = () => {
+    const surgeryNameCategories = [];
+    booking.surgeries.map((operation) =>
+      surgeryNameCategories.push(operation.surgeryCategoryName)
+    );
+    if (surgeryNameCategories.length > 1) {
+      let uniqueCategories = [...new Set(surgeryNameCategories)];
+      return uniqueCategories.join(", ");
+    } else {
+      return surgeryNameCategories[0];
+    }
+  };
+
+
   const initiatePayment = async () => {
     const stripe = await loadStripe(
       process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
@@ -130,7 +197,7 @@ const Checkout = ({ booking, stripeArgs, auth, stripeSession }) => {
         price: booking.alternativeTotal
           ? booking.alternativeTotal
           : booking.total,
-        product: booking.surgeryName,
+        product: surgeriesName(),
         image: booking.hotelPhotoLink,
         id: booking.id,
         promoCode,
@@ -191,7 +258,7 @@ const Checkout = ({ booking, stripeArgs, auth, stripeSession }) => {
             <div className="w-full flex gap-2 flex-col">
               <p className="text-xl font-bold">Résumé</p>
               <p>
-                {booking.surgeryCategoryName}, {booking.surgeryName}
+                {surgeryCategoriesName()}, {surgeriesName()}
               </p>
               <p>
                 À <span className="capitalize">{booking.city}</span>, du{" "}

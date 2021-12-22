@@ -35,10 +35,13 @@ module.exports = {
       colors: {
         shamrock: "#33C383",
         bali: "#80A0AB",
+        sidebar: "#FBFFFD",
+        lightGreen: "#D6F4E6",
       },
       outline: {
         shamrock: "2px solid #33C383",
         bali: "2px solid #80A0AB",
+        lightGreen: "2px solid #D6F4E6",
       },
       fontFamily: {
         decorative: ["Hind Siliguri", "Montserrat"],

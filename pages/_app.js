@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import "../styles/globals.css";
 import { AuthProvider } from "../utils/UserContext";
 import { ToastContainer } from "react-toastify";
@@ -8,9 +8,11 @@ import "@uiw/react-markdown-preview/dist/markdown.css";
 import "../styles/calendar.css";
 import moment from "moment";
 import "moment/locale/fr";
-
 import "react-toastify/dist/ReactToastify.css";
 import "react-dropdown/style.css";
+
+import Loading from "components/Loading";
+import { useRouter } from "node_modules/next/dist/client/router";
 
 import "tippy.js/dist/tippy.css";
 
@@ -20,6 +22,9 @@ import "slick-carousel/slick/slick-theme.css";
 moment.locale("fr");
 
 function BooklinikClient({ Component, pageProps }) {
+  const router = useRouter();
+  const [loadingAnimation, setLoadingAnimation] = useState(false);
+
   useEffect(() => {
     window.$crisp = [];
     window.CRISP_WEBSITE_ID = "ab422553-9bcf-4ce4-ac32-d53b0d6e3b6b";
@@ -30,7 +35,21 @@ function BooklinikClient({ Component, pageProps }) {
       s.async = 1;
       d.getElementsByTagName("body")[0].appendChild(s);
     })();
-  });
+
+    // set loading animation each page loaded
+    const handleStart = () => setLoadingAnimation(true);
+    const handleComplete = () => setLoadingAnimation(false);
+    router.events.on("routeChangeStart", handleStart);
+    router.events.on("routeChangeComplete", handleComplete);
+    router.events.on("routeChangeError", handleComplete);
+
+    // Cleanup event listeners
+    return () => {
+      router.events.off("routeChangeStart", handleStart);
+      router.events.off("routeChangeComplete", handleComplete);
+      router.events.off("routeChangeError", handleComplete);
+    };
+  }, [router]);
 
   return (
     <>
@@ -58,6 +77,7 @@ function BooklinikClient({ Component, pageProps }) {
           <meta name="msapplication-TileColor" content="#33c783" />
           <meta name="theme-color" content="#33c783" />
         </Head>
+        {loadingAnimation && <Loading />}
         <Component {...pageProps} />
         <ToastContainer />
       </AuthProvider>

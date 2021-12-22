@@ -5,9 +5,9 @@ import { HiMenuAlt1 } from "react-icons/hi";
 
 const DashboardNavigation = ({ setIsSideNavOpen }) => {
   return (
-    <div className="flex flex-row w-full justify-between z-50 px-10 py-6 bg-white border-b border-gray-500">
-      <div className="flex items-center gap-4">
-        <button onClick={setIsSideNavOpen} className="block lg:hidden">
+    <div className="relative flex flex-row w-full justify-between z-50 px-10 py-6 bg-white border-b border-gray-500">
+      <div className="flex items-center">
+        <button onClick={setIsSideNavOpen} className="block lg:hidden mr-2">
           <HiMenuAlt1 size={24} />
         </button>
         <Link href="/">

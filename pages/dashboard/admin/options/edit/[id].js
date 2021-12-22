@@ -2,6 +2,7 @@ import DashboardUi from "../../../../../components/DashboardUi";
 import DashboardInput from "../../../../../components/DashboardInput";
 import { useState } from "react";
 import firebase from "../../../../../firebase/clientApp";
+import slugify from "slugify";
 import {
   checkAdmin,
   getHotelNameById,
@@ -40,6 +41,10 @@ const EditOptions = ({ hotelName, id, options, auth }) => {
 
     const list = [...inputList];
     list[index][name] = value;
+    if (e.target.name === "name") {
+      let slug = slugify(e.target.value, { lower: true })
+      list[index]["slug"] = slug;
+    }
     setInputList(list);
   };
 
@@ -48,6 +53,7 @@ const EditOptions = ({ hotelName, id, options, auth }) => {
     setInputList([
       ...inputList,
       {
+        slug: "",
         name: "",
         price: 0,
       },
@@ -120,6 +126,15 @@ const EditOptions = ({ hotelName, id, options, auth }) => {
               <div key={(x, i)}>
                 <div className="space-y-4 p-4 bg-gray-100 rounded shadow">
                   <div className="flex gap-4">
+                    <DashboardInput
+                        type="text"
+                        name="slug"
+                        value={x.slug}
+                        onChange={(e) => handleChange(e, i)}
+                        disabled={true}
+                        label="Slug"
+                        required={true}
+                      />
                     <DashboardInput
                       type="text"
                       onChange={(e) => handleChange(e, i)}

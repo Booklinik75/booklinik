@@ -24,7 +24,7 @@ const FormStepper = ({ children, booking, user, nextStep, setNextStep }) => {
         user: user.uid,
         status: "awaitingDocuments",
         total:
-          Number(booking.surgeryPrice) +
+          Number(booking.surgeries[0].surgeryPrice) +
           Number(booking.totalExtraTravellersPrice) +
           Number(booking.hotelPrice) * Number(booking.totalSelectedNights) +
           Number(booking.roomPrice) * Number(booking.totalSelectedNights) +
@@ -51,7 +51,7 @@ const FormStepper = ({ children, booking, user, nextStep, setNextStep }) => {
     <BookingUi bookingData={booking} step={step}>
       <div className="col-span-12 relative">
         {isSaving && (
-          <div className="w-full h-full absolute z-50 bg-opacity-20 bg-black flex flex-col gap-4 items-center justify-center">
+          <div className="w-full h-full absolute z-30 bg-opacity-20 bg-black flex flex-col gap-4 items-center justify-center">
             <span className="animate-spin">
               <VscLoading size={48} />
             </span>
