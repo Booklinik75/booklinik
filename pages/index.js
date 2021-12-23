@@ -153,7 +153,7 @@ export default function Home({
               className="translate-y-0 transition ease-linear duration-75 bg-white bg-opacity-90 max-w-7xl p-10 md:p-20 rounded-xl"
               ref={mainBox}
             >
-              <h2 className="text-lg md:text-3xl lg:text-4xl font-bold text-center">
+              <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-center">
                 Booklinik, l’unique service de réservation en ligne de tourisme
                 médical en 3 clics !
               </h2>

@@ -98,7 +98,7 @@ export default function Navigation() {
                   <li className="hidden lg:flex group gap-1 items-center">
                     |
                     <Link href="tel:0176350968">
-                      <a className="gap-1 items-center flex transition-colors text-shamrock">
+                      <a className="gap-2 text-lg items-center flex transition-colors text-shamrock">
                         <FaPhone className="stroke-1  text-shamrock"/>
                         +33 1 76 35 09 68
                       </a>
