@@ -155,7 +155,7 @@ const Checkout = ({ booking, stripeArgs, auth, stripeSession }) => {
   const [promoCode, setPromoCode] = useState(null);
   const [promoCodeInput, setPromoCodeInput] = useState(false);
 
-  
+
   // to get all names surgeries
   const surgeriesName = () => {
     const surgeryNames = [];
@@ -313,7 +313,7 @@ const Checkout = ({ booking, stripeArgs, auth, stripeSession }) => {
                   <>
                     <DashboardButton
                       isPayment
-                      defaultText="Payer en carte bancaire"
+                      defaultText="Payer par carte bancaire"
                       onClick={initiatePayment}
                     />
                     <div className="text-center">
