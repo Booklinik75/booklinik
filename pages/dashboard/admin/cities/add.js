@@ -28,7 +28,11 @@ export const getServerSideProps = async (ctx) => {
 };
 
 const AddCity = ({ countriesOptions, auth }) => {
-  const [form, setFormData] = useState({ slug: "", name: "" });
+  const [form, setFormData] = useState({
+    slug: "",
+    name: "",
+    country: countriesOptions[0].label,
+  });
   const [isLoading, setLoading] = useState("idle");
   const [image, setImage] = useState("");
   const router = useRouter();
