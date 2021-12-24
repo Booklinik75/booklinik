@@ -144,7 +144,7 @@ export default function Home({
           marginTop: "-110px",
           backgroundSize: "cover",
         }}
-        className="overflow-y-hidden home__banner"
+        className="overflow-y-hidden home__banner bg-shamrock"
       >
         <div className="flex h-screen items-center justify-center">
           <div className="mx-4 my-12 mt-[6rem] lg:mt-12 shadow md:shadow-none xl:mx-auto md:my-32">

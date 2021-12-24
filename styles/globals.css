@@ -153,9 +153,7 @@ html {
   z-index: 21 !important;
 }
 
-.home__banner {
-  background: #34c38f;
-}
+
 
 @supports (background-attachment: fixed) {
   @media (min-width: 768px) {
