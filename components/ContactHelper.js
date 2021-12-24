@@ -5,6 +5,8 @@ import * as Sentry from "@sentry/browser";
 import moment from "moment";
 import { useRouter } from "next/router";
 import validateContactForm from "../utils/validateContactForm";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
 
 const ContactHelper = () => {
   const [form, setForm] = useState({
@@ -84,6 +86,13 @@ const ContactHelper = () => {
     });
   };
 
+  const handlePhoneNumber = (phone) => {
+    setForm({
+      ...form,
+      phoneNumber: phone,
+    });
+  };
+
   return (
     <div
       className="mx-4 xl:mx-auto max-w-7xl py-14 my-10 rounded-xl bg-shamrock grid gric-cols-1 lg:grid-cols-2 gap-10 px-10 text-white placeholder-white"
@@ -125,20 +134,12 @@ const ContactHelper = () => {
                   ""
                 )}
               </div>
-              <div>
+              <div className={`${errors && errors.phoneNumber ? "error-input" : ""}`}>
                 <p className="uppercase text-sm mb-2">Numéro de téléphone</p>
-                <input
-                  type="text"
-                  className={`w-full bg-transparent border-b outline-none placeholder-white ${
-                    errors && errors.phoneNumber
-                      ? "border-red-600 "
-                      : "border-white"
-                  } p-3`}
-                  placeholder="Numéro de téléphone"
-                  name="phoneNumber"
+                <PhoneInput
+                  country={"fr"}
                   value={form.phoneNumber}
-                  onChange={handleFormChange}
-                  maxLength={10}
+                  onChange={(phone) => handlePhoneNumber(phone)}
                 />
                 {errors && errors.phoneNumber ? (
                   <span className="text-red-600 text-sm mt-3">
