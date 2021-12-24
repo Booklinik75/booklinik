@@ -11,6 +11,7 @@ import { BsThreeDots } from "react-icons/bs";
 import moment from "moment";
 
 const BookingSideNavigation = ({ step, bookingData }) => {
+  console.log("booking data", bookingData);
   return (
     <div
       style={{ height: "calc(100vh - 101px)" }}
@@ -23,8 +24,8 @@ const BookingSideNavigation = ({ step, bookingData }) => {
         <BookingStep currentStep={step} stepId={0}>
           <FaHospital />
           <p>
-            {bookingData.surgeryName !== ""
-              ? bookingData.surgeryName
+            {bookingData.surgeries[0].surgeryName !== ""
+              ? bookingData.surgeries[0].surgeryName
               : "Sélectionnez une opération"}
           </p>
         </BookingStep>
