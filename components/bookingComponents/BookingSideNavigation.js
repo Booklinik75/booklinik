@@ -11,11 +11,10 @@ import { BsThreeDots } from "react-icons/bs";
 import moment from "moment";
 
 const BookingSideNavigation = ({ step, bookingData }) => {
-  console.log("booking data", bookingData);
   return (
     <div
       style={{ height: "calc(100vh - 101px)" }}
-      className="p-6 flex flex-col gap-4"
+      className="p-6 flex flex-col gap-4 lg:pt-32"
     >
       <div className="flex flex-col gap-3">
         <p className="text-xs text-gray-500 uppercase">

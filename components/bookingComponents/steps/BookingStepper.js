@@ -58,7 +58,7 @@ const FormStepper = ({ children, booking, user, nextStep, setNextStep }) => {
             Sauvegarde en cours ...
           </div>
         )}
-        <div className="p-12 lg:p-10">
+        <div className="p-12 pt-32 lg:p-10 lg:pt-32">
           <form
             onSubmit={(e) => {
               e.preventDefault();
