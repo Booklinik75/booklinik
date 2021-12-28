@@ -38,8 +38,8 @@ function BooklinikClient({ Component, pageProps }) {
 
     // axeptio
     window.axeptioSettings = {
-      clientId: "61c86c370b48d5108f27582f",
-      cookiesVersion: "booklinik-base",
+      clientId: process.env.NEXT_PUBLIC_AXEPTIO_CLIENT_ID,
+      cookiesVersion: process.env.NEXT_PUBLIC_AXEPTIO_COOKIES_VERSION,
     };
 
     (function (d, s) {
