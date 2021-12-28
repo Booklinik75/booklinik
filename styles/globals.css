@@ -226,8 +226,8 @@ html body .react-tel-input .selected-flag .arrow {
   border-color: #33c383;
 }
 
-.signup .flag-dropdown.open .selected-flag.open,
-.signup .react-tel-input .selected-flag:hover {
+html body .flag-dropdown.open .selected-flag.open,
+html body .react-tel-input .selected-flag:hover {
   background: transparent;
 }
 .signup .react-tel-input .selected-flag {
