@@ -17,7 +17,7 @@ const Operation = ({ extraStyle, data }) => {
               <Image src={data.icon} width={64} height={64} alt={data.name} />
             )}
             <div className="mt-2">
-              <p className="font-bold">{data.name}</p>
+              <p className="font-thin">{data.name}</p>
             </div>
           </div>
         </a>
