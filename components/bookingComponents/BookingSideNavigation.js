@@ -23,7 +23,8 @@ const BookingSideNavigation = ({ step, bookingData }) => {
         <BookingStep currentStep={step} stepId={0}>
           <FaHospital />
           <p>
-            {bookingData.surgeries[0].surgeryName !== ""
+            {bookingData.surgeries &&
+            bookingData.surgeries[0].surgeryName !== ""
               ? bookingData.surgeries[0].surgeryName
               : "Sélectionnez une opération"}
           </p>

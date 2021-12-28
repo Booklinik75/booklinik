@@ -9,7 +9,9 @@ const BookingTopNavigation = ({ bookingData, priceOverride }) => {
 
   useEffect(() => {
     setEstimate(
-      Number(bookingData.surgeries[0].surgeryPrice) +
+      Number(
+        bookingData.surgeries ? bookingData.surgeries[0].surgeryPrice : 0
+      ) +
         Number(bookingData.totalExtraTravellersPrice) +
         Number(bookingData.hotelPrice) *
           Number(bookingData.totalSelectedNights) +
