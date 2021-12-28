@@ -178,7 +178,7 @@ const SignUp = () => {
       </div>
       <div className="grid grid-cols-10 h-full">
         <div className="flex items-center col-span-10 lg:col-span-6">
-          <div className="mx-auto w-1/2 space-y-6 mt-20">
+          <div className="mx-auto w-3/4 lg:w-1/2 space-y-6 mt-40 lg:mt-20">
             <h1 className="text-4xl">Bienvenue !</h1>
             {error && (
               <p className="text-red-500 flex items-center text-sm gap-1">
