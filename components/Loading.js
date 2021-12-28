@@ -10,6 +10,7 @@ export default function Loading() {
             height="45"
             viewBox="0 0 125 27"
             fill="none"
+            className="w-44 lg:w-56"
             xmlns="http://www.w3.org/2000/svg"
           >
             <g clipPath="url(#clip0_5_2)">
@@ -24,7 +25,7 @@ export default function Loading() {
               </clipPath>
             </defs>
           </svg>
-          <div className="animate-spin absolute top-0 right-0">
+          <div className="animate-spin absolute top-0 -right-2">
             <svg
               width="20"
               height="20"
@@ -48,7 +49,7 @@ export default function Loading() {
           </div>
         </div>
 
-        <p className="mt-3 font-bold text-xl tracking-wide">
+        <p className="mt-2 lg:mt-3 font-bold text-base lg:text-xl tracking-wide">
           Patientez s&apos;il-vous-plait...
         </p>
       </div>
