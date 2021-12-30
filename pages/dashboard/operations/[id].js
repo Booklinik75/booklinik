@@ -93,7 +93,6 @@ export const getServerSideProps = async (ctx) => {
         .get()
         .then((snapshot) => {
           snapshot.forEach((doc) => {
-            console.log("all data", doc.data());
             currentOperations.push(doc.data());
           });
         })

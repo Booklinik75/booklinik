@@ -8,7 +8,7 @@ export default async (req, res) => {
   const client = require("twilio")(account_sid, auth_token);
 
   // format the phone number to E.164 format and use french country code
-  const phone = `+33${body.recipient.substring(1)}`;
+  const phone = body.recipient;
 
   // verify the passed in verification code
   client.verify

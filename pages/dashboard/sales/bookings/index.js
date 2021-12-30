@@ -142,7 +142,6 @@ const BookingsList = ({ auth, bookings }) => {
     tableInstance;
 
   const [newRows, setNewRows] = useState(rows);
-  console.log(rows);
 
   const getFilter = (value) => {
     let newRowLists;
