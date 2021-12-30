@@ -23,19 +23,37 @@ export const getServerSideProps = async (ctx) => {
     });
   };
 
+  let queestiosnAnswered = {};
+  await firebase
+    .firestore()
+    .collection("medicalAnswers")
+    .get()
+    .then((snapshot) => {
+      snapshot.forEach((doc) => {
+        if (doc.id === auth.props.token.uid) {
+          console.log("asd", doc.data());
+          queestiosnAnswered = { ...doc.data(), id: doc.id };
+        }
+      });
+    })
+    .catch((err) => {});
+
   return {
-    props: { auth, medicalQuestions: medicalQuestions() },
+    props: { auth, queestiosnAnswered, medicalQuestions: medicalQuestions() },
   };
 };
 
-const MedicalProfile = ({ auth, medicalQuestions }) => {
+const MedicalProfile = ({ auth, medicalQuestions, queestiosnAnswered }) => {
   const router = useRouter();
   const [user, loading] = useAuthState(firebase.auth());
   const [isLoading, setLoading] = useState("idle");
   const [formData, setFormData] = useState({
-    weight: 0,
-    height: 0,
-    answers: {},
+    weight: queestiosnAnswered.weight ? queestiosnAnswered.weight : 0,
+    height: queestiosnAnswered.height ? queestiosnAnswered.height : 0,
+    answers:
+      typeof queestiosnAnswered.answers === "undefined"
+        ? {}
+        : { ...queestiosnAnswered.answers },
   });
 
   const handleInputChange = (e, index) => {
@@ -51,7 +69,7 @@ const MedicalProfile = ({ auth, medicalQuestions }) => {
               ...formData.answers[name.replace("_value", "")],
               [name.replace("_value", "_title")]:
                 e.target.attributes.ariaDetails.nodeValue,
-              [name]: Boolean(e.target.value),
+              [name]: e.target.value === "false" ? false : true,
             },
           },
         });
@@ -115,6 +133,7 @@ const MedicalProfile = ({ auth, medicalQuestions }) => {
                 placeholder="95 kg"
                 min={0}
                 required={true}
+                value={formData.weight}
                 onChange={(e) => handleInputChange(e, -1)}
                 className="w-full p-3 border outline-none rounded border-gray-400 transition hover:border-bali focus:border-shamrock"
               />
@@ -129,6 +148,7 @@ const MedicalProfile = ({ auth, medicalQuestions }) => {
                 type="number"
                 placeholder="175cm"
                 min={0}
+                value={formData.height}
                 required={true}
                 onChange={(e) => handleInputChange(e, -1)}
                 className=" w-full p-3 border outline-none rounded border-gray-400 transition hover:border-bali focus:border-shamrock"
@@ -148,6 +168,13 @@ const MedicalProfile = ({ auth, medicalQuestions }) => {
                     onChange={(e) => handleInputChange(e, index)}
                     ariaDetails={medicalQuestion.questionContent}
                     required={true}
+                    value={
+                      typeof formData.answers === "undefined"
+                        ? null
+                        : formData?.answers[medicalQuestion.id][
+                            `${medicalQuestion.id}_value`
+                          ]
+                    }
                   >
                     <option selected={true} disabled={true}>
                       Sélectionner
