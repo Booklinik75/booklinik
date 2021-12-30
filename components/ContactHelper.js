@@ -89,7 +89,7 @@ const ContactHelper = () => {
   const handlePhoneNumber = (phone) => {
     setForm({
       ...form,
-      phoneNumber: phone,
+      phoneNumber: `+${phone}`,
     });
   };
 
@@ -134,7 +134,11 @@ const ContactHelper = () => {
                   ""
                 )}
               </div>
-              <div className={`${errors && errors.phoneNumber ? "error-input" : ""}`}>
+              <div
+                className={`${
+                  errors && errors.phoneNumber ? "error-input" : ""
+                }`}
+              >
                 <p className="uppercase text-sm mb-2">Numéro de téléphone</p>
                 <PhoneInput
                   country={"fr"}

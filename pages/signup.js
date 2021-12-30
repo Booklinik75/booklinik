@@ -156,7 +156,7 @@ const SignUp = () => {
   const handlePhoneNumber = (phone) => {
     updateFormData({
       ...formData,
-      phoneNumber: phone,
+      phoneNumber: `+${phone}`,
     });
   };
 
