@@ -31,7 +31,6 @@ export const getServerSideProps = async (ctx) => {
     .then((snapshot) => {
       snapshot.forEach((doc) => {
         if (doc.id === auth.props.token.uid) {
-          console.log("asd", doc.data());
           queestiosnAnswered = { ...doc.data(), id: doc.id };
         }
       });
