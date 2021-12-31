@@ -141,7 +141,7 @@ export default function Home({
         <meta
           name="description"
           content="Booklinik, l'unique service de réservation en ligne de tourisme
-                médical"
+                médical."
         />
       </Head>
 
@@ -161,9 +161,9 @@ export default function Home({
               className="translate-y-0 transition ease-linear duration-75 bg-white bg-opacity-90 max-w-7xl p-10 md:p-20 rounded-xl"
               ref={mainBox}
             >
-              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-center">
+              <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-center">
                 Booklinik, l’unique service de réservation en ligne de tourisme
-                médical
+                médical en 3 clics !
               </h2>
               <h2 className="text-xl md:text-2xl lg:text-3xl text-center mb-12">
                 Estimez et réservez votre voyage esthétique médical
@@ -272,10 +272,10 @@ export default function Home({
           />
           <Advantage
             title="Equipe dédiée"
-            body="L’'assistance booklinik est disponible 
-pour répondre à toutes vos questions 
-avant votre départ. Durant votre 
-séjour, un chauffeur et un traducteur 
+            body="L’'assistance booklinik est disponible
+pour répondre à toutes vos questions
+avant votre départ. Durant votre
+séjour, un chauffeur et un traducteur
 sont mis à votre disposition."
           />
           <Advantage

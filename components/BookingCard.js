@@ -86,7 +86,7 @@ const BookingCard = ({ booking }) => {
               {surgeriesName()} à {booking.city}
             </p>
             <p className="text-sm text-bali font-bold">
-              Witt Istanbul Suites &bull;{" "}
+              {booking.hotelName};{" "}
               {booking.alternativeTotal
                 ? booking.alternativeTotal
                 : booking.total}

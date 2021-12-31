@@ -25,9 +25,9 @@ const Footer = () => {
               <Link href="/a-propos">
                 <a className="hover:underline">À propos de nous</a>
               </Link>
-              <Link href="/mission">
+              {/* <Link href="/mission">
                 <a className="hover:underline">Notre mission</a>
-              </Link>
+              </Link>*/}
               <Link href="/etapes">
                 <a className="hover:underline">Comment ça marche ?</a>
               </Link>
@@ -43,9 +43,9 @@ const Footer = () => {
               <Link href="/legal/faq">
                 <a className="hover:underline">FAQ</a>
               </Link>
-              <Link href="/legal/annulations">
+              {/*<Link href="/legal/annulations">
                 <a className="hover:underline">Options d&apos;annulation</a>
-              </Link>
+              </Link>*/}
               <Link href="/legal/confidentialite">
                 <a className="hover:underline">Confidentialité</a>
               </Link>
@@ -54,30 +54,30 @@ const Footer = () => {
               <p className="uppercase text-sm mb-3">Les opérations</p>
               <div className="flex space-x-5">
                 <div className="flex flex-col text-sm space-y-2">
-                  <Link href="#">
+                  <Link href="/operations">
                     <a className="hover:underline">Greffe de poils</a>
                   </Link>
-                  <Link href="#">
+                  <Link href="/operations">
                     <a className="hover:underline">Chirurgie mammaire</a>
                   </Link>
-                  <Link href="#">
+                  <Link href="/operations">
                     <a className="hover:underline">Chirurgie du corps</a>
                   </Link>
-                  <Link href="#">
+                  <Link href="/operations">
                     <a className="hover:underline">Chirurgie des fesses</a>
                   </Link>
                 </div>
                 <div className="flex flex-col text-sm space-y-2">
-                  <Link href="#">
+                  <Link href="/operations">
                     <a className="hover:underline">Chirurgie du visage</a>
                   </Link>
-                  <Link href="#">
+                  <Link href="/operations">
                     <a className="hover:underline">Chirurgie de l&apos;oeil</a>
                   </Link>
-                  <Link href="#">
+                  <Link href="/operations">
                     <a className="hover:underline">Dentaires</a>
                   </Link>
-                  <Link href="#">
+                  <Link href="/operations">
                     <a className="hover:underline text-gray-400">Voir tout +</a>
                   </Link>
                 </div>
