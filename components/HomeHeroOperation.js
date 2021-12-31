@@ -28,7 +28,7 @@ const Operation = ({ extraStyle, data, surgeries }) => {
               <Image src={data.icon} width={64} height={64} alt={data.name} />
             )}
             <div className="mt-2 flex flex-col items-center">
-              <p className="font-bold">{data.name}</p>
+              <p className="font-thin">{data.name}</p>
               {data.slug !== "others" ? (
                 <span className="italic mt-2 w-100 text-gray-400 text-sm block">
                   À partir de {getStartingPrice()}€
