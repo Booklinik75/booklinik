@@ -14,6 +14,7 @@ import ContactHelper from "../components/ContactHelper";
 import { getFrontEndAsset } from "../utils/ClientHelpers";
 import {
   getOperationCategories,
+  getSurgeries,
   getBackEndAsset,
   getSetting,
 } from "../utils/ServerHelpers";
@@ -26,6 +27,7 @@ import { useEffect, useRef } from "react";
 export const getServerSideProps = async (ctx) => {
   const heroImage = await getFrontEndAsset("image-asset.jpg");
   let categories = await getOperationCategories();
+  const surgeries = await getSurgeries();
   let categoriesSettings = await getSetting("surgeryCategoriesOrdering");
 
   await Promise.all(
@@ -93,7 +95,13 @@ export const getServerSideProps = async (ctx) => {
   );
 
   return {
-    props: { heroImage, categories, categoriesSettings, offers: offersArray }, // will be passed to the page component as props
+    props: {
+      heroImage,
+      categories,
+      categoriesSettings,
+      offers: offersArray,
+      surgeries,
+    }, // will be passed to the page component as props
   };
 };
 
@@ -102,6 +110,7 @@ export default function Home({
   categories,
   categoriesSettings,
   offers,
+  surgeries,
 }) {
   const mainBox = useRef(null);
   const discoverBookLinkText = useRef(null);
@@ -168,7 +177,7 @@ export default function Home({
                         className="col-span-1 lg:col-span-2"
                         key={category.slug}
                       >
-                        <Operation data={category} />
+                        <Operation data={category} surgeries={surgeries} />
                       </div>
                     ) : (
                       ""
