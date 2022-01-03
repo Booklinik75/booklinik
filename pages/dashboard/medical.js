@@ -170,7 +170,10 @@ const MedicalProfile = ({ auth, medicalQuestions, queestiosnAnswered }) => {
                     value={
                       typeof formData.answers === "undefined"
                         ? null
-                        : formData?.answers[medicalQuestion.id][
+                        : typeof formData.answers[medicalQuestion.id] ===
+                          "undefined"
+                        ? null
+                        : formData.answers[medicalQuestion.id][
                             `${medicalQuestion.id}_value`
                           ]
                     }
