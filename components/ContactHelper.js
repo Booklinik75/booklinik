@@ -106,7 +106,7 @@ const ContactHelper = () => {
         <p className="mt-4 mb-2">Par téléphone au</p>
         <Link href="tel:0176350968">
           <a className="hover:underline text-xl font-bold flex items-center">
-            01 76 35 09 68
+            +33 1 76 35 09 68
           </a>
         </Link>
       </div>
