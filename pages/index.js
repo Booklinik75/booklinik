@@ -14,6 +14,7 @@ import ContactHelper from "../components/ContactHelper";
 import { getFrontEndAsset } from "../utils/ClientHelpers";
 import {
   getOperationCategories,
+  getSurgeries,
   getBackEndAsset,
   getSetting,
 } from "../utils/ServerHelpers";
@@ -26,6 +27,7 @@ import { useEffect, useRef } from "react";
 export const getServerSideProps = async (ctx) => {
   const heroImage = await getFrontEndAsset("image-asset.jpg");
   let categories = await getOperationCategories();
+  const surgeries = await getSurgeries();
   let categoriesSettings = await getSetting("surgeryCategoriesOrdering");
 
   await Promise.all(
@@ -93,7 +95,13 @@ export const getServerSideProps = async (ctx) => {
   );
 
   return {
-    props: { heroImage, categories, categoriesSettings, offers: offersArray }, // will be passed to the page component as props
+    props: {
+      heroImage,
+      categories,
+      categoriesSettings,
+      offers: offersArray,
+      surgeries,
+    }, // will be passed to the page component as props
   };
 };
 
@@ -102,6 +110,7 @@ export default function Home({
   categories,
   categoriesSettings,
   offers,
+  surgeries,
 }) {
   const mainBox = useRef(null);
   const discoverBookLinkText = useRef(null);
@@ -140,15 +149,14 @@ export default function Home({
 
       <div
         style={{
-          backgroundImage: "url(/assets/background-booklinik.jpeg)",
           height: "95vh",
           marginTop: "-110px",
           backgroundSize: "cover",
         }}
-        className="overflow-y-hidden home__banner"
+        className="overflow-y-hidden home__banner bg-shamrock"
       >
         <div className="flex h-screen items-center justify-center">
-          <div className="mx-4 my-12 mt-[6rem] lg:mt-12 shadow md:shadow-none xl:mx-auto md:my-32">
+          <div className="mx-0 my-0 mt-[6rem] lg:mt-12 shadow md:shadow-none xl:mx-auto md:my-0">
             <div
               className="translate-y-0 transition ease-linear duration-75 bg-white bg-opacity-90 max-w-7xl p-10 md:p-20 rounded-xl"
               ref={mainBox}
@@ -157,7 +165,7 @@ export default function Home({
                 Booklinik, l’unique service de réservation en ligne de tourisme
                 médical en 3 clics !
               </h2>
-              <h2 className="text-xl md:text-2xl lg:text-3xl text-center mb-12">
+              <h2 className="text-xl md:text-2xl lg:text-3xl text-center mb-6">
                 Estimez et réservez votre voyage esthétique médical
               </h2>
               <div className="grid grid-cols-3 md:grid-cols-3 lg:grid-cols-10 gap-6 home-hero-surgery-categories">
@@ -169,7 +177,7 @@ export default function Home({
                         className="col-span-1 lg:col-span-2"
                         key={category.slug}
                       >
-                        <Operation data={category} />
+                        <Operation data={category} surgeries={surgeries} />
                       </div>
                     ) : (
                       ""
@@ -182,7 +190,7 @@ export default function Home({
         </div>
       </div>
 
-      <div className="mx-4 xl:mx-auto max-w-7xl py-10">
+      <div className="mx-4 xl:mx-auto max-w-7xl py-5">
         <div className="flex flex-row items-baseline justify-between mb-2">
           <h3 className="text-xl mr-2">
             Découvrez les offres Booklinik du moment

@@ -5,7 +5,7 @@ import { firebaseAdmin } from "firebase/clientAdmin";
 import firebase from "firebase/clientApp";
 import Link from "next/link";
 import { SiFirebase } from "react-icons/si";
-import { FaUserAlt, FaCalendar } from "react-icons/fa";
+import { FaUserAlt, FaCalendar, FaPlus } from "react-icons/fa";
 import moment from "moment";
 import DashboardOperationCard from "components/DashboardOperationCard";
 import Dropdown from "react-dropdown";
@@ -55,21 +55,65 @@ export const getServerSideProps = async (ctx) => {
         });
     });
 
+  let medicalQuestions = [];
+  await firebase
+    .firestore()
+    .collection("medicalQuestions")
+    .get()
+    .then((snapshot) => {
+      snapshot.forEach((doc) => {
+        medicalQuestions.push({ ...doc.data(), id: doc.id });
+      });
+    });
+  let queestiosnAnswered = {};
+  await firebase
+    .firestore()
+    .collection("medicalAnswers")
+    .get()
+    .then((snapshot) => {
+      snapshot.forEach((doc) => {
+        if (doc.id === id) {
+          console.log("asd", doc.data());
+          queestiosnAnswered = { ...doc.data(), id: doc.id };
+        }
+      });
+    })
+    .catch((err) => {});
+
   userBookings.map((userBooking) => {
-    userBooking.startDate = new Date(userBooking.startDate.toDate()).toString();
-    userBooking.endDate = new Date(userBooking.endDate.toDate()).toString();
+    userBooking.startDate =
+      typeof userBooking.startDate === "string"
+        ? userBooking.startDate
+        : new Date(userBooking.startDate.toDate()).toString();
+    userBooking.endDate =
+      typeof userBooking.endDate === "string"
+        ? userBooking.endDate
+        : new Date(userBooking.endDate.toDate()).toString();
+    userBooking.created = userBooking.created
+      ? typeof userBooking.created === "string"
+        ? userBooking.created
+        : new Date(userBooking?.created?.toDate()).toString()
+      : "";
   });
 
   return {
     props: {
       auth,
       user,
+      queestiosnAnswered,
+      medicalQuestions,
       userBookings,
     },
   };
 };
 
-const Customer = ({ auth, user, userBookings }) => {
+const Customer = ({
+  auth,
+  user,
+  queestiosnAnswered,
+  medicalQuestions,
+  userBookings,
+}) => {
   const router = useRouter();
 
   const roleOptions = [
@@ -84,6 +128,8 @@ const Customer = ({ auth, user, userBookings }) => {
     roleOptions.filter((r) => r.value === user.details.role)[0]
   );
 
+  console.log(queestiosnAnswered);
+
   useEffect(() => {
     if (
       user.details.role === "admin" &&
@@ -91,7 +137,7 @@ const Customer = ({ auth, user, userBookings }) => {
     )
       return;
 
-    if (role.value !== user.details.role) {
+    if (role?.value !== user.details.role) {
       firebase
         .firestore()
         .collection("users")
@@ -230,6 +276,58 @@ const Customer = ({ auth, user, userBookings }) => {
                 <span className="text-gray-400">Aucune réservation</span>
               )}
             </div>
+          </div>
+          <div>
+            <h2 className="text-2xl flex items-center gap-1 mb-2">
+              <FaPlus size={20} className="text-red-600" /> Médicales
+            </h2>
+            <p>
+              <span className="font-bold">Poids :</span>{" "}
+              {queestiosnAnswered.weight ? (
+                `${queestiosnAnswered.weight} kg`
+              ) : (
+                <span className="text-gray-400">null</span>
+              )}
+            </p>
+            <p>
+              <span className="font-bold">Taille :</span>{" "}
+              {queestiosnAnswered.height ? (
+                `${queestiosnAnswered.height} cm`
+              ) : (
+                <span className="text-gray-400">null</span>
+              )}
+            </p>
+            <>
+              {medicalQuestions.length > 0 ? (
+                medicalQuestions.map((medicalQuestion) => (
+                  <p key={medicalQuestion.id}>
+                    <span className="font-bold">
+                      {medicalQuestion.questionContent.includes("?")
+                        ? medicalQuestion.questionContent.split("?")[0]
+                        : medicalQuestion.questionContent}{" "}
+                      :
+                    </span>{" "}
+                    {typeof queestiosnAnswered.answers === "undefined" ? (
+                      <span className="text-gray-400">null</span>
+                    ) : typeof queestiosnAnswered.answers[
+                        medicalQuestion.id
+                      ] !== "undefined" ? (
+                      queestiosnAnswered.answers[medicalQuestion.id][
+                        `${medicalQuestion.id}_value`
+                      ] ? (
+                        "Oui"
+                      ) : (
+                        "Non" || <span className="text-gray-400">null</span>
+                      )
+                    ) : (
+                      <span className="text-gray-400">null</span>
+                    )}
+                  </p>
+                ))
+              ) : (
+                <span className="text-gray-400">Aucune réponse médicale</span>
+              )}
+            </>
           </div>
         </div>
       </div>

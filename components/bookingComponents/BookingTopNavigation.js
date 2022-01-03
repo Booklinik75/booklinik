@@ -9,7 +9,9 @@ const BookingTopNavigation = ({ bookingData, priceOverride }) => {
 
   useEffect(() => {
     setEstimate(
-      Number(bookingData.surgeries[0].surgeryPrice) +
+      Number(
+        bookingData.surgeries ? bookingData.surgeries[0].surgeryPrice : 0
+      ) +
         Number(bookingData.totalExtraTravellersPrice) +
         Number(bookingData.hotelPrice) *
           Number(bookingData.totalSelectedNights) +
@@ -22,7 +24,7 @@ const BookingTopNavigation = ({ bookingData, priceOverride }) => {
   }, [bookingData]);
 
   return (
-    <div className="flex flex-row w-full items-center justify-between z-50 px-10 py-6 bg-white border-b border-gray-500">
+    <div className="flex flex-row w-full items-center justify-between z-50 px-10 py-6 bg-white border-b border-gray-500 fixed">
       <div>
         <Link href="/">
           <a>

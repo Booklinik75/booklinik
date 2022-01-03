@@ -14,7 +14,7 @@ const BookingSideNavigation = ({ step, bookingData }) => {
   return (
     <div
       style={{ height: "calc(100vh - 101px)" }}
-      className="p-6 flex flex-col gap-4"
+      className="p-6 flex flex-col gap-4 lg:pt-32"
     >
       <div className="flex flex-col gap-3">
         <p className="text-xs text-gray-500 uppercase">
@@ -23,8 +23,9 @@ const BookingSideNavigation = ({ step, bookingData }) => {
         <BookingStep currentStep={step} stepId={0}>
           <FaHospital />
           <p>
-            {bookingData.surgeryName !== ""
-              ? bookingData.surgeryName
+            {bookingData.surgeries &&
+            bookingData.surgeries[0].surgeryName !== ""
+              ? bookingData.surgeries[0].surgeryName
               : "Sélectionnez une opération"}
           </p>
         </BookingStep>
