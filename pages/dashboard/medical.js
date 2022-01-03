@@ -23,7 +23,7 @@ export const getServerSideProps = async (ctx) => {
     });
   };
 
-  let queestiosnAnswered = {};
+  let questionsAnswered = {};
   await firebase
     .firestore()
     .collection("medicalAnswers")
@@ -31,28 +31,28 @@ export const getServerSideProps = async (ctx) => {
     .then((snapshot) => {
       snapshot.forEach((doc) => {
         if (doc.id === auth.props.token.uid) {
-          queestiosnAnswered = { ...doc.data(), id: doc.id };
+          questionsAnswered = { ...doc.data(), id: doc.id };
         }
       });
     })
     .catch((err) => {});
 
   return {
-    props: { auth, queestiosnAnswered, medicalQuestions: medicalQuestions() },
+    props: { auth, questionsAnswered: questionsAnswered, medicalQuestions: medicalQuestions() },
   };
 };
 
-const MedicalProfile = ({ auth, medicalQuestions, queestiosnAnswered }) => {
+const MedicalProfile = ({ auth, medicalQuestions, questionsAnswered }) => {
   const router = useRouter();
   const [user, loading] = useAuthState(firebase.auth());
   const [isLoading, setLoading] = useState("idle");
   const [formData, setFormData] = useState({
-    weight: queestiosnAnswered.weight ? queestiosnAnswered.weight : 0,
-    height: queestiosnAnswered.height ? queestiosnAnswered.height : 0,
+    weight: questionsAnswered.weight ? questionsAnswered.weight : 0,
+    height: questionsAnswered.height ? questionsAnswered.height : 0,
     answers:
-      typeof queestiosnAnswered.answers === "undefined"
+      typeof questionsAnswered.answers === "undefined"
         ? {}
-        : { ...queestiosnAnswered.answers },
+        : { ...questionsAnswered.answers },
   });
 
   const handleInputChange = (e, index) => {
