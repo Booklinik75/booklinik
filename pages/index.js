@@ -117,8 +117,8 @@ export default function Home({
 
   useEffect(() => {
     // parallax effect
-    window.onscroll = () => {
-      if (mainBox.current && window.innerWidth > 768) {
+    if (mainBox && mainBox.current && window.innerWidth > 768) {
+      window.onscroll = () => {
         mainBox.current.style.transform = `translateY(-${
           window.scrollY / 15
         }%)`;
@@ -130,8 +130,8 @@ export default function Home({
         } else {
           discoverBookLinkText.current.style.transform = `translateY(0%)`;
         }
-      }
-    };
+      };
+    }
   }, []);
 
   return (
