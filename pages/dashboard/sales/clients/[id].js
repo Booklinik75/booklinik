@@ -65,7 +65,7 @@ export const getServerSideProps = async (ctx) => {
         medicalQuestions.push({ ...doc.data(), id: doc.id });
       });
     });
-  let queestiosnAnswered = {};
+  let questionsAnswered = {};
   await firebase
     .firestore()
     .collection("medicalAnswers")
@@ -73,8 +73,7 @@ export const getServerSideProps = async (ctx) => {
     .then((snapshot) => {
       snapshot.forEach((doc) => {
         if (doc.id === id) {
-          console.log("asd", doc.data());
-          queestiosnAnswered = { ...doc.data(), id: doc.id };
+          questionsAnswered = { ...doc.data(), id: doc.id };
         }
       });
     })
@@ -100,7 +99,7 @@ export const getServerSideProps = async (ctx) => {
     props: {
       auth,
       user,
-      queestiosnAnswered,
+      questionsAnswered,
       medicalQuestions,
       userBookings,
     },
@@ -110,7 +109,7 @@ export const getServerSideProps = async (ctx) => {
 const Customer = ({
   auth,
   user,
-  queestiosnAnswered,
+  questionsAnswered,
   medicalQuestions,
   userBookings,
 }) => {
@@ -127,8 +126,6 @@ const Customer = ({
   const [role, setRole] = useState(
     roleOptions.filter((r) => r.value === user.details.role)[0]
   );
-
-  console.log(queestiosnAnswered);
 
   useEffect(() => {
     if (
@@ -283,16 +280,16 @@ const Customer = ({
             </h2>
             <p>
               <span className="font-bold">Poids :</span>{" "}
-              {queestiosnAnswered.weight ? (
-                `${queestiosnAnswered.weight} kg`
+              {questionsAnswered.weight ? (
+                `${questionsAnswered.weight} kg`
               ) : (
                 <span className="text-gray-400">null</span>
               )}
             </p>
             <p>
               <span className="font-bold">Taille :</span>{" "}
-              {queestiosnAnswered.height ? (
-                `${queestiosnAnswered.height} cm`
+              {questionsAnswered.height ? (
+                `${questionsAnswered.height} cm`
               ) : (
                 <span className="text-gray-400">null</span>
               )}
@@ -307,12 +304,12 @@ const Customer = ({
                         : medicalQuestion.questionContent}{" "}
                       :
                     </span>{" "}
-                    {typeof queestiosnAnswered.answers === "undefined" ? (
+                    {typeof questionsAnswered.answers === "undefined" ? (
                       <span className="text-gray-400">null</span>
-                    ) : typeof queestiosnAnswered.answers[
+                    ) : typeof questionsAnswered.answers[
                         medicalQuestion.id
                       ] !== "undefined" ? (
-                      queestiosnAnswered.answers[medicalQuestion.id][
+                      questionsAnswered.answers[medicalQuestion.id][
                         `${medicalQuestion.id}_value`
                       ] ? (
                         "Oui"
