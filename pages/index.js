@@ -166,7 +166,7 @@ export default function Home({
                 médical en 3 clics !
               </h2>
               <h2 className="text-xl md:text-2xl lg:text-3xl text-center mb-6">
-                Estimez et réservez votre voyage esthétique médical
+                Estimez et réservez votre voyage esthétique
               </h2>
               <div className="grid grid-cols-3 md:grid-cols-3 lg:grid-cols-10 gap-6 home-hero-surgery-categories">
                 {categoriesSettings.map((orderedCategory) => {
