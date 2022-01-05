@@ -49,6 +49,7 @@ const Values = () => {
         fileName={fileName}
         fullWidth={true}
         discover={true}
+        extraLarge={true}
       />
 
       <div className="">
