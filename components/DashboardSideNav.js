@@ -63,7 +63,7 @@ const DashboardSideNav = ({ userProfile, token, isSideNavOpen }) => {
 
   return (
     <div
-      className={`z-30 h-full lg:col-span-2 absolute lg:sticky 
+      className={`z-30 h-full lg:col-span-2 absolute lg:sticky
     bg-white lg:bg-transparent shadow lg:shadow-none border-r lg:border-0 border-gray-400 w-3/5 lg:w-96
     ${isSideNavOpen ? "block" : "hidden lg:flex"}
     `}
@@ -284,6 +284,10 @@ const DashboardSideNav = ({ userProfile, token, isSideNavOpen }) => {
               >
                 Se déconnecter
               </a>
+            </div>
+            <div className="flex items-center">
+              <a href="/book" className="w-full bg-shamrock text-white uppercase font-2xl text-center py-3 rounded my-6">
+                Estimation - Reservation</a>
             </div>
           </div>
         </div>
