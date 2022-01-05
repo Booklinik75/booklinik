@@ -14,7 +14,11 @@ const SurgerySelectStep = ({
 }) => {
   useEffect(() => {
     // setNextStep to true when all inputs are filled
-    if (getSurgeryCategory.surgeryCategory && booking.surgeries[0].surgery) {
+    if (
+      getSurgeryCategory.surgeryCategory &&
+      booking.surgeries &&
+      booking.surgeries[0].surgery
+    ) {
       setNextStep(true);
     }
   }, [booking]);

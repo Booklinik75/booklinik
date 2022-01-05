@@ -36,6 +36,20 @@ function BooklinikClient({ Component, pageProps }) {
       d.getElementsByTagName("body")[0].appendChild(s);
     })();
 
+    // axeptio
+    window.axeptioSettings = {
+      clientId: process.env.NEXT_PUBLIC_AXEPTIO_CLIENT_ID,
+      cookiesVersion: process.env.NEXT_PUBLIC_AXEPTIO_COOKIES_VERSION,
+    };
+
+    (function (d, s) {
+      var t = d.getElementsByTagName(s)[0],
+        e = d.createElement(s);
+      e.async = true;
+      e.src = "https://static.axept.io/sdk-slim.js";
+      t.parentNode.insertBefore(e, t);
+    })(document, "script");
+
     // set loading animation each page loaded
     const handleStart = () => setLoadingAnimation(true);
     const handleComplete = () => setLoadingAnimation(false);

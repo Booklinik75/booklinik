@@ -92,6 +92,7 @@ html {
   }
 }
 /* to change to scrollbar style */
+.react-tel-input .country-list,
 .dropdown-options,
 .dropdown-hotels,
 .dropdown-cities,
@@ -99,6 +100,7 @@ html {
   scrollbar-width: 0.5rem;
 }
 
+.react-tel-input .country-list::-webkit-scrollbar,
 .dropdown-options::-webkit-scrollbar,
 .dropdown-hotels::-webkit-scrollbar,
 .dropdown-cities::-webkit-scrollbar,
@@ -107,6 +109,7 @@ html {
   cursor: pointer;
 }
 
+.react-tel-input .country-list::-webkit-scrollbar-track,
 .dropdown-options::-webkit-scrollbar-track,
 .dropdown-hotels::-webkit-scrollbar-track,
 .dropdown-cities::-webkit-scrollbar-track,
@@ -114,6 +117,7 @@ html {
   background-color: transparent;
 }
 
+.react-tel-input .country-list::-webkit-scrollbar-thumb,
 .dropdown-options::-webkit-scrollbar-thumb,
 .dropdown-hotels::-webkit-scrollbar-thumb,
 .dropdown-cities::-webkit-scrollbar-thumb,
@@ -157,6 +161,79 @@ html {
   @media (min-width: 768px) {
     .home__banner {
       background-attachment: fixed;
+      background-image: url(/assets/background-booklinik.jpeg);
     }
   }
+}
+
+/* adjust design phone number from npm package to more like our input */
+html body .react-tel-input .form-control {
+  border: none;
+  border-radius: 0;
+  border-bottom: 1px solid;
+  width: 100%;
+  background: transparent;
+  font-family: "Circular", "Montserrat", "sans-serif" !important;
+}
+
+.error-input .react-tel-input .form-control {
+  border-color: #c62626;
+}
+
+html body .react-tel-input .flag-dropdown {
+  background: transparent;
+  border: none;
+}
+
+.react-tel-input .country-list .country-name {
+  color: #000;
+  font-family: "Circular", "Montserrat", "sans-serif" !important;
+}
+
+html body .react-tel-input .country-list {
+  border-radius: 0.25rem;
+  border: 1px solid #33c383;
+}
+
+html body .react-tel-input .flag-dropdown.open {
+  background: transparent;
+}
+html body .react-tel-input .selected-flag .arrow.up {
+  border-bottom: 4px solid #fff;
+}
+html body .react-tel-input .selected-flag .arrow {
+  border-top: 4px solid #fff;
+}
+/* for signup page phonenumber */
+.signup .special-label {
+  display: none;
+}
+
+.signup .react-tel-input .form-control {
+  --tw-space-y-reverse: 0;
+  margin-bottom: calc(0.75rem * var(--tw-space-y-reverse));
+  padding: 0.75rem;
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  --tw-border-opacity: 1;
+  padding-left: 2.5rem;
+  height: unset;
+  border-radius: 0.25rem;
+  border: 2px solid rgba(209, 213, 219, var(--tw-border-opacity));
+}
+
+.signup .react-tel-input .form-control:focus {
+  border-color: #33c383;
+}
+
+html body .flag-dropdown.open .selected-flag.open,
+html body .react-tel-input .selected-flag:hover {
+  background: transparent;
+}
+.signup .react-tel-input .selected-flag {
+  padding-left: 10px;
+}
+
+.signup .react-tel-input .country-list {
+  max-height: 150px;
 }

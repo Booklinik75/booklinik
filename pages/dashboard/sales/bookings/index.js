@@ -52,6 +52,8 @@ export const getServerSideProps = async (ctx) => {
         ? userBooking.created
         : new Date(userBooking?.created?.toDate()).toString()
       : "";
+    userBooking.customer =
+      typeof userBooking.customer === "undefined" ? null : userBooking.customer;
   });
 
   return {
