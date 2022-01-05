@@ -24,6 +24,7 @@ const KeySteps = () => {
         fileName={fileName}
         discover={true}
         fullWidth={true}
+        extraLarge={true}
       />
 
       <div className="flex flex-col items-center mb-10" id="content">
