@@ -286,8 +286,8 @@ const DashboardSideNav = ({ userProfile, token, isSideNavOpen }) => {
               </a>
             </div>
             <div className="flex items-center">
-            <a href="/book" className="w-full bg-shamrock text-white uppercase font-2xl text-center py-3 rounded my-6">
-            Estimation - Reservation</a>
+              <a href="/book" className="w-full bg-shamrock text-white uppercase font-2xl text-center py-3 rounded my-6">
+              Estimation - Reservation</a>
             </div>
           </div>
         </div>
