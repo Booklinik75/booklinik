@@ -117,8 +117,8 @@ export default function Home({
 
   useEffect(() => {
     // parallax effect
-    if (mainBox && mainBox.current && window.innerWidth > 768) {
-      window.onscroll = () => {
+    const parralaxEffect = () => {
+      if (mainBox && mainBox.current && window.innerWidth > 768) {
         mainBox.current.style.transform = `translateY(-${
           window.scrollY / 15
         }%)`;
@@ -130,8 +130,12 @@ export default function Home({
         } else {
           discoverBookLinkText.current.style.transform = `translateY(0%)`;
         }
-      };
-    }
+      } else {
+        mainBox.current.style.transform = `translateY(0%)`;
+      }
+    };
+    window.onscroll = () => parralaxEffect();
+    window.onresize = () => parralaxEffect();
   }, []);
 
   return (
@@ -147,18 +151,11 @@ export default function Home({
 
       <Navigation />
 
-      <div
-        style={{
-          height: "95vh",
-          marginTop: "-110px",
-          backgroundSize: "cover",
-        }}
-        className="overflow-y-hidden home__banner bg-shamrock"
-      >
-        <div className="flex h-screen items-center justify-center">
+      <div className="bg-cover overflow-y-hidden home__banner bg-shamrock mt-[-120px] p-3 md:h-[calc(100vh+15rem)] lg:h-screen">
+        <div className="flex h-fit lg:h-screen items-center justify-center py-4">
           <div className="mx-0 my-0 mt-[6rem] lg:mt-12 shadow md:shadow-none xl:mx-auto md:my-0">
             <div
-              className="translate-y-0 transition ease-linear duration-75 bg-white bg-opacity-90 max-w-7xl p-10 md:p-20 rounded-xl"
+              className="translate-y-0 transition ease-linear duration-75 bg-white bg-opacity-90 max-w-7xl p-6 md:p-20 rounded-xl md:mb-8"
               ref={mainBox}
             >
               <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-center">
