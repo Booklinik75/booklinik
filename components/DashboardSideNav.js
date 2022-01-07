@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import Link from 'next/link'
 import { useRouter } from "next/router";
 import { useAuth } from "../hooks/useAuth";
 import DashboardSideNavItem from "./DashboardSideNavItem";
@@ -286,8 +287,11 @@ const DashboardSideNav = ({ userProfile, token, isSideNavOpen }) => {
               </a>
             </div>
             <div className="flex items-center">
-              <a href="/book" className="w-full bg-shamrock text-white uppercase font-2xl text-center py-3 rounded my-6">
-              Estimation - Reservation</a>
+              <Link href="/book" passHref={true}>
+                <button className="text-white bg-shamrock rounded px-6 py-3 my-6 transition border border-shamrock hover:text-shamrock hover:bg-white">
+                  Estimaton - Reservation
+                </button>
+              </Link>
             </div>
           </div>
         </div>
