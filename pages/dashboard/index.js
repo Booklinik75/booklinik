@@ -16,7 +16,7 @@ export const getServerSideProps = checkAuth;
 
 export default function DashboardIndex({ userProfile, token }) {
   const [user, loading] = useAuthState(firebase.auth());
-  
+
   const [bookings, setBookings] = useState([]);
   const [message, setMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -106,10 +106,10 @@ export default function DashboardIndex({ userProfile, token }) {
                 </span>
                 ,
               </h1>
-              <p>
+              {/*<p>
                 Bienvenue sur votre profil, renseignez vos informations
                 personnelles.
-              </p>
+              </p>*/}
               {[
                 userProfile.firstName,
                 userProfile.lastName,
