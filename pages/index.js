@@ -149,7 +149,7 @@ export default function Home({
 
       <div
         style={{
-          height: "95vh",
+          height: "100vh",
           marginTop: "-110px",
           backgroundSize: "cover",
         }}
