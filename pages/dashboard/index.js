@@ -106,10 +106,9 @@ export default function DashboardIndex({ userProfile, token }) {
                 </span>
                 ,
               </h1>
-              {/*<p>
-                Bienvenue sur votre profil, renseignez vos informations
-                personnelles.
-              </p>*/}
+              <p>
+                Bienvenue sur votre profil.
+              </p>
               {[
                 userProfile.firstName,
                 userProfile.lastName,
