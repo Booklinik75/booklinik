@@ -28,16 +28,23 @@ const PhotoBanner = ({
   useEffect(() => {
     // parallax effect
     window.onscroll = () => {
-      if (photoBannerTitle.current || photoBannerBody || photoBannerDiscover) {
-        photoBannerTitle.current.style.transform = `translateY(-${
-          window.scrollY / 2
-        }%)`;
-        photoBannerBody.current.style.transform = `translateY(-${
-          window.scrollY / 1.8
-        }%)`;
-        photoBannerDiscover.current.style.transform = `translateY(-${
-          window.scrollY / 1.5
-        }%)`;
+      if (window.location.pathname.split("/")[1] !== "book") {
+        if (
+          (photoBannerTitle.current ||
+            photoBannerBody.current ||
+            photoBannerDiscover.current) &&
+          window.innerWidth > 768
+        ) {
+          photoBannerTitle.current.style.transform = `translateY(-${
+            window.scrollY / 2
+          }%)`;
+          photoBannerBody.current.style.transform = `translateY(-${
+            window.scrollY / 1.8
+          }%)`;
+          photoBannerDiscover.current.style.transform = `translateY(-${
+            window.scrollY / 1.5
+          }%)`;
+        }
       }
     };
   }, []);

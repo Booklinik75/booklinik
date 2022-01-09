@@ -117,8 +117,8 @@ export default function Home({
 
   useEffect(() => {
     // parallax effect
-    const parralaxEffect = () => {
-      if (mainBox && mainBox.current && window.innerWidth > 768) {
+    if (window.location.pathname.split("/")[1] === "") {
+      const parralaxEffect = () => {
         mainBox.current.style.transform = `translateY(-${
           window.scrollY / 15
         }%)`;
@@ -130,12 +130,16 @@ export default function Home({
         } else {
           discoverBookLinkText.current.style.transform = `translateY(0%)`;
         }
+      };
+      if (mainBox && mainBox.current && window.innerWidth > 768) {
+        window.onscroll = () => parralaxEffect();
+        window.onresize = () => parralaxEffect();
       } else {
-        mainBox.current.style.transform = `translateY(0%)`;
+        if (mainBox && mainBox.current && window.innerWidth <= 768) {
+          mainBox.current.style.transform = `translateY(0%)`;
+        }
       }
-    };
-    window.onscroll = () => parralaxEffect();
-    window.onresize = () => parralaxEffect();
+    }
   }, []);
 
   return (
