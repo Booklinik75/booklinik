@@ -15,6 +15,12 @@ const FormStepper = ({ children, booking, user, nextStep, setNextStep }) => {
   mail.setApiKey(process.env.SENDGRID_API_KEY);
 
   const doBooking = () => {
+    // if user have't login and do book
+    if (user === null) {
+      router.push("/signup?i=anonBooking");
+      localStorage.setItem("bookBooklinik", JSON.stringify(booking));
+      return;
+    }
     setIsSaving(true);
 
     firebase

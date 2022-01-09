@@ -50,6 +50,14 @@ function BooklinikClient({ Component, pageProps }) {
       t.parentNode.insertBefore(e, t);
     })(document, "script");
 
+    // check if there is localStorage for book when user not logged in
+    if (
+      router.pathname.split("/")[1] !== "signup" &&
+      router.query.i === "anonBooking" &&
+      localStorage.getItem("bookBooklinik")
+    ) {
+      localStorage.removeItem("bookBooklinik");
+    }
     // set loading animation each page loaded
     const handleStart = () => setLoadingAnimation(true);
     const handleComplete = () => setLoadingAnimation(false);

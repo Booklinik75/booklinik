@@ -75,7 +75,7 @@ const NewBookingContainer = ({
   const [user, loading] = useAuthState(firebase.auth());
   const router = useRouter();
 
-  if (user === null && loading === false) router.push("/signup?i=anonBooking");
+  // if (user === null && loading === false) router.push("/signup?i=anonBooking");
 
   // fetch user profile
   const [userProfile, setUserProfile] = useState(null);
@@ -96,10 +96,10 @@ const NewBookingContainer = ({
   }, [user]);
 
   // redirect to profile page if user doesnt have a phone number
-  if (userProfile && !userProfile.mobilePhone)
-    router.push("/dashboard/profile?error=mpn");
-  else if (userProfile && !userProfile.isMobileVerified)
-    router.push("/verify/mobile");
+  // if (userProfile && !userProfile.mobilePhone)
+  //   router.push("/dashboard/profile?error=mpn");
+  // else if (userProfile && !userProfile.isMobileVerified)
+  //   router.push("/verify/mobile");
 
   const [booking, setBooking] = useState({
     surgeries: [
@@ -131,7 +131,7 @@ const NewBookingContainer = ({
     roomName: "",
     roomPrice: 0,
     roomPhotoLink: "",
-    created: firebase.firestore.FieldValue.serverTimestamp(),
+    created: firebase.firestore.Timestamp.fromDate(new Date()).toDate(),
   });
 
   const extraTravellersSupplement = 450;
@@ -153,7 +153,7 @@ const NewBookingContainer = ({
     setBooking({
       ...booking,
       totalExtraTravellersPrice: totalExtraTravellers,
-  });
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [booking.extraTravellers, booking.extraChilds, booking.extraBabies]);
 
@@ -165,6 +165,7 @@ const NewBookingContainer = ({
   };
 
   const onCalendarStartDateChange = (e) => {
+    console.log(e);
     setBooking({
       ...booking,
       startDate: e,
@@ -248,10 +249,11 @@ const NewBookingContainer = ({
           <VscLoading />
         </div>
       )}
-      {loading === false &&
+      {/* {loading === false &&
       user !== null &&
       userProfile &&
-      userProfile?.isMobileVerified ? (
+      userProfile?.isMobileVerified ? ( */}
+      {loading === false ? (
         <FormStepper
           booking={booking}
           user={user}
