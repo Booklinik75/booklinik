@@ -116,7 +116,7 @@ export default function DashboardIndex({ userProfile, token }) {
                 userProfile.address,
                 userProfile.mobilePhone,
                 userProfile.gender,
-                userProfile.landlinePhone,
+//                userProfile.landlinePhone,
                 userProfile.birthdate,
               ].some((x) => x === null) ? (
                 <DashboardModal
