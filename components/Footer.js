@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import Logo from "../public/booklinik-logo.svg";
-import { FaInstagram, FaFacebookSquare, FaLinkedin } from "react-icons/fa";
+import { FaInstagram, FaFacebookSquare, FaLinkedin, FaYoutube, FaTwitter } from "react-icons/fa";
 
 const Footer = () => {
   return (
@@ -128,6 +128,20 @@ const Footer = () => {
                 <a>
                   <div className="cursor-pointer transition hover:text-shamrock">
                     <FaLinkedin size={24} />
+                  </div>
+                </a>
+              </Link>
+              <Link href="#">
+                <a>
+                  <div className="cursor-pointer transition hover:text-shamrock">
+                    <FaYoutube size={24} />
+                  </div>
+                </a>
+              </Link>
+              <Link href="#">
+                <a>
+                  <div className="cursor-pointer transition hover:text-shamrock">
+                    <FaTwitter size={24} />
                   </div>
                 </a>
               </Link>

@@ -64,7 +64,7 @@ const DashboardSideNav = ({ userProfile, token, isSideNavOpen }) => {
 
   return (
     <div
-      className={`z-30 h-full lg:col-span-2 absolute lg:sticky 
+      className={`z-30 h-full lg:col-span-2 absolute lg:sticky
     bg-white lg:bg-transparent shadow lg:shadow-none border-r lg:border-0 border-gray-400 w-3/5 lg:w-96
     ${isSideNavOpen ? "block" : "hidden lg:flex"}
     `}
@@ -289,7 +289,7 @@ const DashboardSideNav = ({ userProfile, token, isSideNavOpen }) => {
             <div className="flex items-center">
               <Link href="/book" passHref={true}>
                 <button className="text-white bg-shamrock rounded px-6 py-3 my-6 transition border border-shamrock hover:text-shamrock hover:bg-white">
-                  Estimation - Reservation
+                  Estimation - Réservation
                 </button>
               </Link>
             </div>
