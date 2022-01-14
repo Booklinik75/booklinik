@@ -5,7 +5,7 @@ import { Children, useState } from "react";
 import { useRouter } from "next/router";
 import firebase from "../../../firebase/clientApp";
 
-const FormStepper = ({ children, booking, user, nextStep, setNextStep }) => {
+const FormStepper = ({ children, booking, user, nextStep, setNextStep, userProfile }) => {
   const stepsArray = Children.toArray(children);
   const [step, setStep] = useState(0);
   const router = useRouter();
@@ -54,7 +54,7 @@ const FormStepper = ({ children, booking, user, nextStep, setNextStep }) => {
   };
 
   return (
-    <BookingUi bookingData={booking} step={step}>
+    <BookingUi bookingData={booking} step={step} userProfile={userProfile}>
       <div className="col-span-12 relative">
         {isSaving && (
           <div className="w-full h-full absolute z-30 bg-opacity-20 bg-black flex flex-col gap-4 items-center justify-center">

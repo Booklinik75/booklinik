@@ -27,7 +27,7 @@ import { VscLoading } from "react-icons/vsc";
 import firebase from "firebase/clientApp";
 import { useRouter } from "next/router";
 
-export const getStaticProps = async () => {
+export const getStaticProps = async (ctx) => {
   const countries = await getCountries();
   const cities = await getCities();
   const hotels = await getHotels();
@@ -259,6 +259,7 @@ const NewBookingContainer = ({
           user={user}
           nextStep={nextStep}
           setNextStep={setNextStep}
+          userProfile={userProfile}
         >
           <SurgerySelectStep
             surgeryCategories={surgeryCategories}
@@ -316,7 +317,7 @@ const NewBookingContainer = ({
             setNextStep={setNextStep}
           />
 
-          <BookingConfirmation booking={booking} />
+          <BookingConfirmation booking={booking} userProfile={userProfile} />
         </FormStepper>
       ) : (
         ""

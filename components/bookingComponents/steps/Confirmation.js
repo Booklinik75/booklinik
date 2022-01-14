@@ -1,8 +1,21 @@
 import BookingDataSpan from "../BookingDataSpan";
 import Moment from "react-moment";
 import formatPrice from "utils/formatPrice";
+import { useContext } from "react";
+import { BookContext } from "utils/bookContext";
 
-const BookingConfirmation = ({ booking }) => {
+const BookingConfirmation = ({ booking, userProfile }) => {
+  const { isChecked, handleUseReferral } = useContext(BookContext);
+
+  const totalPrice =
+    Number(booking.surgeries[0].surgeryPrice) +
+    Number(booking.totalExtraTravellersPrice) +
+    Number(booking.hotelPrice) * Number(booking.totalSelectedNights) +
+    booking.options
+      ?.map((option) => option.isChecked && Number(option.price))
+      .reduce((a, b) => a + b) +
+    Number(booking.roomPrice) * Number(booking.totalSelectedNights);
+
   return (
     <div className="space-y-6 h-full">
       <h1 className="text-2xl mb-6">Parfait, on y est presque !</h1>
@@ -10,7 +23,10 @@ const BookingConfirmation = ({ booking }) => {
         <p className="flex flex-col items-start gap-2 lg:flex-row lg:items-center">
           Vous souhaitez réaliser une{" "}
           <span>
-            <BookingDataSpan string={booking.surgeries[0].surgeryCategoryName} /> sur{" "}
+            <BookingDataSpan
+              string={booking.surgeries[0].surgeryCategoryName}
+            />{" "}
+            sur{" "}
           </span>
           <BookingDataSpan string={booking.surgeries[0].surgeryName} />
         </p>
@@ -85,17 +101,24 @@ const BookingConfirmation = ({ booking }) => {
           })}
         </p>
       </div>
-      <p className="py-6 flex flex-col items-start gap-2 lg:flex-row lg:items-center">
+      <div className="pt-6 flex flex-row items-center gap-2">
+        <input
+          type="checkbox"
+          name="referralBalance"
+          id="referralBalance"
+          onChange={handleUseReferral}
+          checked={isChecked}
+          className="rounded-full"
+        />
+        <label htmlFor="acceptsMarketing" className="">
+          Utiliser solde parrainage : {userProfile.referalBalance} €
+        </label>
+      </div>
+      <p className="pb-6 !mt-0 flex flex-col items-start gap-2 lg:flex-row lg:items-center">
         Le prix tout compris de votre voyage sur-mesure est de{" "}
         <span className="text-2xl rounded text-white px-4 py-2 mx-2 bg-shamrock">
           {formatPrice(
-            Number(booking.surgeries[0].surgeryPrice) +
-              Number(booking.totalExtraTravellersPrice) +
-              Number(booking.hotelPrice) * Number(booking.totalSelectedNights) +
-              Number(booking.roomPrice) * Number(booking.totalSelectedNights) +
-              booking.options
-                ?.map((option) => option.isChecked && Number(option.price))
-                .reduce((a, b) => a + b)
+            isChecked ? totalPrice - userProfile.referalBalance : totalPrice
           )}{" "}
           €
         </span>

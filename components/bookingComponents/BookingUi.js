@@ -1,10 +1,13 @@
 import BookingSideNavigation from "./BookingSideNavigation";
 import BookingTopNavigation from "./BookingTopNavigation";
 
-const BookingUi = ({ children, bookingData, step }) => {
+const BookingUi = ({ children, bookingData, step, userProfile }) => {
   return (
     <div className="max-h-screen w-full overflow-hidden">
-      <BookingTopNavigation bookingData={bookingData} />
+      <BookingTopNavigation
+        bookingData={bookingData}
+        userProfile={userProfile}
+      />
       <div className="grid grid-cols-10">
         <div className="col-span-2 hidden md:block">
           <BookingSideNavigation step={step} bookingData={bookingData} />
