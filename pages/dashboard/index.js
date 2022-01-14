@@ -97,12 +97,6 @@ export default function DashboardIndex({ userProfile, token }) {
         <>
           <DashboardUi userProfile={userProfile} token={token}>
             <div className="col-span-6 lg:col-span-4 flex flex-col gap-4">
-              {!userProfile.isMobileVerified && (
-                <DashboardModal
-                  type="error"
-                  content="Votre numéro de téléphone n'est pas vérifié"
-                />
-              )}
               <h1 className="text-4xl">
                 Bonjour{" "}
                 <span className="text-shamrock">
@@ -116,6 +110,12 @@ export default function DashboardIndex({ userProfile, token }) {
                 Bienvenue sur votre profil, renseignez vos informations
                 personnelles.
               </p>
+              {!userProfile.isMobileVerified && (
+                <DashboardModal
+                  type="error"
+                  content="Votre numéro de téléphone n'est pas vérifié"
+                />
+              )}
               {[
                 userProfile.firstName,
                 userProfile.lastName,
