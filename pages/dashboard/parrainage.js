@@ -7,6 +7,7 @@ import firebase from "firebase/clientApp";
 import { useRouter } from "next/router";
 import { FaCopy } from "react-icons/fa";
 import Tippy from "@tippyjs/react";
+import DashboardModal from "Components/DashboardModal";
 
 export const getServerSideProps = async (ctx) => {
   const auth = await checkAuth(ctx);
@@ -35,11 +36,20 @@ export const getServerSideProps = async (ctx) => {
 const Parrainage = ({ auth, referer }) => {
   const { userProfile, token } = auth.props;
   const [code, setCode] = useState(userProfile.refererCode || "");
+  const [error, setError] = useState("");
   const router = useRouter();
   const [ref, setRef] = useState(referer);
 
+  console.log("asdsda", userProfile);
+
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    if (code === userProfile.referalCode) {
+      setCode("");
+      setError("Vous ne pouvez pas utiliser votre propre code");
+      return;
+    }
 
     if (!userProfile.referer) {
       firebase
@@ -83,6 +93,7 @@ const Parrainage = ({ auth, referer }) => {
             Solde : {userProfile.referalBalance} €
           </p>
         </div>
+        {error && <DashboardModal type="error" content={error} />}
         <p>
           Recommandez Booklinik à vos amis et recevez 100€ sur votre voyage. Vos
           amis profiteront aussi de 100€ sur leurs opérations.
