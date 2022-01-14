@@ -76,7 +76,10 @@ const FormStepper = ({ children, booking, user, nextStep, setNextStep }) => {
             <div className="flex items-center gap-3">
               {step > 0 ? (
                 <button
-                  onClick={() => setStep((s) => s - 1)}
+                  onClick={() => {
+                    window.scrollTo({ top: 0 });
+                    setStep((s) => s - 1);
+                  }}
                   className="flex items-center gap-1 border border-gray-500 bg-white text-gray-500 transition hover:bg-gray-500 hover:text-white px-5 py-2 rounded"
                 >
                   <BsArrowLeft /> Précédent
@@ -98,6 +101,7 @@ const FormStepper = ({ children, booking, user, nextStep, setNextStep }) => {
               ) : (
                 <button
                   onClick={() => {
+                    window.scrollTo({ top: 0 });
                     // if nextStep is true
                     if (nextStep) {
                       setNextStep(false);
