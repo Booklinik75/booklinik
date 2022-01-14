@@ -16,7 +16,7 @@ export const getServerSideProps = checkAuth;
 
 export default function DashboardIndex({ userProfile, token }) {
   const [user, loading] = useAuthState(firebase.auth());
-  
+
   const [bookings, setBookings] = useState([]);
   const [message, setMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -97,6 +97,12 @@ export default function DashboardIndex({ userProfile, token }) {
         <>
           <DashboardUi userProfile={userProfile} token={token}>
             <div className="col-span-6 lg:col-span-4 flex flex-col gap-4">
+              {!userProfile.isMobileVerified && (
+                <DashboardModal
+                  type="error"
+                  content="Votre numéro de téléphone n'est pas vérifié"
+                />
+              )}
               <h1 className="text-4xl">
                 Bonjour{" "}
                 <span className="text-shamrock">
