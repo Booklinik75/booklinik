@@ -64,11 +64,11 @@ const DashboardSideNav = ({ userProfile, token, isSideNavOpen }) => {
   return (
     <div
       className={`z-30 h-full lg:col-span-2 absolute lg:sticky 
-    bg-white lg:bg-transparent shadow lg:shadow-none border-r lg:border-0 border-gray-400 w-3/5 lg:w-96
+    bg-white lg:bg-transparent shadow lg:shadow-none border-r lg:border-0 border-gray-400 w-3/5 lg:w-full
     ${isSideNavOpen ? "block" : "hidden lg:flex"}
     `}
     >
-      <div className="flex flex-col px-6 py-10 h-full shadow bg-sidebar">
+      <div className="flex flex-col px-6 lg:px-5 py-8 h-full shadow bg-sidebar w-full">
         <div className="space-y-5 mb-5">
           <div className="flex items-center group">
             <FaChartPie
