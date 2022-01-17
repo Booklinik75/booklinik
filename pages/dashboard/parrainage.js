@@ -8,19 +8,12 @@ import { useRouter } from "next/router";
 import { FaCopy } from "react-icons/fa";
 import Tippy from "@tippyjs/react";
 import DashboardModal from "Components/DashboardModal";
-import { FacebookShareButton, FacebookIcon } from "react-share";
-import WhatsappShareButton from "node_modules/react-share/lib/WhatsappShareButton";
-import WhatsappIcon from "node_modules/react-share/lib/WhatsappIcon";
-import TwitterShareButton from "node_modules/react-share/lib/TwitterShareButton";
-import TwitterIcon from "node_modules/react-share/lib/TwitterIcon";
-import TelegramShareButton from "node_modules/react-share/lib/TelegramShareButton";
-import TelegramIcon from "node_modules/react-share/lib/TelegramIcon";
-import RedditShareButton from "node_modules/react-share/lib/RedditShareButton";
-import RedditIcon from "node_modules/react-share/lib/RedditIcon";
-import LinkedinShareButton from "node_modules/react-share/lib/LinkedinShareButton";
-import LinkedinIcon from "node_modules/react-share/lib/LinkedinIcon";
-import EmailShareButton from "node_modules/react-share/lib/EmailShareButton";
-import EmailIcon from "node_modules/react-share/lib/EmailIcon";
+import {
+  FacebookShareButton,
+  TwitterShareButton,
+  FacebookIcon,
+  TwitterIcon,
+} from "react-share";
 
 export const getServerSideProps = async (ctx) => {
   const auth = await checkAuth(ctx);
@@ -140,13 +133,6 @@ const Parrainage = ({ auth, referer }) => {
             >
               <FacebookIcon size={32} round />
             </FacebookShareButton>
-            <WhatsappShareButton
-              url="https://www.booklinik.com"
-              title={`Profitez d'un bon d'achat de 100€ pour votre première réservation Booklinik avec mon code de parrainage: ${userProfile.referalCode}`}
-              className="cursor-pointer"
-            >
-              <WhatsappIcon size={32} round />
-            </WhatsappShareButton>
             <TwitterShareButton
               url="https://www.booklinik.com"
               title={`Profitez d'un bon d'achat de 100€ pour votre première réservation Booklinik avec mon code de parrainage: ${userProfile.referalCode}`}
@@ -154,36 +140,6 @@ const Parrainage = ({ auth, referer }) => {
             >
               <TwitterIcon size={32} round />
             </TwitterShareButton>
-            <TelegramShareButton
-              url="https://www.booklinik.com"
-              title={`Profitez d'un bon d'achat de 100€ pour votre première réservation Booklinik avec mon code de parrainage: ${userProfile.referalCode}`}
-              className="cursor-pointer"
-            >
-              <TelegramIcon size={32} round />
-            </TelegramShareButton>
-            <RedditShareButton
-              url="https://www.booklinik.com"
-              title={`Profitez d'un bon d'achat de 100€ pour votre première réservation Booklinik avec mon code de parrainage: ${userProfile.referalCode}`}
-              className="cursor-pointer"
-            >
-              <RedditIcon size={32} round />
-            </RedditShareButton>
-            <LinkedinShareButton
-              url="https://www.booklinik.com"
-              title="Recommandez Booklinik à vos amis et recevez 100€ sur votre voyage"
-              summary={`Profitez d'un bon d'achat de 100€ pour votre première réservation Booklinik avec mon code de parrainage: ${userProfile.referalCode}`}
-              className="cursor-pointer"
-            >
-              <LinkedinIcon size={32} round />
-            </LinkedinShareButton>
-            <EmailShareButton
-              url="https://www.booklinik.com"
-              subject="Recommandez Booklinik à vos amis et recevez 100€ sur votre voyage"
-              body={`Profitez d'un bon d'achat de 100€ pour votre première réservation Booklinik avec mon code de parrainage: ${userProfile.referalCode}`}
-              className="cursor-pointer"
-            >
-              <EmailIcon size={32} round />
-            </EmailShareButton>
           </div>
           <div className="flex flex-col gap-2">
             <div>
