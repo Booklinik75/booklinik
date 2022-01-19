@@ -95,15 +95,31 @@ export default function Navigation() {
                   ) : (
                     <NavigationItem title="Connexion" target="/login" />
                   )}
+                  <li className="hidden lg:block">| &nbsp;</li>
                   <li className="hidden lg:flex group gap-1 items-center">
-                    |
-                    <Link href="tel:0176350968">
+
+                    <Link href="tel:0186653500">
                       <a className="gap-2 text-lg items-center flex transition-colors text-shamrock">
                         <FaPhone className="stroke-1  text-shamrock"/>
-                        +33 1 76 35 09 68
+                        </a>
+                      </Link>
+                    </li>
+                  <NavigationItem
+                    title=" +33 1 86 65 35 00"
+                    extraStyle="text-shamrock gap-2 text-lg items-center flex"
+                    target="tel:0186653500"
+                  />
+                  {/*
+                  <li className="hidden lg:flex group gap-1 items-center">
+
+                    <Link href="tel:0186653500">
+                      <a className="gap-2 text-lg items-center flex transition-colors text-shamrock">
+                        <FaPhone className="stroke-1  text-shamrock"/>
+                        +33 1 86 65 35 00
                       </a>
                     </Link>
                   </li>
+                  */}
                 </ul>
               </div>
             </div>

@@ -107,8 +107,7 @@ export default function DashboardIndex({ userProfile, token }) {
                 ,
               </h1>
               <p>
-                Bienvenue sur votre profil, renseignez vos informations
-                personnelles.
+                Bienvenue sur votre profil.
               </p>
               {!userProfile.isMobileVerified && (
                 <DashboardModal
@@ -123,7 +122,7 @@ export default function DashboardIndex({ userProfile, token }) {
                 userProfile.address,
                 userProfile.mobilePhone,
                 userProfile.gender,
-                userProfile.landlinePhone,
+//                userProfile.landlinePhone,
                 userProfile.birthdate,
               ].some((x) => x === null) ? (
                 <DashboardModal
