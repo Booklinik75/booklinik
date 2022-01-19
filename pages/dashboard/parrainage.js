@@ -51,7 +51,7 @@ const Parrainage = ({ auth, referer }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (code === userProfile.referalCode) {
+    if (code.toLowerCase() === userProfile.referalCode.toLowerCase()) {
       setCode("");
       setError("Vous ne pouvez pas utiliser votre propre code");
       return;
