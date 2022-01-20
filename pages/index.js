@@ -155,8 +155,8 @@ export default function Home({
 
       <Navigation />
 
-      <div className="bg-cover overflow-y-hidden home__banner bg-shamrock mt-[-120px] p-3 md:h-[calc(100vh+15rem)] lg:h-screen">
-        <div className="flex h-fit lg:h-screen items-center justify-center py-4">
+      <div className="bg-cover overflow-y-hidden home__banner bg-shamrock mt-[-120px] md:p-3 md:h-[calc(100vh+15rem)] lg:h-screen">
+        <div className="flex h-fit lg:h-screen items-center justify-center md:py-4">
           <div className="mx-0 my-0 mt-[6rem] lg:mt-12 shadow md:shadow-none xl:mx-auto md:my-0">
             <div
               className="translate-y-0 transition ease-linear duration-75 bg-white bg-opacity-90 max-w-7xl p-6 md:p-20 rounded-xl md:mb-8"
