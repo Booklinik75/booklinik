@@ -110,9 +110,11 @@ const BookingConfirmation = ({ booking, userProfile }) => {
           checked={isChecked}
           className="rounded-full"
         />
-        <label htmlFor="acceptsMarketing" className="">
-          Utiliser solde parrainage : {userProfile.referalBalance} €
-        </label>
+        {userProfile && userProfile.referalBalance > 0 && (
+          <label htmlFor="acceptsMarketing" className="">
+            Utiliser solde parrainage : {userProfile.referalBalance} €
+          </label>
+        )}
       </div>
       <p className="pb-6 !mt-0 flex flex-col items-start gap-2 lg:flex-row lg:items-center">
         Le prix tout compris de votre voyage sur-mesure est de{" "}
