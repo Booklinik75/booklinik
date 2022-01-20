@@ -116,7 +116,48 @@ const SignUp = () => {
                 }),
               });
 
-              router.push("/dashboard");
+              // if user have't login and do book
+              if (router.query.i === "anonBooking") {
+                const booking = JSON.parse(
+                  localStorage.getItem("bookBooklinik")
+                );
+                firebase
+                  .firestore()
+                  .collection("bookings")
+                  .add({
+                    user: user.uid,
+                    status: "awaitingDocuments",
+                    total:
+                      Number(booking.surgeries[0].surgeryPrice) +
+                      Number(booking.totalExtraTravellersPrice) +
+                      Number(booking.hotelPrice) *
+                        Number(booking.totalSelectedNights) +
+                      Number(booking.roomPrice) *
+                        Number(booking.totalSelectedNights) +
+                      booking.options
+                        ?.map(
+                          (option) => option.isChecked && Number(option.price)
+                        )
+                        .reduce((a, b) => a + b),
+                    ...booking,
+                  })
+                  .then(() => {
+                    fetch("/api/mail", {
+                      method: "post",
+                      body: JSON.stringify({
+                        recipient: user.email,
+                        templateId: "d-b504c563b53846fbadb0a53151a82d57",
+                      }),
+                    });
+                  })
+                  .then(() => {
+                    localStorage.removeItem("bookBooklinik");
+                    router.push("/dashboard/operations");
+                  });
+              } else {
+                // redirect to dashboard
+                router.push("/dashboard");
+              }
             })
             .catch((error) => {
               Sentry.captureException(error);
@@ -125,7 +166,7 @@ const SignUp = () => {
         }
 
         // redirect to dashboard
-        router.push("/dashboard");
+        // router.push("/dashboard");
       })
       .catch((error) => {
         if (errors[error.code]) {

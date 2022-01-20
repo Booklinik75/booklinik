@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import "../styles/globals.css";
 import { AuthProvider } from "../utils/UserContext";
+import { BookProvider } from "utils/bookContext";
+
 import { ToastContainer } from "react-toastify";
 import Head from "next/head";
 import "@uiw/react-md-editor/dist/markdown-editor.css";
@@ -50,6 +52,14 @@ function BooklinikClient({ Component, pageProps }) {
       t.parentNode.insertBefore(e, t);
     })(document, "script");
 
+    // check if there is localStorage for book when user not logged in
+    if (
+      router.pathname.split("/")[1] !== "signup" &&
+      router.query.i === "anonBooking" &&
+      localStorage.getItem("bookBooklinik")
+    ) {
+      localStorage.removeItem("bookBooklinik");
+    }
     // set loading animation each page loaded
     const handleStart = () => setLoadingAnimation(true);
     const handleComplete = () => setLoadingAnimation(false);
@@ -68,32 +78,38 @@ function BooklinikClient({ Component, pageProps }) {
   return (
     <>
       <AuthProvider>
-        <Head>
-          <link
-            rel="apple-touch-icon"
-            sizes="180x180"
-            href="/apple-touch-icon.png"
-          />
-          <link
-            rel="icon"
-            type="image/png"
-            sizes="32x32"
-            href="/favicon-32x32.png"
-          />
-          <link
-            rel="icon"
-            type="image/png"
-            sizes="16x16"
-            href="/favicon-16x16.png"
-          />
-          <link rel="manifest" href="/site.webmanifest" />
-          <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#33c783" />
-          <meta name="msapplication-TileColor" content="#33c783" />
-          <meta name="theme-color" content="#33c783" />
-        </Head>
-        {loadingAnimation && <Loading />}
-        <Component {...pageProps} />
-        <ToastContainer />
+        <BookProvider>
+          <Head>
+            <link
+              rel="apple-touch-icon"
+              sizes="180x180"
+              href="/apple-touch-icon.png"
+            />
+            <link
+              rel="icon"
+              type="image/png"
+              sizes="32x32"
+              href="/favicon-32x32.png"
+            />
+            <link
+              rel="icon"
+              type="image/png"
+              sizes="16x16"
+              href="/favicon-16x16.png"
+            />
+            <link rel="manifest" href="/site.webmanifest" />
+            <link
+              rel="mask-icon"
+              href="/safari-pinned-tab.svg"
+              color="#33c783"
+            />
+            <meta name="msapplication-TileColor" content="#33c783" />
+            <meta name="theme-color" content="#33c783" />
+          </Head>
+          {loadingAnimation && <Loading />}
+          <Component {...pageProps} />
+          <ToastContainer />
+        </BookProvider>
       </AuthProvider>
     </>
   );

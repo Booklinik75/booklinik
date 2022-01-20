@@ -124,7 +124,11 @@ const BookingsList = ({ auth, bookings }) => {
               (option) => option.value === booking?.status
             )[0]?.label || "—",
           category: booking.surgeries[0].surgeryCategoryName,
-          email: booking.customer.email,
+          email: !booking.customer?.email ? (
+            <span className="text-gray-400 italic">Non défini</span>
+          ) : (
+            `${booking.customer.email}`
+          ),
           dates: `${moment(booking.startDate).format(
             "DD[/]MM[/]YY"
           )} - ${moment(booking.endDate).format("DD[/]MM[/]YY")}`,

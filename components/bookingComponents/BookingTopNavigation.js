@@ -1,11 +1,13 @@
 import Link from "next/link";
 import Image from "next/image";
 import Logo from "public/booklinik-logo.svg";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { BookContext } from "utils/bookContext.js";
 import formatPrice from "../../utils/formatPrice.js";
 
-const BookingTopNavigation = ({ bookingData, priceOverride }) => {
+const BookingTopNavigation = ({ bookingData, priceOverride, userProfile }) => {
   const [estimate, setEstimate] = useState(0);
+  const { isChecked } = useContext(BookContext);
 
   useEffect(() => {
     setEstimate(
@@ -41,7 +43,9 @@ const BookingTopNavigation = ({ bookingData, priceOverride }) => {
             ? priceOverride
             : estimate === 0
             ? "-"
-            : formatPrice(estimate)}{" "}
+            : formatPrice(
+                isChecked ? estimate - userProfile.referalBalance : estimate
+              )}{" "}
           €
         </p>
       </div>

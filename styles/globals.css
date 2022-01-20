@@ -157,6 +157,16 @@ html {
   z-index: 21 !important;
 }
 
+.home__banner {
+  height: fit-content;
+}
+
+@media (min-width: 768px) {
+  .home__banner {
+    height: 100vh;
+  }
+}
+
 @supports (background-attachment: fixed) {
   @media (min-width: 768px) {
     .home__banner {

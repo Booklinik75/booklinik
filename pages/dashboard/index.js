@@ -109,6 +109,12 @@ export default function DashboardIndex({ userProfile, token }) {
               <p>
                 Bienvenue sur votre profil.
               </p>
+              {!userProfile.isMobileVerified && (
+                <DashboardModal
+                  type="error"
+                  content="Votre numéro de téléphone n'est pas vérifié"
+                />
+              )}
               {[
                 userProfile.firstName,
                 userProfile.lastName,

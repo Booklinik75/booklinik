@@ -5,7 +5,7 @@ import { Children, useState } from "react";
 import { useRouter } from "next/router";
 import firebase from "../../../firebase/clientApp";
 
-const FormStepper = ({ children, booking, user, nextStep, setNextStep }) => {
+const FormStepper = ({ children, booking, user, nextStep, setNextStep, userProfile }) => {
   const stepsArray = Children.toArray(children);
   const [step, setStep] = useState(0);
   const router = useRouter();
@@ -15,6 +15,12 @@ const FormStepper = ({ children, booking, user, nextStep, setNextStep }) => {
   mail.setApiKey(process.env.SENDGRID_API_KEY);
 
   const doBooking = () => {
+    // if user have't login and do book
+    if (user === null) {
+      router.push("/signup?i=anonBooking");
+      localStorage.setItem("bookBooklinik", JSON.stringify(booking));
+      return;
+    }
     setIsSaving(true);
 
     firebase
@@ -48,7 +54,7 @@ const FormStepper = ({ children, booking, user, nextStep, setNextStep }) => {
   };
 
   return (
-    <BookingUi bookingData={booking} step={step}>
+    <BookingUi bookingData={booking} step={step} userProfile={userProfile}>
       <div className="col-span-12 relative">
         {isSaving && (
           <div className="w-full h-full absolute z-30 bg-opacity-20 bg-black flex flex-col gap-4 items-center justify-center">
@@ -70,7 +76,10 @@ const FormStepper = ({ children, booking, user, nextStep, setNextStep }) => {
             <div className="flex items-center gap-3">
               {step > 0 ? (
                 <button
-                  onClick={() => setStep((s) => s - 1)}
+                  onClick={() => {
+                    window.scrollTo({ top: 0 });
+                    setStep((s) => s - 1);
+                  }}
                   className="flex items-center gap-1 border border-gray-500 bg-white text-gray-500 transition hover:bg-gray-500 hover:text-white px-5 py-2 rounded"
                 >
                   <BsArrowLeft /> Précédent
@@ -92,6 +101,7 @@ const FormStepper = ({ children, booking, user, nextStep, setNextStep }) => {
               ) : (
                 <button
                   onClick={() => {
+                    window.scrollTo({ top: 0 });
                     // if nextStep is true
                     if (nextStep) {
                       setNextStep(false);

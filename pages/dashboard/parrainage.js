@@ -7,6 +7,13 @@ import firebase from "firebase/clientApp";
 import { useRouter } from "next/router";
 import { FaCopy } from "react-icons/fa";
 import Tippy from "@tippyjs/react";
+import DashboardModal from "Components/DashboardModal";
+import {
+  FacebookShareButton,
+  TwitterShareButton,
+  FacebookIcon,
+  TwitterIcon,
+} from "react-share";
 
 export const getServerSideProps = async (ctx) => {
   const auth = await checkAuth(ctx);
@@ -35,11 +42,20 @@ export const getServerSideProps = async (ctx) => {
 const Parrainage = ({ auth, referer }) => {
   const { userProfile, token } = auth.props;
   const [code, setCode] = useState(userProfile.refererCode || "");
+  const [error, setError] = useState("");
   const router = useRouter();
   const [ref, setRef] = useState(referer);
 
+  console.log("asdsda", userProfile);
+
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    if (code.toLowerCase() === userProfile.referalCode.toLowerCase()) {
+      setCode("");
+      setError("Vous ne pouvez pas utiliser votre propre code");
+      return;
+    }
 
     if (!userProfile.referer) {
       firebase
@@ -83,6 +99,7 @@ const Parrainage = ({ auth, referer }) => {
             Solde : {userProfile.referalBalance} €
           </p>
         </div>
+        {error && <DashboardModal type="error" content={error} />}
         <p>
           Recommandez Booklinik à vos amis et recevez 100€ sur votre voyage. Vos
           amis profiteront aussi de 100€ sur leurs opérations.
@@ -107,6 +124,22 @@ const Parrainage = ({ auth, referer }) => {
                 <FaCopy />
               </p>
             </Tippy>
+          </div>
+          <div className="-mt-3 flex flex-wrap gap-2">
+            <FacebookShareButton
+              url="https://www.booklinik.com"
+              quote={`Profitez d'un bon d'achat de 100€ pour votre première réservation Booklinik avec mon code de parrainage: ${userProfile.referalCode}`}
+              className="cursor-pointer"
+            >
+              <FacebookIcon size={32} round />
+            </FacebookShareButton>
+            <TwitterShareButton
+              url="https://www.booklinik.com"
+              title={`Profitez d'un bon d'achat de 100€ pour votre première réservation Booklinik avec mon code de parrainage: ${userProfile.referalCode}`}
+              className="cursor-pointer"
+            >
+              <TwitterIcon size={32} round />
+            </TwitterShareButton>
           </div>
           <div className="flex flex-col gap-2">
             <div>
