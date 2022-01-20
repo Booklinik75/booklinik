@@ -136,10 +136,7 @@ const PasswordAndEmail = ({ userProfile, token }) => {
       <div className="col-span-10 space-y-4">
         <h1 className="text-4xl">Email et mot de passe</h1>
         <p>
-          Velit proident elit consectetur tempor excepteur Lorem consequat
-          nostrud qui et in sit labore. Amet non ut sit laboris pariatur nisi
-          culpa nulla dolor ad excepteur nulla consectetur. Proident amet
-          ullamco quis ut reprehenderit culpa cillum et irure Lorem.
+        Renseignez les informations de votre compte.
         </p>
         {authObjectLoad && (
           <>
