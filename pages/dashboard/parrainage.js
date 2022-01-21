@@ -46,8 +46,6 @@ const Parrainage = ({ auth, referer }) => {
   const router = useRouter();
   const [ref, setRef] = useState(referer);
 
-  console.log("asdsda", userProfile);
-
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -77,6 +75,7 @@ const Parrainage = ({ auth, referer }) => {
               .then(() => {
                 router.replace(router.asPath);
                 setRef(doc.data());
+                setCode("");
               })
               .catch((err) => {});
 
