@@ -101,21 +101,22 @@ const BookingConfirmation = ({ booking, userProfile }) => {
           })}
         </p>
       </div>
-      <div className="pt-6 flex flex-row items-center gap-2">
-        <input
-          type="checkbox"
-          name="referralBalance"
-          id="referralBalance"
-          onChange={handleUseReferral}
-          checked={isChecked}
-          className="rounded-full"
-        />
-        {userProfile && userProfile.referalBalance > 0 && (
+      {userProfile && userProfile.referalBalance > 0 && (
+        <div className="pt-6 flex flex-row items-center gap-2">
+          <input
+            type="checkbox"
+            name="referralBalance"
+            id="referralBalance"
+            onChange={handleUseReferral}
+            checked={isChecked}
+            className="rounded-full"
+          />
           <label htmlFor="acceptsMarketing" className="">
             Utiliser solde parrainage : {userProfile.referalBalance} €
           </label>
-        )}
-      </div>
+        </div>
+      )}
+
       <p className="pb-6 !mt-0 flex flex-col items-start gap-2 lg:flex-row lg:items-center">
         Le prix tout compris de votre voyage sur-mesure est de{" "}
         <span className="text-2xl rounded text-white px-4 py-2 mx-2 bg-shamrock">
