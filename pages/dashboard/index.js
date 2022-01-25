@@ -113,6 +113,8 @@ export default function DashboardIndex({ userProfile, token }) {
                 <DashboardModal
                   type="error"
                   content="Votre numéro de téléphone n'est pas vérifié"
+                  cta="Vérifier"
+                  target="/dashboard/profile"
                 />
               )}
               {[
@@ -127,7 +129,7 @@ export default function DashboardIndex({ userProfile, token }) {
               ].some((x) => x === null) ? (
                 <DashboardModal
                   type="error"
-                  content="Vous devez remplir vos informations"
+                  content="Vous devez remplir vos informations personnelles"
                   cta="Compléter"
                   target="/dashboard/profile"
                 />
