@@ -2,7 +2,7 @@ import DashboardUi from "components/DashboardUi";
 import DashboardInput from "components/DashboardInput";
 import { checkAuth } from "utils/ServerHelpers";
 import DashboardButton from "components/DashboardButton";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import firebase from "firebase/clientApp";
 import { useRouter } from "next/router";
 import { FaCopy } from "react-icons/fa";
@@ -34,12 +34,24 @@ export const getServerSideProps = async (ctx) => {
       });
   }
 
+  let referalCodes = [];
+  await firebase
+    .firestore()
+    .collection("users")
+    .get()
+    .then((snapshot) => {
+      snapshot.forEach((doc) => {
+        referalCodes.push(doc.data().referalCode.toLowerCase());
+      });
+    })
+    .catch((err) => {});
+
   return {
-    props: { auth, referer: referer || null },
+    props: { auth, referer: referer || null, referalCodes },
   };
 };
 
-const Parrainage = ({ auth, referer }) => {
+const Parrainage = ({ auth, referer, referalCodes }) => {
   const { userProfile, token } = auth.props;
   const [code, setCode] = useState(userProfile.refererCode || "");
   const [error, setError] = useState("");
@@ -48,6 +60,12 @@ const Parrainage = ({ auth, referer }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    if (!referalCodes.includes(code.toLowerCase())) {
+      setCode("");
+      setError("Ce code n'est pas valide which means, this code is invalid");
+      return;
+    }
 
     if (code.toLowerCase() === userProfile.referalCode.toLowerCase()) {
       setCode("");
@@ -59,7 +77,7 @@ const Parrainage = ({ auth, referer }) => {
       firebase
         .firestore()
         .collection("users")
-        .where("referalCode", "==", code)
+        .where("referalCode", "==", code.toLowerCase())
         .get()
         .then((docRef) =>
           docRef.forEach((doc) => {
