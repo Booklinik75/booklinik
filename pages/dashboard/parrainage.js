@@ -63,7 +63,7 @@ const Parrainage = ({ auth, referer, referalCodes }) => {
 
     if (!referalCodes.includes(code.toLowerCase())) {
       setCode("");
-      setError("Ce code n'est pas valide which means, this code is invalid");
+      setError("Ce code n'est pas valide");
       return;
     }
 
