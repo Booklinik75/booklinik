@@ -13,6 +13,7 @@ export const getServerSideProps = async (ctx) => {
   if (auth.redirect) return auth;
 
   const users = [];
+  const allUserExists = [];
 
   await firebaseAdmin
     .auth()
@@ -42,10 +43,23 @@ export const getServerSideProps = async (ctx) => {
       );
     });
 
+  // get only users that exist in database
+  await firebase
+    .firestore()
+    .collection("users")
+    .get()
+    .then((snapshot) => {
+      snapshot.forEach((doc) => {
+        users.map(
+          (user) => user.auth.uid === doc.id && allUserExists.push(user)
+        );
+      });
+    });
+
   return {
     props: {
       auth,
-      users,
+      users: allUserExists,
     },
   };
 };
@@ -91,6 +105,8 @@ const CustomersList = ({ auth, users }) => {
     tableInstance;
 
   const [newRows, setNewRows] = useState(rows);
+
+  console.log(users);
 
   // for filter in searc
   const getFilter = (value) => {
@@ -237,7 +253,8 @@ const CustomersList = ({ auth, users }) => {
               <tr {...headerGroup.getHeaderGroupProps()}>
                 {headerGroup.headers.map((column) => (
                   <th {...column.getHeaderProps()} className="p-1">
-                    {column.render("Header")}
+                    {column.render("Header")}{" "}
+                    {column.Header === "ID" && `(${users.length})`}
                   </th>
                 ))}
               </tr>

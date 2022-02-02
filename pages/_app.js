@@ -52,6 +52,28 @@ function BooklinikClient({ Component, pageProps }) {
       t.parentNode.insertBefore(e, t);
     })(document, "script");
 
+    // weglot
+    (function (d, s) {
+      var t = d.getElementsByTagName(s)[0],
+        e = d.createElement(s);
+
+      e.async = true;
+      e.src = "https://cdn.weglot.com/weglot.min.js";
+      e.onload = () => {
+        Weglot.initialize({
+          api_key: "wg_48e609e9c8a8b4e4ecb5962b26f12a824",
+          switchers: [
+            {
+              location: {
+                target: ".language-switcher",
+              },
+            },
+          ],
+        });
+      };
+      t.parentNode.insertBefore(e, t);
+    })(document, "script");
+
     // check if there is localStorage for book when user not logged in
     if (
       router.pathname.split("/")[1] !== "signup" &&

@@ -12,9 +12,35 @@ import * as Sentry from "@sentry/browser";
 import moment from "moment";
 import { useRouter } from "next/router";
 
-export const getServerSideProps = checkAuth;
+export const getServerSideProps = async (ctx) => {
+  const {
+    props: { userProfile, token },
+  } = await checkAuth(ctx);
 
-export default function DashboardIndex({ userProfile, token }) {
+  let questionsAnswered = {};
+  await firebase
+    .firestore()
+    .collection("medicalAnswers")
+    .get()
+    .then((snapshot) => {
+      snapshot.forEach((doc) => {
+        if (doc.id === token.uid) {
+          questionsAnswered = { ...doc.data(), id: doc.id };
+        }
+      });
+    })
+    .catch((err) => {});
+
+  return {
+    props: { userProfile, token, questionsAnswered },
+  };
+};
+
+export default function DashboardIndex({
+  userProfile,
+  token,
+  questionsAnswered,
+}) {
   const [user, loading] = useAuthState(firebase.auth());
 
   const [bookings, setBookings] = useState([]);
@@ -57,7 +83,7 @@ export default function DashboardIndex({ userProfile, token }) {
         recipient: "info@booklinik.com",
         templateId: "d-6b9ed961cfdc44228824603584a8b740",
         dynamicTemplateData: {
-          email: userProfile.email,
+          email: userProfile?.email,
           datetime: moment(new Date()).format("LLLL"),
           message: message,
           path: router.asPath,
@@ -70,10 +96,10 @@ export default function DashboardIndex({ userProfile, token }) {
         fetch("/api/mail", {
           method: "post",
           body: JSON.stringify({
-            recipient: userProfile.email,
+            recipient: userProfile?.email,
             templateId: "d-57cbc54b5ac345beb1bfc6509381ccee",
             dynamicTemplateData: {
-              email: userProfile.email,
+              email: userProfile?.email,
               datetime: moment(new Date()).format("LLLL"),
               message: message,
             },
@@ -100,16 +126,14 @@ export default function DashboardIndex({ userProfile, token }) {
               <h1 className="text-4xl">
                 Bonjour{" "}
                 <span className="text-shamrock">
-                  {userProfile.firstName
-                    ? userProfile.firstName
-                    : userProfile.email}
+                  {userProfile?.firstName
+                    ? userProfile?.firstName
+                    : userProfile?.email}
                 </span>
                 ,
               </h1>
-              <p>
-                Bienvenue sur votre profil.
-              </p>
-              {!userProfile.isMobileVerified && (
+              <p>Bienvenue sur votre profil.</p>
+              {!userProfile?.isMobileVerified && (
                 <DashboardModal
                   type="error"
                   content="Votre numéro de téléphone n'est pas vérifié"
@@ -117,15 +141,22 @@ export default function DashboardIndex({ userProfile, token }) {
                   target="/dashboard/profile"
                 />
               )}
+              {(Object.values(questionsAnswered).length === 0 ||
+                Object.values(questionsAnswered.answers).length < 3) && (
+                <DashboardModal
+                  type="error"
+                  content="Veuillez remplir vos informations médicales"
+                />
+              )}
               {[
-                userProfile.firstName,
-                userProfile.lastName,
-                userProfile.email,
-                userProfile.address,
-                userProfile.mobilePhone,
-                userProfile.gender,
-//                userProfile.landlinePhone,
-                userProfile.birthdate,
+                userProfile?.firstName,
+                userProfile?.lastName,
+                userProfile?.email,
+                userProfile?.address,
+                userProfile?.mobilePhone,
+                userProfile?.gender,
+                //                userProfile?.landlinePhone,
+                userProfile?.birthdate,
               ].some((x) => x === null) ? (
                 <DashboardModal
                   type="error"
@@ -170,7 +201,7 @@ export default function DashboardIndex({ userProfile, token }) {
                   opérations.
                 </p>
                 <p className="w-full bg-shamrock text-white uppercase font-2xl text-center py-3 rounded">
-                  {userProfile.referalCode ? userProfile.referalCode : "null"}
+                  {userProfile?.referalCode ? userProfile?.referalCode : "null"}
                 </p>
                 <Link href="/dashboard/parrainage" className="w-full">
                   <a className="w-full block text-center text-gray-700 text-xs hover:underline">

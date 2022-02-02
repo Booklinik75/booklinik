@@ -66,7 +66,7 @@ const Parrainage = ({ auth, referer, referalCodes }) => {
   const router = useRouter();
   const [ref, setRef] = useState(referer);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!referalCodes.includes(code.toLowerCase())) {
@@ -91,25 +91,52 @@ const Parrainage = ({ auth, referer, referalCodes }) => {
           docRef.forEach((doc) => {
             firebase
               .firestore()
-              .collection("users")
-              .doc(token.uid)
-              .update({
-                referer: doc.id,
-                refererCode: code,
-                referalBalance: userProfile.referalBalance + 100,
-              })
-              .then(() => {
-                router.replace(router.asPath);
-                setRef(doc.data());
-                setCode("");
-              })
-              .catch((err) => {});
+              .collection("bookings")
+              .where("user", "==", doc.id)
+              .get()
+              .then(async (querySnapshot) => {
+                if (querySnapshot.docs.length) {
+                  await querySnapshot.docs.map(async (booking) => {
+                    console.log(booking.data());
+                    if (booking.data().status === "validated") {
+                      firebase
+                        .firestore()
+                        .collection("users")
+                        .doc(token.uid)
+                        .update({
+                          referer: doc.id,
+                          refererCode: code,
+                          referalBalance: userProfile.referalBalance + 100,
+                        })
+                        .then(() => {
+                          router.replace(router.asPath);
+                          setRef(doc.data());
+                          setCode("");
+                        })
+                        .catch((err) => {});
 
-            firebase
-              .firestore()
-              .collection("users")
-              .doc(doc.id)
-              .update({ referalBalance: doc.data().referalBalance + 100 });
+                      firebase
+                        .firestore()
+                        .collection("users")
+                        .doc(doc.id)
+                        .update({
+                          referalBalance: doc.data().referalBalance + 100,
+                        });
+                      return;
+                    } else {
+                      setCode("");
+                      setError(
+                        "Cet utilisateur n'a jamais effectué de paiement"
+                      );
+                      return;
+                    }
+                  });
+                } else {
+                  setCode("");
+                  setError("Cet utilisateur n'a jamais effectué de paiement");
+                  return;
+                }
+              });
           })
         );
     }
