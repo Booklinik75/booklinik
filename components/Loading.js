@@ -50,7 +50,7 @@ export default function Loading() {
         </div>
 
         <p className="mt-2 lg:mt-3 font-bold text-base lg:text-xl tracking-wide">
-          Patientez s&apos;il-vous-plait...
+          Patientez s&apos;il vous plait...
         </p>
       </div>
     </div>

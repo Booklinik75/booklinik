@@ -31,7 +31,7 @@ const Footer = () => {
               <Link href="/etapes">
                 <a className="hover:underline">Comment ça marche ?</a>
               </Link>
-              <Link href="#">
+              <Link href="/cliniques">
                 <a className="hover:underline">Les cliniques</a>
               </Link>
             </div>
