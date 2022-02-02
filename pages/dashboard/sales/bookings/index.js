@@ -316,6 +316,7 @@ const BookingsList = ({ auth, bookings }) => {
                 {headerGroup.headers.map((column) => (
                   <th {...column.getHeaderProps()} className="p-1">
                     {column.render("Header")}
+                    {column.Header === "ID" && ` (${bookings.length})`}
                   </th>
                 ))}
               </tr>

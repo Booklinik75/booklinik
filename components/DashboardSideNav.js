@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import Link from 'next/link'
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { useAuth } from "../hooks/useAuth";
 import DashboardSideNavItem from "./DashboardSideNavItem";
@@ -22,6 +22,8 @@ const DashboardSideNav = ({ userProfile, token, isSideNavOpen }) => {
   const { signOut } = useAuth();
 
   const [bookings, setBookings] = useState([]);
+  const [users, setUsers] = useState([]);
+  const [allBookings, setAllBookings] = useState([]);
   const [expand, setExpand] = useState({
     operations: false,
     sales: false,
@@ -37,6 +39,8 @@ const DashboardSideNav = ({ userProfile, token, isSideNavOpen }) => {
   useEffect(() => {
     const asyncFunc = async () => {
       const entries = [];
+      const allEntries = [];
+      const clients = [];
 
       await firebase
         .firestore()
@@ -52,6 +56,30 @@ const DashboardSideNav = ({ userProfile, token, isSideNavOpen }) => {
         });
 
       setBookings(entries);
+
+      await firebase
+        .firestore()
+        .collection("users")
+        .get()
+        .then((snapshot) => {
+          snapshot.forEach((doc) => {
+            clients.push({ ...doc.data(), id: doc.id });
+          });
+        });
+
+      setUsers(clients);
+
+      await firebase
+        .firestore()
+        .collection("bookings")
+        .get()
+        .then((snapshot) => {
+          snapshot.forEach((doc) => {
+            allEntries.push(doc.data());
+          });
+        });
+
+      setAllBookings(allEntries);
     };
 
     asyncFunc();
@@ -136,11 +164,11 @@ const DashboardSideNav = ({ userProfile, token, isSideNavOpen }) => {
                 }}
               >
                 <DashboardSideNavItem
-                  title="Clients"
+                  title={`Clients (${users.length})`}
                   target="/dashboard/sales/clients"
                 />
                 <DashboardSideNavItem
-                  title="Réservations"
+                  title={`Réservations (${allBookings.length})`}
                   target="/dashboard/sales/bookings"
                 />
               </div>

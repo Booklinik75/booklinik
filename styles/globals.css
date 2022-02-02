@@ -92,6 +92,7 @@ html {
   }
 }
 /* to change to scrollbar style */
+.operation-categories,
 .react-tel-input .country-list,
 .dropdown-options,
 .dropdown-hotels,
@@ -100,6 +101,7 @@ html {
   scrollbar-width: 0.5rem;
 }
 
+.operation-categories::-webkit-scrollbar,
 .react-tel-input .country-list::-webkit-scrollbar,
 .dropdown-options::-webkit-scrollbar,
 .dropdown-hotels::-webkit-scrollbar,
@@ -109,6 +111,7 @@ html {
   cursor: pointer;
 }
 
+.operation-categories::-webkit-scrollbar-track,
 .react-tel-input .country-list::-webkit-scrollbar-track,
 .dropdown-options::-webkit-scrollbar-track,
 .dropdown-hotels::-webkit-scrollbar-track,
@@ -117,6 +120,7 @@ html {
   background-color: transparent;
 }
 
+.operation-categories::-webkit-scrollbar-thumb,
 .react-tel-input .country-list::-webkit-scrollbar-thumb,
 .dropdown-options::-webkit-scrollbar-thumb,
 .dropdown-hotels::-webkit-scrollbar-thumb,
@@ -236,14 +240,36 @@ html body .react-tel-input .selected-flag .arrow {
   border-color: #33c383;
 }
 
-html body .flag-dropdown.open .selected-flag.open,
-html body .react-tel-input .selected-flag:hover {
-  background: transparent;
-}
-.signup .react-tel-input .selected-flag {
-  padding-left: 10px;
+/* customize weglot */
+.wg-drop.country-selector .wgcurrent {
+  border: none !important;
+  font-family: "Circular", "Montserrat", "sans-serif" !important;
 }
 
-.signup .react-tel-input .country-list {
-  max-height: 150px;
+.wg-drop a:hover {
+  color: #000 !important;
+}
+
+.wg-drop.country-selector .wgcurrent:after,
+.wg-drop.country-selector.closed .wgcurrent:after {
+  transform: rotate(180deg) !important;
+  filter: invert(63%) sepia(41%) saturate(663%) hue-rotate(101deg)
+    brightness(94%) contrast(89%) !important;
+}
+
+.wg-drop.country-selector ul {
+  border: none !important;
+  border-radius: 0 0 1em 1em !important;
+}
+
+.wg-flags a img.wg-flag {
+  height: 16px !important;
+  margin-right: 4px !important;
+}
+
+@media (min-width: 1024px) {
+  .wg-drop.country-selector .wgcurrent:after,
+  .wg-drop.country-selector.closed .wgcurrent:after {
+    transform: rotate(0) !important;
+  }
 }

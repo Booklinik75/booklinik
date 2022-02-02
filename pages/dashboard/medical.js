@@ -38,7 +38,11 @@ export const getServerSideProps = async (ctx) => {
     .catch((err) => {});
 
   return {
-    props: { auth, questionsAnswered: questionsAnswered, medicalQuestions: medicalQuestions() },
+    props: {
+      auth,
+      questionsAnswered: questionsAnswered,
+      medicalQuestions: medicalQuestions(),
+    },
   };
 };
 
