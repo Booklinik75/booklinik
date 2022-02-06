@@ -37,7 +37,7 @@ export default function Navigation() {
               </div>
               <div
                 className={
-                  "lg:flex flex-grow  lg:items-center bg-white lg:bg-transparent shadow h-[calc(100vh-3rem)] lg:h-[unset] w-[70%] lg:w-[unset] max-w-xs lg:max-w-full lg:shadow-none lg:p-5 absolute right-0 top-[calc(100%+.5rem)] lg:static z-30 " +
+                  "lg:flex flex-grow  lg:items-center bg-white lg:bg-transparent shadow h-[calc(100vh-3.75rem)] lg:h-[unset] w-[70%] lg:w-[unset] max-w-xs lg:max-w-full lg:shadow-none lg:p-5 absolute right-0 top-[calc(100%+.5rem)] lg:static z-30 " +
                   (menuOpen ? " flex" : " hidden")
                 }
               >
