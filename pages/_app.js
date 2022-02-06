@@ -53,7 +53,7 @@ function BooklinikClient({ Component, pageProps }) {
     })(document, "script");
 
     // weglot
-    const handleWeglot = (d, s) => {
+    (function (d, s) {
       var t = d.getElementsByTagName(s)[0],
         e = d.createElement(s);
 
@@ -62,12 +62,18 @@ function BooklinikClient({ Component, pageProps }) {
       e.onload = () => {
         Weglot.initialize({
           api_key: "wg_48e609e9c8a8b4e4ecb5962b26f12a824",
+          switchers: [
+            {
+              location: {
+                target: ".language-switcher",
+                sibling: null,
+              },
+            },
+          ],
         });
       };
       t.parentNode.insertBefore(e, t);
-    };
-
-    handleWeglot(document, "script");
+    })(document, "script");
 
     // check if there is localStorage for book when user not logged in
     if (
