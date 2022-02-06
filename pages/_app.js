@@ -70,6 +70,7 @@ function BooklinikClient({ Component, pageProps }) {
               },
             },
           ],
+          hide_switcher: false,
         });
       };
       t.parentNode.insertBefore(e, t);
