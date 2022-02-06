@@ -59,23 +59,10 @@ function BooklinikClient({ Component, pageProps }) {
 
       e.async = true;
       e.src = "https://cdn.weglot.com/weglot.min.js";
-      e.onload = () => {
-        Weglot.initialize({
-          api_key: "wg_48e609e9c8a8b4e4ecb5962b26f12a824",
-          switchers: [
-            {
-              location: {
-                target: ".language-switcher",
-                sibling: null,
-              },
-            },
-          ],
-        });
-      };
+
       t.parentNode.insertBefore(e, t);
     }
     handleWeglot(document, "script");
-    router.events.on("routeChangeStart", handleWeglot(document, "script"));
 
     // check if there is localStorage for book when user not logged in
     if (
