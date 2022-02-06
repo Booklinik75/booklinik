@@ -71,6 +71,7 @@ function BooklinikClient({ Component, pageProps }) {
             },
           ],
           hide_switcher: false,
+          cache: true,
         });
       };
       t.parentNode.insertBefore(e, t);
