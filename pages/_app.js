@@ -53,7 +53,7 @@ function BooklinikClient({ Component, pageProps }) {
     })(document, "script");
 
     // weglot
-    const handleWeglot = () => {
+    const handleWeglot = (d, s) => {
       var t = d.getElementsByTagName(s)[0],
         e = d.createElement(s);
 
