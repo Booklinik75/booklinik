@@ -24,22 +24,21 @@ export default function NavigationItem({
       }`}
       {...props}
     >
-      <Link href={target}>
-        <a
-          className={
-            "px-3 py-2 flex items-center justify-between no-underline leading-snug lg:hover:underline font-medium " +
-            extraStyle +
-            (router.pathname == target ? " underline" : "") +
-            (target == "/login" && loading == true ? "hidden" : "")
-          }
-        >
-          {phone && <FaPhone className="stroke-1 lg:hidden text-white" />}
-          {title}
-          {propos && (
-            <IoIosArrowForward size="18" className="lg:hidden text-shamrock" />
-          )}
-        </a>
-      </Link>
+      <a
+        href={target}
+        className={
+          "px-3 py-2 flex items-center justify-between no-underline leading-snug lg:hover:underline font-medium " +
+          extraStyle +
+          (router.pathname == target ? " underline" : "") +
+          (target == "/login" && loading == true ? "hidden" : "")
+        }
+      >
+        {phone && <FaPhone className="stroke-1 lg:hidden text-white" />}
+        {title}
+        {propos && (
+          <IoIosArrowForward size="18" className="lg:hidden text-shamrock" />
+        )}
+      </a>
     </li>
   );
 }
