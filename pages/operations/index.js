@@ -74,23 +74,9 @@ const OperationsList = ({
         title="Opérations"
       />
 
-      {/* <div className="hidden lg:flex w-full bg-shamrock bg-opacity-75 space-x-2 space-y-2 justify-center p-5 text-white">
-        {operationCategories.map((category) => (
-          <div
-            key={`${category.slug}-nav`}
-            className="after:content-['—'] last:after:content-none"
-          >
-            <Link href={`#${category.slug}`}>
-              <a className="text-white text-xl text-center hover:underline mr-1">
-                {`${category.name} `}
-              </a>
-            </Link>
-          </div>
-        ))}
-      </div> */}
       <div className="relative w-full max-w-[20rem]">
         <div
-          className="mx-4 hidden text-xl lg:flex items-center  w-full bg-white shadow  bg-opacity-75 space-x-2 space-y-2 justify-between p-5 text-black cursor-pointer"
+          className="mx-4  text-xl flex items-center  w-full bg-white shadow  bg-opacity-75 space-x-2 space-y-2 justify-between p-5 text-black cursor-pointer"
           onClick={() => setOpenDropdown((openDropdown) => !openDropdown)}
         >
           {category} <IoIosArrowDown size="20" className="text-shamrock" />
@@ -101,7 +87,7 @@ const OperationsList = ({
               initial={{ opacity: 0, y: "-6px" }}
               animate={{ opacity: 1, y: "0px" }}
               exit={{ opacity: 0, y: "-6px" }}
-              className="mx-4 hidden absolute top-[100%] z-20 operation-categories lg:flex flex-col bg-white shadow w-full overflow-y-scroll space-x-2 space-y-2 text-black max-h-[20rem]"
+              className="mx-4  absolute top-[100%] z-20 operation-categories flex flex-col bg-white shadow w-full overflow-y-scroll space-x-2 space-y-2 text-black max-h-[20rem]"
             >
               {operationCategories.map((category) => (
                 <div
