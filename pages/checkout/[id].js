@@ -216,6 +216,7 @@ const Checkout = ({ booking, stripeArgs, auth, stripeSession }) => {
         .get()
         .then((docRef) =>
           docRef.forEach((doc) => {
+            let paids = [];
             firebase
               .firestore()
               .collection("bookings")
@@ -223,17 +224,25 @@ const Checkout = ({ booking, stripeArgs, auth, stripeSession }) => {
               .get()
               .then(async (querySnapshot) => {
                 if (querySnapshot.docs.length) {
-                  if (stripeSession.payment_status === "paid") {
-                    firebase
-                      .firestore()
-                      .collection("users")
-                      .doc(doc.id)
-                      .update({
-                        referalBalance: doc.data().referalBalance + 100,
-                      });
-                  }
+                  await querySnapshot.docs.map(async (booking) => {
+                    if (booking.data().status === "validated") {
+                      paids.push(booking.data());
+                    }
+                  });
                 }
               });
+
+            if (stripeSession.payment_status === "paid") {
+              if (paids.length === 1) {
+                firebase
+                  .firestore()
+                  .collection("users")
+                  .doc(doc.id)
+                  .update({
+                    referalBalance: doc.data().referalBalance + 100,
+                  });
+              }
+            }
           })
         );
     }
