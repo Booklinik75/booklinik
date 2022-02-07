@@ -10,6 +10,7 @@ import { checkAuth, serverRedirect } from "utils/ServerHelpers";
 import moment from "moment";
 import DashboardButton from "components/DashboardButton";
 import { loadStripe } from "@stripe/stripe-js";
+import { useEffect } from "react";
 
 export const getServerSideProps = async (ctx) => {
   const auth = await checkAuth(ctx);
@@ -154,7 +155,7 @@ const Checkout = ({ booking, stripeArgs, auth, stripeSession }) => {
   // promo code state
   const [promoCode, setPromoCode] = useState(null);
   const [promoCodeInput, setPromoCodeInput] = useState(false);
-
+  const { userProfile, token } = auth.props;
 
   // to get all names surgeries
   const surgeriesName = () => {
@@ -183,7 +184,6 @@ const Checkout = ({ booking, stripeArgs, auth, stripeSession }) => {
     }
   };
 
-
   const initiatePayment = async () => {
     const stripe = await loadStripe(
       process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
@@ -206,6 +206,38 @@ const Checkout = ({ booking, stripeArgs, auth, stripeSession }) => {
       .then((res) => res.json())
       .then((data) => stripe.redirectToCheckout({ sessionId: data.id }));
   };
+
+  useEffect(() => {
+    if (userProfile.referer) {
+      firebase
+        .firestore()
+        .collection("users")
+        .where("referalCode", "==", userProfile.referer)
+        .get()
+        .then((docRef) =>
+          docRef.forEach((doc) => {
+            firebase
+              .firestore()
+              .collection("bookings")
+              .where("user", "==", token.user_id)
+              .get()
+              .then(async (querySnapshot) => {
+                if (querySnapshot.docs.length) {
+                  if (stripeSession.payment_status === "paid") {
+                    firebase
+                      .firestore()
+                      .collection("users")
+                      .doc(doc.id)
+                      .update({
+                        referalBalance: doc.data().referalBalance + 100,
+                      });
+                  }
+                }
+              });
+          })
+        );
+    }
+  }, []);
 
   return (
     <div className="h-screen relative">

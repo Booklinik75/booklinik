@@ -58,55 +58,61 @@ const Parrainage = ({ auth, referer, referalCodes }) => {
   const router = useRouter();
   const [ref, setRef] = useState(referer);
 
+  console.log(userProfile);
+  console.log(referalCodes);
+  console.log(token);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!referalCodes.includes(code.toLowerCase())) {
-      setCode("");
-      setError("Ce code n'est pas valide");
-      return;
-    }
+    // if (!referalCodes.includes(code.toLowerCase())) {
+    //   setCode("");
+    //   setError("Ce code n'est pas valide");
+    //   return;
+    // }
 
-    if (code.toLowerCase() === userProfile.referalCode.toLowerCase()) {
-      setCode("");
-      setError("Vous ne pouvez pas utiliser votre propre code");
-      return;
-    }
+    // if (code.toLowerCase() === userProfile.referalCode.toLowerCase()) {
+    //   setCode("");
+    //   setError("Vous ne pouvez pas utiliser votre propre code");
+    //   return;
+    // }
 
     if (!userProfile.referer) {
       firebase
         .firestore()
         .collection("users")
-        .where("referalCode", "==", code.toLowerCase())
+        .where("referalCode", "==", "Molly+21")
         .get()
         .then((docRef) =>
           docRef.forEach((doc) => {
             firebase
               .firestore()
               .collection("bookings")
-              .where("user", "==", doc.id)
+              .where("user", "==", token.user_id)
               .get()
               .then(async (querySnapshot) => {
+                firebase
+                  .firestore()
+                  .collection("users")
+                  .doc(token.uid)
+                  .update({
+                    referer: doc.id,
+                    refererCode: code,
+                    referalBalance: userProfile.referalBalance + 100,
+                  })
+                  .then(() => {
+                    router.replace(router.asPath);
+                    setRef(doc.data());
+                    setCode("");
+                  })
+                  .catch((err) => {});
+
+                // this is check for user if user already make a payment
                 if (querySnapshot.docs.length) {
                   await querySnapshot.docs.map(async (booking) => {
                     console.log(booking.data());
-                    if (booking.data().status === "validated") {
-                      firebase
-                        .firestore()
-                        .collection("users")
-                        .doc(token.uid)
-                        .update({
-                          referer: doc.id,
-                          refererCode: code,
-                          referalBalance: userProfile.referalBalance + 100,
-                        })
-                        .then(() => {
-                          router.replace(router.asPath);
-                          setRef(doc.data());
-                          setCode("");
-                        })
-                        .catch((err) => {});
 
+                    if (booking.data().status === "validated") {
                       firebase
                         .firestore()
                         .collection("users")
@@ -114,19 +120,8 @@ const Parrainage = ({ auth, referer, referalCodes }) => {
                         .update({
                           referalBalance: doc.data().referalBalance + 100,
                         });
-                      return;
-                    } else {
-                      setCode("");
-                      setError(
-                        "Cet utilisateur n'a jamais effectué de paiement"
-                      );
-                      return;
                     }
                   });
-                } else {
-                  setCode("");
-                  setError("Cet utilisateur n'a jamais effectué de paiement");
-                  return;
                 }
               });
           })

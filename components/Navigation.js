@@ -111,8 +111,7 @@ export default function Navigation() {
                     </li>
                   </div>
 
-                  <div className="flex flex-col lg:flex-row-reverse items-center">
-                    <li className="language-switcher border-0 px-3 py-2 lg:p-0 flex items-center no-underline leading-snug lg:hover:underline font-medium gap-2 text-lg mx-5 lg:mx-0 !justify-center lg:justify-start normal-case rounded lg:bg-transparent text-white lg:text-shamrock"></li>
+                  <div className="flex flex-col-reverse lg:flex-row items-center">
                     <NavigationItem
                       title="Estimation - Réservation"
                       extraStyle="gap-2 text-lg lg:hidden items-center mx-5 lg:mx-0 !justify-center lg:justify-start normal-case !py-3 rounded flex bg-shamrock lg:bg-transparent text-white lg:text-shamrock"
@@ -125,6 +124,10 @@ export default function Navigation() {
                       target="tel:0186653500"
                       navBottom
                       phone
+                    />
+                    <div
+                      id="language-switcher"
+                      className="border-0 px-3 py-2 lg:p-0 flex items-center no-underline leading-snug lg:hover:underline font-medium gap-2 text-lg mx-5 lg:mx-0 !justify-center lg:justify-start normal-case rounded lg:bg-transparent text-white lg:text-shamrock"
                     />
                   </div>
                   {/*

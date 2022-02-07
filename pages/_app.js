@@ -65,7 +65,7 @@ function BooklinikClient({ Component, pageProps }) {
           switchers: [
             {
               location: {
-                target: ".language-switcher",
+                target: "#language-switcher",
                 sibling: null,
               },
             },
@@ -75,6 +75,7 @@ function BooklinikClient({ Component, pageProps }) {
       t.parentNode.insertBefore(e, t);
     }
     handleWeglot(document, "script");
+
 
     // check if there is localStorage for book when user not logged in
     if (
