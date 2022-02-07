@@ -237,7 +237,7 @@ const Checkout = ({ booking, stripeArgs, auth, stripeSession }) => {
           })
         );
     }
-  }, []);
+  }, [stripeSession, token, userProfile]);
 
   return (
     <div className="h-screen relative">
