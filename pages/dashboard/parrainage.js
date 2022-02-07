@@ -65,23 +65,23 @@ const Parrainage = ({ auth, referer, referalCodes }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // if (!referalCodes.includes(code.toLowerCase())) {
-    //   setCode("");
-    //   setError("Ce code n'est pas valide");
-    //   return;
-    // }
+    if (!referalCodes.includes(code.toLowerCase())) {
+      setCode("");
+      setError("Ce code n'est pas valide");
+      return;
+    }
 
-    // if (code.toLowerCase() === userProfile.referalCode.toLowerCase()) {
-    //   setCode("");
-    //   setError("Vous ne pouvez pas utiliser votre propre code");
-    //   return;
-    // }
+    if (code.toLowerCase() === userProfile.referalCode.toLowerCase()) {
+      setCode("");
+      setError("Vous ne pouvez pas utiliser votre propre code");
+      return;
+    }
 
     if (!userProfile.referer) {
       firebase
         .firestore()
         .collection("users")
-        .where("referalCode", "==", "Molly+21")
+        .where("referalCode", "==", code.toLowerCase())
         .get()
         .then((docRef) =>
           docRef.forEach((doc) => {
