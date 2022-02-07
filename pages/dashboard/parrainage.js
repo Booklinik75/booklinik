@@ -58,10 +58,6 @@ const Parrainage = ({ auth, referer, referalCodes }) => {
   const router = useRouter();
   const [ref, setRef] = useState(referer);
 
-  console.log(userProfile);
-  console.log(referalCodes);
-  console.log(token);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
