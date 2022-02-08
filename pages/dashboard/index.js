@@ -146,6 +146,8 @@ export default function DashboardIndex({
                 <DashboardModal
                   type="error"
                   content="Veuillez remplir vos informations médicales"
+                  cta="Compléter"
+                  target="/dashboard/medical"
                 />
               )}
               {[

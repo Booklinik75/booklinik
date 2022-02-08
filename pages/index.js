@@ -250,9 +250,9 @@ export default function Home({
           ref={discoverBookLinkText}
         >
           <p className="uppercase text-sm mb-2">Découvrez Booklinik</p>
-          <h2 className="text-4xl">Parce que votre bien-être est notre</h2>
+          <h2 className="text-4xl">Parce que votre bien-être est notre priorité</h2>
           <p className="mt-4 mb-2">Les 8 étapes clé de votre voyage</p>
-          <Link href="/a-propos">
+          <Link href="/etapes">
             <a className="hover:underline flex items-center">
               Découvrir <FaChevronRight size={12} />
             </a>

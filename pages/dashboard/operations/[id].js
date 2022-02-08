@@ -142,9 +142,11 @@ export const getServerSideProps = async (ctx) => {
     currentOperation.requiredPictures.map((set, index) => {
       let slug = slugify(set.title);
 
+      console.log(currentOperations);
+
       if (data.picturesSet?.[slug]) {
         currentOperation.requiredPictures[index] = {
-          ...currentOperation[0].requiredPictures[index],
+          ...currentOperation.requiredPictures[index],
           done: true,
         };
       } else {
