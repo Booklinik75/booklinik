@@ -4,15 +4,34 @@ import { VscLoading } from "react-icons/vsc";
 import { Children, useState } from "react";
 import { useRouter } from "next/router";
 import firebase from "../../../firebase/clientApp";
+import { useContext } from "react";
+import { BookContext } from "../../../utils/bookContext";
 
-const FormStepper = ({ children, booking, user, nextStep, setNextStep, userProfile }) => {
+const FormStepper = ({
+  children,
+  booking,
+  user,
+  nextStep,
+  setNextStep,
+  userProfile,
+}) => {
   const stepsArray = Children.toArray(children);
   const [step, setStep] = useState(0);
   const router = useRouter();
   const [isSaving, setIsSaving] = useState(false);
+  const { isChecked } = useContext(BookContext);
 
   const mail = require("@sendgrid/mail");
   mail.setApiKey(process.env.SENDGRID_API_KEY);
+
+  const totalPrice =
+    Number(booking.surgeries[0].surgeryPrice) +
+    Number(booking.totalExtraTravellersPrice) +
+    Number(booking.hotelPrice) * Number(booking.totalSelectedNights) +
+    Number(booking.roomPrice) * Number(booking.totalSelectedNights) +
+    booking.options
+      ?.map((option) => option.isChecked && Number(option.price))
+      .reduce((a, b) => a + b);
 
   const doBooking = () => {
     // if user have't login and do book
@@ -29,17 +48,13 @@ const FormStepper = ({ children, booking, user, nextStep, setNextStep, userProfi
       .add({
         user: user.uid,
         status: "awaitingDocuments",
-        total:
-          Number(booking.surgeries[0].surgeryPrice) +
-          Number(booking.totalExtraTravellersPrice) +
-          Number(booking.hotelPrice) * Number(booking.totalSelectedNights) +
-          Number(booking.roomPrice) * Number(booking.totalSelectedNights) +
-          booking.options
-            ?.map((option) => option.isChecked && Number(option.price))
-            .reduce((a, b) => a + b),
+        total: isChecked ? totalPrice - userProfile.referalBalance : totalPrice,
         ...booking,
       })
       .then(() => {
+        firebase.firestore().collection("users").doc(userProfile.id).update({
+          referalBalance: 0,
+        });
         fetch("/api/mail", {
           method: "post",
           body: JSON.stringify({

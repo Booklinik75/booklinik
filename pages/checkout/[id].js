@@ -107,6 +107,44 @@ export const getServerSideProps = async (ctx) => {
               },
             }),
           });
+
+          if (auth.props.userProfile.referer) {
+            firebase
+              .firestore()
+              .collection("users")
+              .doc(auth.props.userProfile.referer)
+              .get()
+              .then((docRef) => {
+                let paids = [];
+                firebase
+                  .firestore()
+                  .collection("bookings")
+                  .where("user", "==", auth.props.token.user_id)
+                  .get()
+                  .then((querySnapshot) => {
+                    if (querySnapshot.docs.length) {
+                      querySnapshot.docs.map(async (booking) => {
+                        if (booking.data().status === "validated") {
+                          paids.push(booking.data());
+                        }
+                      });
+                    }
+
+                    if (paids.length === 1) {
+                      firebaseAdmin
+                        .firestore()
+                        .collection("users")
+                        .doc(docRef.id)
+                        .update({
+                          referalBalance: docRef.data().referalBalance + 100,
+                        })
+                        .catch((err) => {
+                          console.log("err", err);
+                        });
+                    }
+                  });
+              });
+          }
         });
 
       return stripeRes;
@@ -206,47 +244,6 @@ const Checkout = ({ booking, stripeArgs, auth, stripeSession }) => {
       .then((res) => res.json())
       .then((data) => stripe.redirectToCheckout({ sessionId: data.id }));
   };
-
-  useEffect(() => {
-    if (userProfile.referer) {
-      firebase
-        .firestore()
-        .collection("users")
-        .where("referalCode", "==", userProfile.referer)
-        .get()
-        .then((docRef) =>
-          docRef.forEach((doc) => {
-            let paids = [];
-            firebase
-              .firestore()
-              .collection("bookings")
-              .where("user", "==", token.user_id)
-              .get()
-              .then(async (querySnapshot) => {
-                if (querySnapshot.docs.length) {
-                  await querySnapshot.docs.map(async (booking) => {
-                    if (booking.data().status === "validated") {
-                      paids.push(booking.data());
-                    }
-                  });
-                }
-              });
-
-            if (stripeSession.payment_status === "paid") {
-              if (paids.length === 1) {
-                firebase
-                  .firestore()
-                  .collection("users")
-                  .doc(doc.id)
-                  .update({
-                    referalBalance: doc.data().referalBalance + 100,
-                  });
-              }
-            }
-          })
-        );
-    }
-  }, [stripeSession, token, userProfile]);
 
   return (
     <div className="h-screen relative">
