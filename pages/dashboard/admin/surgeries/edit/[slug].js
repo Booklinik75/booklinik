@@ -60,7 +60,7 @@ const EditSurgery = ({
   const router = useRouter();
   const [mdValue, setMdValue] = useState(surgeryData.data.descriptionBody);
   const [isUploading, setIsUploading] = useState(false);
-  const [imageUrl, setImageUrl] = useState(surgeryData.data.imageUrl);
+  const [photoUrl, setphotoUrl] = useState(surgeryData.data.photoUrl);
 
   const handleChange = (e) => {
     if (e.target.name === "name") {
@@ -140,7 +140,7 @@ const EditSurgery = ({
           .child(`surgery/${file.name}`)
           .getDownloadURL()
           .then((url) => {
-            setImageUrl(url);
+            setphotoUrl(url);
           });
       }
     );
@@ -160,7 +160,7 @@ const EditSurgery = ({
       additionalDocuments: inputList,
       descriptionBody: mdValue,
       minimumNights: parseInt(form.minimumNights),
-      photoUrl: imageUrl,
+      photoUrl: photoUrl,
     };
 
     firebase
@@ -241,7 +241,7 @@ const EditSurgery = ({
             onChange={handlePhotoUpload}
             disabled={false}
             label="Photo"
-            required={true}
+            required={false}
           />
           <DashboardInput
             type="number"
