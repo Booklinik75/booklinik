@@ -77,7 +77,7 @@ const OperationPage = ({ surgeryData, categoryPhoto, relatedSurgeries }) => {
           </div>
           <div className="col-span-1 lg:col-span-2 w-full relative">
             <Image
-              src={surgeryData.data.photoUrl || categoryPhoto}
+              src={surgeryData.data.photo || categoryPhoto}
               layout="fill"
               objectFit="cover"
               objectPosition="center center"
@@ -99,7 +99,9 @@ const OperationPage = ({ surgeryData, categoryPhoto, relatedSurgeries }) => {
                   title={surgery.name}
                   target={`/operations/${surgery.category}/${surgery.slug}`}
                   key={surgery.slug}
-                  picture={surgeryData.data.photoUrl || categoryPhoto}
+                  picture={surgery.photoUrl || categoryPhoto}
+              //  picture={surgeryData.data.photoUrl || categoryPhoto} // meme photo
+
                 />
               );
             })}
