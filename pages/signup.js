@@ -152,7 +152,7 @@ const SignUp = () => {
                   })
                   .then(() => {
                     localStorage.removeItem("bookBooklinik");
-                    router.push("/dashboard/operations");
+                    router.push("/dashboard");
                   });
               } else {
                 // redirect to dashboard
