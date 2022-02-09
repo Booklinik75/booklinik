@@ -59,23 +59,69 @@ function BooklinikClient({ Component, pageProps }) {
 
       e.async = true;
       e.src = "https://cdn.weglot.com/weglot.min.js";
+      setTimeout(() => {
+        
+      })
       e.onload = () => {
         Weglot.initialize({
           api_key: "wg_48e609e9c8a8b4e4ecb5962b26f12a824",
-          switchers: [
-            {
-              location: {
-                target: "#language-switcher",
-                sibling: null,
-              },
-            },
-          ],
+          // switchers: [
+          //   {
+          //     location: {
+          //       target: "#language-switcher",
+          //       sibling: null,
+          //     },
+          //   },
+          // ],
         });
+
+        (function () {
+          // CHANGE THIS SELECTOR to the element you want to add your custom switcher to.
+          var myDiv = document.getElementById("language-switcher");
+
+          if (!Weglot) {
+            return;
+          }
+
+          console.log(Weglot?.options?.languages);
+
+          //Create array of options to be added
+          var availableLanguages = Weglot?.options?.languages
+            ?.map(function (language) {
+              return language.language_to;
+            })
+            .concat(Weglot.options.language_from);
+
+          //Create and append select list
+          var selectList = document.createElement("select");
+          myDiv.appendChild(selectList);
+
+          var currentLang = Weglot.getCurrentLang();
+
+          //Create and append the options
+          for (var i = 0; i < availableLanguages?.length; i++) {
+            var lang = availableLanguages[i];
+            var option = document.createElement("option");
+            option.value = lang;
+            option.text = Weglot.getLanguageName(lang);
+            if (lang === currentLang) {
+              option.selected = "selected";
+            }
+            selectList.appendChild(option);
+          }
+
+          selectList.onchange = function () {
+            Weglot.switchTo(this.value);
+          };
+
+          Weglot.on("languageChanged", function (lang) {
+            selectList.value = lang;
+          });
+        })();
       };
       t.parentNode.insertBefore(e, t);
     }
     handleWeglot(document, "script");
-
 
     // check if there is localStorage for book when user not logged in
     if (

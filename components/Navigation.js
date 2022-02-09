@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import NavigationItem from "./NavigationItem";
 import Logo from "../public/booklinik-logo.svg";
@@ -128,7 +128,7 @@ export default function Navigation() {
                     <div
                       id="language-switcher"
                       className="border-0 px-3 py-2 lg:p-0 flex items-center no-underline leading-snug lg:hover:underline font-medium gap-2 text-lg mx-5 lg:mx-0 !justify-center lg:justify-start normal-case rounded lg:bg-transparent text-white lg:text-shamrock"
-                    />
+                    ></div>
                   </div>
                   {/*
                   <li className="hidden lg:flex group gap-1 items-center">
