@@ -66,6 +66,9 @@ const Parrainage = ({ auth, referer, referalCodes }) => {
   const router = useRouter();
   const [ref, setRef] = useState(referer);
 
+  console.log(referalCodes);
+  console.log(userProfile);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -89,52 +92,47 @@ const Parrainage = ({ auth, referer, referalCodes }) => {
         .get()
         .then((docRef) =>
           docRef.forEach((doc) => {
+            console.log(doc);
             firebase
               .firestore()
               .collection("bookings")
-              .where("user", "==", doc.id)
+              .where("user", "==", token.user_id)
               .get()
-              .then(async (querySnapshot) => {
-                if (querySnapshot.docs.length) {
-                  await querySnapshot.docs.map(async (booking) => {
-                    console.log(booking.data());
-                    if (booking.data().status === "validated") {
-                      firebase
-                        .firestore()
-                        .collection("users")
-                        .doc(token.uid)
-                        .update({
-                          referer: doc.id,
-                          refererCode: code,
-                          referalBalance: userProfile.referalBalance + 100,
-                        })
-                        .then(() => {
-                          router.replace(router.asPath);
-                          setRef(doc.data());
-                          setCode("");
-                        })
-                        .catch((err) => {});
+              .then((querySnapshot) => {
+                firebase
+                  .firestore()
+                  .collection("users")
+                  .doc(token.uid)
+                  .update({
+                    referer: doc.id,
+                    refererCode: code,
+                    referalBalance: userProfile.referalBalance + 100,
+                  })
+                  .then(() => {
+                    router.replace(router.asPath);
+                    setRef(doc.data());
+                    setCode("");
+                  })
+                  .catch((err) => {});
 
-                      firebase
-                        .firestore()
-                        .collection("users")
-                        .doc(doc.id)
-                        .update({
-                          referalBalance: doc.data().referalBalance + 100,
-                        });
-                      return;
-                    } else {
-                      setCode("");
-                      setError(
-                        "Cet utilisateur n'a jamais effectué de paiement"
-                      );
-                      return;
+                // this is check for user if user already make a payment
+                let paids = [];
+                if (querySnapshot.docs.length) {
+                  querySnapshot.docs.map((booking) => {
+                    if (booking.data().status === "validated") {
+                      paids.push(booking.data());
                     }
                   });
-                } else {
-                  setCode("");
-                  setError("Cet utilisateur n'a jamais effectué de paiement");
-                  return;
+                }
+
+                if (paids.length) {
+                  firebase
+                    .firestore()
+                    .collection("users")
+                    .doc(doc.id)
+                    .update({
+                      referalBalance: doc.data().referalBalance + 100,
+                    });
                 }
               });
           })
