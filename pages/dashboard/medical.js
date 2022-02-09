@@ -23,6 +23,7 @@ export const getServerSideProps = async (ctx) => {
     });
   };
 
+
   let questionsAnswered = {};
   await firebase
     .firestore()
@@ -182,16 +183,16 @@ const MedicalProfile = ({ auth, medicalQuestions, questionsAnswered }) => {
                           ]
                     }
                   >
-                    <option selected={true} disabled={true}>
+                    <option selected={true} disabled={false}>
                       Sélectionner
                     </option>
                     <option value={true}>Oui</option>
                     <option value={false}>Non</option>
                   </select>
-                  {medicalQuestion.hasPrecision === true ? (
+                  { medicalQuestion.hasPrecision === true ? (  // la question A UNE PRÉCISION pour oui
                     <input
                       type="text"
-                      required={true}
+                  //  required={true}
                       name={`${medicalQuestion.id}_precision`}
                       placeholder={medicalQuestion.precision}
                       onChange={(e) => handleInputChange(e, index)}
