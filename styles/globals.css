@@ -273,3 +273,79 @@ html body .react-tel-input .selected-flag .arrow {
     transform: rotate(0) !important;
   }
 }
+
+.language-switcher {
+  position: relative;
+  width: 11rem;
+  color: #000;
+}
+
+.language-switcher > div {
+  display: flex;
+  font-size: 1rem;
+  align-items: center;
+  cursor: pointer;
+  padding: 0.75em 1em;
+  width: 100%;
+  justify-content: space-between;
+  color: #000;
+}
+
+.language-switcher > div svg {
+  transform: rotate(180deg);
+}
+
+.language-switcher > div > div {
+  display: flex;
+  align-items: center;
+}
+
+.language-switcher ul {
+  position: absolute;
+  background: #fff;
+  display: none;
+  bottom: 100%;
+  width: 100%;
+  border-radius: 0 0 0.5em 0.5em;
+}
+
+.language-switcher ul.show {
+  display: block;
+}
+
+.language-switcher ul li {
+  display: flex;
+  align-items: center;
+  color: #000;
+  padding: 0.75em 1.75em;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.language-switcher ul li:hover {
+  background: #0001;
+}
+
+.language-switcher > div > div img,
+.language-switcher ul li img {
+  margin-right: 0.5rem;
+}
+
+@media (min-width: 992px) {
+  .language-switcher ul {
+    top: calc(100% + 1.5rem);
+    bottom: unset;
+  }
+
+  .language-switcher {
+    width: 9rem;
+  }
+
+  .language-switcher ul li {
+    padding: 0.75em 1em;
+  }
+
+  .language-switcher > div svg {
+    transform: rotate(0);
+  }
+}

@@ -59,65 +59,71 @@ function BooklinikClient({ Component, pageProps }) {
 
       e.async = true;
       e.src = "https://cdn.weglot.com/weglot.min.js";
-      setTimeout(() => {
-        
-      })
+      setTimeout(() => {});
       e.onload = () => {
         Weglot.initialize({
           api_key: "wg_48e609e9c8a8b4e4ecb5962b26f12a824",
-          // switchers: [
-          //   {
-          //     location: {
-          //       target: "#language-switcher",
-          //       sibling: null,
-          //     },
-          //   },
-          // ],
+          hide_switcher: true,
         });
 
-        (function () {
-          // CHANGE THIS SELECTOR to the element you want to add your custom switcher to.
+        Weglot.on("initialized", function () {
           var myDiv = document.getElementById("language-switcher");
 
-          if (!Weglot) {
-            return;
-          }
-
-          console.log(Weglot?.options?.languages);
-
-          //Create array of options to be added
-          var availableLanguages = Weglot?.options?.languages
+          var availableLanguages = Weglot.options.languages
             ?.map(function (language) {
               return language.language_to;
             })
             .concat(Weglot.options.language_from);
 
-          //Create and append select list
-          var selectList = document.createElement("select");
+          var selectList = document.createElement("ul");
           myDiv.appendChild(selectList);
 
           var currentLang = Weglot.getCurrentLang();
+          var currentLangguage = document.createElement("div");
+          currentLangguage.onclick = () => selectList.classList.toggle("show");
+          myDiv.appendChild(currentLangguage);
 
           //Create and append the options
           for (var i = 0; i < availableLanguages?.length; i++) {
             var lang = availableLanguages[i];
-            var option = document.createElement("option");
-            option.value = lang;
-            option.text = Weglot.getLanguageName(lang);
+            console.log(lang);
+
+            var li = document.createElement("li");
+            li.classList.add("list-switcher");
+            li.dataset.lang = lang;
+            li.innerHTML += `<img
+              src="https://flagcdn.com/w20/${lang === "en" ? "gb" : lang}.png"
+            /> ${Weglot.getLanguageName(lang)}`;
             if (lang === currentLang) {
-              option.selected = "selected";
+              li.selected = "selected";
             }
-            selectList.appendChild(option);
+            selectList.appendChild(li);
           }
 
-          selectList.onchange = function () {
-            Weglot.switchTo(this.value);
-          };
+          const allSwitchers = document.querySelectorAll(".list-switcher");
+          allSwitchers.forEach((switcher) =>
+            switcher.addEventListener("click", function () {
+              Weglot.switchTo(this.getAttribute("data-lang"));
+              selectList.classList.remove("show");
+            })
+          );
 
           Weglot.on("languageChanged", function (lang) {
-            selectList.value = lang;
+            const langName = Weglot.getLanguageName(lang);
+            console.log(langName);
+            currentLangguage.innerHTML = `
+              <div>
+              <img
+                src="https://flagcdn.com/w20/${lang === "en" ? "gb" : lang}.png"
+              /> ${langName}
+              </div>
+              <svg width="10" height="10" viewBox="0 0 37 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M2 2L18.5 18.5L35 2" stroke="#33C383" stroke-width="8" stroke-linecap="round"/>
+              </svg>
+    
+              `;
           });
-        })();
+        });
       };
       t.parentNode.insertBefore(e, t);
     }
