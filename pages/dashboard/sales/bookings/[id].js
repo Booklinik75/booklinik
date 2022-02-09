@@ -176,8 +176,8 @@ const Booking = ({
   const [totalSelectedNights, setTotalSelectedNights] = useState(
     booking.totalSelectedNights
   );
-  const [totalPrice, setTotalPrice] = useState(booking.total);
   const [minimumNights, setMinimumNights] = useState(booking.minimumNights);
+  const [totalPrice, setTotalPrice] = useState(booking.total);
 
   const handleAddNewOptions = () => {
     setOptions([
@@ -364,16 +364,29 @@ const Booking = ({
     }
   };
 
+  console.log();
+
   useEffect(() => {
-    setTotalPrice(
+    // this is initialPrice before referal, we use this for referal
+    const initialPrice =
+      Number(booking.surgeries[0].surgeryPrice) +
+      Number(booking.totalExtraTravellersPrice) +
+      Number(booking.hotelPrice) * Number(booking.totalSelectedNights) +
+      booking.options
+        ?.map((option) => option.isChecked && Number(option.price))
+        .reduce((a, b) => a + b) +
+      Number(booking.roomPrice) * Number(booking.totalSelectedNights);
+    // this is new price
+
+    const allTotalPrice =
       options
         .map((option) => option.isChecked && Number(option.price))
         .reduce((a, b) => a + b, 0) +
-        operations.reduce((prev, curr) => prev + curr.surgeryPrice, 0) +
-        room.roomPrice * totalSelectedNights +
-        hotel.hotelPrice * totalSelectedNights +
-        (voyageurs.childs + (voyageurs.adults - 1) + voyageurs.babies) * 450
-    );
+      operations.reduce((prev, curr) => prev + curr.surgeryPrice, 0) +
+      room.roomPrice * totalSelectedNights +
+      hotel.hotelPrice * totalSelectedNights +
+      (voyageurs.childs + (voyageurs.adults - 1) + voyageurs.babies) * 450;
+    setTotalPrice(allTotalPrice - (initialPrice - booking.total));
 
     // set minimumNight
     setMinimumNights(() => {

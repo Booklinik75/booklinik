@@ -88,7 +88,7 @@ const NewBookingContainer = ({
         .get()
         .then((doc) => {
           if (doc.exists) {
-            setUserProfile(doc.data());
+            setUserProfile({ ...doc.data(), id: doc.id });
           }
         })
         .catch((error) => {});

@@ -10,6 +10,7 @@ import { checkAuth, serverRedirect } from "utils/ServerHelpers";
 import moment from "moment";
 import DashboardButton from "components/DashboardButton";
 import { loadStripe } from "@stripe/stripe-js";
+import { useEffect } from "react";
 
 export const getServerSideProps = async (ctx) => {
   const auth = await checkAuth(ctx);
@@ -106,6 +107,44 @@ export const getServerSideProps = async (ctx) => {
               },
             }),
           });
+
+          if (auth.props.userProfile.referer) {
+            firebase
+              .firestore()
+              .collection("users")
+              .doc(auth.props.userProfile.referer)
+              .get()
+              .then((docRef) => {
+                let paids = [];
+                firebase
+                  .firestore()
+                  .collection("bookings")
+                  .where("user", "==", auth.props.token.user_id)
+                  .get()
+                  .then((querySnapshot) => {
+                    if (querySnapshot.docs.length) {
+                      querySnapshot.docs.map(async (booking) => {
+                        if (booking.data().status === "validated") {
+                          paids.push(booking.data());
+                        }
+                      });
+                    }
+
+                    if (paids.length === 1) {
+                      firebaseAdmin
+                        .firestore()
+                        .collection("users")
+                        .doc(docRef.id)
+                        .update({
+                          referalBalance: docRef.data().referalBalance + 100,
+                        })
+                        .catch((err) => {
+                          console.log("err", err);
+                        });
+                    }
+                  });
+              });
+          }
         });
 
       return stripeRes;
@@ -154,7 +193,7 @@ const Checkout = ({ booking, stripeArgs, auth, stripeSession }) => {
   // promo code state
   const [promoCode, setPromoCode] = useState(null);
   const [promoCodeInput, setPromoCodeInput] = useState(false);
-
+  const { userProfile, token } = auth.props;
 
   // to get all names surgeries
   const surgeriesName = () => {
@@ -182,7 +221,6 @@ const Checkout = ({ booking, stripeArgs, auth, stripeSession }) => {
       return surgeryNameCategories[0];
     }
   };
-
 
   const initiatePayment = async () => {
     const stripe = await loadStripe(
