@@ -68,20 +68,21 @@ function BooklinikClient({ Component, pageProps }) {
 
         function handleWeglotSwitcher() {
           var myDiv = document.getElementById("language-switcher");
+          if (myDiv) {
+            var availableLanguages = Weglot.options.languages
+              ?.map(function (language) {
+                return language.language_to;
+              })
+              .concat(Weglot.options.language_from);
 
-          var availableLanguages = Weglot.options.languages
-            ?.map(function (language) {
-              return language.language_to;
-            })
-            .concat(Weglot.options.language_from);
+            var selectList = document.createElement("ul");
+            myDiv.appendChild(selectList);
 
-          var selectList = document.createElement("ul");
-          myDiv.appendChild(selectList);
-
-          var currentLang = Weglot.getCurrentLang();
-          var currentLangguage = document.createElement("div");
-          currentLangguage.onclick = () => selectList.classList.toggle("show");
-          currentLangguage.innerHTML = `
+            var currentLang = Weglot.getCurrentLang();
+            var currentLangguage = document.createElement("div");
+            currentLangguage.onclick = () =>
+              selectList.classList.toggle("show");
+            currentLangguage.innerHTML = `
               <div>
               <img
                 src="https://flagcdn.com/w20/${
@@ -94,37 +95,37 @@ function BooklinikClient({ Component, pageProps }) {
               </svg>
     
               `;
-          myDiv.appendChild(currentLangguage);
+            myDiv.appendChild(currentLangguage);
 
-          //Create and append the options
-          for (var i = 0; i < availableLanguages?.length; i++) {
-            var lang = availableLanguages[i];
-            console.log(lang);
+            //Create and append the options
+            for (var i = 0; i < availableLanguages?.length; i++) {
+              var lang = availableLanguages[i];
+              console.log(lang);
 
-            var li = document.createElement("li");
-            li.classList.add("list-switcher");
-            li.dataset.lang = lang;
-            li.innerHTML += `<img
+              var li = document.createElement("li");
+              li.classList.add("list-switcher");
+              li.dataset.lang = lang;
+              li.innerHTML += `<img
               src="https://flagcdn.com/w20/${lang === "en" ? "gb" : lang}.png"
             /> ${Weglot.getLanguageName(lang)}`;
-            if (lang === currentLang) {
-              li.selected = "selected";
+              if (lang === currentLang) {
+                li.selected = "selected";
+              }
+              selectList.appendChild(li);
             }
-            selectList.appendChild(li);
-          }
 
-          const allSwitchers = document.querySelectorAll(".list-switcher");
-          allSwitchers.forEach((switcher) =>
-            switcher.addEventListener("click", function () {
-              Weglot.switchTo(this.getAttribute("data-lang"));
-              selectList.classList.remove("show");
-            })
-          );
+            const allSwitchers = document.querySelectorAll(".list-switcher");
+            allSwitchers.forEach((switcher) =>
+              switcher.addEventListener("click", function () {
+                Weglot.switchTo(this.getAttribute("data-lang"));
+                selectList.classList.remove("show");
+              })
+            );
 
-          Weglot.on("languageChanged", function (lang) {
-            const langName = Weglot.getLanguageName(lang);
-            console.log(langName);
-            currentLangguage.innerHTML = `
+            Weglot.on("languageChanged", function (lang) {
+              const langName = Weglot.getLanguageName(lang);
+              console.log(langName);
+              currentLangguage.innerHTML = `
               <div>
               <img
                 src="https://flagcdn.com/w20/${lang === "en" ? "gb" : lang}.png"
@@ -135,7 +136,8 @@ function BooklinikClient({ Component, pageProps }) {
               </svg>
     
               `;
-          });
+            });
+          }
         }
 
         if (window.location.pathname === "/") {
