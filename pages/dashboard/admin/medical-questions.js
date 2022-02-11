@@ -153,7 +153,7 @@ const MedicalQuestionsEditor = ({ auth, medicalQuestions }) => {
                       si aucune.
                     </p>
                   </div>
-                  <div className="flex flex-col">
+                {/*  <div className="flex flex-col">
                     <label className="text-sm text-gray-500 uppercase">
                       Précision pour oui ?
                     </label>
@@ -176,7 +176,7 @@ const MedicalQuestionsEditor = ({ auth, medicalQuestions }) => {
                       name="isRequired"
                       checked={x.isRequired}
                     />
-                  </div>
+                  </div> */}
                 </div>
 
                 <div className="btn-box space-x-2 my-2 transition">
