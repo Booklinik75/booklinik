@@ -66,7 +66,7 @@ function BooklinikClient({ Component, pageProps }) {
           hide_switcher: true,
         });
 
-        Weglot.on("initialized", function () {
+        function handleWeglotSwitcher() {
           var myDiv = document.getElementById("language-switcher");
 
           var availableLanguages = Weglot.options.languages
@@ -81,6 +81,19 @@ function BooklinikClient({ Component, pageProps }) {
           var currentLang = Weglot.getCurrentLang();
           var currentLangguage = document.createElement("div");
           currentLangguage.onclick = () => selectList.classList.toggle("show");
+          currentLangguage.innerHTML = `
+              <div>
+              <img
+                src="https://flagcdn.com/w20/${
+                  currentLang === "en" ? "gb" : currentLang
+                }.png"
+              /> ${Weglot.getLanguageName(currentLang)}
+              </div>
+              <svg width="10" height="10" viewBox="0 0 37 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M2 2L18.5 18.5L35 2" stroke="#33C383" stroke-width="8" stroke-linecap="round"/>
+              </svg>
+    
+              `;
           myDiv.appendChild(currentLangguage);
 
           //Create and append the options
@@ -123,7 +136,15 @@ function BooklinikClient({ Component, pageProps }) {
     
               `;
           });
-        });
+        }
+
+        if (window.location.pathname === "/") {
+          Weglot.on("initialized", handleWeglotSwitcher);
+        } else {
+          handleWeglotSwitcher();
+        }
+
+        // if(window.loca)
       };
       t.parentNode.insertBefore(e, t);
     }
