@@ -9,6 +9,8 @@ import { getBackEndAsset } from "utils/ServerHelpers";
 import Footer from "components/Footer";
 import ContactHelper from "components/ContactHelper";
 import Slider from "react-slick";
+import MDEditor from "@uiw/react-md-editor";
+
 
 // get server side props
 export async function getServerSideProps(context) {
@@ -155,10 +157,12 @@ const Offer = ({
         </div>
         <div className="w-full flex items-center flex-col gap-2">
           <h2 className="text-4xl text-center">L&apos;opération</h2>
-          <p className="text-lg text-center prose prose-lg">
-            {/* only show the two first sentences of the excerpt */}
+        {/*   <p className="text-lg text-center prose prose-lg">
+        //     only show the two first sentences of the excerpt
             {excerpt.split(".").slice(0, 2).join(".")}.
           </p>
+        */}
+          <MDEditor.Markdown className="text-lg text-center prose prose-lg" source={excerpt.split(".").slice(0, 2).join(".")} />
         </div>
         <div className="w-full flex flex-col lg:flex-row gap-4 max-w-7xl justify-center items-center">
           <div className="w-full h-72 lg:w-2/5 relative group">
