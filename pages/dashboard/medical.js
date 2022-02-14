@@ -134,7 +134,7 @@ const MedicalProfile = ({ auth, medicalQuestions, questionsAnswered }) => {
               <input
                 name="weight"
                 type="number"
-                placeholder="95 kg"
+                placeholder="70 kg"
                 min={0}
                 required={true}
                 value={formData.weight}
@@ -150,7 +150,7 @@ const MedicalProfile = ({ auth, medicalQuestions, questionsAnswered }) => {
               <input
                 name="height"
                 type="number"
-                placeholder="175cm"
+                placeholder="169cm"
                 min={0}
                 value={formData.height}
                 required={true}
