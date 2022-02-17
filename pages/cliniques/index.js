@@ -17,7 +17,7 @@ export const getStaticProps = async (context) => {
   const clinics = await getClinics();
 
   await Promise.all(
-    clinics.map(async (clinic, index) => {
+    clinics.map(async (clinic, index, array) => {
       let image = await getBackEndAsset(clinic.photo);
       clinics[index].photo = image;
     })
