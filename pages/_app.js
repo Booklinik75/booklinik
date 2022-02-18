@@ -66,8 +66,9 @@ function BooklinikClient({ Component, pageProps }) {
           hide_switcher: true,
         });
 
-        const getAllLanguageSwitch =
-          document.querySelectorAll("#language-switcher");
+        const getAllLanguageSwitch = document.querySelectorAll(
+          ".language-switcher-container"
+        );
 
         function handleWeglotSwitcher() {
           var myDiv = document.getElementById("language-switcher");
@@ -84,6 +85,7 @@ function BooklinikClient({ Component, pageProps }) {
 
             var currentLang = Weglot.getCurrentLang();
             var currentLangguage = document.createElement("div");
+            currentLangguage.classList.add("language-switcher-container");
             currentLangguage.onclick = () =>
               selectList.classList.toggle("show");
             currentLangguage.innerHTML = `
@@ -144,10 +146,12 @@ function BooklinikClient({ Component, pageProps }) {
           }
         }
 
-        if (getAllLanguageSwitch.length <= 1) {
-          if (window.location.pathname === "/") {
-            Weglot.on("initialized", handleWeglotSwitcher);
-          } else {
+        console.log(getAllLanguageSwitch);
+
+        if (window.location.pathname === "/") {
+          Weglot.on("initialized", handleWeglotSwitcher);
+        } else {
+          if (getAllLanguageSwitch.length < 1) {
             handleWeglotSwitcher();
           }
         }
