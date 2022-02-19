@@ -107,7 +107,10 @@ const TravellersSelectStep = ({ booking, setBooking, setNextStep }) => {
             </div>
           </div>
           <div className="flex items-center justify-between">
+            <div className="space-y-0.5">
             <p>Bébés</p>
+            <p className="text-xs text-gray-400">-11 ans</p>
+            </div>
             <div className="flex gap-2 items-center">
               <button
                 className="text-bali border border-gray-400 rounded px-3 pb-1 transition hover:bg-bali hover:text-white"
