@@ -83,10 +83,10 @@ const HotelSelectStep = ({
                         <p className="text-white text-xs capitalize">
                           {hotel.city}
                         </p>
-                        <p className="text-white text-xs">&bull;</p>
+                      {/*  <p className="text-white text-xs">&bull;</p>
                         <p className="text-white text-xs">
-                          +{hotel.extraPrice}€
-                        </p>
+                          +{hotel.startingPrice}€ }
+                        </p>*/}
                       </div>
                     </div>
                   </div>
