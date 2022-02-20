@@ -25,7 +25,7 @@ const Clinic = ({ clinic, city, citySlug, countrySlug }) => {
             </div>
           </div>
           <div>
-            <p className="text-xs text-gray-600 text-justify mx-0.5 overflow-ellipsis transition line-clamp-3 hover:line-clamp-none">
+            <p className="text-s text-gray-600 text-justify mx-0.5 overflow-ellipsis transition line-clamp-3 hover:line-clamp-none">
               {clinic.excerpt}
             </p>
           </div>
