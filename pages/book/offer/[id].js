@@ -212,6 +212,7 @@ const OfferBooking = ({ offer }) => {
   });
 
   {/*
+    const surgeryCategoriesName = () => {
     const surgeryNameCategories = [];
     booking.surgeries.map((operation) =>
       surgeryNameCategories.push(operation.surgeryCategoryName)
