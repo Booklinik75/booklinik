@@ -92,7 +92,7 @@ const HotelSelectStep = ({
                   </div>
                 </div>
                 <div>
-                  <p className="text-s text-gray-600 text-justify mx-0.5">
+                  <p className="text-s text-gray-500 text-justify mx-0.5">
                     {hotel.excerpt}
                   </p>
                 </div>
