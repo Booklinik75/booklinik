@@ -172,7 +172,7 @@ export default function DashboardIndex({
               {bookings.some((b) => b.status === "awaitingDocuments") && (
                 <DashboardModal
                   type="error"
-                  content="Pour finaliser votre reservation, vous devrez ajouter des photos"
+                  content="Pour finaliser votre réservation, vous devrez ajouter des photos"
                   cta="Ajouter"
                   target="/dashboard/operations"
                 />
