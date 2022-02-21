@@ -182,7 +182,7 @@ const OfferBooking = ({ offer }) => {
               0
             )
           ) +
-          Number(booking.totalExtraTravellersPrice) +
+          Number(booking.totalExtraTravellersPrice) * Number(booking.totalSelectedNights)  +
           Number(booking.hotelPrice) * Number(booking.totalSelectedNights) +
           Number(booking.roomPrice) * Number(booking.totalSelectedNights),
         ...booking,
@@ -211,7 +211,7 @@ const OfferBooking = ({ offer }) => {
     };
   });
 
-  const surgeryCategoriesName = () => {
+  {/*
     const surgeryNameCategories = [];
     booking.surgeries.map((operation) =>
       surgeryNameCategories.push(operation.surgeryCategoryName)
@@ -223,6 +223,7 @@ const OfferBooking = ({ offer }) => {
       return surgeryNameCategories[0];
     }
   };
+  */}
 
   return (
     <div>
@@ -254,12 +255,11 @@ const OfferBooking = ({ offer }) => {
               <BookingSideNavigation step={7} bookingData={booking} />
             </div>
             <div className="col-span-8 shadow-xl h-full grid grid-cols-12 overflow-y-scroll">
-              <div className="col-span-12 space-y-6 h-full p-8">
+                <div className="col-span-12 space-y-6 gap-6p-12 lg:p-10">
                 <h1 className="text-2xl mb-6">Parfait, on y est presque !</h1>
-                <div className="py-6 space-y-6">
                   <p className="flex items-center">
                     Vous souhaitez réaliser une{" "}
-                    <BookingDataSpan string={surgeryCategoriesName()} />
+                    <BookingDataSpan string={offer.name} />
                   </p>
                   <p className="flex items-center gap-2">
                     Votre voyage s&apos;étendra du{" "}
@@ -287,13 +287,14 @@ const OfferBooking = ({ offer }) => {
                     choix) et vous logerez en{" "}
                     <BookingDataSpan string={booking.roomName} />
                   </p>
-                </div>
-                <p className="py-6">
+                <p className="flex items-center gap-2">
                   Le prix tout compris de votre voyage sur-mesure est de{" "}
                   <span className="text-2xl rounded text-white px-4 py-2 mx-2 bg-shamrock">
                     {formatPrice(offer.price)} €
                   </span>
                 </p>
+                </div>
+
                 {/* if dates are selected, show a button */}
                 {
                   <DashboardButton
@@ -309,7 +310,6 @@ const OfferBooking = ({ offer }) => {
               </div>
             </div>
           </div>
-        </div>
       ) : null}
     </div>
   );
