@@ -47,6 +47,7 @@ export const getServerSideProps = async (ctx) => {
 const EditHotel = ({ data, id, citiesOptions, auth }) => {
   const router = useRouter();
   const [isLoading, setLoading] = useState("idle");
+  const [image, setImage] = useState("");
 
   const [form, setFormData] = useState({
     slug: data.slug,
@@ -56,7 +57,6 @@ const EditHotel = ({ data, id, citiesOptions, auth }) => {
     excerpt: data.excerpt,
     city: data.city,
   });
-  const [image, setImage] = useState("");
 
   const handleChange = (e) => {
     if (e.target.name === "name") {
@@ -84,7 +84,7 @@ const EditHotel = ({ data, id, citiesOptions, auth }) => {
     const root = "hotels";
     let docData = {};
 
-    if (image !== null) {
+    if (image !== "") {
       const fileName = `${form.slug}-${image.name}`;
       const imageUploadRes = await doFileUpload(root, fileName, image);
 
@@ -122,7 +122,7 @@ const EditHotel = ({ data, id, citiesOptions, auth }) => {
         setTimeout(() => {
           setLoading("idle");
         }, 1000);
-        router.push(`/dashboard/admin/hotels/edit/${form.slug}`);
+        router.reload(window.location.pathname);
       });
   }
 

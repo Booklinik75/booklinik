@@ -10,7 +10,7 @@ const Advantage = ({ title, body }) => {
         alt="Booklinik"
       />
       <h4 className="text-3xl">{title}</h4>
-      <p className="text-sm leading-loose text-justify">{body}</p>
+      <p className="text-s leading-loose text-justify">{body}</p>
     </div>
   );
 };
