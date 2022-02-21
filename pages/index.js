@@ -164,10 +164,10 @@ export default function Home({
             >
               <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-center">
                 Booklinik, l’unique service de réservation en ligne de tourisme
-                médical en 3 clics !
+                médical.
               </h2>
               <h2 className="text-xl md:text-2xl lg:text-3xl text-center mb-6">
-                Estimez et réservez votre voyage esthétique
+                Estimez et réservez votre voyage esthétique en 3 clics !
               </h2>
               <div className="grid grid-cols-3 md:grid-cols-3 lg:grid-cols-10 gap-6 home-hero-surgery-categories">
                 {categoriesSettings.map((orderedCategory) => {
