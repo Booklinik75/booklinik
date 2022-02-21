@@ -171,11 +171,12 @@ html {
   }
 }
 
+/* home background image & effect */
 @supports (background-attachment: fixed) {
   @media (min-width: 768px) {
     .home__banner {
       background-attachment: fixed;
-      background-image: url(/assets/background-booklinik.jpeg);
+      background-image: url(/assets/booklinik-background.jpeg);
     }
   }
 }
