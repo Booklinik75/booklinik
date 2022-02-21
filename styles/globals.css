@@ -171,6 +171,7 @@ html {
   }
 }
 
+/* home background image & effect */
 @supports (background-attachment: fixed) {
   @media (min-width: 768px) {
     .home__banner {
