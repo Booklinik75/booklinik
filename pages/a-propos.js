@@ -49,6 +49,7 @@ const Values = () => {
         fileName={fileName}
         fullWidth={true}
         discover={true}
+        extraLarge={true}
       />
 
       <div className="">
@@ -77,9 +78,9 @@ const Values = () => {
             </p>
           </div>
         </div>
-        <div className="bg-gray-100 p-10">
+      {/*  <div className="bg-gray-100 p-10">
           <div className="flex flex-col items-center justify-center">
-            {/* youtube video */}
+            // youtube video
             <iframe
               src="https://www.youtube.com/embed/5qap5aO4i9A"
               title="YouTube video player"
@@ -89,7 +90,7 @@ const Values = () => {
               allowFullScreen
             ></iframe>
           </div>
-        </div>
+        </div> */}
       </div>
 
       <div className="bg-white py-10">

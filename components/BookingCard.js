@@ -41,6 +41,18 @@ const BookingCard = ({ booking }) => {
 
   const bookingStatus = generateBookingStatus(booking.status);
 
+  const surgeriesName = () => {
+    const surgeryNames = [];
+    booking.surgeries.map((operation) =>
+      surgeryNames.push(operation.surgeryName)
+    );
+    if (surgeryNames.length > 1) {
+      return surgeryNames.join(", ");
+    } else {
+      return surgeryNames[0];
+    }
+  };
+
   return (
     <Link href={`/dashboard/operations/${booking.id}`}>
       <a>
@@ -54,7 +66,7 @@ const BookingCard = ({ booking }) => {
                 className="bg-gray-100 "
               />
               {bookingStatus && (
-                <div className="absolute z-30 bg-white rounded p-3 m-4 flex gap-2 items-center drop-shadow-sm">
+                <div className="absolute bg-white rounded p-3 m-4 flex gap-2 items-center drop-shadow-sm z-10">
                   <p className={`text-${bookingStatus.color}`}>
                     {bookingStatus.icon}
                   </p>
@@ -71,10 +83,10 @@ const BookingCard = ({ booking }) => {
           </div>
           <div className="flex flex-col gap-1">
             <p className="text-lg transition group-hover:underline">
-              {booking.surgeryName} à {booking.city}
+              {surgeriesName()} à {booking.city}
             </p>
             <p className="text-sm text-bali font-bold">
-              Witt Istanbul Suites &bull;{" "}
+              {booking.hotelName};{" "}
               {booking.alternativeTotal
                 ? booking.alternativeTotal
                 : booking.total}

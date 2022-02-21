@@ -28,7 +28,7 @@ const TravellersSelectStep = ({ booking, setBooking, setNextStep }) => {
   return (
     <div className="space-y-6">
       <h1 className="text-2xl mb-6">Souhaitez vous être accompagné ?</h1>
-      <div className="w-52 flex justify-center flex-col">
+      <div className="w-full lg:w-52 flex justify-center flex-col">
         <div className="flex items-center p-4 justify-between border rounded-t border-gray-500">
           <div className="flex items-center gap-2 ">
             <FaUserAlt />{" "}
@@ -107,7 +107,10 @@ const TravellersSelectStep = ({ booking, setBooking, setNextStep }) => {
             </div>
           </div>
           <div className="flex items-center justify-between">
+            <div className="space-y-0.5">
             <p>Bébés</p>
+            <p className="text-xs text-gray-400">-2 ans</p>
+            </div>
             <div className="flex gap-2 items-center">
               <button
                 className="text-bali border border-gray-400 rounded px-3 pb-1 transition hover:bg-bali hover:text-white"

@@ -62,10 +62,14 @@ html {
   content: ", ";
 }
 
-.home-hero-surgery-categories > div:nth-child(6),
+/* .home-hero-surgery-categories > div:nth-child(6),
 .home-hero-surgery-categories > div:nth-child(7),
 .home-hero-surgery-categories > div:nth-child(8),
 .home-hero-surgery-categories > div:nth-child(9) {
+  display: none;
+} */
+
+.home-hero-surgery-categories > div:nth-child(7) {
   display: none;
 }
 
@@ -85,5 +89,264 @@ html {
   .home-hero-surgery-categories > div:nth-child(9),
   .home-hero-surgery-categories > div:nth-child(10) {
     display: flex;
+  }
+}
+/* to change to scrollbar style */
+.operation-categories,
+.react-tel-input .country-list,
+.dropdown-options,
+.dropdown-hotels,
+.dropdown-cities,
+.edit-operations ul {
+  scrollbar-width: 0.5rem;
+}
+
+.operation-categories::-webkit-scrollbar,
+.react-tel-input .country-list::-webkit-scrollbar,
+.dropdown-options::-webkit-scrollbar,
+.dropdown-hotels::-webkit-scrollbar,
+.dropdown-cities::-webkit-scrollbar,
+.edit-operations ul::-webkit-scrollbar {
+  width: 0.5rem;
+  cursor: pointer;
+}
+
+.operation-categories::-webkit-scrollbar-track,
+.react-tel-input .country-list::-webkit-scrollbar-track,
+.dropdown-options::-webkit-scrollbar-track,
+.dropdown-hotels::-webkit-scrollbar-track,
+.dropdown-cities::-webkit-scrollbar-track,
+.edit-operations ul::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+.operation-categories::-webkit-scrollbar-thumb,
+.react-tel-input .country-list::-webkit-scrollbar-thumb,
+.dropdown-options::-webkit-scrollbar-thumb,
+.dropdown-hotels::-webkit-scrollbar-thumb,
+.dropdown-cities::-webkit-scrollbar-thumb,
+.edit-operations ul::-webkit-scrollbar-thumb {
+  background: #33c383;
+  border-radius: 3rem;
+}
+
+/* to edit react datepicker */
+.react-datepicker__input-container input {
+  outline: none;
+  cursor: pointer;
+  width: 5rem;
+}
+
+.react-datepicker-popper[data-placement^="bottom"]
+  .react-datepicker__triangle::before,
+.react-datepicker-popper[data-placement^="bottom"]
+  .react-datepicker__triangle::after {
+  border-bottom-color: #33c383 !important;
+}
+
+.react-datepicker__day--selected {
+  background: #33c383 !important;
+}
+
+.react-datepicker__day-name,
+.react-datepicker__current-month {
+  color: #fff !important;
+  font-family: "Circular", "Montserrat", "sans-serif" !important;
+}
+.react-datepicker__header {
+  background: #33c383 !important;
+}
+
+.react-datepicker-popper {
+  z-index: 21 !important;
+}
+
+.home__banner {
+  height: fit-content;
+}
+
+@media (min-width: 768px) {
+  .home__banner {
+    height: 100vh;
+  }
+}
+
+/* home background image & effect */
+@supports (background-attachment: fixed) {
+  @media (min-width: 768px) {
+    .home__banner {
+      background-attachment: fixed;
+      background-image: url(/assets/booklinik-background.jpeg);
+    }
+  }
+}
+
+/* adjust design phone number from npm package to more like our input */
+html body .react-tel-input .form-control {
+  border: none;
+  border-radius: 0;
+  border-bottom: 1px solid;
+  width: 100%;
+  background: transparent;
+  font-family: "Circular", "Montserrat", "sans-serif" !important;
+}
+
+.error-input .react-tel-input .form-control {
+  border-color: #c62626;
+}
+
+html body .react-tel-input .flag-dropdown {
+  background: transparent;
+  border: none;
+}
+
+.react-tel-input .country-list .country-name {
+  color: #000;
+  font-family: "Circular", "Montserrat", "sans-serif" !important;
+}
+
+html body .react-tel-input .country-list {
+  border-radius: 0.25rem;
+  border: 1px solid #33c383;
+}
+
+html body .react-tel-input .flag-dropdown.open {
+  background: transparent;
+}
+html body .react-tel-input .selected-flag .arrow.up {
+  border-bottom: 4px solid #fff;
+}
+html body .react-tel-input .selected-flag .arrow {
+  border-top: 4px solid #fff;
+}
+/* for signup page phonenumber */
+.signup .special-label {
+  display: none;
+}
+
+.signup .react-tel-input .form-control {
+  --tw-space-y-reverse: 0;
+  margin-bottom: calc(0.75rem * var(--tw-space-y-reverse));
+  padding: 0.75rem;
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  --tw-border-opacity: 1;
+  padding-left: 2.5rem;
+  height: unset;
+  border-radius: 0.25rem;
+  border: 2px solid rgba(209, 213, 219, var(--tw-border-opacity));
+}
+
+.signup .react-tel-input .form-control:focus {
+  border-color: #33c383;
+}
+
+/* customize weglot */
+.wg-drop.country-selector .wgcurrent {
+  border: none !important;
+  font-family: "Circular", "Montserrat", "sans-serif" !important;
+}
+
+.wg-drop a:hover {
+  color: #000 !important;
+}
+
+.wg-drop.country-selector .wgcurrent:after,
+.wg-drop.country-selector.closed .wgcurrent:after {
+  transform: rotate(180deg) !important;
+  filter: invert(63%) sepia(41%) saturate(663%) hue-rotate(101deg)
+    brightness(94%) contrast(89%) !important;
+}
+
+.wg-drop.country-selector ul {
+  border: none !important;
+  border-radius: 0 0 1em 1em !important;
+}
+
+.wg-flags a img.wg-flag {
+  height: 16px !important;
+  margin-right: 4px !important;
+}
+
+@media (min-width: 1024px) {
+  .wg-drop.country-selector .wgcurrent:after,
+  .wg-drop.country-selector.closed .wgcurrent:after {
+    transform: rotate(0) !important;
+  }
+}
+
+.language-switcher {
+  position: relative;
+  width: 11rem;
+  color: #000;
+}
+
+.language-switcher > div {
+  display: flex;
+  font-size: 1rem;
+  align-items: center;
+  cursor: pointer;
+  padding: 0.75em 1em;
+  width: 100%;
+  justify-content: space-between;
+  color: #000;
+}
+
+.language-switcher > div svg {
+  transform: rotate(180deg);
+}
+
+.language-switcher > div > div {
+  display: flex;
+  align-items: center;
+}
+
+.language-switcher ul {
+  position: absolute;
+  background: #fff;
+  display: none;
+  bottom: 100%;
+  width: 100%;
+  border-radius: 0 0 0.5em 0.5em;
+}
+
+.language-switcher ul.show {
+  display: block;
+}
+
+.language-switcher ul li {
+  display: flex;
+  align-items: center;
+  color: #000;
+  padding: 0.75em 1.75em;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.language-switcher ul li:hover {
+  background: #0001;
+}
+
+.language-switcher > div > div img,
+.language-switcher ul li img {
+  margin-right: 0.5rem;
+}
+
+@media (min-width: 992px) {
+  .language-switcher ul {
+    top: calc(100% + 1.5rem);
+    bottom: unset;
+  }
+
+  .language-switcher {
+    width: 9rem;
+  }
+
+  .language-switcher ul li {
+    padding: 0.75em 1em;
+  }
+
+  .language-switcher > div svg {
+    transform: rotate(0);
   }
 }

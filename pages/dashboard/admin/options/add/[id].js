@@ -2,6 +2,7 @@ import DashboardUi from "../../../../../components/DashboardUi";
 import DashboardInput from "../../../../../components/DashboardInput";
 import { useState } from "react";
 import firebase from "../../../../../firebase/clientApp";
+import slugify from "slugify";
 import {
   checkAdmin,
   getHotelNameById,
@@ -27,6 +28,7 @@ const DefineOptions = ({ auth, hotelName, id }) => {
   const router = useRouter();
   const [inputList, setInputList] = useState([
     {
+      slug: "",
       name: "",
       price: 0,
     },
@@ -45,6 +47,10 @@ const DefineOptions = ({ auth, hotelName, id }) => {
 
     const list = [...inputList];
     list[index][name] = value;
+    if (e.target.name === "name") {
+      let slug = slugify(e.target.value, { lower: true })
+      list[index]["slug"] = slug;
+    }
     setInputList(list);
   };
 
@@ -53,6 +59,7 @@ const DefineOptions = ({ auth, hotelName, id }) => {
     setInputList([
       ...inputList,
       {
+        slug: "",
         name: "",
         price: 0,
       },
@@ -67,9 +74,6 @@ const DefineOptions = ({ auth, hotelName, id }) => {
       .collection("options")
       .doc(id)
       .set({ ...[inputList] })
-      .catch((err) => {
-        console.error(err);
-      })
       .finally(() => {
         setLoading("done");
         setTimeout(() => {
@@ -97,6 +101,15 @@ const DefineOptions = ({ auth, hotelName, id }) => {
               <div key={(x, i)}>
                 <div className="space-y-4 p-4 bg-gray-100 rounded shadow">
                   <div className="flex gap-4">
+                    <DashboardInput
+                      type="text"
+                      name="slug"
+                      value={x.slug}
+                      onChange={(e) => handleChange(e, i)}
+                      disabled={true}
+                      label="Slug"
+                      required={true}
+                    />
                     <DashboardInput
                       type="text"
                       onChange={(e) => handleChange(e, i)}

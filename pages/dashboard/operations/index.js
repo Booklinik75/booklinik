@@ -35,13 +35,13 @@ const DashboardOperations = ({ userProfile, token }) => {
 
   return (
     <DashboardUi userProfile={userProfile} token={token}>
-      <div className="col-span-12 space-y-3 transition">
+      <div className="col-span-10 space-y-3 transition">
         <div className="col-span-6">
           <h1 className="text-4xl">Mes opérations ({bookings?.length})</h1>
         </div>
         <div className="grid grid-cols-6 gap-8">
           {bookings.map((booking) => (
-            <div key={booking.id} className="col-span-2">
+            <div key={booking.id} className="col-span-6 lg:col-span-2">
               <BookingCard booking={booking} />
             </div>
           ))}

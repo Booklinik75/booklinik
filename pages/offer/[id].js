@@ -6,9 +6,11 @@ import moment from "moment";
 import StarRating from "components/StarRating";
 import Link from "next/link";
 import { getBackEndAsset } from "utils/ServerHelpers";
-import { Carousel } from "react-responsive-carousel";
 import Footer from "components/Footer";
 import ContactHelper from "components/ContactHelper";
+import Slider from "react-slick";
+import MDEditor from "@uiw/react-md-editor";
+
 
 // get server side props
 export async function getServerSideProps(context) {
@@ -80,8 +82,6 @@ export async function getServerSideProps(context) {
     );
   }
 
-  console.log(offerData);
-
   return {
     props: {
       id,
@@ -93,7 +93,7 @@ export async function getServerSideProps(context) {
 const Offer = ({
   offer: {
     imageUrl,
-    endDate,
+    offerExpiration,
     name,
     description,
     price,
@@ -119,14 +119,14 @@ const Offer = ({
       <Navigation />
 
       <div className="p-8 space-y-12 flex flex-col items-center">
-        <div className="flex flex-col-reverse lg:flex-row gap-4 w-full">
+        <div className="flex flex-col-reverse lg:flex-row gap-4 w-full items-stretch">
           <div className="w-full flex flex-col justify-center lg:w-1/4 bg-gray-100 rounded py-6 px-8 space-y-3">
             <div className="flex gap-2 items-center">
               <p className="px-2 py-1 rounded-sm uppercase text-white bg-bali max-w-min font-bold">
                 Offre
               </p>
               <p className="text-bali uppercase max-w-max font-bold">
-                Reste {moment().to(moment(endDate), true)}
+                Reste {moment().to(moment(offerExpiration), true)}
               </p>
             </div>
             <h1 className="text-5xl">{name}</h1>
@@ -145,22 +145,24 @@ const Offer = ({
               </button>
             </Link>
           </div>
-          <div className="w-full h-96 lg:w-3/4 relative rounded overflow-hidden group">
+          <div className="w-full min-h-[24rem] lg:w-3/4 relative rounded overflow-hidden group">
             <Image
               src={imageUrl}
               alt={name}
               layout="fill"
               objectFit="cover"
-              className="w-full transform transition-transform duration-1000 group-hover:scale-110"
+              className="w-full h-full transform transition-transform duration-1000 group-hover:scale-110"
             />
           </div>
         </div>
         <div className="w-full flex items-center flex-col gap-2">
           <h2 className="text-4xl text-center">L&apos;opération</h2>
-          <p className="text-lg text-center prose prose-lg">
-            {/* only show the two first sentences of the excerpt */}
+        {/*   <p className="text-lg text-center prose prose-lg">
+        //     only show the two first sentences of the excerpt
             {excerpt.split(".").slice(0, 2).join(".")}.
           </p>
+        */}
+          <MDEditor.Markdown className="text-lg text-center prose prose-lg" source={excerpt.split(".").slice(0, 2).join(".")} />
         </div>
         <div className="w-full flex flex-col lg:flex-row gap-4 max-w-7xl justify-center items-center">
           <div className="w-full h-72 lg:w-2/5 relative group">
@@ -184,13 +186,13 @@ const Offer = ({
             <h2 className="text-4xl">{hotelName}</h2>
             <StarRating value={rating} color="bali" />
           </div>
-          <div className="w-full">
-            <Carousel
-              className="w-full h-[50vh]"
-              showStatus={false}
-              swipeable
-              infiniteLoop
-              centerMode
+          <div className="max-w-full">
+            <Slider
+              dots={true}
+              infinite={true}
+              speed={500}
+              slidesToScroll={1}
+              centerMode={true}
             >
               {[hotelPhotoUrl, ...hotelRoomPhotos].map((photo, index) => (
                 <div key={index} className="relative h-[50vh] mr-4">
@@ -199,11 +201,11 @@ const Offer = ({
                     alt={hotelName}
                     layout="fill"
                     objectFit="cover"
-                    className="w-full h-full "
+                    className="w-full h-full"
                   />
                 </div>
               ))}
-            </Carousel>
+            </Slider>
           </div>
           <p className="uppercase text-gray-400 text-center ">{`${hotelName} - ${hotelRoomName}`}</p>
         </div>

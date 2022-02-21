@@ -12,6 +12,8 @@ import { checkAuth, serverRedirect } from "utils/ServerHelpers";
 import errors from "utils/firebase_auth_errors";
 import * as Sentry from "@sentry/browser";
 import MD5 from "crypto-js/md5";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
 
 export const getServerSideProps = async (ctx) => {
   const auth = await checkAuth(ctx);
@@ -29,6 +31,7 @@ const SignUp = () => {
     email: "",
     password: "",
     confirmPassword: "",
+    phoneNumber: "",
   });
 
   const [isChecked, setChecked] = useState(false);
@@ -47,13 +50,18 @@ const SignUp = () => {
   });
 
   function doSignUp() {
-    const { email, password, confirmPassword } = formData;
+    const { email, password, confirmPassword, phoneNumber } = formData;
 
     setLoading("loading");
 
     if (password != confirmPassword) {
       setLoading("idle");
       return setError("Les mots de passe ne correspondent pas.");
+    }
+
+    if (phoneNumber.trim() === "") {
+      setLoading("idle");
+      return setError("Le numéro de téléphone ne doit pas être vide");
     }
 
     firebase
@@ -81,9 +89,14 @@ const SignUp = () => {
             firstName: null,
             landlinePhone: null,
             lastname: null,
-            mobilePhone: null,
+            mobilePhone: phoneNumber,
+            isMobileVerified: false,
             role: "guest",
-            referalCode: `WELCOME-${MD5(email).toString().substring(0, 5)}`,
+            referalCode: `${email.split("@")[0].substring(0, 5)}-${MD5(
+              Math.random().toString()
+            )
+              .toString()
+              .substring(0, 5)}`,
             signupDate: new Date().toUTCString(),
             referalBalance: 0,
           };
@@ -94,7 +107,57 @@ const SignUp = () => {
             .doc(user.uid)
             .set(userData)
             .then((docRef) => {
-              router.push("/dashboard");
+              // send confirmation email
+              fetch("/api/mail", {
+                method: "POST",
+                body: JSON.stringify({
+                  recipient: email,
+                  templateId: "d-51683413333641cc9bd64848bda8fa19",
+                }),
+              });
+
+              // if user have't login and do book
+              if (router.query.i === "anonBooking") {
+                const booking = JSON.parse(
+                  localStorage.getItem("bookBooklinik")
+                );
+                firebase
+                  .firestore()
+                  .collection("bookings")
+                  .add({
+                    user: user.uid,
+                    status: "awaitingDocuments",
+                    total:
+                      Number(booking.surgeries[0].surgeryPrice) +
+                      Number(booking.totalExtraTravellersPrice) +
+                      Number(booking.hotelPrice) *
+                        Number(booking.totalSelectedNights) +
+                      Number(booking.roomPrice) *
+                        Number(booking.totalSelectedNights) +
+                      booking.options
+                        ?.map(
+                          (option) => option.isChecked && Number(option.price)
+                        )
+                        .reduce((a, b) => a + b),
+                    ...booking,
+                  })
+                  .then(() => {
+                    fetch("/api/mail", {
+                      method: "post",
+                      body: JSON.stringify({
+                        recipient: user.email,
+                        templateId: "d-b504c563b53846fbadb0a53151a82d57",
+                      }),
+                    });
+                  })
+                  .then(() => {
+                    localStorage.removeItem("bookBooklinik");
+                    router.push("/dashboard");
+                  });
+              } else {
+                // redirect to dashboard
+                router.push("/dashboard");
+              }
             })
             .catch((error) => {
               Sentry.captureException(error);
@@ -103,7 +166,7 @@ const SignUp = () => {
         }
 
         // redirect to dashboard
-        router.push("/dashboard");
+        // router.push("/dashboard");
       })
       .catch((error) => {
         if (errors[error.code]) {
@@ -111,7 +174,6 @@ const SignUp = () => {
         } else {
           setError("Une erreur est survenue");
         }
-        console.log(error);
         Sentry.captureException(error);
       })
       .finally(() => {
@@ -132,8 +194,15 @@ const SignUp = () => {
     setChecked(!isChecked);
   };
 
+  const handlePhoneNumber = (phone) => {
+    updateFormData({
+      ...formData,
+      phoneNumber: `+${phone}`,
+    });
+  };
+
   return (
-    <div className="h-screen relative">
+    <div className="h-screen relative signup">
       <div className="nav top-0 absolute flex flex-row w-full justify-between z-50 p-10 bg-white shadow-lg">
         <Link href="/">
           <a>
@@ -150,7 +219,7 @@ const SignUp = () => {
       </div>
       <div className="grid grid-cols-10 h-full">
         <div className="flex items-center col-span-10 lg:col-span-6">
-          <div className="mx-auto w-1/2 space-y-6">
+          <div className="mx-auto w-3/4 lg:w-1/2 space-y-6 mt-40 lg:mt-20">
             <h1 className="text-4xl">Bienvenue !</h1>
             {error && (
               <p className="text-red-500 flex items-center text-sm gap-1">
@@ -210,6 +279,20 @@ const SignUp = () => {
                 onChange={handleChange}
                 value={formData.confirmPassword}
                 className="w-full rounded border-2 outline-none border-gray-300 p-3 transition hover:border-bali focus:border-shamrock focus:border-2"
+              />
+              <label
+                className="text-xs uppercase text-gray-500 w-full"
+                htmlFor="password"
+              >
+                Numéro de téléphone
+              </label>
+              <PhoneInput
+                country={"fr"}
+                inputProps={{
+                  required: true,
+                }}
+                value={formData.phoneNumber}
+                onChange={(phone) => handlePhoneNumber(phone)}
               />
               <div className="flex flex-row items-center gap-2">
                 <input

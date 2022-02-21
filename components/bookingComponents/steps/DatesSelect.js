@@ -49,7 +49,7 @@ const DatesSelectStep = ({
         .
       </p>
       <div className="space-y-2">
-        <div className="flex gap-4">
+        <div className="flex flex-col lg:flex-row gap-4">
           <div className="w-full lg:w-1/2 xl:w-1/3 space-y-3">
             <h2 className="text-xs uppercase text-gray-500">Date de départ</h2>
             <Calendar

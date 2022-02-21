@@ -27,7 +27,7 @@ import { VscLoading } from "react-icons/vsc";
 import firebase from "firebase/clientApp";
 import { useRouter } from "next/router";
 
-export const getStaticProps = async () => {
+export const getStaticProps = async (ctx) => {
   const countries = await getCountries();
   const cities = await getCities();
   const hotels = await getHotels();
@@ -75,17 +75,44 @@ const NewBookingContainer = ({
   const [user, loading] = useAuthState(firebase.auth());
   const router = useRouter();
 
-  if (user === null && loading === false) {
-    router.push("/signup?i=anonBooking");
-  }
+  // if (user === null && loading === false) router.push("/signup?i=anonBooking");
+
+  // fetch user profile
+  const [userProfile, setUserProfile] = useState(null);
+  useEffect(() => {
+    if (user) {
+      firebase
+        .firestore()
+        .collection("users")
+        .doc(user.uid)
+        .get()
+        .then((doc) => {
+          if (doc.exists) {
+            setUserProfile({ ...doc.data(), id: doc.id });
+          }
+        })
+        .catch((error) => {});
+    }
+  }, [user]);
+
+  // redirect to profile page if user doesnt have a phone number
+  // if (userProfile && !userProfile.mobilePhone)
+  //   router.push("/dashboard/profile?error=mpn");
+  // else if (userProfile && !userProfile.isMobileVerified)
+  //   router.push("/verify/mobile");
 
   const [booking, setBooking] = useState({
-    surgeryCategory: "",
-    surgeryCategoryName: "",
-    surgery: "",
-    surgeryPrice: 0,
-    surgeryName: "",
-    surgeryMinDays: 0,
+    surgeries: [
+      {
+        surgeryCategory: "",
+        surgeryCategoryName: "",
+        surgery: "",
+        surgeryPrice: 0,
+        surgeryName: "",
+        surgeryMinDays: 0,
+        cities: [],
+      },
+    ],
     startDate: new Date(),
     endDate: "",
     totalSelectedNights: 0,
@@ -104,13 +131,18 @@ const NewBookingContainer = ({
     roomName: "",
     roomPrice: 0,
     roomPhotoLink: "",
+    created: firebase.firestore.Timestamp.fromDate(new Date()).toDate(),
   });
 
-  const extraTravellersSupplement = 450;
-  const extraChildsSupplement = 450;
-  const extraBabiesSupplement = 450;
+  const extraTravellersSupplement = 20;
+  const extraChildsSupplement = 20;
+  const extraBabiesSupplement = 0;
 
   const [nextStep, setNextStep] = useState(false);
+  const [surgeryCategory, setSurgeryCategory] = useState({
+    surgeryCategory: "",
+    surgeryCategoryName: "",
+  });
 
   useEffect(() => {
     let totalExtraTravellers =
@@ -120,7 +152,7 @@ const NewBookingContainer = ({
 
     setBooking({
       ...booking,
-      totalExtraTravellersPrice: totalExtraTravellers,
+      totalExtraTravellersPrice: totalExtraTravellers * booking.totalSelectedNights,
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [booking.extraTravellers, booking.extraChilds, booking.extraBabies]);
@@ -133,6 +165,7 @@ const NewBookingContainer = ({
   };
 
   const onCalendarStartDateChange = (e) => {
+    console.log(e);
     setBooking({
       ...booking,
       startDate: e,
@@ -154,8 +187,7 @@ const NewBookingContainer = ({
   }
 
   const handleSurgeryCategorySelect = (category, name) => {
-    setBooking({
-      ...booking,
+    setSurgeryCategory({
       surgeryCategory: category,
       surgeryCategoryName: name,
     });
@@ -164,9 +196,16 @@ const NewBookingContainer = ({
   const handleSurgerySelect = (surgery, price, name, minimumNights) => {
     setBooking({
       ...booking,
-      surgery: surgery,
-      surgeryPrice: parseInt(price),
-      surgeryName: name,
+      surgeries: [
+        {
+          ...surgeryCategory,
+          surgery: surgery,
+          surgeryPrice: parseInt(price),
+          surgeryName: name,
+          surgeryMinDays: parseInt(minimumNights),
+          cities: cities.map((city) => city.name),
+        },
+      ],
       minimumNights: parseInt(minimumNights),
     });
   };
@@ -210,12 +249,17 @@ const NewBookingContainer = ({
           <VscLoading />
         </div>
       )}
-      {loading === false && user !== null ? (
+      {/* {loading === false &&
+      user !== null &&
+      userProfile &&
+      userProfile?.isMobileVerified ? ( */}
+      {loading === false ? (
         <FormStepper
           booking={booking}
           user={user}
           nextStep={nextStep}
           setNextStep={setNextStep}
+          userProfile={userProfile}
         >
           <SurgerySelectStep
             surgeryCategories={surgeryCategories}
@@ -226,6 +270,7 @@ const NewBookingContainer = ({
             handleSurgerySelect={handleSurgerySelect}
             handleSurgeryCategorySelect={handleSurgeryCategorySelect}
             setNextStep={setNextStep}
+            surgeryCategory={surgeryCategory}
           />
 
           <DatesSelectStep
@@ -272,7 +317,7 @@ const NewBookingContainer = ({
             setNextStep={setNextStep}
           />
 
-          <BookingConfirmation booking={booking} />
+          <BookingConfirmation booking={booking} userProfile={userProfile} />
         </FormStepper>
       ) : (
         ""

@@ -17,7 +17,7 @@ export const getStaticProps = async (context) => {
   const clinics = await getClinics();
 
   await Promise.all(
-    clinics.map(async (clinic, index) => {
+    clinics.map(async (clinic, index, array) => {
       let image = await getBackEndAsset(clinic.photo);
       clinics[index].photo = image;
     })
@@ -45,7 +45,7 @@ const ClinicsList = ({ countries, cities, clinics }) => {
         fileName={fileName}
         fullWidth={true}
         extraLarge={true}
-        title="Les Cliniques"
+        title="Cliniques"
       />
 
       <div className="mx-4 xl:mx-auto max-w-7xl">

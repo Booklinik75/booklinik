@@ -23,19 +23,41 @@ export const getServerSideProps = async (ctx) => {
     });
   };
 
+
+  let questionsAnswered = {};
+  await firebase
+    .firestore()
+    .collection("medicalAnswers")
+    .get()
+    .then((snapshot) => {
+      snapshot.forEach((doc) => {
+        if (doc.id === auth.props.token.uid) {
+          questionsAnswered = { ...doc.data(), id: doc.id };
+        }
+      });
+    })
+    .catch((err) => {});
+
   return {
-    props: { auth, medicalQuestions: medicalQuestions() },
+    props: {
+      auth,
+      questionsAnswered: questionsAnswered,
+      medicalQuestions: medicalQuestions(),
+    },
   };
 };
 
-const MedicalProfile = ({ auth, medicalQuestions }) => {
+const MedicalProfile = ({ auth, medicalQuestions, questionsAnswered }) => {
   const router = useRouter();
   const [user, loading] = useAuthState(firebase.auth());
   const [isLoading, setLoading] = useState("idle");
   const [formData, setFormData] = useState({
-    weight: 0,
-    height: 0,
-    answers: {},
+    weight: questionsAnswered.weight ? questionsAnswered.weight : 0,
+    height: questionsAnswered.height ? questionsAnswered.height : 0,
+    answers:
+      typeof questionsAnswered.answers === "undefined"
+        ? {}
+        : { ...questionsAnswered.answers },
   });
 
   const handleInputChange = (e, index) => {
@@ -51,7 +73,7 @@ const MedicalProfile = ({ auth, medicalQuestions }) => {
               ...formData.answers[name.replace("_value", "")],
               [name.replace("_value", "_title")]:
                 e.target.attributes.ariaDetails.nodeValue,
-              [name]: Boolean(e.target.value),
+              [name]: e.target.value === "false" ? false : true,
             },
           },
         });
@@ -81,23 +103,20 @@ const MedicalProfile = ({ auth, medicalQuestions }) => {
       .collection("medicalAnswers")
       .doc(user.uid)
       .set(formData)
-      .catch((error) => {
-        console.error(error);
-      })
       .finally(() => {
         setLoading("done");
         setTimeout(() => {
           setLoading("idle");
-        }, 1000);
+        }, 1500);
         router.push(`/dashboard`);
       });
   };
 
   return (
     <DashboardUi userProfile={auth.props.userProfile} token={auth.props.token}>
-      <div className="col-span-12 space-y-3 transition">
+      <div className="col-span-10 space-y-4">
         <h1 className="text-4xl">Informations médicales</h1>
-        <p className="flex items-center gap-2">
+        <p className="flex items-center gap-2 mb-2">
           <span className="text-shamrock">
             <HiCheckCircle size={32} />
           </span>
@@ -106,8 +125,8 @@ const MedicalProfile = ({ auth, medicalQuestions }) => {
           informations à tout moment.
         </p>
         <form className="w-full space-y-4" onSubmit={submitData}>
-          <div className="flex gap-6">
-            <div className="w-1/6 space-y-2">
+          <div className="flex gap-4">
+            <div className="w-1/2 lg:w-1/6 space-y-4">
               <label htmlFor="weight" className="flex justify-between">
                 <span className="uppercase text-sm">Poids</span>{" "}
                 <span className="text-xs text-gray-400">champ requis</span>
@@ -115,14 +134,15 @@ const MedicalProfile = ({ auth, medicalQuestions }) => {
               <input
                 name="weight"
                 type="number"
-                placeholder="175 cm"
+                placeholder="70 kg"
                 min={0}
                 required={true}
+                value={formData.weight}
                 onChange={(e) => handleInputChange(e, -1)}
-                className=" w-full p-3 border outline-none rounded border-gray-400 transition hover:border-bali focus:border-shamrock"
+                className="w-full p-3 border outline-none rounded border-gray-400 transition hover:border-bali focus:border-shamrock"
               />
             </div>
-            <div className="w-1/6 space-y-2">
+            <div className="w-1/2 lg:w-1/6 space-y-4">
               <label htmlFor="height" className="flex justify-between">
                 <span className="uppercase text-sm">Taille</span>{" "}
                 <span className="text-xs text-gray-400">champ requis</span>
@@ -130,8 +150,9 @@ const MedicalProfile = ({ auth, medicalQuestions }) => {
               <input
                 name="height"
                 type="number"
-                placeholder="95 kg"
+                placeholder="169cm"
                 min={0}
+                value={formData.height}
                 required={true}
                 onChange={(e) => handleInputChange(e, -1)}
                 className=" w-full p-3 border outline-none rounded border-gray-400 transition hover:border-bali focus:border-shamrock"
@@ -140,28 +161,38 @@ const MedicalProfile = ({ auth, medicalQuestions }) => {
           </div>
           {medicalQuestions.map((medicalQuestion, index) => {
             return medicalQuestion.published === true ? (
-              <div key={index} className="space-y-2 w-1/2">
+              <div key={index} className="space-y-2 w-full lg:w-1/2">
                 <label className="block w-full">
                   {medicalQuestion.questionContent}
                 </label>
                 <div className="flex gap-3">
                   <select
                     name={`${medicalQuestion.id}_value`}
-                    className="w-1/4 p-3 rounded border outline-none border-gray-400 transition hover:border-bali focus:border-shamrock"
+                    className="w-full lg:w-2/4 p-3 rounded border outline-none border-gray-400 transition hover:border-bali focus:border-shamrock bg-white"
                     onChange={(e) => handleInputChange(e, index)}
                     ariaDetails={medicalQuestion.questionContent}
                     required={true}
+                    value={
+                      typeof formData.answers === "undefined"
+                        ? null
+                        : typeof formData.answers[medicalQuestion.id] ===
+                          "undefined"
+                        ? null
+                        : formData.answers[medicalQuestion.id][
+                            `${medicalQuestion.id}_value`
+                          ]
+                    }
                   >
-                    <option selected={true} disabled={true}>
+                    <option selected={true} disabled={false}>
                       Sélectionner
                     </option>
                     <option value={true}>Oui</option>
                     <option value={false}>Non</option>
                   </select>
-                  {medicalQuestion.hasPrecision === true ? (
+                  { medicalQuestion.hasPrecision === true ? (  // la question A UNE PRÉCISION pour oui
                     <input
                       type="text"
-                      required={true}
+                  //  required={true}
                       name={`${medicalQuestion.id}_precision`}
                       placeholder={medicalQuestion.precision}
                       onChange={(e) => handleInputChange(e, index)}

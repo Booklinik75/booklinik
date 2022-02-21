@@ -10,10 +10,15 @@ const SurgerySelectStep = ({
   handleSurgerySelect,
   handleSurgeryCategorySelect,
   setNextStep,
+  surgeryCategory: getSurgeryCategory,
 }) => {
   useEffect(() => {
     // setNextStep to true when all inputs are filled
-    if (booking.surgeryCategory && booking.surgery) {
+    if (
+      getSurgeryCategory.surgeryCategory &&
+      booking.surgeries &&
+      booking.surgeries[0].surgery
+    ) {
       setNextStep(true);
     }
   }, [booking]);
@@ -32,9 +37,9 @@ const SurgerySelectStep = ({
             return (
               <div
                 key={surgeryCategory.slug}
-                className="col-span-2 h-full relative"
+                className="col-span-6 lg:col-span-2 h-full relative"
               >
-                {booking.surgeryCategory === surgeryCategory.slug ? (
+                {getSurgeryCategory.surgeryCategory === surgeryCategory.slug ? (
                   <button
                     onClick={() =>
                       setBooking({
@@ -68,12 +73,12 @@ const SurgerySelectStep = ({
                 <label
                   htmlFor={surgeryCategory.slug}
                   className={`flex flex-col transition items-center justify-center border w-full h-full rounded hover:shadow p-6 ${
-                    booking.surgeryCategory === surgeryCategory.slug
+                    getSurgeryCategory.surgeryCategory === surgeryCategory.slug
                       ? "border-shamrock"
                       : ""
                   } ${
-                    booking.surgeryCategory !== "" &&
-                    booking.surgeryCategory !== surgeryCategory.slug
+                    getSurgeryCategory.surgeryCategory !== "" &&
+                    getSurgeryCategory.surgeryCategory !== surgeryCategory.slug
                       ? "opacity-50"
                       : ""
                   }`}
@@ -89,10 +94,10 @@ const SurgerySelectStep = ({
         <h2 className="text-xs uppercase text-gray-500">Opérations</h2>
         <div className="grid grid-cols-12 gap-4">
           {surgeries.map((surgery) => {
-            return booking.surgeryCategory !== "" &&
-              surgery.category === booking.surgeryCategory ? (
+            return getSurgeryCategory.surgeryCategory !== "" &&
+              surgery.category === getSurgeryCategory.surgeryCategory ? (
               <div
-                className="flex flex-col items-center col-span-3"
+                className="flex flex-col items-center col-span-6 lg:col-span-3"
                 key={surgery.slug}
               >
                 <input
@@ -104,7 +109,8 @@ const SurgerySelectStep = ({
                       surgery.slug,
                       surgery.startingPrice,
                       surgery.name,
-                      surgery.minimumNights
+                      surgery.minimumNights,
+                      surgery.cities
                     )
                   }
                   name="surgery"
@@ -114,9 +120,15 @@ const SurgerySelectStep = ({
                 <label
                   htmlFor={surgery.slug}
                   className={`flex transition text-center items-center justify-center border w-full h-full rounded hover:shadow py-2 px-4 ${
-                    booking.surgery === surgery.slug ? "border-shamrock" : ""
+                    (booking.surgeries && booking.surgeries[0].surgery) ===
+                    surgery.slug
+                      ? "border-shamrock"
+                      : ""
                   } ${
-                    booking.surgery !== "" && booking.surgery !== surgery.slug
+                    (booking.surgeries && booking.surgeries[0].surgery) !==
+                      "" &&
+                    (booking.surgeries && booking.surgeries[0].surgery) !==
+                      surgery.slug
                       ? "opacity-50"
                       : ""
                   }`}
@@ -131,7 +143,7 @@ const SurgerySelectStep = ({
               ""
             );
           })}
-          {booking.surgeryCategory === "" ? (
+          {getSurgeryCategory.surgeryCategory === "" ? (
             <div className="col-span-12 rounded border border-blue-300 bg-blue-50 text-blue-900">
               <p className="p-4">
                 👋 Veuillez sélectionner une catégorie ci-dessus.

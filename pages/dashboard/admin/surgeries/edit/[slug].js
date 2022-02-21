@@ -59,6 +59,8 @@ const EditSurgery = ({
   const [selectedCities, setselectedCities] = useState(surgeryData.data.cities);
   const router = useRouter();
   const [mdValue, setMdValue] = useState(surgeryData.data.descriptionBody);
+  const [isUploading, setIsUploading] = useState(false);
+  const [photoUrl, setphotoUrl] = useState(surgeryData.data.photoUrl);
 
   const handleChange = (e) => {
     if (e.target.name === "name") {
@@ -115,11 +117,34 @@ const EditSurgery = ({
       .delete()
       .then(() => {
         router.push("/dashboard/admin/surgeries");
-      })
-      .catch((error) => {
-        console.error("Error removing document: ", error);
       });
   }
+
+  const handlePhotoUpload = (e) => {
+    const file = e.target.files[0];
+    const storageRef = firebase.storage().ref();
+    const uploadTask = storageRef.child(`surgery/${file.name}`).put(file);
+
+    // upload file then store it in its state
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        setIsUploading(true);
+      },
+      (error) => {
+        console.log(error);
+      },
+      () => {
+        setIsUploading(false);
+        storageRef
+          .child(`surgery/${file.name}`)
+          .getDownloadURL()
+          .then((url) => {
+            setphotoUrl(url);
+          });
+      }
+    );
+  };
 
   async function doAdd() {
     setLoading("loading");
@@ -135,6 +160,7 @@ const EditSurgery = ({
       additionalDocuments: inputList,
       descriptionBody: mdValue,
       minimumNights: parseInt(form.minimumNights),
+      photoUrl: photoUrl,
     };
 
     firebase
@@ -209,6 +235,15 @@ const EditSurgery = ({
             required={true}
           />
           <DashboardInput
+            type="file"
+            name="photo"
+            value={form.photo}
+            onChange={handlePhotoUpload}
+            disabled={false}
+            label="Photo"
+            required={false}
+          />
+          <DashboardInput
             type="number"
             name="startingPrice"
             value={form.startingPrice}
@@ -229,7 +264,7 @@ const EditSurgery = ({
             min={0}
           />
           <ProfileSelect
-            label="Pays"
+            label="Ville(s)"
             name="country"
             options={citiesOptions}
             value={form.cities}
@@ -271,7 +306,7 @@ const EditSurgery = ({
             return (
               <div className="box w-full" key={(x, i)}>
                 <div className="flex gap-2 w-full">
-                  <div className="flex flex-col w-full">
+                  <div className="flex flex-col w-full gap-2">
                     <label className="text-sm text-gray-500 uppercase">
                       Titre du set de photos
                     </label>
@@ -344,7 +379,11 @@ const EditSurgery = ({
             </div>
           )}
 
-          <DashboardButton defaultText="Mettre à jour" status={isLoading} />
+          <DashboardButton
+            defaultText="Mettre à jour"
+            status={isLoading}
+            disabled={isUploading}
+          />
         </form>
       </div>
     </DashboardUi>

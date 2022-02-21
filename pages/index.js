@@ -14,17 +14,20 @@ import ContactHelper from "../components/ContactHelper";
 import { getFrontEndAsset } from "../utils/ClientHelpers";
 import {
   getOperationCategories,
+  getSurgeries,
   getBackEndAsset,
   getSetting,
 } from "../utils/ServerHelpers";
 import firebase from "firebase/clientApp";
 import moment from "moment";
+import { useEffect, useRef } from "react";
 
 // TODO: add unit test for weird characters like apostrophes and such
 
 export const getServerSideProps = async (ctx) => {
   const heroImage = await getFrontEndAsset("image-asset.jpg");
   let categories = await getOperationCategories();
+  const surgeries = await getSurgeries();
   let categoriesSettings = await getSetting("surgeryCategoriesOrdering");
 
   await Promise.all(
@@ -92,7 +95,13 @@ export const getServerSideProps = async (ctx) => {
   );
 
   return {
-    props: { heroImage, categories, categoriesSettings, offers: offersArray }, // will be passed to the page component as props
+    props: {
+      heroImage,
+      categories,
+      categoriesSettings,
+      offers: offersArray,
+      surgeries,
+    }, // will be passed to the page component as props
   };
 };
 
@@ -101,7 +110,38 @@ export default function Home({
   categories,
   categoriesSettings,
   offers,
+  surgeries,
 }) {
+  const mainBox = useRef(null);
+  const discoverBookLinkText = useRef(null);
+
+  useEffect(() => {
+    // parallax effect
+    if (window.location.pathname.split("/")[1] === "") {
+      const parralaxEffect = () => {
+        mainBox.current.style.transform = `translateY(-${
+          window.scrollY / 15
+        }%)`;
+        const { offsetTop, offsetHeight } = discoverBookLinkText.current;
+        if (window.scrollY >= offsetTop - offsetHeight - 30) {
+          discoverBookLinkText.current.style.transform = `translateY(${
+            (offsetTop - offsetHeight - window.scrollY) / 5
+          }%)`;
+        } else {
+          discoverBookLinkText.current.style.transform = `translateY(0%)`;
+        }
+      };
+      if (mainBox && mainBox.current && window.innerWidth > 768) {
+        window.onscroll = () => parralaxEffect();
+        window.onresize = () => parralaxEffect();
+      } else {
+        if (mainBox && mainBox.current && window.innerWidth <= 768) {
+          mainBox.current.style.transform = `translateY(0%)`;
+        }
+      }
+    }
+  }, []);
+
   return (
     <div className="container mx-auto max-w-full">
       <Head>
@@ -109,31 +149,27 @@ export default function Home({
         <meta
           name="description"
           content="Booklinik, l'unique service de réservation en ligne de tourisme
-                médical"
+                médical."
         />
       </Head>
 
       <Navigation />
 
-      <div
-        style={{
-          backgroundImage: "url(/assets/home-hero-background.jpg)",
-          height: "100vh",
-          marginTop: "-110px",
-          backgroundSize: "cover",
-        }}
-      >
-        <div className="flex h-screen items-center justify-center">
-          <div className="mx-4 my-12 mt-[8rem] lg:mt-12 shadow md:shadow-none xl:mx-auto md:my-32">
-            <div className="bg-white bg-opacity-90 max-w-7xl p-10 md:p-20 rounded-xl">
-              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-center">
+      <div className="bg-cover overflow-y-hidden home__banner bg-shamrock mt-[-120px] md:p-3 md:h-[calc(100vh+15rem)] lg:h-screen">
+        <div className="flex h-fit lg:h-screen items-center justify-center md:py-4">
+          <div className="mx-0 my-0 mt-[6rem] lg:mt-12 shadow md:shadow-none xl:mx-auto md:my-0">
+            <div
+              className="translate-y-0 transition ease-linear duration-75 bg-white bg-opacity-90 max-w-7xl p-6 md:p-20 rounded-xl md:mb-8"
+              ref={mainBox}
+            >
+              <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-center">
                 Booklinik, l’unique service de réservation en ligne de tourisme
-                médical
+                médical.
               </h2>
-              <h2 className="text-xl md:text-2xl lg:text-3xl text-center mb-12">
-                Estimez et réservez votre voyage esthétique médical
+              <h2 className="text-xl md:text-2xl lg:text-3xl text-center mb-6">
+                Estimez et réservez votre voyage esthétique en 3 clics !
               </h2>
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-10 gap-6 home-hero-surgery-categories">
+              <div className="grid grid-cols-3 md:grid-cols-3 lg:grid-cols-10 gap-6 home-hero-surgery-categories">
                 {categoriesSettings.map((orderedCategory) => {
                   return categories.map((category) => {
                     return Object.keys(orderedCategory)[0].toString() ===
@@ -142,7 +178,7 @@ export default function Home({
                         className="col-span-1 lg:col-span-2"
                         key={category.slug}
                       >
-                        <Operation data={category} />
+                        <Operation data={category} surgeries={surgeries} />
                       </div>
                     ) : (
                       ""
@@ -154,6 +190,35 @@ export default function Home({
           </div>
         </div>
       </div>
+
+      <div className="mx-4 xl:mx-auto max-w-7xl py-5">
+        <div className="flex flex-row items-baseline justify-between mb-2">
+          <h3 className="text-xl mr-2">
+            Découvrez les offres Booklinik du moment
+          </h3>
+          <Link href="/offres">
+            <a className="text-bali text-xs font-bold hover:underline flex items-center">
+              Découvrir toutres les offres{" "}
+              <FaChevronRight size={10} className="ml-1" />
+            </a>
+          </Link>
+        </div>
+        <div className="xl:w-10/12">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-6">
+            {offers.map((offer) => {
+              // if today is before offerExpiration
+              if (new Date(offer.offerExpiration) > new Date(Date.now())) {
+                return (
+                  <div className="col-span-1 lg:col-span-2" key={offer.id}>
+                    <Offer data={offer} />
+                  </div>
+                );
+              }
+            })}
+          </div>
+        </div>
+      </div>
+
       <div className="max-w-7xl px-4 xl:px-0 xl:mx-auto w-full my-12">
         <div className="max-w-5xl grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <Category
@@ -180,42 +245,18 @@ export default function Home({
           " mx-4 xl:mx-auto max-w-7xl p-10 md:px-20 md:py-32 rounded-xl text-white"
         }
       >
-        <div className="md:w-1/2 lg:w-1/3">
+        <div
+          className="md:w-1/2 lg:w-1/3 translate-y-0 transition ease-linear duration-75"
+          ref={discoverBookLinkText}
+        >
           <p className="uppercase text-sm mb-2">Découvrez Booklinik</p>
-          <h2 className="text-4xl">Parce que votre bien-être est notre</h2>
+          <h2 className="text-4xl">Parce que votre bien-être est notre priorité</h2>
           <p className="mt-4 mb-2">Les 8 étapes clé de votre voyage</p>
-          <Link href="/a-propos">
+          <Link href="/etapes">
             <a className="hover:underline flex items-center">
               Découvrir <FaChevronRight size={12} />
             </a>
           </Link>
-        </div>
-      </div>
-
-      <div className="mx-4 xl:mx-auto max-w-7xl py-10">
-        <div className="flex flex-row items-baseline justify-between mb-2">
-          <h3 className="text-xl mr-2">
-            Découvrez les offres Booklikik du moment
-          </h3>
-          <Link href="#">
-            <a className="text-bali text-xs font-bold hover:underline flex items-center">
-              Découvrir toutres les offres{" "}
-              <FaChevronRight size={10} className="ml-1" />
-            </a>
-          </Link>
-        </div>
-        <div className="xl:w-10/12">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {offers.map((offer) => {
-              // if today is after startDate and after endDate
-              if (
-                new Date(offer.startDate) <= new Date() &&
-                new Date(offer.endDate) >= new Date()
-              ) {
-                return <Offer data={offer} key={offer.id} />;
-              }
-            })}
-          </div>
         </div>
       </div>
 
@@ -232,10 +273,10 @@ export default function Home({
           />
           <Advantage
             title="Equipe dédiée"
-            body="L’'assistance booklinik est disponible 
-pour répondre à toutes vos questions 
-avant votre départ. Durant votre 
-séjour, un chauffeur et un traducteur 
+            body="L’'assistance booklinik est disponible
+pour répondre à toutes vos questions
+avant votre départ. Durant votre
+séjour, un chauffeur et un traducteur
 sont mis à votre disposition."
           />
           <Advantage

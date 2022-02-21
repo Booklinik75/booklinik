@@ -10,6 +10,7 @@ import { checkAuth, serverRedirect } from "utils/ServerHelpers";
 import moment from "moment";
 import DashboardButton from "components/DashboardButton";
 import { loadStripe } from "@stripe/stripe-js";
+import { useEffect } from "react";
 
 export const getServerSideProps = async (ctx) => {
   const auth = await checkAuth(ctx);
@@ -40,6 +41,33 @@ export const getServerSideProps = async (ctx) => {
         });
     });
 
+  // to get all names surgeries
+  const surgeriesName = () => {
+    const surgeryNames = [];
+    booking.surgeries.map((operation) =>
+      surgeryNames.push(operation.surgeryName)
+    );
+    if (surgeryNames.length > 1) {
+      return surgeryNames.join(", ");
+    } else {
+      return surgeryNames[0];
+    }
+  };
+
+  // to get all names surgeries category
+  const surgeryCategoriesName = () => {
+    const surgeryNameCategories = [];
+    booking.surgeries.map((operation) =>
+      surgeryNameCategories.push(operation.surgeryCategoryName)
+    );
+    if (surgeryNameCategories.length > 1) {
+      let uniqueCategories = [...new Set(surgeryNameCategories)];
+      return uniqueCategories.join(", ");
+    } else {
+      return surgeryNameCategories[0];
+    }
+  };
+
   const stripeSession = await fetch(
     `${process.env.ABSOLUTE_URL_ORIGIN}/api/retrieve_stripe_session/${session_id}`,
     {
@@ -67,8 +95,8 @@ export const getServerSideProps = async (ctx) => {
               dynamicTemplateData: {
                 booking: {
                   id: booking.id,
-                  surgeryName: booking.surgeryName,
-                  surgeryCategoryName: booking.surgeryCategoryName,
+                  surgeryName: surgeriesName(),
+                  surgeryCategoryName: surgeryCategoriesName(),
                   link: `https://${process.env.ABSOLUTE_URL_ORIGIN}/dashboard/operations/${booking.id}`,
                 },
                 payment: {
@@ -79,6 +107,44 @@ export const getServerSideProps = async (ctx) => {
               },
             }),
           });
+
+          if (auth.props.userProfile.referer) {
+            firebase
+              .firestore()
+              .collection("users")
+              .doc(auth.props.userProfile.referer)
+              .get()
+              .then((docRef) => {
+                let paids = [];
+                firebase
+                  .firestore()
+                  .collection("bookings")
+                  .where("user", "==", auth.props.token.user_id)
+                  .get()
+                  .then((querySnapshot) => {
+                    if (querySnapshot.docs.length) {
+                      querySnapshot.docs.map(async (booking) => {
+                        if (booking.data().status === "validated") {
+                          paids.push(booking.data());
+                        }
+                      });
+                    }
+
+                    if (paids.length === 1) {
+                      firebaseAdmin
+                        .firestore()
+                        .collection("users")
+                        .doc(docRef.id)
+                        .update({
+                          referalBalance: docRef.data().referalBalance + 100,
+                        })
+                        .catch((err) => {
+                          console.log("err", err);
+                        });
+                    }
+                  });
+              });
+          }
         });
 
       return stripeRes;
@@ -93,8 +159,19 @@ export const getServerSideProps = async (ctx) => {
 
   if (stripeSession.redirect) return stripeSession;
 
-  booking.startDate = new Date(booking.startDate.toDate()).toString();
-  booking.endDate = new Date(booking.endDate.toDate()).toString();
+  booking.startDate =
+    typeof booking.startDate === "string"
+      ? booking.startDate
+      : new Date(booking.startDate.toDate()).toString();
+  booking.endDate =
+    typeof booking.endDate === "string"
+      ? booking.endDate
+      : new Date(booking.endDate.toDate()).toString();
+  booking.created = booking.created
+    ? typeof booking.created === "string"
+      ? booking.created
+      : new Date(booking?.created?.toDate()).toString()
+    : "";
 
   const stripeArgs = {
     success: success || null,
@@ -116,6 +193,34 @@ const Checkout = ({ booking, stripeArgs, auth, stripeSession }) => {
   // promo code state
   const [promoCode, setPromoCode] = useState(null);
   const [promoCodeInput, setPromoCodeInput] = useState(false);
+  const { userProfile, token } = auth.props;
+
+  // to get all names surgeries
+  const surgeriesName = () => {
+    const surgeryNames = [];
+    booking.surgeries.map((operation) =>
+      surgeryNames.push(operation.surgeryName)
+    );
+    if (surgeryNames.length > 1) {
+      return surgeryNames.join(", ");
+    } else {
+      return surgeryNames[0];
+    }
+  };
+
+  // to get all names surgeries category
+  const surgeryCategoriesName = () => {
+    const surgeryNameCategories = [];
+    booking.surgeries.map((operation) =>
+      surgeryNameCategories.push(operation.surgeryCategoryName)
+    );
+    if (surgeryNameCategories.length > 1) {
+      let uniqueCategories = [...new Set(surgeryNameCategories)];
+      return uniqueCategories.join(", ");
+    } else {
+      return surgeryNameCategories[0];
+    }
+  };
 
   const initiatePayment = async () => {
     const stripe = await loadStripe(
@@ -130,7 +235,7 @@ const Checkout = ({ booking, stripeArgs, auth, stripeSession }) => {
         price: booking.alternativeTotal
           ? booking.alternativeTotal
           : booking.total,
-        product: booking.surgeryName,
+        product: surgeriesName(),
         image: booking.hotelPhotoLink,
         id: booking.id,
         promoCode,
@@ -180,9 +285,9 @@ const Checkout = ({ booking, stripeArgs, auth, stripeSession }) => {
               </h1>
               <p className="text-sm uppercase text-gray-400 flex gap-1">
                 Besoin d&apos;aide ? Appelez nous au
-                <Link href="tel:+33678901234">
+                <Link href="tel:0186653500">
                   <a className="hover:text-shamrock transition-colors">
-                    +33 6 78 90 12 34
+                    01 86 65 35 00
                   </a>
                 </Link>
               </p>
@@ -191,7 +296,7 @@ const Checkout = ({ booking, stripeArgs, auth, stripeSession }) => {
             <div className="w-full flex gap-2 flex-col">
               <p className="text-xl font-bold">Résumé</p>
               <p>
-                {booking.surgeryCategoryName}, {booking.surgeryName}
+                {surgeryCategoriesName()}, {surgeriesName()}
               </p>
               <p>
                 À <span className="capitalize">{booking.city}</span>, du{" "}
@@ -246,7 +351,7 @@ const Checkout = ({ booking, stripeArgs, auth, stripeSession }) => {
                   <>
                     <DashboardButton
                       isPayment
-                      defaultText="Payer en carte bancaire"
+                      defaultText="Payer par carte bancaire"
                       onClick={initiatePayment}
                     />
                     <div className="text-center">

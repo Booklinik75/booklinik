@@ -12,6 +12,10 @@ import Calendar from "react-calendar";
 import { AiFillInfoCircle } from "react-icons/ai";
 import DashboardButton from "Components/DashboardButton";
 import { useRouter } from "next/router";
+import Select from "react-select";
+import formatPrice from "utils/formatPrice";
+
+moment.locale("fr");
 
 // get server side props
 export async function getServerSideProps(context) {
@@ -83,8 +87,6 @@ export async function getServerSideProps(context) {
     );
   }
 
-  console.log(offerData);
-
   return {
     props: {
       id,
@@ -137,7 +139,6 @@ const OfferBooking = ({ offer }) => {
   });
 
   function addDays(date, days) {
-    console.log(date, days);
     var result = new Date(date);
     result.setDate(result.getDate() + days);
 
@@ -175,14 +176,18 @@ const OfferBooking = ({ offer }) => {
         alternativeTotal: offer.price,
         offer: offer.id,
         total:
-          Number(booking.surgeryPrice) +
+          Number(
+            booking.surgeries.reduce(
+              (prev, curr) => prev + curr.surgeryPrice,
+              0
+            )
+          ) +
           Number(booking.totalExtraTravellersPrice) +
           Number(booking.hotelPrice) * Number(booking.totalSelectedNights) +
           Number(booking.roomPrice) * Number(booking.totalSelectedNights),
         ...booking,
       })
       .then((e) => {
-        console.log(e);
         fetch("/api/mail", {
           method: "post",
           body: JSON.stringify({
@@ -192,12 +197,31 @@ const OfferBooking = ({ offer }) => {
         });
       })
       .then((e) => {
-        console.log(e);
-        // router.push("/dashboard/operations");
-      })
-      .catch((error) => {
-        console.error(error);
+        router.push("/dashboard/operations");
       });
+  };
+
+  // build the dates from and to options for the select using offer.dates
+  const dates = offer.dates.map((date) => {
+    return {
+      value: date,
+      label: `${moment(date.startDate).format("ddd ll")} - ${moment(
+        date.endDate
+      ).format("ddd ll")}`,
+    };
+  });
+
+  const surgeryCategoriesName = () => {
+    const surgeryNameCategories = [];
+    booking.surgeries.map((operation) =>
+      surgeryNameCategories.push(operation.surgeryCategoryName)
+    );
+    if (surgeryNameCategories.length > 1) {
+      let uniqueCategories = [...new Set(surgeryNameCategories)];
+      return uniqueCategories.join(", ");
+    } else {
+      return surgeryNameCategories[0];
+    }
   };
 
   return (
@@ -211,128 +235,10 @@ const OfferBooking = ({ offer }) => {
         </div>
       )}
 
-      {/* Date selection popup */}
-      {showDateSelection && (
-        <div
-          className="fixed top-0 left-0 w-full h-full z-50 bg-black/20 flex items-center justify-center"
-          onClick={() => setShowDateSelection(false)}
-        >
-          <div
-            className="bg-white rounded shadow p-8 space-y-4"
-            onClick={(e) => {
-              e.stopPropagation();
-            }}
-          >
-            <div className="space-y-6 max-w-max">
-              <h1 className="text-2xl mb-6">
-                Choisissez vos dates de voyage
-                {booking.totalSelectedNights !== 0 ? (
-                  <span className="text-white p-2 ml-2 bg-shamrock rounded text-lg">
-                    {booking.totalSelectedNights} nuits
-                  </span>
-                ) : (
-                  ""
-                )}{" "}
-              </h1>
-              <p className="p-4 bg-green-50 border-green-400 text-shamrock border rounded w-full max-w-max">
-                <span className="text-lg flex items-center gap-2">
-                  <AiFillInfoCircle /> Bon à savoir
-                </span>
-                Vous avez la possibilité de rester plus longtemps sur place afin
-                de profiter de la ville que vous choisissez.
-                <br />
-                Pour cette opération, vous devrez sélectionner un minimum de{" "}
-                <span className="font-bold underline">
-                  {parseInt(booking.surgeryMinDays)} nuits
-                </span>
-                .
-              </p>
-              <div className="space-y-2">
-                <div className="flex gap-4 max-w-max">
-                  <div className="w-full lg:w-1/2 xl:w-1/3 space-y-3">
-                    <h2 className="text-xs uppercase text-gray-500">
-                      Date de départ
-                    </h2>
-                    <Calendar
-                      onChange={(e) => {
-                        onCalendarStartDateChange(e);
-                        setHideReturnCalendar(false);
-                      }}
-                      value={booking.startDate}
-                      locale="fr"
-                      minDate={new Date()}
-                      defaultValue={new Date()}
-                    />
-                  </div>
-                  <div className="w-full lg:w-1/2 xl:w-1/3 space-y-3">
-                    <h2 className="text-xs uppercase text-gray-500">
-                      Date de retour
-                    </h2>
-                    <div className="relative">
-                      {hideReturnCalendar && (
-                        <div className="w-full h-full absolute bg-white bg-opacity-70 z-20 flex items-center justify-center">
-                          <p className="bg-shamrock px-4 py-2.5 rounded shadow text-white">
-                            Sélectionnez une date de départ
-                          </p>
-                        </div>
-                      )}
-                      <Calendar
-                        onChange={(e) => {
-                          let timeDiff = Math.abs(
-                            e.getTime() - booking.startDate.getTime()
-                          );
-                          let numberOfNights = Math.ceil(
-                            timeDiff / (1000 * 3600 * 24)
-                          );
-                          onCalendarEndDateChange(e, numberOfNights);
-                        }}
-                        value={booking.endDate}
-                        locale="fr"
-                        minDate={addDays(
-                          booking.startDate,
-                          booking.surgeryMinDays
-                        )}
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            {/* Validate button, disabled unless both dates are selected */}
-            <div className="flex gap-2">
-              <button
-                className="bg-shamrock text-white px-4 py-2.5 rounded shadow
-                disabled:bg-shamrock/30
-                "
-                onClick={() => {
-                  if (booking.startDate && booking.endDate) {
-                    setShowDateSelection(false);
-                  }
-                }}
-                disabled={
-                  !booking.startDate ||
-                  !booking.endDate ||
-                  booking.startDate > booking.endDate
-                }
-              >
-                Valider
-              </button>
-              {/* Cancel button */}
-              <button
-                className="bg-gray-200 text-gray-600 px-4 py-2.5 rounded shadow"
-                onClick={() => setShowDateSelection(false)}
-              >
-                Annuler
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
       {loading === false && user !== null ? (
         <div className="max-h-screen w-full overflow-hidden">
           {isSaving && (
-            <div className="w-full h-full absolute z-50 bg-opacity-20 bg-black flex flex-col gap-4 items-center justify-center">
+            <div className="w-full h-full absolute z-30 bg-opacity-20 bg-black flex flex-col gap-4 items-center justify-center">
               <span className="animate-spin">
                 <VscLoading size={48} />
               </span>
@@ -353,48 +259,27 @@ const OfferBooking = ({ offer }) => {
                 <div className="py-6 space-y-6">
                   <p className="flex items-center">
                     Vous souhaitez réaliser une{" "}
-                    <BookingDataSpan string={booking.surgeryCategoryName} />
+                    <BookingDataSpan string={surgeryCategoriesName()} />
                   </p>
-                  <p className="flex items-center">
+                  <p className="flex items-center gap-2">
                     Votre voyage s&apos;étendra du{" "}
-                    <BookingDataSpan>
-                      {/* if endDate is undefined, then show date select popup */}
-                      {booking.endDate ? (
-                        moment(booking.startDate).format("MMM Do YYYY")
-                      ) : (
-                        <button
-                          className="text-blue-500"
-                          onClick={() => setShowDateSelection(true)}
-                        >
-                          Choisir une date
-                        </button>
-                      )}
-                    </BookingDataSpan>
-                    au{" "}
-                    <BookingDataSpan>
-                      {/* if endDate is undefined, then show date select popup */}
-                      {booking.endDate ? (
-                        moment(booking.endDate).format("MMM Do YYYY")
-                      ) : (
-                        <button
-                          className="text-blue-500"
-                          onClick={() => setShowDateSelection(true)}
-                        >
-                          Choisir une date
-                        </button>
-                      )}
-                    </BookingDataSpan>
-                    pour une durée de {booking.totalSelectedNights} jours.{" "}
-                    {booking.endDate && (
-                      <button
-                        onClick={() => {
-                          setShowDateSelection(true);
-                        }}
-                        className="text-blue-500 p-2 block"
-                      >
-                        Changer
-                      </button>
-                    )}
+                    <Select
+                      options={dates}
+                      onChange={(e) => {
+                        setBooking({
+                          ...booking,
+                          startDate: e.value.startDate,
+                          endDate: e.value.endDate,
+                          totalSelectedNights: moment(e.value.endDate).diff(
+                            moment(e.value.startDate),
+                            "days"
+                          ),
+                        });
+                      }}
+                      className="w-72"
+                      placeholder="Choisissez une date"
+                    />{" "}
+                    pour une durée de {booking.totalSelectedNights} jours.
                   </p>
                   <p>
                     L&apos;hôtel dans lequel vous résiderez est au{" "}
@@ -406,7 +291,7 @@ const OfferBooking = ({ offer }) => {
                 <p className="py-6">
                   Le prix tout compris de votre voyage sur-mesure est de{" "}
                   <span className="text-2xl rounded text-white px-4 py-2 mx-2 bg-shamrock">
-                    {offer.price}€
+                    {formatPrice(offer.price)} €
                   </span>
                 </p>
                 {/* if dates are selected, show a button */}

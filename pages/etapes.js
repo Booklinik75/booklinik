@@ -19,11 +19,12 @@ const KeySteps = () => {
       <Navigation />
 
       <PhotoBanner
-        title="Les etapes clés"
+        title="Comment ça marche ?"
         body={body}
         fileName={fileName}
         discover={true}
         fullWidth={true}
+        extraLarge={true}
       />
 
       <div className="flex flex-col items-center mb-10" id="content">
@@ -189,7 +190,7 @@ const KeySteps = () => {
       <div className="flex flex-col items-center mb-10" id="content">
         <div className="flex flex-col items-center w-2/3 space-y-10 my-6">
           <p className="text-xs uppercase">7. Le retour</p>
-          <h2 className="font-bold text-3xl">Lorem ipsum</h2>
+          <h2 className="font-bold text-3xl">Retour</h2>
           <p className="text-center w-full lg:w-2/3">
             À la fin de votre séjour médical, un représentant booklinik vous
             accompagnera jusqu&apos;à l&apos;aéroport et s&apos;assurera de

@@ -41,6 +41,19 @@ const DashboardOperationCard = ({ booking, noActions, salesMode, withId }) => {
 
   const bookingStatus = generateBookingStatus(booking.status);
 
+  const surgeryCategoriesName = () => {
+    const surgeryNameCategories = [];
+    booking.surgeries.map((operation) =>
+      surgeryNameCategories.push(operation.surgeryCategoryName)
+    );
+    if (surgeryNameCategories.length > 1) {
+      let uniqueCategories = [...new Set(surgeryNameCategories)];
+      return uniqueCategories.join(", ");
+    } else {
+      return surgeryNameCategories[0];
+    }
+  };
+
   return (
     <Link
       href={`/dashboard/${salesMode ? "sales/bookings/" : "operations/"}${
@@ -53,15 +66,15 @@ const DashboardOperationCard = ({ booking, noActions, salesMode, withId }) => {
             src={booking.hotelPhotoLink}
             width={97}
             height={80}
-            className="rounded"
+            className="rounded flex-initial w-3/12"
             alt="TBD"
             objectFit="cover"
           />
-          <div className="p-3">
+          <div className="p-3 flex-initial w-9/12">
             {withId && <p className="text-xs ">id : {booking.id}</p>}
 
             <p className="text-leading">
-              {booking.surgeryCategoryName} -{" "}
+              {surgeryCategoriesName()} -{" "}
               <span className="capitalize">{booking.city}</span>
             </p>
             <p className="text-xs text-bali">
