@@ -3,7 +3,7 @@ import firebase from "firebase/clientApp";
 import moment from "moment";
 import { getBackEndAsset } from "utils/ServerHelpers";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { useState } from "react";
+import { Children, useState } from "react";
 import { VscLoading } from "react-icons/vsc";
 import BookingSideNavigation from "components/bookingComponents/BookingSideNavigation";
 import BookingTopNavigation from "components/bookingComponents/BookingTopNavigation";
@@ -23,7 +23,6 @@ export async function getServerSideProps(context) {
   const db = firebase.firestore();
 
   const offer = await db.collection("offers").doc(id).get();
-
   // serialize the data
   const offerData = offer.data();
   offerData.id = offer.id;
@@ -112,12 +111,16 @@ const OfferBooking = ({ offer }) => {
   }
 
   const [booking, setBooking] = useState({
+    surgeries: [
+      {
     surgeryCategory: offer.surgery.category.slug,
     surgeryCategoryName: offer.surgery.category.name,
     surgery: offer.surgery.slug,
     surgeryPrice: offer.surgery.startingPrice,
     surgeryName: offer.surgery.name,
     surgeryMinDays: offer.surgery.minimumNights,
+  },
+],
     startDate: new Date(),
     endDate: "",
     totalSelectedNights: 0,
@@ -136,6 +139,7 @@ const OfferBooking = ({ offer }) => {
     roomName: offer.hotelRoom.name,
     roomPrice: offer.hotelRoom.extraPrice,
     roomPhotoLink: offer.hotelRoom.photos[0],
+    created: firebase.firestore.Timestamp.fromDate(new Date()).toDate(),
   });
 
   function addDays(date, days) {
@@ -164,30 +168,28 @@ const OfferBooking = ({ offer }) => {
   const mail = require("@sendgrid/mail");
   mail.setApiKey(process.env.SENDGRID_API_KEY);
 
-  const doBooking = () => {
-    setIsSaving(true);
+  const totalPrice =
+    Number(offer.price);
 
-    firebase
-      .firestore()
-      .collection("bookings")
-      .add({
-        user: user.uid,
-        status: "awaitingDocuments",
-        alternativeTotal: offer.price,
-        offer: offer.id,
-        total:
-          Number(
-            booking.surgeries.reduce(
-              (prev, curr) => prev + curr.surgeryPrice,
-              0
-            )
-          ) +
-          Number(booking.totalExtraTravellersPrice) +
-          Number(booking.hotelPrice) * Number(booking.totalSelectedNights) +
-          Number(booking.roomPrice) * Number(booking.totalSelectedNights),
-        ...booking,
-      })
-      .then((e) => {
+    const doBooking = () => {
+      // if user have't login and do book
+      if (user === null) {
+        router.push("/signup?i=anonBooking");
+        localStorage.setItem("bookBooklinik", JSON.stringify(booking));
+        return;
+      }
+      setIsSaving(true);
+
+      firebase
+        .firestore()
+        .collection("bookings")
+        .add({
+          user: user.uid,
+          status: "awaitingDocuments",
+          total:  totalPrice,
+          ...booking,
+        })
+      .then(() => {
         fetch("/api/mail", {
           method: "post",
           body: JSON.stringify({
@@ -196,10 +198,12 @@ const OfferBooking = ({ offer }) => {
           }),
         });
       })
-      .then((e) => {
-        router.push("/dashboard/operations");
+      .then(() => {
+        router.push("/dashboard");
+
       });
   };
+
 
   // build the dates from and to options for the select using offer.dates
   const dates = offer.dates.map((date) => {
@@ -211,7 +215,8 @@ const OfferBooking = ({ offer }) => {
     };
   });
 
-  const surgeryCategoriesName = () => {
+  {/*
+    const surgeryCategoriesName = () => {
     const surgeryNameCategories = [];
     booking.surgeries.map((operation) =>
       surgeryNameCategories.push(operation.surgeryCategoryName)
@@ -223,6 +228,7 @@ const OfferBooking = ({ offer }) => {
       return surgeryNameCategories[0];
     }
   };
+  */}
 
   return (
     <div>
@@ -253,15 +259,14 @@ const OfferBooking = ({ offer }) => {
             <div className="col-span-2 hidden md:block">
               <BookingSideNavigation step={7} bookingData={booking} />
             </div>
-            <div className="col-span-8 shadow-xl h-full grid grid-cols-12 overflow-y-scroll">
-              <div className="col-span-12 space-y-6 h-full p-8">
-                <h1 className="text-2xl mb-6">Parfait, on y est presque !</h1>
-                <div className="py-6 space-y-6">
-                  <p className="flex items-center">
+            <div className="col-span-10 lg:col-span-8 shadow-xl h-full grid grid-cols-12 overflow-y-scroll">
+                <div className="col-span-12 space-y-6 gap-6p-12 lg:pt-32 p-12 my-12">
+                <h1 className="text-2xl mb-6 pt-6">Parfait, on y est presque !</h1>
+                <p className="flex flex-col items-start gap-2 lg:flex-row lg:items-center">
                     Vous souhaitez réaliser une{" "}
-                    <BookingDataSpan string={surgeryCategoriesName()} />
+                    <BookingDataSpan string={offer.name} />
                   </p>
-                  <p className="flex items-center gap-2">
+                  <p className="flex flex-col items-start gap-2 lg:flex-row lg:items-center">
                     Votre voyage s&apos;étendra du{" "}
                     <Select
                       options={dates}
@@ -281,16 +286,15 @@ const OfferBooking = ({ offer }) => {
                     />{" "}
                     pour une durée de {booking.totalSelectedNights} jours.
                   </p>
-                  <p>
+                  <p className="flex flex-col items-start gap-2 lg:flex-row lg:items-center">
                     L&apos;hôtel dans lequel vous résiderez est au{" "}
                     <BookingDataSpan string={booking.hotelName} /> (très bon
                     choix) et vous logerez en{" "}
                     <BookingDataSpan string={booking.roomName} />
                   </p>
-                </div>
-                <p className="py-6">
+                <p className="flex flex-col items-start gap-2 lg:flex-row lg:items-center">
                   Le prix tout compris de votre voyage sur-mesure est de{" "}
-                  <span className="text-2xl rounded text-white px-4 py-2 mx-2 bg-shamrock">
+                  <span className="text-2xl rounded text-white px-4 py-2 bg-shamrock">
                     {formatPrice(offer.price)} €
                   </span>
                 </p>
@@ -298,7 +302,10 @@ const OfferBooking = ({ offer }) => {
                 {
                   <DashboardButton
                     defaultText="Réserver"
-                    onClick={doBooking}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      doBooking();
+                    }}
                     disabled={
                       !booking.startDate ||
                       !booking.endDate ||
@@ -306,10 +313,10 @@ const OfferBooking = ({ offer }) => {
                     }
                   />
                 }
+                </div>
               </div>
             </div>
           </div>
-        </div>
       ) : null}
     </div>
   );

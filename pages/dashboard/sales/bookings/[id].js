@@ -692,9 +692,9 @@ const Booking = ({
                 )}
               </div>
               <div className="flex items-center mt-14">
-                Le prix tout compris de votre voyage sur-mesure est de{" "}
+                Le prix tout compris du voyage sur-mesure est de{" "}
                 <span className="border text-white whitespace-nowrap block p-2 px-4 border-shamrock bg-shamrock rounded  mx-3">
-                  {formatPrice(totalPrice)} €
+                {booking.total}€
                 </span>
               </div>
               <button
