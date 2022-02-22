@@ -139,6 +139,7 @@ const OfferBooking = ({ offer }) => {
     roomName: offer.hotelRoom.name,
     roomPrice: offer.hotelRoom.extraPrice,
     roomPhotoLink: offer.hotelRoom.photos[0],
+    created: firebase.firestore.Timestamp.fromDate(new Date()).toDate(),
   });
 
   function addDays(date, days) {
