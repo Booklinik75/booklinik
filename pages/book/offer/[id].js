@@ -121,6 +121,7 @@ const OfferBooking = ({ offer }) => {
     surgeryMinDays: offer.surgery.minimumNights,
   },
 ],
+    offerName: offer.name,
     startDate: new Date(),
     endDate: "",
     totalSelectedNights: 0,
@@ -189,12 +190,37 @@ const OfferBooking = ({ offer }) => {
           total:  totalPrice,
           ...booking,
         })
+        .then(() => {
+            fetch("/api/mail", {
+              method: "post",
+              body: JSON.stringify({
+                recipient: user.email,
+                templateId: "d-b504c563b53846fbadb0a53151a82d57",
+              }),
+            });
+          })
       .then(() => {
         fetch("/api/mail", {
           method: "post",
           body: JSON.stringify({
-            recipient: user.email,
-            templateId: "d-b504c563b53846fbadb0a53151a82d57",
+            recipient: "reservation@booklinik.com",
+            templateId: "d-351874c7be9348778ef89f40ddfe8729",
+            dynamicTemplateData: {
+              booking: {
+                date: booking.created,
+                offerName: booking.offerName,
+                surgeryName: booking.surgeriesName,
+                surgeryCategoryName: booking.surgeryCategoriesName,
+                link: `https://booklinik.com/dashboard/sales/bookings/${booking.id}`,
+                startDate: booking.startDate,
+                endDate: booking.endDate,
+                hotelName: booking.hotelName,
+                total: totalPrice,
+                totalSelectedNights: booking.totalSelectedNights,
+                room: booking.room,
+                city: booking.city,
+              },
+            },
           }),
         });
       })
@@ -214,6 +240,7 @@ const OfferBooking = ({ offer }) => {
       ).format("ddd ll")}`,
     };
   });
+
 
   {/*
     const surgeryCategoriesName = () => {

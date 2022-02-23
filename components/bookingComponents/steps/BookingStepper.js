@@ -63,12 +63,36 @@ const FormStepper = ({
           }),
         });
       })
-      .then(() => {
-        /*router.push("/dashboard/operations");*/
-        router.push("/dashboard");
+  .then(() => {
+    fetch("/api/mail", {
+      method: "post",
+      body: JSON.stringify({
+        recipient: "reservation@booklinik.com",
+        templateId: "d-351874c7be9348778ef89f40ddfe8729",
+        dynamicTemplateData: {
+          booking: {
+            date: booking.created,
+            offerName: booking.offerName,
+            surgeryName: booking.surgeries[0].surgeryName,
+            surgeryCategoryName: booking.surgeries[0].surgeryCategoryName,
+            link: `https://booklinik.com/dashboard/sales/bookings/${booking.id}`,
+            startDate: booking.startDate,
+            endDate: booking.endDate,
+            hotelName: booking.hotelName,
+            total: totalPrice,
+            totalSelectedNights: booking.totalSelectedNights,
+            room: booking.room,
+            city: booking.city,
+          },
+        },
+      }),
+    });
+  })
+  .then(() => {
+    router.push("/dashboard");
 
-      });
-  };
+  });
+};
 
   return (
     <BookingUi bookingData={booking} step={step} userProfile={userProfile}>
