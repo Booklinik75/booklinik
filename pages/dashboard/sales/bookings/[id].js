@@ -364,6 +364,8 @@ const Booking = ({
     }
   };
 
+  const offerName = booking.offerName;
+
   console.log();
 
   useEffect(() => {
@@ -470,7 +472,14 @@ const Booking = ({
                   <p className="text-sm text-gray-800 uppercase font-medium">
                     Opération
                   </p>
-                  <p className="text-gray-600">{surgeriesName()}</p>
+
+                  { offerName ? (
+                    <p className="text-gray-600">{offerName}</p>
+                        )
+                        : (
+                      <p className="text-gray-600">{surgeriesName()}</p>
+                      )}
+
                 </div>
                 <div>
                   <p className="text-sm text-gray-800 uppercase font-medium">
