@@ -1,5 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
+import MDEditor from "@uiw/react-md-editor";
+
 
 const Clinic = ({ clinic, city, citySlug, countrySlug }) => {
   return (
@@ -25,9 +27,7 @@ const Clinic = ({ clinic, city, citySlug, countrySlug }) => {
             </div>
           </div>
           <div>
-            <p className="text-s text-gray-600 text-justify mx-0.5 overflow-ellipsis transition line-clamp-3 hover:line-clamp-none">
-              {clinic.excerpt}
-            </p>
+          <MDEditor.Markdown className="text-gray-600 overflow-ellipsis transition line-clamp-3 hover:line-clamp-none" source={clinic.excerpt}/>
           </div>
         </div>
       </a>
