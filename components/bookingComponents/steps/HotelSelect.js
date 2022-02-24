@@ -3,6 +3,8 @@ import StarRating from "../../StarRating";
 import { AiOutlineCheckCircle } from "react-icons/ai";
 import { BsCircle } from "react-icons/bs";
 import { useEffect } from "react";
+import MDEditor from "@uiw/react-md-editor";
+
 
 const HotelSelectStep = ({
   booking,
@@ -92,9 +94,7 @@ const HotelSelectStep = ({
                   </div>
                 </div>
                 <div>
-                  <p className="text-s text-gray-500 text-justify mx-0.5">
-                    {hotel.excerpt}
-                  </p>
+                <MDEditor.Markdown source={hotel.excerpt} />
                 </div>
               </label>
             </div>
