@@ -27,7 +27,6 @@ const FormStepper = ({
   const totalPrice =
     Number(booking.surgeries[0].surgeryPrice) +
     Number(booking.totalExtraTravellersPrice) +
-    Number(booking.hotelPrice) * Number(booking.totalSelectedNights) +
     Number(booking.roomPrice) * Number(booking.totalSelectedNights) +
     booking.options
       ?.map((option) => option.isChecked && Number(option.price))

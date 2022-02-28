@@ -373,7 +373,6 @@ const Booking = ({
     const initialPrice =
       Number(booking.surgeries[0].surgeryPrice) +
       Number(booking.totalExtraTravellersPrice) +
-      Number(booking.hotelPrice) * Number(booking.totalSelectedNights) +
       booking.options
         ?.map((option) => option.isChecked && Number(option.price))
         .reduce((a, b) => a + b) +
