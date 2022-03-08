@@ -206,6 +206,12 @@ html body .react-tel-input .flag-dropdown {
   font-family: "Circular", "Montserrat", "sans-serif" !important;
 }
 
+pre {
+  font-family: "Circular", "Montserrat", "sans-serif" !important;
+  font-size: 13px;
+  color: #444444;
+}
+
 html body .react-tel-input .country-list {
   border-radius: 0.25rem;
   border: 1px solid #33c383;
