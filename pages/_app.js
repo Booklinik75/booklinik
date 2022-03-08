@@ -66,22 +66,29 @@ function BooklinikClient({ Component, pageProps }) {
           hide_switcher: true,
         });
 
+        const getAllLanguageSwitch = document.querySelectorAll(
+          ".language-switcher-container"
+        );
+
         function handleWeglotSwitcher() {
           var myDiv = document.getElementById("language-switcher");
 
-          var availableLanguages = Weglot.options.languages
-            ?.map(function (language) {
-              return language.language_to;
-            })
-            .concat(Weglot.options.language_from);
+          if (myDiv) {
+            var availableLanguages = Weglot.options.languages
+              ?.map(function (language) {
+                return language.language_to;
+              })
+              .concat(Weglot.options.language_from);
 
-          var selectList = document.createElement("ul");
-          myDiv.appendChild(selectList);
+            var selectList = document.createElement("ul");
+            myDiv.appendChild(selectList);
 
-          var currentLang = Weglot.getCurrentLang();
-          var currentLangguage = document.createElement("div");
-          currentLangguage.onclick = () => selectList.classList.toggle("show");
-          currentLangguage.innerHTML = `
+            var currentLang = Weglot.getCurrentLang();
+            var currentLangguage = document.createElement("div");
+            currentLangguage.classList.add("language-switcher-container");
+            currentLangguage.onclick = () =>
+              selectList.classList.toggle("show");
+            currentLangguage.innerHTML = `
               <div>
               <img
                 src="https://flagcdn.com/w20/${
@@ -92,39 +99,39 @@ function BooklinikClient({ Component, pageProps }) {
               <svg width="10" height="10" viewBox="0 0 37 21" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M2 2L18.5 18.5L35 2" stroke="#33C383" stroke-width="8" stroke-linecap="round"/>
               </svg>
-    
+
               `;
-          myDiv.appendChild(currentLangguage);
+            myDiv.appendChild(currentLangguage);
 
-          //Create and append the options
-          for (var i = 0; i < availableLanguages?.length; i++) {
-            var lang = availableLanguages[i];
-            console.log(lang);
+            //Create and append the options
+            for (var i = 0; i < availableLanguages?.length; i++) {
+              var lang = availableLanguages[i];
+              console.log(lang);
 
-            var li = document.createElement("li");
-            li.classList.add("list-switcher");
-            li.dataset.lang = lang;
-            li.innerHTML += `<img
+              var li = document.createElement("li");
+              li.classList.add("list-switcher");
+              li.dataset.lang = lang;
+              li.innerHTML += `<img
               src="https://flagcdn.com/w20/${lang === "en" ? "gb" : lang}.png"
             /> ${Weglot.getLanguageName(lang)}`;
-            if (lang === currentLang) {
-              li.selected = "selected";
+              if (lang === currentLang) {
+                li.selected = "selected";
+              }
+              selectList.appendChild(li);
             }
-            selectList.appendChild(li);
-          }
 
-          const allSwitchers = document.querySelectorAll(".list-switcher");
-          allSwitchers.forEach((switcher) =>
-            switcher.addEventListener("click", function () {
-              Weglot.switchTo(this.getAttribute("data-lang"));
-              selectList.classList.remove("show");
-            })
-          );
+            const allSwitchers = document.querySelectorAll(".list-switcher");
+            allSwitchers.forEach((switcher) =>
+              switcher.addEventListener("click", function () {
+                Weglot.switchTo(this.getAttribute("data-lang"));
+                selectList.classList.remove("show");
+              })
+            );
 
-          Weglot.on("languageChanged", function (lang) {
-            const langName = Weglot.getLanguageName(lang);
-            console.log(langName);
-            currentLangguage.innerHTML = `
+            Weglot.on("languageChanged", function (lang) {
+              const langName = Weglot.getLanguageName(lang);
+              console.log(langName);
+              currentLangguage.innerHTML = `
               <div>
               <img
                 src="https://flagcdn.com/w20/${lang === "en" ? "gb" : lang}.png"
@@ -133,15 +140,20 @@ function BooklinikClient({ Component, pageProps }) {
               <svg width="10" height="10" viewBox="0 0 37 21" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M2 2L18.5 18.5L35 2" stroke="#33C383" stroke-width="8" stroke-linecap="round"/>
               </svg>
-    
+
               `;
-          });
+            });
+          }
         }
+
+        console.log(getAllLanguageSwitch);
 
         if (window.location.pathname === "/") {
           Weglot.on("initialized", handleWeglotSwitcher);
         } else {
-          handleWeglotSwitcher();
+          if (getAllLanguageSwitch.length < 1) {
+            handleWeglotSwitcher();
+          }
         }
 
         // if(window.loca)
