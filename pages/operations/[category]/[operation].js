@@ -68,7 +68,7 @@ const OperationPage = ({ surgeryData, categoryPhoto, relatedSurgeries }) => {
             <p className="text-shamrock">
               À partir de {surgeryData.data.startingPrice}€
             </p>
-              <p>{surgeryData.data.excerpt}</p>
+            <pre>{surgeryData.data.excerpt} </pre>
             <Link href="/book" passHref={true}>
               <button className="text-white bg-shamrock rounded px-6 py-3 transition border border-shamrock hover:text-shamrock hover:bg-white">
                 Estimez mon séjour
