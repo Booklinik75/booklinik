@@ -69,10 +69,10 @@ const ProfilePage = ({ userProfile, token }) => {
         setLoading("done");
         setTimeout(() => {
           setLoading("idle");
-        }, 2000);
-
+        }, 1500);
+        router.push(`/dashboard`);
         // refresh getServerSideProps without reloading page
-        router.reload();
+      //  router.reload();
       })
       .catch((error) => {
         toast.error("Erreur lors de la mise à jour");

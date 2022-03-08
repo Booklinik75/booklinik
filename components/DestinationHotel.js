@@ -1,6 +1,8 @@
 import Image from "next/image";
 import StarRating from "./StarRating";
 import Link from "next/link";
+import MDEditor from "@uiw/react-md-editor";
+
 
 const DestinationHotel = ({ hotel, city }) => {
   return (
@@ -26,9 +28,16 @@ const DestinationHotel = ({ hotel, city }) => {
         </div>
       </div>
       <div>
-        <p className="text-s text-gray-500 text-justify mx-0.5">
+          {/*<p className="text-s text-gray-500 text-justify mx-0.5">
           {hotel.excerpt}
         </p>
+         <p className="text-lg text-center prose prose-lg">
+        //     only show the two first sentences of the excerpt
+            {excerpt.split(".").slice(0, 2).join(".")}.
+          </p>
+        */}
+          <MDEditor.Markdown className="text-gray-500 overflow-ellipsis transition line-clamp-3 hover:line-clamp-none" source={hotel.excerpt} />
+
       </div>
     </div>
   );

@@ -42,10 +42,10 @@ const OffersList = ({ offers, auth }) => {
             </button>
           </Link>
         </div>
-        <div className="flex gap-4">
+        <div className="bg-white px-4 py-4 sm:px-6 grid grid-cols-1 md:grid-cols-3 xl:grid-cols-5 row-gap-6 col-gap-4">
           {offers.map((offer) => (
             <div
-              className="flex h-full flex-col space-y-2 p-4 bg-blue-50 rounded border border-blue-300 max-w-max min-w-[16rem]"
+              className="flex h-full mb-6 flex-col space-y-2 p-4 bg-grey-50 rounded border border-grey-300 max-w-max"
               key={offer.id}
             >
               {/* Preview image */}
@@ -68,7 +68,7 @@ const OffersList = ({ offers, auth }) => {
                 <p className="text-lg">{offer.price}€</p>
                 <p>Créé le : {offer.createdAt}</p>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex justify-between items-center flex-col py-6 space-y-4">
                 <Link
                   href={`/dashboard/admin/offers/${offer.id}`}
                   passHref={true}

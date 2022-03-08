@@ -200,7 +200,7 @@ const EditHotel = ({ data, id, citiesOptions, auth }) => {
             value={form.extraPrice}
             onChange={handleChange}
             disabled={false}
-            label="Prix de base"
+            label="À partir de"
             required={true}
           />
           <ProfileSelect

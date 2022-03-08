@@ -130,8 +130,6 @@ const SignUp = () => {
                     total:
                       Number(booking.surgeries[0].surgeryPrice) +
                       Number(booking.totalExtraTravellersPrice) +
-                      Number(booking.hotelPrice) *
-                        Number(booking.totalSelectedNights) +
                       Number(booking.roomPrice) *
                         Number(booking.totalSelectedNights) +
                       booking.options

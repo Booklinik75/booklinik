@@ -3,6 +3,8 @@ import StarRating from "../../StarRating";
 import { AiOutlineCheckCircle } from "react-icons/ai";
 import { BsCircle } from "react-icons/bs";
 import { useEffect } from "react";
+import MDEditor from "@uiw/react-md-editor";
+
 
 const HotelSelectStep = ({
   booking,
@@ -83,18 +85,20 @@ const HotelSelectStep = ({
                         <p className="text-white text-xs capitalize">
                           {hotel.city}
                         </p>
-                      {/* <p className="text-white text-xs">&bull;</p>
-                        <p className="text-white text-xs">
-                          +{hotel.startingPrice}€ }
-                        </p>*/}
+                       <p className="text-white text-xs">&bull;</p>
+                       {hotel.extraPrice > 0 ? (
+                         <p className="text-white text-s">
+                         À partir de +{hotel.extraPrice}€
+                         </p>
+                     ) : (
+                       ""
+                     )}
                       </div>
                     </div>
                   </div>
                 </div>
                 <div>
-                  <p className="text-s text-gray-500 text-justify mx-0.5">
-                    {hotel.excerpt}
-                  </p>
+                <MDEditor.Markdown source={hotel.excerpt} />
                 </div>
               </label>
             </div>

@@ -164,7 +164,7 @@ const AddHotel = ({ auth, citiesOptions }) => {
             value={form.extraPrice}
             onChange={handleChange}
             disabled={false}
-            label="Prix de base"
+            label="À partir de"
             required={true}
           />
           <ProfileSelect

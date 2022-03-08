@@ -265,15 +265,15 @@ export default function Home({
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           <Advantage
             title="Reservation simplifiée"
-            body="Booklinik est le premier service de reservation en ligne de tourisme medical. Plus question de régler vos billets d'avions, hotel et opération séparément."
+            body="Booklinik est le premier service de reservation en ligne de tourisme medical. Séléctionnez votre chirurgie, vos dates et votre hôtel en quelques clics."
           />
           <Advantage
             title="Paiement en 4x"
-            body="Grace à notre partenaire de credit ..., vous pouvez régler votre operation et votre voyage en plusieurs fois sans frais."
+            body="Grace à notre partenaire de crédit, vous pouvez régler votre operation et votre voyage en plusieurs fois sans frais."
           />
           <Advantage
             title="Equipe dédiée"
-            body="L’'assistance booklinik est disponible
+            body="L’assistance booklinik est disponible
 pour répondre à toutes vos questions
 avant votre départ. Durant votre
 séjour, un chauffeur et un traducteur

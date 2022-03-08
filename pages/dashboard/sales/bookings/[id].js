@@ -364,6 +364,8 @@ const Booking = ({
     }
   };
 
+  const offerName = booking.offerName;
+
   console.log();
 
   useEffect(() => {
@@ -371,7 +373,6 @@ const Booking = ({
     const initialPrice =
       Number(booking.surgeries[0].surgeryPrice) +
       Number(booking.totalExtraTravellersPrice) +
-      Number(booking.hotelPrice) * Number(booking.totalSelectedNights) +
       booking.options
         ?.map((option) => option.isChecked && Number(option.price))
         .reduce((a, b) => a + b) +
@@ -470,7 +471,14 @@ const Booking = ({
                   <p className="text-sm text-gray-800 uppercase font-medium">
                     Opération
                   </p>
-                  <p className="text-gray-600">{surgeriesName()}</p>
+
+                  { offerName ? (
+                    <p className="text-gray-600">{offerName}</p>
+                        )
+                        : (
+                      <p className="text-gray-600">{surgeriesName()}</p>
+                      )}
+
                 </div>
                 <div>
                   <p className="text-sm text-gray-800 uppercase font-medium">
@@ -692,9 +700,9 @@ const Booking = ({
                 )}
               </div>
               <div className="flex items-center mt-14">
-                Le prix tout compris de votre voyage sur-mesure est de{" "}
+                Le prix tout compris du voyage sur-mesure est de{" "}
                 <span className="border text-white whitespace-nowrap block p-2 px-4 border-shamrock bg-shamrock rounded  mx-3">
-                  {formatPrice(totalPrice)} €
+                {booking.total}€
                 </span>
               </div>
               <button

@@ -161,6 +161,7 @@ const Customer = ({
         </h1>
         <div className="flex flex-col gap-4">
           <div>
+          { auth.props.userProfile.role === "admin" ? (
             <p className="text-sm uppercase text-gray-600 mt-4">
               Sélectionner un rôle
               <Dropdown
@@ -172,7 +173,10 @@ const Customer = ({
                 }}
                 className="max-w-max"
               />
-            </p>
+            </p>                            )
+                            : (
+                              ""
+                            )}
           </div>
           <div>
             <h2 className="text-2xl flex items-center gap-1 mb-2">
