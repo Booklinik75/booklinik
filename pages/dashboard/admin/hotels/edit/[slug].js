@@ -47,14 +47,16 @@ export const getServerSideProps = async (ctx) => {
 const EditHotel = ({ data, id, citiesOptions, auth }) => {
   const router = useRouter();
   const [isLoading, setLoading] = useState("idle");
+  const [image, setImage] = useState("");
 
   const [form, setFormData] = useState({
     slug: data.slug,
     name: data.name,
     rating: data.rating,
     extraPrice: data.extraPrice,
+    excerpt: data.excerpt,
+    city: data.city,
   });
-  const [image, setImage] = useState("");
 
   const handleChange = (e) => {
     if (e.target.name === "name") {
@@ -77,26 +79,15 @@ const EditHotel = ({ data, id, citiesOptions, auth }) => {
     }
   };
 
-  function deleteSelf() {
-    firebase
-      .firestore()
-      .collection("hotels")
-      .doc(id)
-      .delete()
-      .then(() => {
-        router.push("/dashboard/admin/hotels");
-      });
-  }
-
   async function doUpdate() {
     setLoading("loading");
     const root = "hotels";
-    const fileName = `${form.slug}-${image.name}`;
     let docData = {};
 
-    const imageUploadRes = await doFileUpload(root, fileName, image);
-
     if (image !== "") {
+      const fileName = `${form.slug}-${image.name}`;
+      const imageUploadRes = await doFileUpload(root, fileName, image);
+
       docData = {
         city: form.city,
         slug: form.slug,
@@ -104,6 +95,7 @@ const EditHotel = ({ data, id, citiesOptions, auth }) => {
         rating: form.rating,
         extraPrice: form.extraPrice,
         photo: imageUploadRes.ref.fullPath,
+        excerpt: form.excerpt,
       };
     } else {
       docData = {
@@ -112,8 +104,12 @@ const EditHotel = ({ data, id, citiesOptions, auth }) => {
         name: form.name,
         rating: form.rating,
         extraPrice: form.extraPrice,
+        excerpt: form.excerpt,
       };
     }
+
+    setLoading("idle");
+
 
     firebase
       .firestore()
@@ -150,14 +146,6 @@ const EditHotel = ({ data, id, citiesOptions, auth }) => {
               Édition :<span className="text-shamrock"> {data.name}</span>
             </h1>
             <p></p>
-          </div>
-          <div>
-            <button
-              onClick={deleteSelf}
-              className="bg-red-500 rounded transition px-6 py-3 border border-red-500 text-white hover:text-red-500 hover:bg-white"
-            >
-              Supprimer
-            </button>
           </div>
         </div>
         <form
@@ -212,7 +200,7 @@ const EditHotel = ({ data, id, citiesOptions, auth }) => {
             value={form.extraPrice}
             onChange={handleChange}
             disabled={false}
-            label="Prix de base"
+            label="À partir de"
             required={true}
           />
           <ProfileSelect
@@ -222,8 +210,50 @@ const EditHotel = ({ data, id, citiesOptions, auth }) => {
             value={form.city}
             onChange={handleChange}
           />
-          <DashboardButton defaultText="Mettre à jour" status={isLoading} />
-        </form>
+          <div>
+            <label className="text-xs uppercase text-gray-500 w-full">
+              Excerpt
+            </label>
+            <textarea
+              name="excerpt"
+              value={form.excerpt}
+              onChange={handleChange}
+              disabled={false}
+              label="Excerpt"
+              required={true}
+              rows={3}
+              placeholder="Écrivez une courte description ..."
+              className="w-full rounded border-2 outline-none border-gray-200 p-3 transition hover:border-bali focus:border-shamrock disabled:bg-gray-300 disabled:border-gray-400 disabled:cursor-not-allowed"
+            />
+          </div>
+          <div className="flex gap-2">
+            <DashboardButton defaultText="Mettre à jour" status={isLoading} />
+            {/* delete hotel button */}
+            <button
+              type="button"
+              className="bg-red-500 hover:bg-red-700 text-white font-bold px-10 py-3 rounded focus:outline-none focus:shadow-outline"
+              onClick={() => {
+                if (
+                  window.confirm(
+                    "Voulez-vous vraiment supprimer cet hotel ?"
+                  )
+                ) {
+                  firebase
+                    .firestore()
+                    .collection("hotels")
+                    .doc(id)
+                    .delete()
+                    .catch((error) => {})
+                    .finally(() => {
+                      router.push("/dashboard/admin/hotels");
+                    });
+                }
+              }}
+            >
+              Supprimer
+            </button>
+          </div>
+          </form>
       </div>
     </DashboardUi>
   );

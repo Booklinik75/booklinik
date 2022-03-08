@@ -164,10 +164,10 @@ export default function Home({
             >
               <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-center">
                 Booklinik, l’unique service de réservation en ligne de tourisme
-                médical en 3 clics !
+                médical.
               </h2>
               <h2 className="text-xl md:text-2xl lg:text-3xl text-center mb-6">
-                Estimez et réservez votre voyage esthétique
+                Estimez et réservez votre voyage esthétique en 3 clics !
               </h2>
               <div className="grid grid-cols-3 md:grid-cols-3 lg:grid-cols-10 gap-6 home-hero-surgery-categories">
                 {categoriesSettings.map((orderedCategory) => {
@@ -250,9 +250,9 @@ export default function Home({
           ref={discoverBookLinkText}
         >
           <p className="uppercase text-sm mb-2">Découvrez Booklinik</p>
-          <h2 className="text-4xl">Parce que votre bien-être est notre</h2>
+          <h2 className="text-4xl">Parce que votre bien-être est notre priorité</h2>
           <p className="mt-4 mb-2">Les 8 étapes clé de votre voyage</p>
-          <Link href="/a-propos">
+          <Link href="/etapes">
             <a className="hover:underline flex items-center">
               Découvrir <FaChevronRight size={12} />
             </a>
@@ -265,15 +265,15 @@ export default function Home({
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           <Advantage
             title="Reservation simplifiée"
-            body="Booklinik est le premier service de reservation en ligne de tourisme medical. Plus question de régler vos billets d'avions, hotel et opération séparément."
+            body="Booklinik est le premier service de reservation en ligne de tourisme medical. Séléctionnez votre chirurgie, vos dates et votre hôtel en quelques clics."
           />
           <Advantage
             title="Paiement en 4x"
-            body="Grace à notre partenaire de credit ..., vous pouvez régler votre operation et votre voyage en plusieurs fois sans frais."
+            body="Grace à notre partenaire de crédit, vous pouvez régler votre operation et votre voyage en plusieurs fois sans frais."
           />
           <Advantage
             title="Equipe dédiée"
-            body="L’'assistance booklinik est disponible
+            body="L’assistance booklinik est disponible
 pour répondre à toutes vos questions
 avant votre départ. Durant votre
 séjour, un chauffeur et un traducteur

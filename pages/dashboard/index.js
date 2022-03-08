@@ -137,6 +137,8 @@ export default function DashboardIndex({
                 <DashboardModal
                   type="error"
                   content="Votre numéro de téléphone n'est pas vérifié"
+                  cta="Vérifier"
+                  target="/dashboard/profile"
                 />
               )}
               {(Object.values(questionsAnswered).length === 0 ||
@@ -144,6 +146,8 @@ export default function DashboardIndex({
                 <DashboardModal
                   type="error"
                   content="Veuillez remplir vos informations médicales"
+                  cta="Compléter"
+                  target="/dashboard/medical"
                 />
               )}
               {[
@@ -158,7 +162,7 @@ export default function DashboardIndex({
               ].some((x) => x === null) ? (
                 <DashboardModal
                   type="error"
-                  content="Vous devez remplir vos informations"
+                  content="Vous devez remplir vos informations personnelles"
                   cta="Compléter"
                   target="/dashboard/profile"
                 />
@@ -168,7 +172,7 @@ export default function DashboardIndex({
               {bookings.some((b) => b.status === "awaitingDocuments") && (
                 <DashboardModal
                   type="error"
-                  content="Pour finaliser votre reservation, vous devrez ajouter des photos"
+                  content="Pour finaliser votre réservation, vous devrez ajouter des photos"
                   cta="Ajouter"
                   target="/dashboard/operations"
                 />

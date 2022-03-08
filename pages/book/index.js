@@ -134,9 +134,9 @@ const NewBookingContainer = ({
     created: firebase.firestore.Timestamp.fromDate(new Date()).toDate(),
   });
 
-  const extraTravellersSupplement = 450;
-  const extraChildsSupplement = 450;
-  const extraBabiesSupplement = 450;
+  const extraTravellersSupplement = 20;
+  const extraChildsSupplement = 20;
+  const extraBabiesSupplement = 0;
 
   const [nextStep, setNextStep] = useState(false);
   const [surgeryCategory, setSurgeryCategory] = useState({
@@ -152,7 +152,7 @@ const NewBookingContainer = ({
 
     setBooking({
       ...booking,
-      totalExtraTravellersPrice: totalExtraTravellers,
+      totalExtraTravellersPrice: totalExtraTravellers * booking.totalSelectedNights,
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [booking.extraTravellers, booking.extraChilds, booking.extraBabies]);

@@ -76,7 +76,7 @@ const RoomsSelectStep = ({ booking, rooms, handleRoomSelect, setNextStep }) => {
                     <div className="flex items-center gap-2">
                       {room.extraPrice !== 0 ? (
                         <p className="text-xs text-gray-600">
-                          +{room.extraPrice}€
+                          +{room.extraPrice}€ / nuit
                         </p>
                       ) : (
                         ""

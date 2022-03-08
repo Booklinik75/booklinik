@@ -130,8 +130,6 @@ const SignUp = () => {
                     total:
                       Number(booking.surgeries[0].surgeryPrice) +
                       Number(booking.totalExtraTravellersPrice) +
-                      Number(booking.hotelPrice) *
-                        Number(booking.totalSelectedNights) +
                       Number(booking.roomPrice) *
                         Number(booking.totalSelectedNights) +
                       booking.options
@@ -152,7 +150,7 @@ const SignUp = () => {
                   })
                   .then(() => {
                     localStorage.removeItem("bookBooklinik");
-                    router.push("/dashboard/operations");
+                    router.push("/dashboard");
                   });
               } else {
                 // redirect to dashboard

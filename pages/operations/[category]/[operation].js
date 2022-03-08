@@ -68,7 +68,7 @@ const OperationPage = ({ surgeryData, categoryPhoto, relatedSurgeries }) => {
             <p className="text-shamrock">
               À partir de {surgeryData.data.startingPrice}€
             </p>
-            <p>{surgeryData.data.excerpt}</p>
+              <MDEditor.Markdown source={surgeryData.data.excerpt} />
             <Link href="/book" passHref={true}>
               <button className="text-white bg-shamrock rounded px-6 py-3 transition border border-shamrock hover:text-shamrock hover:bg-white">
                 Estimez mon séjour
@@ -99,7 +99,9 @@ const OperationPage = ({ surgeryData, categoryPhoto, relatedSurgeries }) => {
                   title={surgery.name}
                   target={`/operations/${surgery.category}/${surgery.slug}`}
                   key={surgery.slug}
-                  picture={surgeryData.data.photoUrl || categoryPhoto}
+                  picture={surgery.photoUrl || categoryPhoto}
+              //  picture={surgeryData.data.photoUrl || categoryPhoto} // meme photo
+
                 />
               );
             })}

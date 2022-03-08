@@ -15,8 +15,6 @@ const BookingTopNavigation = ({ bookingData, priceOverride, userProfile }) => {
         bookingData.surgeries ? bookingData.surgeries[0].surgeryPrice : 0
       ) +
         Number(bookingData.totalExtraTravellersPrice) +
-        Number(bookingData.hotelPrice) *
-          Number(bookingData.totalSelectedNights) +
         Number(bookingData.roomPrice) *
           Number(bookingData.totalSelectedNights) +
         (bookingData.options

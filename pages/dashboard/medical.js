@@ -23,6 +23,7 @@ export const getServerSideProps = async (ctx) => {
     });
   };
 
+
   let questionsAnswered = {};
   await firebase
     .firestore()
@@ -113,7 +114,7 @@ const MedicalProfile = ({ auth, medicalQuestions, questionsAnswered }) => {
 
   return (
     <DashboardUi userProfile={auth.props.userProfile} token={auth.props.token}>
-      <div className="col-span-12 space-y-4">
+      <div className="col-span-10 space-y-4">
         <h1 className="text-4xl">Informations médicales</h1>
         <p className="flex items-center gap-2 mb-2">
           <span className="text-shamrock">
@@ -133,7 +134,7 @@ const MedicalProfile = ({ auth, medicalQuestions, questionsAnswered }) => {
               <input
                 name="weight"
                 type="number"
-                placeholder="95 kg"
+                placeholder="70 kg"
                 min={0}
                 required={true}
                 value={formData.weight}
@@ -149,7 +150,7 @@ const MedicalProfile = ({ auth, medicalQuestions, questionsAnswered }) => {
               <input
                 name="height"
                 type="number"
-                placeholder="175cm"
+                placeholder="169cm"
                 min={0}
                 value={formData.height}
                 required={true}
@@ -182,16 +183,16 @@ const MedicalProfile = ({ auth, medicalQuestions, questionsAnswered }) => {
                           ]
                     }
                   >
-                    <option selected={true} disabled={true}>
+                    <option selected={true} disabled={false}>
                       Sélectionner
                     </option>
                     <option value={true}>Oui</option>
                     <option value={false}>Non</option>
                   </select>
-                  {medicalQuestion.hasPrecision === true ? (
+                  { medicalQuestion.hasPrecision === true ? (  // la question A UNE PRÉCISION pour oui
                     <input
                       type="text"
-                      required={true}
+                  //  required={true}
                       name={`${medicalQuestion.id}_precision`}
                       placeholder={medicalQuestion.precision}
                       onChange={(e) => handleInputChange(e, index)}

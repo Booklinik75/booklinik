@@ -532,6 +532,9 @@ const OperationPage = ({
           </div>
         </div>
         <div className="col-span-10 lg:col-span-3 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-4 grid-flow-column auto-rows-max">
+        <p className="text-1xl text-shamrock font-medium ">
+          UNE FOIS VOS PHOTOS TELECHARGEES VOTRE CONSEILLER VOUS CONTACTERA SOUS 24H.
+        </p>
           {currentOperations.length > 0 &&
             currentOperations.map(
               (currentOperation) =>

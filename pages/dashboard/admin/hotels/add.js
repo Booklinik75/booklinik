@@ -46,6 +46,7 @@ const AddHotel = ({ auth, citiesOptions }) => {
     name: "",
     rating: 0,
     extraPrice: 0,
+    excerpt: "",
   });
 
   const [image, setImage] = useState("");
@@ -88,6 +89,7 @@ const AddHotel = ({ auth, citiesOptions }) => {
       rating: form.rating,
       extraPrice: form.extraPrice,
       photo: imageUploadRes.ref.fullPath,
+      excerpt: form.excerpt,
     };
 
     setLoading("idle");
@@ -162,7 +164,7 @@ const AddHotel = ({ auth, citiesOptions }) => {
             value={form.extraPrice}
             onChange={handleChange}
             disabled={false}
-            label="Prix de base"
+            label="À partir de"
             required={true}
           />
           <ProfileSelect
@@ -172,6 +174,22 @@ const AddHotel = ({ auth, citiesOptions }) => {
             value={form.city}
             onChange={handleChange}
           />
+          <div>
+            <label className="text-xs uppercase text-gray-500 w-full">
+              Excerpt
+            </label>
+            <textarea
+              name="excerpt"
+              value={form.excerpt}
+              onChange={handleChange}
+              disabled={false}
+              label="Excerpt"
+              required={true}
+              rows={3}
+              placeholder="Écrivez une courte description ..."
+              className="w-full rounded border-2 outline-none border-gray-200 p-3 transition hover:border-bali focus:border-shamrock disabled:bg-gray-300 disabled:border-gray-400 disabled:cursor-not-allowed"
+            />
+          </div>
           <DashboardButton defaultText="Ajouter" status={isLoading} />
         </form>
       </div>

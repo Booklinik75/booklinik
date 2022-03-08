@@ -3,7 +3,7 @@ import Image from "next/image";
 import NavigationItem from "./NavigationItem";
 import Logo from "../public/booklinik-logo.svg";
 import Link from "next/link";
-import { FaBars } from "react-icons/fa";
+import { FaBars, FaChevronRight } from "react-icons/fa";
 import { VscLoading } from "react-icons/vsc";
 import firebase from "../firebase/clientApp";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -32,7 +32,13 @@ export default function Navigation() {
                   type="button"
                   onClick={() => setMenuOpen(!menuOpen)}
                 >
+                  { menuOpen === false ? (
                   <FaBars />
+                  )
+                  : (
+                    <FaChevronRight />
+                  )}
+
                 </button>
               </div>
               <div
