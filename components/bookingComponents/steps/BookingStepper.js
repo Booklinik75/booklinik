@@ -87,6 +87,10 @@ const FormStepper = ({
       }),
     });
   })
+  .then(() =>{
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({event: "form_success",value: "toplamTutar"});
+  })
   .then(() => {
     router.push("/dashboard");
 
