@@ -315,6 +315,13 @@ const DashboardSideNav = ({ userProfile, token, isSideNavOpen }) => {
               </a>
             </div>
             <div className="flex items-center">
+              <Link href="/offres" passHref={true}>
+                <p className="text-sm uppercase  tracking-wide  px-6 font-bold  mb-0 mt-6 cursor-pointer text-shamrock">
+                  Offres Spéciales
+                </p>
+              </Link>
+            </div>
+            <div className="flex items-center">
               <Link href="/book" passHref={true}>
                 <button className="text-white bg-shamrock rounded px-6 py-3 my-6 transition border border-shamrock hover:text-shamrock hover:bg-white">
                   Estimation - Réservation
