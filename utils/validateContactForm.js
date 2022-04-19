@@ -3,6 +3,7 @@ export default function validateContactForm({
   message,
   name,
   phoneNumber,
+
 }) {
   const errors = {};
   if (email.trim() === "") {
@@ -23,6 +24,7 @@ export default function validateContactForm({
   if (phoneNumber.trim() === "") {
     errors.phoneNumber = "Le numéro de téléphone ne doit pas être vide";
   }
+
   return {
     errors,
     valid: Object.keys(errors).length < 1,

@@ -14,6 +14,7 @@ const ContactHelper = () => {
     message: "",
     name: "",
     phoneNumber: "",
+    operation : "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formSent, setFormSent] = useState(false);
@@ -42,6 +43,7 @@ const ContactHelper = () => {
             datetime: moment(new Date()).format("LLLL"),
             message: form.message,
             path: router.asPath,
+            operation: form.operation,
           },
         }),
       })
@@ -59,6 +61,7 @@ const ContactHelper = () => {
                 phoneNumber: form.phoneNumber,
                 datetime: moment(new Date()).format("LLLL"),
                 message: form.message,
+                operation: form.operation,
               },
             }),
           });
@@ -100,8 +103,11 @@ const ContactHelper = () => {
     >
       <div className="text-white">
         <p className="uppercase text-sm mb-2">Une question ?</p>
-        <h2 className="text-4xl">
-          Nous sommes à votre disposition si vous avez la moindre question.
+        <h2 className="text-4xl mb-2">
+          CONSULTATION MEDICALE GRATUITE par nos médecins.
+        </h2>
+        <h2 className="text-2xl mb-2 mt-4">
+          Remplisez le formualire ci-dessous nous vous contacterons sous 24h.
         </h2>
         <p className="mt-4 mb-2">Par téléphone au</p>
         <Link href="tel:0186653500">
@@ -153,6 +159,7 @@ const ContactHelper = () => {
                   ""
                 )}
               </div>
+
               <div>
                 <p className="uppercase text-sm mb-2">Votre email</p>
                 <input
@@ -187,6 +194,7 @@ const ContactHelper = () => {
                   name="message"
                   onChange={handleFormChange}
                 ></textarea>
+
                 {errors && errors.message ? (
                   <span className="text-red-600 text-sm mt-3">
                     {errors.message}
@@ -201,7 +209,7 @@ const ContactHelper = () => {
                   className="float-right rounded bg-white bg-opacity-10 p-3 transition hover:bg-opacity-100 hover:text-shamrock"
                   disabled={isSubmitting}
                 >
-                  Envoyer mon message
+                  Envoyer
                 </button>
               </div>
             </>
