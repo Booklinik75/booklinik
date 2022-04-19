@@ -97,9 +97,10 @@ const ContactHelper = () => {
   };
 
   return (
+  <div id="contactform" className="py-40" >
     <div
       className="mx-4 xl:mx-auto max-w-7xl py-14 my-10 rounded-xl bg-shamrock grid gric-cols-1 lg:grid-cols-2 gap-10 px-10 text-white placeholder-white"
-      id="contact"
+
     >
       <div className="text-white">
         <p className="uppercase text-sm mb-2">Une question ?</p>
@@ -116,7 +117,7 @@ const ContactHelper = () => {
           </a>
         </Link>
       </div>
-      <form  id="contactform" onSubmit={handleFormSubmit}>
+      <form  onSubmit={handleFormSubmit}>
         <div className="space-y-6">
           {!formSent ? (
             <>
@@ -224,6 +225,7 @@ const ContactHelper = () => {
         </div>
       </form>
     </div>
+  </div>
   );
 };
 
