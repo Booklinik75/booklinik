@@ -15,6 +15,7 @@ const ContactHelper = () => {
     name: "",
     phoneNumber: "",
     operation : "",
+    value :"",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formSent, setFormSent] = useState(false);
@@ -35,7 +36,7 @@ const ContactHelper = () => {
       fetch("/api/mail", {
         method: "post",
         body: JSON.stringify({
-          recipient: "molly@ohweb.io",
+          recipient: "info@booklinik.com",
           templateId: "d-6b9ed961cfdc44228824603584a8b740",
           dynamicTemplateData: {
             email: form.email,
@@ -44,7 +45,7 @@ const ContactHelper = () => {
             datetime: moment(new Date()).format("LLLL"),
             message: form.message,
             path: router.asPath,
-            operation: form.operation,
+            value : value,
           },
         }),
       })
@@ -95,6 +96,20 @@ const ContactHelper = () => {
       phoneNumber: `+${phone}`,
     });
   };
+
+  const getInitialState = () => {
+    const value = "";
+    return value;
+  };
+
+  const [value, setValue] = useState(getInitialState);
+
+  const handleChange = (e) => {
+    setValue(e.target.value);
+  };
+
+
+
 
   return (
     <div
@@ -160,21 +175,23 @@ const ContactHelper = () => {
                 )}
               </div>
 
-              <div>
-               <label value={form.operation} className="uppercase text-sm mb-2">Sélectionnez votre opération
-               <select   className="w-full bg-transparent border-b outline-none placeholder-white  text-xl hover:text-shamrock block hover:bg-gray-100 w-full p-5 py-3 cursor-pointer">
-                    <option value="Greffe de cheveux" >Greffe de cheveux</option>
-                    <option value="Chirurgie mammaire" >Chirurgie mammaire</option>
-                    <option value="Chirurgie du nez" >Chirurgie du nez</option>
-                    <option value="Chirurgie des fesses" >Chirurgie des fesses</option>
-                    <option value="Chirurgie du visage"  >Chirurgie du visage</option>
-                    <option value="Chirurgie du corps" >Chirurgie du corps</option>
-                    <option value="Médecine esthétique" >Médecine esthétique</option>
-                    <option value="Chirurgie de l'oeil" >Chirurgie de l'oeil</option>
-                    <option value="Chirurgie dentaires"  >Chirurgie dentaires</option>
-                  </select>
-                </label>
-              </div>
+        <div>
+          <label className="uppercase text-sm mb-2">Sélectionnez votre opération
+            <select value={value} onChange={handleChange}   className="w-full bg-transparent border-b outline-none placeholder-white  text-xl hover:text-shamrock block hover:bg-gray-100 w-full p-5 py-3 cursor-pointer">
+              <option class="text-gray-700 block px-4 py-2 text-sm" value="Greffe de cheveux" >Greffe de cheveux</option>
+              <option class="text-gray-700 block px-4 py-2 text-sm" value="Chirurgie mammaire" >Chirurgie mammaire</option>
+              <option class="text-gray-700 block px-4 py-2 text-sm" value="Chirurgie du nez" >Chirurgie du nez</option>
+              <option class="text-gray-700 block px-4 py-2 text-sm" value="Chirurgie des fesses" >Chirurgie des fesses</option>
+              <option class="text-gray-700 block px-4 py-2 text-sm" value="Chirurgie du visage"  >Chirurgie du visage</option>
+              <option  class="text-gray-700 block px-4 py-2 text-sm" value="Chirurgie du corps" >Chirurgie du corps</option>
+              <option  class="text-gray-700 block px-4 py-2 text-sm" value="Médecine esthétique" >Médecine esthétique</option>
+              <option class="text-gray-700 block px-4 py-2 text-sm" value="Chirurgie de l'oeil" >Chirurgie de l'oeil</option>
+              <option class="text-gray-700 block px-4 py-2 text-sm" value="Chirurgie dentaires"  >Chirurgie dentaires</option>
+
+            </select>
+          </label>
+          </div>
+
 
               <div>
                 <p className="uppercase text-sm mb-2">Votre email</p>
