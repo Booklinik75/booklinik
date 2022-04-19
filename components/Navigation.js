@@ -27,8 +27,11 @@ export default function Navigation() {
                     <Image src={Logo} alt="Booklinik+ Logo" />
                   </a>
                 </Link>
+                <button className="  mx-10 image-clignote text-white bg-shamrock rounded-2xl px-6 py-3  transition border border-shamrock hover:text-shamrock hover:bg-white">
+              Consultation Gratuite
+            </button>
                 <button
-                  className="text-shamrock cursor-pointer text-xl leading-none px-3 py-1 border border-solid border-transparent rounded bg-transparent block lg:hidden outline-none focus:outline-none"
+                  className="text-shamrock cursor-pointer text-xl leading-none px-3 py-1 border border-solid border-transparent rounded bg-transparent block lg:hidden outline-none focus:outline-none "
                   type="button"
                   onClick={() => setMenuOpen(!menuOpen)}
                 >
@@ -48,6 +51,7 @@ export default function Navigation() {
                 }
               >
                 <ul className="flex flex-col w-full lg:w-[unset] justify-between lg:justify-start h-[calc(100%-5.5rem)] lg:h-[unset] lg:items-center lg:flex-row list-none lg:ml-auto transition">
+
                   <div className="flex flex-col lg:flex-row">
                     <NavigationItem title="Opérations" target="/operations" />
                     <NavigationItem title="Cliniques" target="/cliniques" />
