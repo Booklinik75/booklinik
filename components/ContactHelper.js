@@ -161,8 +161,8 @@ const ContactHelper = () => {
               </div>
 
               <div>
-               <label className="uppercase text-sm mb-2">Sélectionnez votre opération
-                <select value={form.operation} onChange={handleFormChange} className="w-full bg-transparent border-b outline-none placeholder-white">
+               <label value={form.operation} className="uppercase text-sm mb-2">Sélectionnez votre opération
+               <select   className="w-full bg-transparent border-b outline-none placeholder-white  text-xl hover:text-shamrock block hover:bg-gray-100 w-full p-5 py-3 cursor-pointer">
                     <option value="Greffe de cheveux" >Greffe de cheveux</option>
                     <option value="Chirurgie mammaire" >Chirurgie mammaire</option>
                     <option value="Chirurgie du nez" >Chirurgie du nez</option>
