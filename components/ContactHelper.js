@@ -208,7 +208,7 @@ const ContactHelper = () => {
                      <option  value="Chirurgie du visage"  >Chirurgie du visage</option>
                      <option  value="Chirurgie du corps" >Chirurgie du corps</option>
                      <option  value="Médecine esthétique" >Médecine esthétique</option>
-                     <option  value="Chirurgie de l'oeil" >Chirurgie de l'oeil</option>
+                     <option  value="Chirurgie de l oeil" >Chirurgie de l'oeil</option>
                      <option  value="Chirurgie dentaires"  >Chirurgie dentaires</option>
 
                    </select>
