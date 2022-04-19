@@ -201,15 +201,15 @@ const ContactHelper = () => {
               <div>
                  <label className="uppercase text-sm mb-2">Sélectionnez votre opération
                    <select value={value} onChange={handleChange}   className="w-full bg-transparent border-b outline-none placeholder-white  text-xl hover:text-shamrock block hover:bg-gray-100 w-full p-5 py-3 cursor-pointer">
-                     <option class="text-gray-700 block px-4 py-2 text-sm" value="Greffe de cheveux" >Greffe de cheveux</option>
-                     <option class="text-gray-700 block px-4 py-2 text-sm" value="Chirurgie mammaire" >Chirurgie mammaire</option>
-                     <option class="text-gray-700 block px-4 py-2 text-sm" value="Chirurgie du nez" >Chirurgie du nez</option>
-                     <option class="text-gray-700 block px-4 py-2 text-sm" value="Chirurgie des fesses" >Chirurgie des fesses</option>
-                     <option class="text-gray-700 block px-4 py-2 text-sm" value="Chirurgie du visage"  >Chirurgie du visage</option>
-                     <option  class="text-gray-700 block px-4 py-2 text-sm" value="Chirurgie du corps" >Chirurgie du corps</option>
-                     <option  class="text-gray-700 block px-4 py-2 text-sm" value="Médecine esthétique" >Médecine esthétique</option>
-                     <option class="text-gray-700 block px-4 py-2 text-sm" value="Chirurgie de l'oeil" >Chirurgie de l'oeil</option>
-                     <option class="text-gray-700 block px-4 py-2 text-sm" value="Chirurgie dentaires"  >Chirurgie dentaires</option>
+                     <option  value="Greffe de cheveux" >Greffe de cheveux</option>
+                     <option  value="Chirurgie mammaire" >Chirurgie mammaire</option>
+                     <option  value="Chirurgie du nez" >Chirurgie du nez</option>
+                     <option  value="Chirurgie des fesses" >Chirurgie des fesses</option>
+                     <option  value="Chirurgie du visage"  >Chirurgie du visage</option>
+                     <option  value="Chirurgie du corps" >Chirurgie du corps</option>
+                     <option  value="Médecine esthétique" >Médecine esthétique</option>
+                     <option  value="Chirurgie de l'oeil" >Chirurgie de l'oeil</option>
+                     <option  value="Chirurgie dentaires"  >Chirurgie dentaires</option>
 
                    </select>
                  </label>
