@@ -27,7 +27,7 @@ export default function Navigation() {
                     <Image src={Logo} alt="Booklinik+ Logo" />
                   </a>
                 </Link>
-                <a href="#contactform" className="  mx-10 image-clignote text-white bg-shamrock rounded-2xl px-6 py-3  transition border border-shamrock hover:text-shamrock hover:bg-white">
+                <a href="#contactform" className="  mx-8 image-clignote text-white bg-shamrock rounded-2xl px-6 py-3  transition border border-shamrock hover:text-shamrock hover:bg-white">
               Consultation Gratuite
             </a>
                 <button
