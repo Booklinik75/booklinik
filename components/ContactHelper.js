@@ -26,6 +26,7 @@ const ContactHelper = () => {
     e.preventDefault();
     setIsSubmitting(true);
 
+
     const { errors, valid } = validateContactForm(form);
     if (!valid) {
       setErrros(errors);
@@ -34,7 +35,7 @@ const ContactHelper = () => {
       fetch("/api/mail", {
         method: "post",
         body: JSON.stringify({
-          recipient: "info@booklinik.com",
+          recipient: "molly@ohweb.io",
           templateId: "d-6b9ed961cfdc44228824603584a8b740",
           dynamicTemplateData: {
             email: form.email,
@@ -49,7 +50,6 @@ const ContactHelper = () => {
       })
         .then(() => {
           setFormSent(true);
-
           fetch("/api/mail", {
             method: "post",
             body: JSON.stringify({
@@ -158,6 +158,22 @@ const ContactHelper = () => {
                 ) : (
                   ""
                 )}
+              </div>
+
+              <div>
+               <label className="uppercase text-sm mb-2">Sélectionnez votre opération
+                <select value={form.operation} onChange={handleFormChange} className="w-full bg-transparent border-b outline-none placeholder-white">
+                    <option value="Greffe de cheveux" >Greffe de cheveux</option>
+                    <option value="Chirurgie mammaire" >Chirurgie mammaire</option>
+                    <option value="Chirurgie du nez" >Chirurgie du nez</option>
+                    <option value="Chirurgie des fesses" >Chirurgie des fesses</option>
+                    <option value="Chirurgie du visage"  >Chirurgie du visage</option>
+                    <option value="Chirurgie du corps" >Chirurgie du corps</option>
+                    <option value="Médecine esthétique" >Médecine esthétique</option>
+                    <option value="Chirurgie de l'oeil" >Chirurgie de l'oeil</option>
+                    <option value="Chirurgie dentaires"  >Chirurgie dentaires</option>
+                  </select>
+                </label>
               </div>
 
               <div>
