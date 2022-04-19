@@ -148,8 +148,7 @@ export default function Home({
         <title>Booklinik | Accueil</title>
         <meta
           name="description"
-          content="Booklinik, l'unique service de réservation en ligne de tourisme
-                médical."
+          content="Booklinik, plateforme de réservation en ligne de tourisme médical pour Greffe de cheveux, Implant mammaire, rhinoplastie, Liposuccion, BBL, chirurgie dentaires et bien d’autres interventions."
         />
       </Head>
 
