@@ -66,7 +66,7 @@ const FormStepper = ({
     fetch("/api/mail", {
       method: "post",
       body: JSON.stringify({
-        recipient: "reservation@booklinik.com",
+        recipient: "info@booklinik.com",
         templateId: "d-351874c7be9348778ef89f40ddfe8729",
         dynamicTemplateData: {
           booking: {
