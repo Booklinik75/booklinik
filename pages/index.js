@@ -162,11 +162,10 @@ export default function Home({
               ref={mainBox}
             >
               <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-center">
-                Booklinik, l’unique service de réservation en ligne de tourisme
-                médical.
+                Ne cherchez plus ! Booklinik a sélectionné les meilleurs cliniques et médecins dans leur domaine.
               </h2>
               <h2 className="text-xl md:text-2xl lg:text-3xl text-center mb-6">
-                Estimez et réservez votre voyage esthétique en 3 clics !
+                Estimez gratuitement et réservez en ligne votre voyage esthétique en 3 clics !
               </h2>
               <div className="grid grid-cols-3 md:grid-cols-3 lg:grid-cols-10 gap-6 home-hero-surgery-categories">
                 {categoriesSettings.map((orderedCategory) => {

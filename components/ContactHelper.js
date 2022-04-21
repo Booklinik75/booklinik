@@ -46,7 +46,6 @@ const ContactHelper = () => {
             path: router.asPath,
             operation: form.operation,
             value : value,
-
           },
         }),
       })
@@ -65,6 +64,7 @@ const ContactHelper = () => {
                 datetime: moment(new Date()).format("LLLL"),
                 message: form.message,
                 operation: form.operation,
+                value : value,
               },
             }),
           });
@@ -112,6 +112,7 @@ const ContactHelper = () => {
     };
 
 
+
   return (
   <div id="contactform" className="py-40" >
     <div
@@ -124,7 +125,7 @@ const ContactHelper = () => {
           CONSULTATION MEDICALE GRATUITE par nos médecins.
         </h2>
         <h2 className="text-2xl mb-2 mt-4">
-          Remplisez le formualire ci-dessous nous vous contacterons sous 24h.
+          Remplisez le formulaire nous vous contacterons sous 24h.
         </h2>
         <p className="mt-4 mb-2">Par téléphone au</p>
         <Link href="tel:0186653500">
@@ -157,6 +158,8 @@ const ContactHelper = () => {
                   ""
                 )}
               </div>
+
+
               <div
                 className={`${
                   errors && errors.phoneNumber ? "error-input" : ""
@@ -201,23 +204,38 @@ const ContactHelper = () => {
               <div>
                  <label className="uppercase text-sm mb-2">Sélectionnez votre opération
                    <select value={value} onChange={handleChange}   className="w-full bg-transparent border-b outline-none placeholder-white  text-xl hover:text-shamrock block hover:bg-gray-100 w-full p-5 py-3 cursor-pointer">
-                     <option  value="Greffe de cheveux" >Greffe de cheveux</option>
-                     <option  value="Chirurgie mammaire" >Chirurgie mammaire</option>
-                     <option  value="Chirurgie du nez" >Chirurgie du nez</option>
-                     <option  value="Chirurgie des fesses" >Chirurgie des fesses</option>
-                     <option  value="Chirurgie du visage"  >Chirurgie du visage</option>
-                     <option  value="Chirurgie du corps" >Chirurgie du corps</option>
-                     <option  value="Medecine esthétique" >Médecine esthétique</option>
-                     <option  value="Chirurgie de l oeil" >Chirurgie de l oeil</option>
-                     <option  value="Chirurgie dentaires"  >Chirurgie dentaires</option>
-
+                     <option value="Greffe de cheveux" >Greffe de cheveux</option>
+                     <option value="Chirurgie mammaire" >Chirurgie mammaire</option>
+                     <option value="Chirurgie du nez" >Chirurgie du nez</option>
+                     <option value="Chirurgie des fesses" >Chirurgie des fesses</option>
+                     <option value="Chirurgie du visage"  >Chirurgie du visage</option>
+                     <option value="Chirurgie du corps" >Chirurgie du corps</option>
+                     <option value="Medecine esthétique" >Médecine esthétique</option>
+                     <option value="Chirurgie de l oeil" >Chirurgie de l oeil</option>
+                     <option value="Chirurgie dentaires"  >Chirurgie dentaires</option>
+                     <option value="Autre"  >Autre </option>
                    </select>
+                   {value=="Autre" ? (
+                     <span className=" text-sm mt-3">
+                       <div>
+                         <input
+                           type="text"
+                           className="w-full bg-transparent border-b outline-none placeholder-white py-5"
+                           placeholder="Précisez..."
+                           name="operation"
+                           value={form.operation}
+                           onChange={handleFormChange}
+                         />
+                       </div>
+                     </span>
+                   ) : (
+                     ""
+                   )}
                  </label>
                  </div>
 
               <div>
                 <p className="uppercase text-sm mb-2">Votre message</p>
-
                 <textarea
                   className={`w-full h-24 bg-white bg-opacity-10 border-b outline-none placeholder-white ${
                     errors && errors.message
@@ -229,7 +247,6 @@ const ContactHelper = () => {
                   name="message"
                   onChange={handleFormChange}
                 ></textarea>
-
                 {errors && errors.message ? (
                   <span className="text-red-600 text-sm mt-3">
                     {errors.message}
@@ -237,6 +254,8 @@ const ContactHelper = () => {
                 ) : (
                   ""
                 )}
+
+
               </div>
               <div className="w-full">
                 <button
