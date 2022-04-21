@@ -161,10 +161,10 @@ export default function Home({
               className="translate-y-0 transition ease-linear duration-75 bg-white bg-opacity-90 max-w-7xl p-6 md:p-20 rounded-xl md:mb-8"
               ref={mainBox}
             >
-              <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-center">
+              <h2 className="text-l md:text-l lg:text-3xl font-bold text-center">
                 Ne cherchez plus ! Booklinik a sélectionné les meilleurs cliniques et médecins dans leur domaine.
               </h2>
-              <h2 className="text-xl md:text-2xl lg:text-3xl text-center mb-6">
+              <h2 className="text-l md:text-l lg:text-2xl text-center mb-6">
                 Estimez gratuitement et réservez en ligne votre voyage esthétique en 3 clics !
               </h2>
               <div className="grid grid-cols-3 md:grid-cols-3 lg:grid-cols-10 gap-6 home-hero-surgery-categories">

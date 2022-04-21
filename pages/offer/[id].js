@@ -162,7 +162,9 @@ const Offer = ({
             {excerpt.split(".").slice(0, 2).join(".")}.
           </p>
         */}
-          <MDEditor.Markdown className="text-lg text-center prose prose-lg" source={excerpt.split(".").slice(0, 2).join(".")} />
+          {/* <MDEditor.Markdown className="text-lg text-center prose prose-lg" source={excerpt.split(".").slice(0, 2).join(".")} />*/}
+          <pre className="text-lg text-center prose prose-lg">{excerpt.split(".").slice(0, 2).join(".")} </pre>
+
         </div>
         <div className="w-full flex flex-col lg:flex-row gap-4 max-w-7xl justify-center items-center">
           <div className="w-full h-72 lg:w-2/5 relative group">
