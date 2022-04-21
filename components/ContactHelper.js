@@ -204,16 +204,16 @@ const ContactHelper = () => {
               <div>
                  <label className="uppercase text-sm mb-2">Sélectionnez votre opération
                    <select value={value} onChange={handleChange}   className="w-full bg-transparent border-b outline-none placeholder-white  text-xl hover:text-shamrock block hover:bg-gray-100 w-full p-5 py-3 cursor-pointer">
-                     <option  value="Greffe de cheveux" >Greffe de cheveux</option>
-                     <option  value="Chirurgie mammaire" >Chirurgie mammaire</option>
-                     <option  value="Chirurgie du nez" >Chirurgie du nez</option>
-                     <option  value="Chirurgie des fesses" >Chirurgie des fesses</option>
-                     <option  value="Chirurgie du visage"  >Chirurgie du visage</option>
-                     <option  value="Chirurgie du corps" >Chirurgie du corps</option>
-                     <option  value="Medecine esthétique" >Médecine esthétique</option>
-                     <option  value="Chirurgie de l oeil" >Chirurgie de l oeil</option>
-                     <option  value="Chirurgie dentaires"  >Chirurgie dentaires</option>
-                     <option  value="Autre"  >Autre</option>
+                     <option value="Greffe de cheveux" >Greffe de cheveux</option>
+                     <option value="Chirurgie mammaire" >Chirurgie mammaire</option>
+                     <option value="Chirurgie du nez" >Chirurgie du nez</option>
+                     <option value="Chirurgie des fesses" >Chirurgie des fesses</option>
+                     <option value="Chirurgie du visage"  >Chirurgie du visage</option>
+                     <option value="Chirurgie du corps" >Chirurgie du corps</option>
+                     <option value="Medecine esthétique" >Médecine esthétique</option>
+                     <option value="Chirurgie de l oeil" >Chirurgie de l oeil</option>
+                     <option value="Chirurgie dentaires"  >Chirurgie dentaires</option>
+                     <option value="Autre"  >Autre </option>
                    </select>
                    {value=="Autre" ? (
                      <span className=" text-sm mt-3">
@@ -247,7 +247,6 @@ const ContactHelper = () => {
                   name="message"
                   onChange={handleFormChange}
                 ></textarea>
-
                 {errors && errors.message ? (
                   <span className="text-red-600 text-sm mt-3">
                     {errors.message}
@@ -255,6 +254,8 @@ const ContactHelper = () => {
                 ) : (
                   ""
                 )}
+
+
               </div>
               <div className="w-full">
                 <button
