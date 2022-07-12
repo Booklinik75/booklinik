@@ -1,0 +1,21 @@
+.homeHero {
+  background-image: url("../public/assets/home-hero-background@2x.jpg");
+  min-height: 100vh;
+  background-size: cover;
+}
+
+.values {
+  background-image: url("../public/assets/home-values-background@2x.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: unset;
+}
+
+@supports (background-attachment: fixed) {
+  @media (min-width: 768px) {
+    .values {
+      background-attachment: fixed;
+      background-size: cover;
+    }
+  }
+}

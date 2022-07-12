@@ -1,0 +1,246 @@
+{
+  "legal": [
+    {
+      "id": 1,
+      "urlSlug": "informations",
+      "metaTitle": "L'entreprise | Booklinik",
+      "navTitle": "Informations sur l'entreprise",
+      "pageTitle": "Informations sur l'entreprise",
+      "body": "Anim consectetur ad laborum est. Mollit quis occaecat duis laboris sit aliqua ex sunt cupidatat. Nostrud ut do cillum amet officia laborum tempor Lorem amet eiusmod consequat mollit est occaecat. Nisi cupidatat esse excepteur dolore amet amet dolore tempor enim dolor. Fugiat ut pariatur magna ad quis reprehenderit commodo commodo id excepteur ad cupidatat id nostrud. Consequat occaecat sint laboris aliquip dolor sunt magna sit duis velit minim ex voluptate nulla. Aute exercitation deserunt id ullamco est ut. Tempor Lorem deserunt cupidatat nostrud aliqua pariatur dolore et ad. Tempor veniam consequat proident dolore magna elit.Officia dolor consectetur laborum cillum aute est consectetur aute aute qui Lorem aute enim cupidatat. Fugiat adipisicing sunt voluptate dolore dolor. Id non nostrud duis reprehenderit mollit consectetur. Esse exercitation occaecat officia dolor cupidatat proident. Id pariatur officia deserunt sit proident esse exercitation eu pariatur culpa sunt. Cupidatat excepteur aliqua est id ipsum Lorem do est ea consequat mollit sunt incididunt anim. Ex ullamco ex sunt sunt reprehenderit commodo excepteur anim fugiat.Cillum proident aliqua ut ex cillum aute sunt. In aliquip laboris exercitation laboris. Consectetur Lorem ad ipsum cupidatat excepteur."
+    },
+    {
+      "id": 2,
+      "urlSlug": "confidentialite",
+      "metaTitle": "Confidentialité | Booklinik",
+      "navTitle": "Confidentialité",
+      "pageTitle": "Confidentialité",
+      "body": "Anim consectetur ad laborum est. Mollit quis occaecat duis laboris sit aliqua ex sunt cupidatat. Nostrud ut do cillum amet officia laborum tempor Lorem amet eiusmod consequat mollit est occaecat. Nisi cupidatat esse excepteur dolore amet amet dolore tempor enim dolor. Fugiat ut pariatur magna ad quis reprehenderit commodo commodo id excepteur ad cupidatat id nostrud."
+    },
+    {
+      "id": 3,
+      "urlSlug": "cgu",
+      "metaTitle": "CGU | Booklinik",
+      "navTitle": "Conditions générales",
+      "pageTitle": "Conditions générales d'utilisation",
+      "body": "Anim consectetur ad laborum est. Mollit quis occaecat duis laboris sit aliqua ex sunt cupidatat. Nostrud ut do cillum amet officia laborum tempor Lorem amet eiusmod consequat mollit est occaecat. Nisi cupidatat esse excepteur dolore amet amet dolore tempor enim dolor. Fugiat ut pariatur magna ad quis reprehenderit commodo commodo id excepteur ad cupidatat id nostrud."
+    },
+    {
+      "id": 4,
+      "urlSlug": "covid-19",
+      "metaTitle": "Nos mesures COVID-19 | Booklinik",
+      "navTitle": "Nos mesures COVID-19",
+      "pageTitle": "Des mesures élevés pour chaque voyage",
+      "body": "Anim consectetur ad laborum est. Mollit quis occaecat duis laboris sit aliqua ex sunt cupidatat. Nostrud ut do cillum amet officia laborum tempor Lorem amet eiusmod consequat mollit est occaecat. Nisi cupidatat esse excepteur dolore amet amet dolore tempor enim dolor. Fugiat ut pariatur magna ad quis reprehenderit commodo commodo id excepteur ad cupidatat id nostrud."
+    },
+    {
+      "id": 5,
+      "urlSlug": "annulations",
+      "metaTitle": "Options d'annulation | Booklinik",
+      "navTitle": "Options d'annulation",
+      "pageTitle": "Options d'annulation",
+      "body": "Anim consectetur ad laborum est. Mollit quis occaecat duis laboris sit aliqua ex sunt cupidatat. Nostrud ut do cillum amet officia laborum tempor Lorem amet eiusmod consequat mollit est occaecat. Nisi cupidatat esse excepteur dolore amet amet dolore tempor enim dolor. Fugiat ut pariatur magna ad quis reprehenderit commodo commodo id excepteur ad cupidatat id nostrud."
+    }
+  ],
+  "operations": {
+    "photo": "",
+    "categories": [
+      {
+        "id": 1,
+        "slug": "greffe-de-poils",
+        "name": "Greffe de poils",
+        "photo": "",
+        "operations": [
+          {
+            "id": 1,
+            "slug": "greffe-de-barbe",
+            "name": "Greffe de barbe",
+            "photo": "",
+            "excerpt": "Aute Lorem ipsum qui qui tempor aute mollit. Lorem tempor quis nostrud laborum nostrud mollit aute excepteur. Sunt ut nostrud quis dolore adipisicing pariatur. Pariatur incididunt officia irure dolor cupidatat veniam proident. Nulla eiusmod ut ipsum nulla duis.",
+            "startingPrice": 1900,
+            "linkedCities": [],
+            "requiredPictures": []
+          },
+          {
+            "id": 2,
+            "slug": "greffe-de-cheveux",
+            "name": "Greffe de cheveux",
+            "photo": "",
+            "excerpt": "Aute Lorem ipsum qui qui tempor aute mollit. Lorem tempor quis nostrud laborum nostrud mollit aute excepteur. Sunt ut nostrud quis dolore adipisicing pariatur. Pariatur incididunt officia irure dolor cupidatat veniam proident. Nulla eiusmod ut ipsum nulla duis.",
+            "startingPrice": 1900,
+            "linkedCities": [],
+            "requiredPictures": []
+          },
+          {
+            "id": 3,
+            "slug": "greffe-de-sourcils",
+            "name": "Greffe de sourcils",
+            "photo": "",
+            "excerpt": "Aute Lorem ipsum qui qui tempor aute mollit. Lorem tempor quis nostrud laborum nostrud mollit aute excepteur. Sunt ut nostrud quis dolore adipisicing pariatur. Pariatur incididunt officia irure dolor cupidatat veniam proident. Nulla eiusmod ut ipsum nulla duis.",
+            "startingPrice": 1900,
+            "linkedCities": [],
+            "requiredPictures": []
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "slug": "chirurgie-du-nez",
+        "name": "Chirurgie du nez",
+        "photo": "",
+        "operations": [
+          {
+            "id": 1,
+            "slug": "rhinoplastie-primaire",
+            "name": "Rhinoplastie primaire",
+            "photo": "",
+            "excerpt": "Aute Lorem ipsum qui qui tempor aute mollit. Lorem tempor quis nostrud laborum nostrud mollit aute excepteur. Sunt ut nostrud quis dolore adipisicing pariatur. Pariatur incididunt officia irure dolor cupidatat veniam proident. Nulla eiusmod ut ipsum nulla duis.",
+            "startingPrice": 1900,
+            "linkedCities": [],
+            "requiredPictures": []
+          },
+          {
+            "id": 2,
+            "slug": "rhinoplastie-ultrasonique",
+            "name": "Rhinoplastie ultrasonique",
+            "photo": "",
+            "excerpt": "Aute Lorem ipsum qui qui tempor aute mollit. Lorem tempor quis nostrud laborum nostrud mollit aute excepteur. Sunt ut nostrud quis dolore adipisicing pariatur. Pariatur incididunt officia irure dolor cupidatat veniam proident. Nulla eiusmod ut ipsum nulla duis.",
+            "startingPrice": 1900,
+            "linkedCities": [],
+            "requiredPictures": []
+          },
+          {
+            "id": 3,
+            "slug": "rhinoplastie-secondaire-revision",
+            "name": "Greffe de sourcils",
+            "photo": "",
+            "excerpt": "Aute Lorem ipsum qui qui tempor aute mollit. Lorem tempor quis nostrud laborum nostrud mollit aute excepteur. Sunt ut nostrud quis dolore adipisicing pariatur. Pariatur incididunt officia irure dolor cupidatat veniam proident. Nulla eiusmod ut ipsum nulla duis.",
+            "startingPrice": 1900,
+            "linkedCities": [],
+            "requiredPictures": []
+          }
+        ]
+      }
+    ]
+  },
+  "destinations": {
+    "photo": "",
+    "countries": [
+      {
+        "id": 1,
+        "slug": "turquie",
+        "name": "Turquie",
+        "photo": "",
+        "cities": [
+          {
+            "id": 1,
+            "slug": "istanbul",
+            "name": "Istanbul",
+            "photo": "",
+            "availability": true,
+            "hotels": [
+              {
+                "id": 1,
+                "slug": "example-hotel",
+                "name": "Example Hotel",
+                "photo": "",
+                "rating": 4,
+                "extraPrice": 180,
+                "rooms": [{}],
+                "excerpt": "Aute Lorem ipsum qui qui tempor aute mollit. Lorem tempor quis nostrud laborum nostrud mollit aute excepteur."
+              },
+              {
+                "id": 2,
+                "slug": "example-hotel",
+                "name": "Example Hotel",
+                "photo": "",
+                "rating": 4,
+                "extraPrice": 180,
+                "rooms": [{}],
+                "excerpt": "Aute Lorem ipsum qui qui tempor aute mollit. Lorem tempor quis nostrud laborum nostrud mollit aute excepteur."
+              },
+              {
+                "id": 3,
+                "slug": "example-hotel",
+                "name": "Example Hotel",
+                "photo": "",
+                "rating": 4,
+                "extraPrice": 180,
+                "rooms": [{}],
+                "excerpt": "Aute Lorem ipsum qui qui tempor aute mollit. Lorem tempor quis nostrud laborum nostrud mollit aute excepteur."
+              },
+              {
+                "id": 4,
+                "slug": "example-hotel",
+                "name": "Example Hotel",
+                "photo": "",
+                "rating": 4,
+                "extraPrice": 180,
+                "rooms": [{}],
+                "excerpt": "Aute Lorem ipsum qui qui tempor aute mollit. Lorem tempor quis nostrud laborum nostrud mollit aute excepteur."
+              },
+              {
+                "id": 5,
+                "slug": "example-hotel",
+                "name": "Example Hotel",
+                "photo": "",
+                "rating": 4,
+                "extraPrice": 180,
+                "rooms": [{}],
+                "excerpt": "Aute Lorem ipsum qui qui tempor aute mollit. Lorem tempor quis nostrud laborum nostrud mollit aute excepteur."
+              }
+            ],
+            "clinics": [
+              {
+                "id": 1,
+                "slug": "some-clinic",
+                "name": "Example clinic",
+                "photo": "",
+                "excerpt": "Lorem duis magna aute qui in veniam dolore aliquip consectetur cupidatat elit.",
+                "descriptionBody": "Lorem duis magna aute qui in veniam dolore aliquip consectetur cupidatat elit. Commodo magna consectetur excepteur irure duis mollit fugiat eu laboris nulla laboris commodo sit. Eiusmod dolor exercitation veniam culpa occaecat. Consequat consequat veniam cupidatat nostrud ullamco ullamco cillum culpa et amet anim qui. Anim sint sint commodo ut sunt pariatur. In dolore aliquip culpa cillum dolor amet adipisicing sunt ad ex voluptate ullamco. Fugiat aliquip do esse nostrud sint. Nulla in sunt sunt eiusmod occaecat Lorem nulla sit nulla officia aliquip sint. Aliquip incididunt mollit labore magna esse consectetur. Et nulla laboris eu officia pariatur aute proident nisi veniam et. Dolore labore nulla exercitation velit ea culpa id mollit. Ut duis ut ipsum laborum cillum enim dolor nisi. Laboris sint ut labore anim ea deserunt laborum voluptate sint. Minim fugiat irure veniam magna laboris Lorem ad eiusmod aute commodo nulla exercitation adipisicing ex.",
+                "linkedOperations": {}
+              },
+              {
+                "id": 2,
+                "slug": "some-clinic",
+                "name": "Example clinic",
+                "photo": "",
+                "excerpt": "Lorem duis magna aute qui in veniam dolore aliquip consectetur cupidatat elit.",
+                "descriptionBody": "Lorem duis magna aute qui in veniam dolore aliquip consectetur cupidatat elit. Commodo magna consectetur excepteur irure duis mollit fugiat eu laboris nulla laboris commodo sit. Eiusmod dolor exercitation veniam culpa occaecat. Consequat consequat veniam cupidatat nostrud ullamco ullamco cillum culpa et amet anim qui. Anim sint sint commodo ut sunt pariatur. In dolore aliquip culpa cillum dolor amet adipisicing sunt ad ex voluptate ullamco. Fugiat aliquip do esse nostrud sint. Nulla in sunt sunt eiusmod occaecat Lorem nulla sit nulla officia aliquip sint. Aliquip incididunt mollit labore magna esse consectetur. Et nulla laboris eu officia pariatur aute proident nisi veniam et. Dolore labore nulla exercitation velit ea culpa id mollit. Ut duis ut ipsum laborum cillum enim dolor nisi. Laboris sint ut labore anim ea deserunt laborum voluptate sint. Minim fugiat irure veniam magna laboris Lorem ad eiusmod aute commodo nulla exercitation adipisicing ex.",
+                "linkedOperations": {}
+              },
+              {
+                "id": 3,
+                "slug": "some-clinic",
+                "name": "Example clinic",
+                "photo": "",
+                "excerpt": "Lorem duis magna aute qui in veniam dolore aliquip consectetur cupidatat elit.",
+                "descriptionBody": "Lorem duis magna aute qui in veniam dolore aliquip consectetur cupidatat elit. Commodo magna consectetur excepteur irure duis mollit fugiat eu laboris nulla laboris commodo sit. Eiusmod dolor exercitation veniam culpa occaecat. Consequat consequat veniam cupidatat nostrud ullamco ullamco cillum culpa et amet anim qui. Anim sint sint commodo ut sunt pariatur. In dolore aliquip culpa cillum dolor amet adipisicing sunt ad ex voluptate ullamco. Fugiat aliquip do esse nostrud sint. Nulla in sunt sunt eiusmod occaecat Lorem nulla sit nulla officia aliquip sint. Aliquip incididunt mollit labore magna esse consectetur. Et nulla laboris eu officia pariatur aute proident nisi veniam et. Dolore labore nulla exercitation velit ea culpa id mollit. Ut duis ut ipsum laborum cillum enim dolor nisi. Laboris sint ut labore anim ea deserunt laborum voluptate sint. Minim fugiat irure veniam magna laboris Lorem ad eiusmod aute commodo nulla exercitation adipisicing ex.",
+                "linkedOperations": {}
+              },
+              {
+                "id": 4,
+                "slug": "some-clinic",
+                "name": "Example clinic",
+                "photo": "",
+                "excerpt": "Lorem duis magna aute qui in veniam dolore aliquip consectetur cupidatat elit.",
+                "descriptionBody": "Lorem duis magna aute qui in veniam dolore aliquip consectetur cupidatat elit. Commodo magna consectetur excepteur irure duis mollit fugiat eu laboris nulla laboris commodo sit. Eiusmod dolor exercitation veniam culpa occaecat. Consequat consequat veniam cupidatat nostrud ullamco ullamco cillum culpa et amet anim qui. Anim sint sint commodo ut sunt pariatur. In dolore aliquip culpa cillum dolor amet adipisicing sunt ad ex voluptate ullamco. Fugiat aliquip do esse nostrud sint. Nulla in sunt sunt eiusmod occaecat Lorem nulla sit nulla officia aliquip sint. Aliquip incididunt mollit labore magna esse consectetur. Et nulla laboris eu officia pariatur aute proident nisi veniam et. Dolore labore nulla exercitation velit ea culpa id mollit. Ut duis ut ipsum laborum cillum enim dolor nisi. Laboris sint ut labore anim ea deserunt laborum voluptate sint. Minim fugiat irure veniam magna laboris Lorem ad eiusmod aute commodo nulla exercitation adipisicing ex.",
+                "linkedOperations": {}
+              },
+              {
+                "id": 5,
+                "slug": "some-clinic",
+                "name": "Example clinic",
+                "photo": "",
+                "excerpt": "Lorem duis magna aute qui in veniam dolore aliquip consectetur cupidatat elit.",
+                "descriptionBody": "Lorem duis magna aute qui in veniam dolore aliquip consectetur cupidatat elit. Commodo magna consectetur excepteur irure duis mollit fugiat eu laboris nulla laboris commodo sit. Eiusmod dolor exercitation veniam culpa occaecat. Consequat consequat veniam cupidatat nostrud ullamco ullamco cillum culpa et amet anim qui. Anim sint sint commodo ut sunt pariatur. In dolore aliquip culpa cillum dolor amet adipisicing sunt ad ex voluptate ullamco. Fugiat aliquip do esse nostrud sint. Nulla in sunt sunt eiusmod occaecat Lorem nulla sit nulla officia aliquip sint. Aliquip incididunt mollit labore magna esse consectetur. Et nulla laboris eu officia pariatur aute proident nisi veniam et. Dolore labore nulla exercitation velit ea culpa id mollit. Ut duis ut ipsum laborum cillum enim dolor nisi. Laboris sint ut labore anim ea deserunt laborum voluptate sint. Minim fugiat irure veniam magna laboris Lorem ad eiusmod aute commodo nulla exercitation adipisicing ex.",
+                "linkedOperations": {}
+              }
+            ],
+            "additionalDocuments": {}
+          }
+        ],
+        "additionalDocuments": {}
+      }
+    ]
+  }
+}
