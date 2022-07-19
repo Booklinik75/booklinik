@@ -165,7 +165,7 @@ const NewBookingContainer = ({
   };
 
   const onCalendarStartDateChange = (e) => {
-    console.log(e);
+    console.log(e+'-------------------------f-index');
     setBooking({
       ...booking,
       startDate: e,
@@ -182,8 +182,8 @@ const NewBookingContainer = ({
 
   function addDays(date, days) {
     var result = new Date(date);
-    result.setDate(result.getDate() + days);
-    return result;
+    return result.setDate(result.getDate() + days);
+   
   }
 
   const handleSurgeryCategorySelect = (category, name) => {

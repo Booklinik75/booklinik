@@ -1,5 +1,6 @@
 import { AiFillInfoCircle } from "react-icons/ai";
 import Calendar from "react-calendar";
+import { isWithinInterval } from "date-fns";
 import { useState } from "react";
 import { useEffect } from "react";
 
@@ -10,9 +11,12 @@ const DatesSelectStep = ({
   addDays,
   setNextStep,
 }) => {
+  const initialvalue= new Date()
   const [hideReturnCalendar, setHideReturnCalendar] = useState(true);
+  const [dateCalendar, setDateCalendar] = useState([booking.startDate,new Date()]);
 
   useEffect(() => {
+   
     // setNextStep to true when all inputs are filled
     if (
       booking.startDate &&
@@ -23,11 +27,12 @@ const DatesSelectStep = ({
     }
   }, [booking]);
 
+  
   return (
     <div className="space-y-6">
       <h1 className="text-2xl mb-6">
         Choisissez vos dates de voyage
-        {booking.totalSelectedNights !== 0 ? (
+        {booking.totalSelectedNights !== 0 && booking.totalSelectedNights>=parseInt(booking.minimumNights)? (
           <span className="text-white p-2 ml-2 bg-shamrock rounded text-lg">
             {booking.totalSelectedNights} nuits
           </span>
@@ -54,42 +59,39 @@ const DatesSelectStep = ({
             <h2 className="text-xs uppercase text-gray-500">Date de départ</h2>
             <Calendar
               onChange={(e) => {
-                onCalendarStartDateChange(e);
+                
+                setDateCalendar(e)
+                console.log(e[1]+'-------------------XXXXXX--------------')   
+
+                onCalendarStartDateChange(e[0]);
                 setHideReturnCalendar(false);
+
+                let timeDiff = Math.abs(
+                  
+                  e[1].getTime() -e[0].getTime()
+                );
+               
+                let numberOfNights = Math.ceil(timeDiff / (1000 * 3600 * 24))-1;
+                  onCalendarEndDateChange(e[1], numberOfNights);
+                
+                
+              
               }}
-              value={booking.startDate}
+              
+              returnValue="range"
+              value={dateCalendar}
               locale="fr"
+              
               minDate={new Date()}
-              defaultValue={new Date()}
+              //Fuction to disabled minimum night with react-calendar
+              tileDisabled={({activeStartDate, date, view }) =>date.getMonth() === dateCalendar[0].getMonth()?   date.getDate() < dateCalendar[0].getDate()+parseInt(booking.minimumNights) && date.getDate()> dateCalendar[0].getDate(): date.getDate()<dateCalendar[0].getDate()+parseInt(booking.minimumNights)-31}
+              
+              selectRange="true"
+             
             />
+           
           </div>
-          <div className="w-full lg:w-1/2 xl:w-1/3 space-y-3">
-            <h2 className="text-xs uppercase text-gray-500">Date de retour</h2>
-            <div className="relative">
-              {hideReturnCalendar && (
-                <div className="w-full h-full absolute bg-white bg-opacity-70 z-20 flex items-center justify-center">
-                  <p className="bg-shamrock px-4 py-2.5 rounded shadow text-white">
-                    Sélectionnez une date de départ
-                  </p>
-                </div>
-              )}
-              <Calendar
-                onChange={(e) => {
-                  let timeDiff = Math.abs(
-                    e.getTime() - booking.startDate.getTime()
-                  );
-                  let numberOfNights = Math.ceil(timeDiff / (1000 * 3600 * 24));
-                  onCalendarEndDateChange(e, numberOfNights);
-                }}
-                value={booking.endDate}
-                locale="fr"
-                minDate={addDays(
-                  booking.startDate,
-                  parseInt(booking.minimumNights)
-                )}
-              />
-            </div>
-          </div>
+         
         </div>
       </div>
     </div>

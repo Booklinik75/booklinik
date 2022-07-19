@@ -58,6 +58,7 @@
     "stripe": "^8.183.0",
     "tippy.js": "^6.3.7",
     "twilio": "^3.71.2",
+    "webpack": "^5.73.0",
     "yup": "^0.32.9"
   },
   "devDependencies": {
