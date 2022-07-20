@@ -9,6 +9,7 @@ const SurgerySelectStep = ({
   setBooking,
   handleSurgerySelect,
   handleSurgeryCategorySelect,
+  setStep,
   setNextStep,
   surgeryCategory: getSurgeryCategory,
 }) => {
@@ -62,10 +63,11 @@ const SurgerySelectStep = ({
                   name="surgeryCategory"
                   value={surgeryCategory.slug}
                   onChange={(e) =>
-                    handleSurgeryCategorySelect(
+                    {handleSurgeryCategorySelect(
                       surgeryCategory.slug,
                       surgeryCategory.name
-                    )
+                    );
+                    window.scrollTo(0, document.body.scrollHeight)}
                   }
                   className="hidden"
                   required={true}
@@ -104,15 +106,17 @@ const SurgerySelectStep = ({
                   id={surgery.slug}
                   value={surgery.slug}
                   className="hidden"
-                  onChange={(e) =>
+                  onChange={(e) =>{
                     handleSurgerySelect(
                       surgery.slug,
                       surgery.startingPrice,
                       surgery.name,
                       surgery.minimumNights,
                       surgery.cities
-                    )
+                    );
+                    setStep((s) => s + 1)}
                   }
+                 
                   name="surgery"
                   type="radio"
                   required={true}
@@ -146,7 +150,8 @@ const SurgerySelectStep = ({
           {getSurgeryCategory.surgeryCategory === "" ? (
             <div className="col-span-12 rounded border border-blue-300 bg-blue-50 text-blue-900">
               <p className="p-4">
-                👋 Veuillez sélectionner une catégorie ci-dessus.
+                👋 Veuillez sélectionner une catégorie ci-dessus 
+             
               </p>
             </div>
           ) : (

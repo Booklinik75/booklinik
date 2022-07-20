@@ -4,7 +4,7 @@ import { VscLoading } from "react-icons/vsc";
 import { Children, useState } from "react";
 import { useRouter } from "next/router";
 import firebase from "../../../firebase/clientApp";
-import { useContext } from "react";
+import { useContext,useEffect } from "react";
 import { BookContext } from "../../../utils/bookContext";
 
 const FormStepper = ({
@@ -12,11 +12,12 @@ const FormStepper = ({
   booking,
   user,
   nextStep,
+  step,
+  setStep, 
   setNextStep,
   userProfile,
 }) => {
   const stepsArray = Children.toArray(children);
-  const [step, setStep] = useState(0);
   const router = useRouter();
   const [isSaving, setIsSaving] = useState(false);
   const { isChecked } = useContext(BookContext);
@@ -39,6 +40,7 @@ const FormStepper = ({
       localStorage.setItem("bookBooklinik", JSON.stringify(booking));
       return;
     }
+   
     setIsSaving(true);
 
     firebase
@@ -97,6 +99,7 @@ const FormStepper = ({
   });
 };
 
+
   return (
     <BookingUi bookingData={booking} step={step} userProfile={userProfile}>
       <div className="col-span-12 relative">
@@ -149,12 +152,14 @@ const FormStepper = ({
                     // if nextStep is true
                     if (nextStep) {
                       setNextStep(false);
-                      setStep((s) => s + 1);
+                      setStep((s) => s + 1)
                     }
                   }}
                   className="flex items-center gap-1 border border-shamrock bg-shamrock text-white transition hover:bg-white hover:text-shamrock px-5 py-2 rounded disabled:hover:bg-shamrock disabled:hover:text-white disabled:opacity-30 disabled:cursor-not-allowed"
                   disabled={!nextStep}
+                  
                 >
+               
                   {step === stepsArray.length - 2 ? "Finaliser" : "Continuer"}
                   <BsArrowRight />
                 </button>

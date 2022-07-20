@@ -11,6 +11,7 @@ const HotelSelectStep = ({
   hotels,
   handleHotelSelect,
   setNextStep,
+  setStep
 }) => {
   useEffect(() => {
     // setNextStep to true when all inputs are filled
@@ -41,7 +42,7 @@ const HotelSelectStep = ({
                 id={hotel.slug}
                 className="hidden"
                 required={true}
-                onChange={(e) =>
+                onChange={(e) =>{
                   handleHotelSelect(
                     hotel.slug,
                     hotel.extraPrice,
@@ -49,7 +50,8 @@ const HotelSelectStep = ({
                     hotel.name,
                     hotel.rating,
                     hotel.id
-                  )
+                  );  setStep((s) => s + 1)
+                }
                 }
               />
               <label
