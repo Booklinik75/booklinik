@@ -23,13 +23,7 @@ const DatesSelectStep = ({
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(null);
   const [hideReturnCalendar, setHideReturnCalendar] = useState(true);
-  const [disabledDate, setDisabledDate] = useState(
-    new Array(
-      new Date().setDate(new Date().getDate() + 1),
-      new Date().setDate(new Date().getDate() + 1),
-      new Date().setDate(new Date().getDate() + 3)
-    )
-  );
+  const [disabledDate, setDisabledDate] = useState(new Array());
   const [dateCalendar, setDateCalendar] = useState([
     {
       startDate: new Date(),
@@ -108,7 +102,7 @@ const DatesSelectStep = ({
           {console.log(endDate + "--------endDate---------")}
           <div className="w-full lg:w-1/2 xl:w-1/3 space-y-3">
             <h2 className="text-xs uppercase text-gray-500">
-              {console.log(disabledDate) + "============State disablcmded"}Date
+        Date
               de départ
             </h2>
             <DatePicker

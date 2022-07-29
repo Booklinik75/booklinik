@@ -13,12 +13,13 @@ import errors from "utils/firebase_auth_errors";
 import * as Sentry from "@sentry/browser";
 import MD5 from "crypto-js/md5";
 import PhoneInput from "react-phone-input-2";
+import ModalNoSignUp from "Components/ModalNoSignUp";
 import "react-phone-input-2/lib/style.css";
 
 export const getServerSideProps = async (ctx) => {
   const auth = await checkAuth(ctx);
   if (auth.props.userProfile) return serverRedirect("/dashboard");
-
+ 
   return {
     props: {
       auth,
@@ -41,6 +42,7 @@ const SignUp = () => {
   const [isLoading, setLoading] = useState("idle");
 
   const validationSchema = Yup.object({
+    
     email: Yup.string().email().required(),
     password: Yup.string().required("Le mot de passe est requis"),
     passwordConfirmation: Yup.string().oneOf(
@@ -131,7 +133,7 @@ const SignUp = () => {
                       Number(booking.surgeries[0].surgeryPrice) +
                       Number(booking.totalExtraTravellersPrice) +
                       Number(booking.roomPrice) *
-                        Number(booking.totalSelectedNights) +
+                      Number(booking.totalSelectedNights) +
                       booking.options
                         ?.map(
                           (option) => option.isChecked && Number(option.price)
@@ -322,16 +324,33 @@ const SignUp = () => {
                     </a>
                   </Link>
                 </div>
-                <div>
-                  <DashboardButton
+                
+              </div>
+              <div className="flex flex-row">
+                  
+              <DashboardButton
                     defaultText="S'inscrire"
                     status={isLoading}
                   ></DashboardButton>
-                </div>
+              <div className="flex items-center gap-3 pt-6 mx-3">
+                 <button
+                  type="submit"
+                  className={`min-w-max transition px-10 py-3 rounded border border-shamrock bg-shamrock text-white && "hover:text-shamrock group hover:bg-white"`}
+                  >Continuer sans inscription
+                  </button>
+                  
               </div>
+              
+                 
+                  
+                </div>
+               
             </form>
+            <ModalNoSignUp/>
           </div>
+          
         </div>
+        
         <div className="relative hidden col-span-4 lg:block">
           <Image
             src={SideBanner}
@@ -340,8 +359,11 @@ const SignUp = () => {
             className="h-full"
             alt=""
           />
+          
         </div>
+       
       </div>
+      
     </div>
   );
 };
