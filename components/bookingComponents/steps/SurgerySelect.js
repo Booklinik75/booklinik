@@ -67,7 +67,7 @@ const SurgerySelectStep = ({
                       surgeryCategory.slug,
                       surgeryCategory.name
                     );
-                    window.scrollTo(0, document.body.scrollHeight)}
+                    window.scrollTo(0, document.body.scrollHeight);}
                   }
                   className="hidden"
                   required={true}
