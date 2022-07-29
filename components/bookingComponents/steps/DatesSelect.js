@@ -34,7 +34,7 @@ const DatesSelectStep = ({
 
   useEffect(() => {
     // setNextStep to true when all inputs are filled
-    if (startDate && endDate && endDate !== startDate) {
+    if (startDate  && endDate !== startDate) {
       setNextStep(true);
     }
   }, [booking]);
@@ -56,7 +56,7 @@ const DatesSelectStep = ({
       var newday = new Date(start);
 
       if (start) {
-        for (let i = 1; i < 4; i++) {
+        for (let i = 1; i < parseInt(booking.minimumNights); i++) {
           celldisabled.push(new Date(newday.setDate(newday.getDate() + 1)));
           console.log(i + "increment ==========date======");
         }
