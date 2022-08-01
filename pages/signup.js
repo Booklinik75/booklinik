@@ -36,11 +36,10 @@ const SignUp = () => {
   });
 
   const [isChecked, setChecked] = useState(false);
-
+  const [showModal, setShowModal] = useState(false);
   const router = useRouter();
   const [error, setError] = useState(null);
   const [isLoading, setLoading] = useState("idle");
-
   const validationSchema = Yup.object({
     
     email: Yup.string().email().required(),
@@ -201,6 +200,12 @@ const SignUp = () => {
     });
   };
 
+  const handleOnClose= () => {
+    setShowModal(false);
+  };
+
+
+
   return (
     <div className="h-screen relative signup">
       <div className="nav top-0 absolute flex flex-row w-full justify-between z-50 p-10 bg-white shadow-lg">
@@ -294,6 +299,7 @@ const SignUp = () => {
                 value={formData.phoneNumber}
                 onChange={(phone) => handlePhoneNumber(phone)}
               />
+              {console.log(showModal+"--------------")}
               <div className="flex flex-row items-center gap-2">
                 <input
                   type="checkbox"
@@ -335,6 +341,7 @@ const SignUp = () => {
               <div className="flex items-center gap-3 pt-6 mx-3">
                  <button
                   type="submit"
+                  onClick={()=>setShowModal(true)}
                   className={`min-w-max transition px-10 py-3 rounded border border-shamrock bg-shamrock text-white && "hover:text-shamrock group hover:bg-white"`}
                   >Continuer sans inscription
                   </button>
@@ -346,7 +353,7 @@ const SignUp = () => {
                 </div>
                
             </form>
-            <ModalNoSignUp/>
+         
           </div>
           
         </div>
@@ -361,7 +368,7 @@ const SignUp = () => {
           />
           
         </div>
-       
+        <ModalNoSignUp onClose={handleOnClose} visible={showModal} />
       </div>
       
     </div>
