@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import firebase from "../../../firebase/clientApp";
 import { useContext,useEffect } from "react";
 import { BookContext } from "../../../utils/bookContext";
+import ModalNoSignUp from "Components/ModalNoSignUp";
 
 const FormStepper = ({
   children,
@@ -17,6 +18,7 @@ const FormStepper = ({
   setNextStep,
   userProfile,
 }) => {
+  const [showModal, setShowModal] = useState(false);
   const stepsArray = Children.toArray(children);
   const router = useRouter();
   const [isSaving, setIsSaving] = useState(false);
@@ -98,6 +100,12 @@ const FormStepper = ({
 
   });
 };
+const handleOnClose= () => {
+    
+  setShowModal(false);
+
+};
+
 
 
   return (
@@ -151,7 +159,7 @@ const FormStepper = ({
                  className="flex items-center gap-1 border border-shamrock bg-shamrock text-white transition hover:bg-white hover:text-shamrock px-5 py-2 rounded disabled:hover:bg-shamrock disabled:hover:text-white disabled:opacity-30 disabled:cursor-not-allowed"
                  onClick={(e) => {
                    e.preventDefault();
-                   doBooking();
+                  setShowModal(true)
                  }}
                >
                  Sans inscription <BsCheck />
@@ -178,6 +186,7 @@ const FormStepper = ({
               )}
             </div>
           </form>
+          <ModalNoSignUp onClose={handleOnClose} visible={showModal} />
         </div>
       </div>
     </BookingUi>

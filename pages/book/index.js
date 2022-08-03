@@ -250,7 +250,6 @@ const NewBookingContainer = ({
       </Head>
       {loading && (
         <div className="animate-spin h-screen w-screen flex items-center justify-center">
-          {  console.log( nextStep+' ---------------c est le step de l index')}
           <VscLoading />
         </div>
       )}
