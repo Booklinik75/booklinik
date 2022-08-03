@@ -201,7 +201,9 @@ const SignUp = () => {
   };
 
   const handleOnClose= () => {
+    
     setShowModal(false);
+
   };
 
 
@@ -299,7 +301,6 @@ const SignUp = () => {
                 value={formData.phoneNumber}
                 onChange={(phone) => handlePhoneNumber(phone)}
               />
-              {console.log(showModal+"--------------")}
               <div className="flex flex-row items-center gap-2">
                 <input
                   type="checkbox"

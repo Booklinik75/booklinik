@@ -135,6 +135,7 @@ const FormStepper = ({
                 ""
               )}
               {step === stepsArray.length - 1 ? (
+                <>
                 <button
                   type="submit"
                   className="flex items-center gap-1 border border-shamrock bg-shamrock text-white transition hover:bg-white hover:text-shamrock px-5 py-2 rounded disabled:hover:bg-shamrock disabled:hover:text-white disabled:opacity-30 disabled:cursor-not-allowed"
@@ -145,6 +146,17 @@ const FormStepper = ({
                 >
                   Soumettre <BsCheck />
                 </button>
+                 <button
+                 type="submit"
+                 className="flex items-center gap-1 border border-shamrock bg-shamrock text-white transition hover:bg-white hover:text-shamrock px-5 py-2 rounded disabled:hover:bg-shamrock disabled:hover:text-white disabled:opacity-30 disabled:cursor-not-allowed"
+                 onClick={(e) => {
+                   e.preventDefault();
+                   doBooking();
+                 }}
+               >
+                 Sans inscription <BsCheck />
+               </button>
+               </>
               ) : (
                 <button
                   onClick={() => {

@@ -5,8 +5,6 @@ import { BookProvider } from "utils/bookContext";
 
 import { ToastContainer } from "react-toastify";
 import Head from "next/head";
-import "@uiw/react-md-editor/dist/markdown-editor.css";
-import "@uiw/react-markdown-preview/dist/markdown.css";
 import "../styles/calendar.css";
 import moment from "moment";
 import "moment/locale/fr";

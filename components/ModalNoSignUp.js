@@ -1,19 +1,19 @@
-import Link from "next/link";
-import Logo from "../public/booklinik-logo.svg";
-import Image from "next/image";
-import SideBanner from "../public/assets/login.jpeg";
-import firebase from "../firebase/clientApp";
-import { useRouter } from "next/router";
 import { useState } from "react";
-import DashboardButton from "../components/DashboardButton";
-import * as Yup from "yup";
-import { BiError } from "react-icons/bi";
-import { checkAuth, serverRedirect } from "utils/ServerHelpers";
-import errors from "utils/firebase_auth_errors";
+import Link from "next/link";
+import { toast } from "react-toastify";
 import * as Sentry from "@sentry/browser";
-import MD5 from "crypto-js/md5";
+import moment from "moment";
+import { useRouter } from "next/router";
+import validateContactForm from "../utils/validateContactForm";
 import PhoneInput from "react-phone-input-2";
+import MD5 from "crypto-js/md5";
+
 import "react-phone-input-2/lib/style.css";
+
+import firebase from "../firebase/clientApp";
+
+import { BiError } from "react-icons/bi";
+import errors from "utils/firebase_auth_errors";
 
 
 export const getServerSideProps = async (ctx) => {
@@ -27,99 +27,148 @@ export const getServerSideProps = async (ctx) => {
   };
 };
 
-const ModalNoSignUp=({
-  visible,
-  onClose,
-  children
+const ModalNoSignUp = ({onClose,visible}) => {
   
-}) =>{
-    const [form, setForm] = useState({
-      email: "",
-      password:"",
-      message: "",
-      name: "",
-      phoneNumber: "",
-      value :"",
-    });
-   
-    const [isSubmitting, setIsSubmitting] = useState(false);
-    const [formSent, setFormSent] = useState(false);
-    const [errors, setErrros] = useState({});
-    const [isLoading, setLoading] = useState("idle");
-    const router = useRouter();
-   {children}
-    function WithoutRegistration(){
-      const {email,password,message,name,phoneNumber,value}=form
-      setLoading("loading");
+  const [form, setForm] = useState({
+    email: "",
+    message: "",
+    name: "",
+    phoneNumber: "",
+    value :"",
+  });
+  const [isLoading, setLoading] = useState("idle");
 
-      const { errors, valid } = validateContactForm(form);
-      if (!valid) {
-        setLoading("idle");
-        setErrros(errors);
-        setIsSubmitting(false);
-      }   else {
-        firebase
-        .auth()
-        .createUserWithEmailAndPassword(email, password)
-        .then(async (userCredential) => {
-          // update current user
-          var user = userCredential.user;
-  
-      })
-      .catch((error) => {
-        var errorCode = error.code;
-        var errorMessage = error.message;
-        // ...
-      });
-      }
-    }
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formSent, setFormSent] = useState(false);
+  const [errors, setErrros] = useState({});
 
-    const handleFormSubmit = (e) => {
-      e.preventDefault();
-      setIsSubmitting(true);
-      WithoutRegistration()
-  
-   
-    };
-  
-    const handleFormChange = (e) => {
-      setForm({
-        ...form,
-        [e.target.name]:
-          e.target.name === "phoneNumber"
-            ? e.target.value
-                .replace(/[^0-9.]/g, "")
-                .replace(/(\..*?)\..*/g, "$1")
-                .trim()
-            : e.target.value,
-      });
-      console.log(JSON.stringify(e.target.value)+"=============HandleformChange value modal")
-    };
-  
-    const handlePhoneNumber = (phone) => {
-      setForm({
-        ...form,
-        phoneNumber: `+${phone}`,
-      });
-      console.log(phone+"=============Handleform tel value modal")
-    };
-  
-  
-    const getInitialState = () => {
-        const value = "";
-        return value;
-      };
-  
-      const [value, setValue] = useState(getInitialState);
-  
- 
+  const router = useRouter();//stop 
 
-  if (!visible) return null;
-  return (
-    <div className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center">
+  const handleFormSubmit = (e) => {
     
-       
-        <div id="contactform" className="py-40" >
+    const { email, message, name, phoneNumber } = form;
+    setLoading("loading");
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    const { errors, valid } = validateContactForm(form);
+    if (!valid) {
+      setErrros(errors);
+      setIsSubmitting(false);
+      setLoading("idle");
+    } else {// Authentification firebase anonymous
+
+      firebase
+        .auth()
+        .signInAnonymously()
+        .then(() => {
+          setFormSent(true);
+          // update current user
+          firebase.auth().onAuthStateChanged((user) => {
+            if (user) {
+              console.log(user.uid+"---------------user ")
+             
+          
+            const booking = JSON.parse(
+              localStorage.getItem("bookBooklinik")
+            );
+            var firestoreObjectSetBooking =   firebase
+            .firestore()
+            .collection("bookingsNoConnexion")
+            .add({
+              user: user.uid,
+              status: message,
+              name:name,
+              message: message,
+              phoneNumber: phoneNumber,
+
+              total:
+                Number(booking.surgeries[0].surgeryPrice) +
+                Number(booking.totalExtraTravellersPrice) +
+                Number(booking.roomPrice) *
+                Number(booking.totalSelectedNights) +
+                booking.options
+                  ?.map(
+                    (option) => option.isChecked && Number(option.price)
+                  )
+                  .reduce((a, b) => a + b),
+              ...booking,
+            })
+            console.log(firestoreObjectSetBooking+'===========LocalStorage')
+
+           
+      
+      } 
+          });
+     
+          // redirect to dashboard
+          // router.push("/dashboard");
+        })
+    
+        .catch((error) => {
+          console.log(error+"eror-----------------")
+          if (errors[error.code]) {
+            setError(errors[error.code]);
+          } else {
+            setError("Une erreur est survenue");
+          }
+          Sentry.captureException(error);
+        })
+        .finally(() => {
+          setLoading("idle");
+        });
+    
+    }
+  };
+
+  const handleFormChange = (e) => {
+    setForm({
+      ...form,
+      [e.target.name]:
+        e.target.name === "phoneNumber"
+          ? e.target.value
+              .replace(/[^0-9.]/g, "")
+              .replace(/(\..*?)\..*/g, "$1")
+              .trim()
+          : e.target.value,
+    });
+  };
+
+  const handlePhoneNumber = (phone) => {
+    setForm({
+      ...form,
+      phoneNumber: `+${phone}`,
+    });
+  };
+
+ 
+  
+  const signout = () => {
+    firebase.auth().signOut().then(() => {
+      // Sign-out successful.
+    }).catch((error) => {
+      // An error happened.
+    });
+  };
+  const getInitialState = () => {
+      const value = "";
+      return value;
+    };
+
+    const [value, setValue] = useState(getInitialState);
+
+    const handleChange = (e) => {
+      setValue(e.target.value);
+    };
+
+    
+   if (!visible) return null;
+
+
+  return (
+  <div className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center">
+
+  <div id="contactform" className="py-40" >
     <div
       className="mx-4 xl:mx-auto max-w-7xl py-14 my-10 rounded-xl bg-shamrock grid gric-cols-1 lg:grid-cols-2 gap-10 px-10 text-white placeholder-white"
 
@@ -205,22 +254,8 @@ const ModalNoSignUp=({
                   ""
                 )}
               </div>
-              <div>
-                <p className="uppercase text-sm mb-2">Mot de passe</p>
-                <input
-                  type="password"
-                  className={`w-full bg-transparent border-b outline-none placeholder-white "border-white"
-                  p-3`}
-                  placeholder="mdp"
-                  name="password"
-                  value={form.password}
-                  onChange={handleFormChange}
-                />
+
            
-              </div>
-
-             
-
               <div>
                 <p className="uppercase text-sm mb-2">Votre message</p>
                 <textarea
@@ -248,34 +283,42 @@ const ModalNoSignUp=({
                 <button
                   type="submit"
                   className="float-right rounded bg-white bg-opacity-10 p-3 transition hover:bg-opacity-100 hover:text-shamrock"
-          
+                  disabled={isSubmitting}
                 >
                   Envoyer
                 </button>
                 <button
                   type="submit"
-                  className="float-right rounded bg-white bg-opacity-10 p-3 transition hover:bg-opacity-100 hover:text-shamrock"
+                  className="float-right rounded bg-white bg-opacity-10 p-3 transition hover:bg-opacity-100 hover:text-shamrock item-center"
                   onClick={onClose}
                 >
                   Fermer
                 </button>
+                
               </div>
             </>
           ) : (
-            <div className="w-full h-full flex items-center justify-center">
+            <div className="w-full h-full flex-col items-center justify-center">
               <p className="text-center">
                 Votre message a bien été envoyé. Nous vous recontacterons dans
                 les plus brefs délais.
               </p>
+              <button
+                  type="submit"
+                  className="float-right rounded bg-white bg-opacity-10 p-3 transition hover:bg-opacity-100 hover:text-shamrock item-center"
+                  onClick={onClose}
+                >
+                  Fermer
+                </button>
             </div>
           )}
+         
         </div>
       </form>
     </div>
   </div>
-        </div>
-   
-  )
-}
+  </div>
+  );
+};
 
-export default  ModalNoSignUp;
+export default ModalNoSignUp;
