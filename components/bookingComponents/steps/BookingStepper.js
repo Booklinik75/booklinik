@@ -152,17 +152,17 @@ const handleOnClose= () => {
                     doBooking();
                   }}
                 >
-                  Soumettre <BsCheck />
+                Soumettre et s&apos;inscrire<BsCheck />
                 </button>
                  <button
                  type="submit"
-                 className="flex items-center gap-1 border border-shamrock bg-shamrock text-white transition hover:bg-white hover:text-shamrock px-5 py-2 rounded disabled:hover:bg-shamrock disabled:hover:text-white disabled:opacity-30 disabled:cursor-not-allowed"
+                 className="flex items-center gap-1 border border-gray-500 bg-white text-gray-500 transition hover:bg-gray-500 hover:text-white px-5 py-2 rounded"
                  onClick={(e) => {
                    e.preventDefault();
                   setShowModal(true)
                  }}
                >
-                 Sans inscription <BsCheck />
+                Continuer sans inscription <BsCheck />
                </button>
                </>
               ) : (
@@ -186,7 +186,7 @@ const handleOnClose= () => {
               )}
             </div>
           </form>
-          <ModalNoSignUp onClose={handleOnClose} visible={showModal} />
+          <ModalNoSignUp onClose={handleOnClose} visible={showModal} booking={booking}/>
         </div>
       </div>
     </BookingUi>

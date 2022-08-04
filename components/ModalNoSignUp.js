@@ -1,4 +1,9 @@
 import { useState } from "react";
+import BookingDataSpan from "./bookingComponents/BookingDataSpan";
+import Moment from "node_modules/react-moment/dist/index";
+import formatPrice from "utils/formatPrice";
+import { useContext } from "react";
+import { BookContext } from "utils/bookContext";
 import Link from "next/link";
 import { toast } from "react-toastify";
 import * as Sentry from "@sentry/browser";
@@ -7,7 +12,6 @@ import { useRouter } from "next/router";
 import validateContactForm from "../utils/validateContactForm";
 import PhoneInput from "react-phone-input-2";
 import MD5 from "crypto-js/md5";
-
 import "react-phone-input-2/lib/style.css";
 
 import firebase from "../firebase/clientApp";
@@ -15,11 +19,10 @@ import firebase from "../firebase/clientApp";
 import { BiError } from "react-icons/bi";
 import errors from "utils/firebase_auth_errors";
 
-
 export const getServerSideProps = async (ctx) => {
   const auth = await checkAuth(ctx);
   if (auth.props.userProfile) return serverRedirect("/dashboard");
- 
+
   return {
     props: {
       auth,
@@ -27,25 +30,32 @@ export const getServerSideProps = async (ctx) => {
   };
 };
 
-const ModalNoSignUp = ({onClose,visible}) => {
-  
+const ModalNoSignUp = ({ onClose, visible, booking }) => {
   const [form, setForm] = useState({
     email: "",
     message: "",
     name: "",
     phoneNumber: "",
-    value :"",
+    value: "",
   });
+
+  const totalPrice =
+    Number(booking.surgeries[0].surgeryPrice) +
+    Number(booking.totalExtraTravellersPrice) +
+    booking.options
+      ?.map((option) => option.isChecked && Number(option.price))
+      .reduce((a, b) => a + b) +
+    Number(booking.roomPrice) * Number(booking.totalSelectedNights);
+  const { isChecked, handleUseReferral } = useContext(BookContext);
   const [isLoading, setLoading] = useState("idle");
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formSent, setFormSent] = useState(false);
   const [errors, setErrros] = useState({});
 
-  const router = useRouter();//stop 
+  const router = useRouter(); //stop
 
   const handleFormSubmit = (e) => {
-    
     const { email, message, name, phoneNumber } = form;
     setLoading("loading");
     e.preventDefault();
@@ -56,7 +66,8 @@ const ModalNoSignUp = ({onClose,visible}) => {
       setErrros(errors);
       setIsSubmitting(false);
       setLoading("idle");
-    } else {// Authentification firebase anonymous
+    } else {
+      // Authentification firebase anonymous
 
       firebase
         .auth()
@@ -66,47 +77,43 @@ const ModalNoSignUp = ({onClose,visible}) => {
           // update current user
           firebase.auth().onAuthStateChanged((user) => {
             if (user) {
-              console.log(user.uid+"---------------user ")
-             
-          
-            const booking = JSON.parse(
-              localStorage.getItem("bookBooklinik")
-            );
-            var firestoreObjectSetBooking =   firebase
-            .firestore()
-            .collection("bookingsNoConnexion")
-            .add({
-              user: user.uid,
-              status: message,
-              name:name,
-              message: message,
-              phoneNumber: phoneNumber,
+              console.log(user.uid + "---------------user ");
 
-              total:
-                Number(booking.surgeries[0].surgeryPrice) +
-                Number(booking.totalExtraTravellersPrice) +
-                Number(booking.roomPrice) *
-                Number(booking.totalSelectedNights) +
-                booking.options
-                  ?.map(
-                    (option) => option.isChecked && Number(option.price)
-                  )
-                  .reduce((a, b) => a + b),
-              ...booking,
-            })
-            console.log(firestoreObjectSetBooking+'===========LocalStorage')
+              const booking = JSON.parse(localStorage.getItem("bookBooklinik"));
+              var firestoreObjectSetBooking = firebase
+                .firestore()
+                .collection("bookingsNoConnexion")
+                .add({
+                  user: user.uid,
+                  status: message,
+                  name: name,
+                  message: message,
+                  phoneNumber: phoneNumber,
 
-           
-      
-      } 
+                  total:
+                    Number(booking.surgeries[0].surgeryPrice) +
+                    Number(booking.totalExtraTravellersPrice) +
+                    Number(booking.roomPrice) *
+                      Number(booking.totalSelectedNights) +
+                    booking.options
+                      ?.map(
+                        (option) => option.isChecked && Number(option.price)
+                      )
+                      .reduce((a, b) => a + b),
+                  ...booking,
+                });
+              console.log(
+                firestoreObjectSetBooking + "===========LocalStorage"
+              );
+            }
           });
-     
+
           // redirect to dashboard
           // router.push("/dashboard");
         })
-    
+
         .catch((error) => {
-          console.log(error+"eror-----------------")
+          console.log(error + "eror-----------------");
           if (errors[error.code]) {
             setError(errors[error.code]);
           } else {
@@ -117,7 +124,50 @@ const ModalNoSignUp = ({onClose,visible}) => {
         .finally(() => {
           setLoading("idle");
         });
-    
+      fetch("/api/mail", {
+        method: "post",
+        body: JSON.stringify({
+          recipient: "salah.elbouhali@gmail.com",
+          templateId: "d-6b9ed961cfdc44228824603584a8b740",
+          dynamicTemplateData: {
+            email: form.email,
+            name: form.name,
+            phoneNumber: form.phoneNumber,
+            datetime: moment(new Date()).format("LLLL"),
+            message: form.message,
+            path: router.asPath,
+            operation: form.operation,
+            value: value,
+          },
+        }),
+      })
+        .then(() => {
+          setFormSent(true);
+
+          fetch("/api/mail", {
+            method: "post",
+            body: JSON.stringify({
+              recipient: form.email,
+              templateId: "d-57cbc54b5ac345beb1bfc6509381ccee",
+              dynamicTemplateData: {
+                email: form.email,
+                name: form.name,
+                phoneNumber: form.phoneNumber,
+                datetime: moment(new Date()).format("LLLL"),
+                message: form.message,
+                operation: form.operation,
+                value: value,
+              },
+            }),
+          });
+        })
+        .catch((error) => {
+          Sentry.captureException(error);
+        })
+        .finally(() => {
+          setIsSubmitting(false);
+          setErrros({});
+        });
     }
   };
 
@@ -141,183 +191,285 @@ const ModalNoSignUp = ({onClose,visible}) => {
     });
   };
 
- 
-  
   const signout = () => {
-    firebase.auth().signOut().then(() => {
-      // Sign-out successful.
-    }).catch((error) => {
-      // An error happened.
-    });
+    firebase
+      .auth()
+      .signOut()
+      .then(() => {
+        // Sign-out successful.
+      })
+      .catch((error) => {
+        // An error happened.
+      });
   };
   const getInitialState = () => {
-      const value = "";
-      return value;
-    };
+    const value = "";
+    return value;
+  };
 
-    const [value, setValue] = useState(getInitialState);
+  const [value, setValue] = useState(getInitialState);
 
-    const handleChange = (e) => {
-      setValue(e.target.value);
-    };
+  const handleChange = (e) => {
+    setValue(e.target.value);
+  };
 
-    
-   if (!visible) return null;
-
+  if (!visible) return null;
 
   return (
-  <div className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center">
-
-  <div id="contactform" className="py-40" >
-    <div
-      className="mx-4 xl:mx-auto max-w-7xl py-14 my-10 rounded-xl bg-shamrock grid gric-cols-1 lg:grid-cols-2 gap-10 px-10 text-white placeholder-white"
-
-    >
-      <div className="text-white">
-        <p className="uppercase text-sm mb-2">Une question ?</p>
-        <h2 className="text-4xl mb-2">
-          CONSULTATION MEDICALE GRATUITE par nos médecins.
-        </h2>
-        <h2 className="text-2xl mb-2 mt-4">
-          Remplisez le formulaire nous vous contacterons sous 24h.
-        </h2>
-        <p className="mt-4 mb-2">Par téléphone au</p>
-        <Link href="tel:0186653500">
-          <a className="hover:underline text-xl font-bold flex items-center">
-            +33 1 86 65 35 00
-          </a>
-        </Link>
-      </div>
-      <form  onSubmit={handleFormSubmit}>
-        <div className="space-y-6">
-          {!formSent ? (
-            <>
-              <div>
-                <p className="uppercase text-sm mb-2">Nom</p>
-                <input
-                  type="text"
-                  className={`w-full bg-transparent border-b outline-none placeholder-white ${
-                    errors && errors.name ? "border-red-600 " : "border-white"
-                  } p-3`}
-                  placeholder="Nom"
-                  name="name"
-                  value={form.name}
-                  onChange={handleFormChange}
-                />
-                {errors && errors.name ? (
-                  <span className="text-red-600 text-sm mt-3">
-                    {errors.name}
+    <div className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center">
+      <div id="contactform" className="py-40">
+        <div className="mx-4 xl:mx-auto w-5/6	 py-14 my-10 rounded-xl bg-shamrock grid gric-cols-1 lg:grid-cols-2 gap-0 px-10 text-white placeholder-white">
+          <div className="space-y-6 h-full">
+            <h1 className="text-2xl mb-6">Parfait, on y est presque !</h1>
+            <div className="py-6 space-y-6">
+              <p className="flex flex-row items-start gap-2 lg:flex-row lg:items-center">
+                Vous souhaitez réaliser une{" "}
+                <span className=" ">
+                  <span className="font-bold	 ">
+                    <BookingDataSpan
+                      string={booking.surgeries[0].surgeryCategoryName}
+                    />{" "}
                   </span>
-                ) : (
-                  ""
-                )}
-              </div>
-
-
-              <div
-                className={`${
-                  errors && errors.phoneNumber ? "error-input" : ""
-                }`}
-              >
-                <p className="uppercase text-sm mb-2">Numéro de téléphone</p>
-                <PhoneInput
-                  country={"fr"}
-                  value={form.phoneNumber}
-                  onChange={(phone) => handlePhoneNumber(phone)}
-                />
-                {errors && errors.phoneNumber ? (
-                  <span className="text-red-600 text-sm mt-3">
-                    {errors.phoneNumber}
-                  </span>
-                ) : (
-                  ""
-                )}
-              </div>
-
-              <div>
-                <p className="uppercase text-sm mb-2">Votre email</p>
-                <input
-                  type="email"
-                  className={`w-full bg-transparent border-b outline-none placeholder-white ${
-                    errors && errors.email ? "border-red-600 " : "border-white"
-                  } p-3`}
-                  placeholder="Email"
-                  name="email"
-                  value={form.email}
-                  onChange={handleFormChange}
-                />
-                {errors && errors.email ? (
-                  <span className="text-red-600 text-sm mt-3">
-                    {errors.email}
-                  </span>
-                ) : (
-                  ""
-                )}
-              </div>
-
-           
-              <div>
-                <p className="uppercase text-sm mb-2">Votre message</p>
-                <textarea
-                  className={`w-full h-24 bg-white bg-opacity-10 border-b outline-none placeholder-white ${
-                    errors && errors.message
-                      ? "border-red-600 "
-                      : "border-white"
-                  } p-3`}
-                  placeholder="J&lsquo;ai une question à propos de ..."
-                  value={form.message}
-                  name="message"
-                  onChange={handleFormChange}
-                ></textarea>
-                {errors && errors.message ? (
-                  <span className="text-red-600 text-sm mt-3">
-                    {errors.message}
-                  </span>
-                ) : (
-                  ""
-                )}
-
-
-              </div>
-              <div className="w-full">
-                <button
-                  type="submit"
-                  className="float-right rounded bg-white bg-opacity-10 p-3 transition hover:bg-opacity-100 hover:text-shamrock"
-                  disabled={isSubmitting}
-                >
-                  Envoyer
-                </button>
-                <button
-                  type="submit"
-                  className="float-right rounded bg-white bg-opacity-10 p-3 transition hover:bg-opacity-100 hover:text-shamrock item-center"
-                  onClick={onClose}
-                >
-                  Fermer
-                </button>
-                
-              </div>
-            </>
-          ) : (
-            <div className="w-full h-full flex-col items-center justify-center">
-              <p className="text-center">
-                Votre message a bien été envoyé. Nous vous recontacterons dans
-                les plus brefs délais.
+                  sur{" "}
+                </span>
+                <span className="font-bold	 ">
+                  <BookingDataSpan string={booking.surgeries[0].surgeryName} />
+                </span>
               </p>
-              <button
-                  type="submit"
-                  className="float-right rounded bg-white bg-opacity-10 p-3 transition hover:bg-opacity-100 hover:text-shamrock item-center"
-                  onClick={onClose}
-                >
-                  Fermer
-                </button>
+              <p className="">
+                Votre voyage s&apos;étendra du{" "}
+                <span className="font-bold">
+                  <BookingDataSpan>
+                    <Moment
+                      format="DD MMM YYYY"
+                      date={booking.startDate}
+                      locale="fr"
+                    />
+                  </BookingDataSpan>
+                  au{" "}
+                  <BookingDataSpan>
+                    <Moment
+                      format="DD MMM YYYY"
+                      date={booking.endDate}
+                      locale="fr"
+                    />
+                  </BookingDataSpan>
+                </span>
+                pour une durée de{" "}
+                <span className="font-bold">
+                  {booking.totalSelectedNights}{" "}
+                </span>
+                jours.
+              </p>
+              {booking.extraBabies > 0 ||
+              booking.extraChilds > 0 ||
+              booking.extraTravellers > 0 ? (
+                <p className="flex ">
+                  Vous serez accompagné-e par{" "}
+                  <span className="font-bold">
+                    {booking.extraTravellers > 0 ? (
+                      <BookingDataSpan
+                        string={`${booking.extraTravellers} voyageur${
+                          booking.extraTravellers > 1 ? "s" : ""
+                        }`}
+                      />
+                    ) : (
+                      ""
+                    )}
+                    {booking.extraChilds > 0 ? (
+                      <BookingDataSpan
+                        string={`${booking.extraChilds} enfant${
+                          booking.extraChilds > 1 ? "s" : ""
+                        }`}
+                      />
+                    ) : (
+                      ""
+                    )}
+                    {booking.extraBabies > 0 ? (
+                      <BookingDataSpan
+                        string={`${booking.extraBabies} bébé${
+                          booking.extraBabies > 1 ? "s" : ""
+                        }`}
+                      />
+                    ) : (
+                      ""
+                    )}
+                  </span>
+                  de votre choix pour découvrir{" "}
+                  <span className="font-bold">
+                    <BookingDataSpan string={booking.city} />
+                  </span>
+                </p>
+              ) : (
+                ""
+              )}{" "}
+              <p className="">
+                L&apos;hôtel dans lequel vous résiderez est au{" "}
+                <span className="font-bold">
+                  <BookingDataSpan string={booking.hotelName} />{" "}
+                </span>
+                (très bon choix) et vous logerez en{" "}
+                <span className="font-bold">
+                  <BookingDataSpan string={booking.roomName} />
+                </span>
+              </p>
+              <p className="">
+                Vous avez selectionné les options suivantes :{" "}
+                <span className="font-bold">
+                  {booking.options.map((option) => {
+                    return option.isChecked === true ? (
+                      <BookingDataSpan string={option.name} />
+                    ) : (
+                      ""
+                    );
+                  })}
+                </span>
+              </p>
             </div>
-          )}
-         
+
+            <p className="pb-6 !mt-0 flex flex-col items-start gap-2 lg:flex-row lg:items-center">
+              Le prix tout compris de votre voyage sur-mesure est de{" "}
+              <span className="text-2xl rounded text-white px-4 py-2 mx-2 bg-shamrock ">
+                {formatPrice(
+                  isChecked
+                    ? totalPrice - userProfile.referalBalance
+                    : totalPrice
+                )}{" "}
+                €
+              </span>
+            </p>
+          </div>
+
+          <form onSubmit={handleFormSubmit}>
+            <div className="space-y-6">
+              {!formSent ? (
+                <>
+                  <div>
+                    <p className="uppercase text-sm mb-2">Nom</p>
+                    <input
+                      type="text"
+                      className={`w-full bg-transparent border-b outline-none placeholder-white ${
+                        errors && errors.name
+                          ? "border-red-600 "
+                          : "border-white"
+                      } p-3`}
+                      placeholder="Nom"
+                      name="name"
+                      value={form.name}
+                      onChange={handleFormChange}
+                    />
+                    {errors && errors.name ? (
+                      <span className="text-red-600 text-sm mt-3">
+                        {errors.name}
+                      </span>
+                    ) : (
+                      ""
+                    )}
+                  </div>
+
+                  <div
+                    className={`${
+                      errors && errors.phoneNumber ? "error-input" : ""
+                    }`}
+                  >
+                    <p className="uppercase text-sm mb-2">
+                      Numéro de téléphone
+                    </p>
+                    <PhoneInput
+                      country={"fr"}
+                      value={form.phoneNumber}
+                      onChange={(phone) => handlePhoneNumber(phone)}
+                    />
+                    {errors && errors.phoneNumber ? (
+                      <span className="text-red-600 text-sm mt-3">
+                        {errors.phoneNumber}
+                      </span>
+                    ) : (
+                      ""
+                    )}
+                  </div>
+
+                  <div>
+                    <p className="uppercase text-sm mb-2">Votre email</p>
+                    <input
+                      type="email"
+                      className={`w-full bg-transparent border-b outline-none placeholder-white ${
+                        errors && errors.email
+                          ? "border-red-600 "
+                          : "border-white"
+                      } p-3`}
+                      placeholder="Email"
+                      name="email"
+                      value={form.email}
+                      onChange={handleFormChange}
+                    />
+                    {errors && errors.email ? (
+                      <span className="text-red-600 text-sm mt-3">
+                        {errors.email}
+                      </span>
+                    ) : (
+                      ""
+                    )}
+                  </div>
+
+                  <div>
+                    <p className="uppercase text-sm mb-2">Votre message</p>
+                    <textarea
+                      className={`w-full h-24 bg-white bg-opacity-10 border-b outline-none placeholder-white ${
+                        errors && errors.message
+                          ? "border-red-600 "
+                          : "border-white"
+                      } p-3`}
+                      placeholder="J&lsquo;ai une question à propos de ..."
+                      value={form.message}
+                      name="message"
+                      onChange={handleFormChange}
+                    ></textarea>
+                    {errors && errors.message ? (
+                      <span className="text-red-600 text-sm mt-3">
+                        {errors.message}
+                      </span>
+                    ) : (
+                      ""
+                    )}
+                  </div>
+                  <div className="flex flex-row  justify-end">
+                    <button
+                      type="submit"
+                      className="mx-3 float-right rounded bg-white bg-opacity-10 p-3 transition hover:bg-opacity-100 hover:text-shamrock"
+                      disabled={isSubmitting}
+                    >
+                      Envoyer
+                    </button>
+                    <button
+                      type="submit"
+                      className="flex items-center gap-1 border border-gray-500 bg-white text-gray-500 transition hover:bg-gray-500 hover:text-white px-5 py-2 rounded"
+                      onClick={onClose}
+                    >
+                      Fermer
+                    </button>
+                  </div>
+                </>
+              ) : (
+                <div className="w-full h-full flex-col items-center justify-center">
+                  <p className="text-center">
+                    Votre message a bien été envoyé. Nous vous recontacterons
+                    dans les plus brefs délais.
+                  </p>
+                  <button
+                    type="submit"
+                    className="float-right rounded bg-white bg-opacity-10 p-3 transition hover:bg-opacity-100 mx-5  hover:text-shamrock item-center"
+                    onClick={onClose}
+                  >
+                    Fermer
+                  </button>
+                </div>
+              )}
+            </div>
+          </form>
         </div>
-      </form>
+      </div>
     </div>
-  </div>
-  </div>
   );
 };
 
