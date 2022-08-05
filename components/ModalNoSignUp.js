@@ -30,7 +30,7 @@ export const getServerSideProps = async (ctx) => {
   };
 };
 
-const ModalNoSignUp = ({ onClose, visible, booking }) => {
+const ModalNoSignUp = ({ onClose, visible }) => {
   const [form, setForm] = useState({
     email: "",
     message: "",
@@ -38,6 +38,9 @@ const ModalNoSignUp = ({ onClose, visible, booking }) => {
     phoneNumber: "",
     value: "",
   });
+  const booking = JSON.parse(
+    localStorage.getItem("bookBooklinik")
+  );
 
   const totalPrice =
     Number(booking.surgeries[0].surgeryPrice) +
@@ -128,7 +131,7 @@ const ModalNoSignUp = ({ onClose, visible, booking }) => {
         method: "post",
         body: JSON.stringify({
           recipient: "salah.elbouhali@gmail.com",
-          templateId: "d-6b9ed961cfdc44228824603584a8b740",
+          templateId: "d-b2d6e1304ba7400ca27756c7cf642afed-b2d6e1304ba7400ca27756c7cf642afe",
           dynamicTemplateData: {
             email: form.email,
             name: form.name,
@@ -148,7 +151,7 @@ const ModalNoSignUp = ({ onClose, visible, booking }) => {
             method: "post",
             body: JSON.stringify({
               recipient: form.email,
-              templateId: "d-57cbc54b5ac345beb1bfc6509381ccee",
+              templateId: "d-54ea2f11e4da48bb923afcc2e43b95fe",
               dynamicTemplateData: {
                 email: form.email,
                 name: form.name,
@@ -157,7 +160,20 @@ const ModalNoSignUp = ({ onClose, visible, booking }) => {
                 message: form.message,
                 operation: form.operation,
                 value: value,
-              },
+                booking: {
+                  date: booking.created,
+                  offerName: booking.offerName,
+                  surgeryName: booking.surgeries[0].surgeryName,
+                  surgeryCategoryName: booking.surgeries[0].surgeryCategoryName,
+                  startDate: booking.startDate,
+                  endDate: booking.endDate,
+                  hotelName: booking.hotelName,
+                  total: totalPrice,
+                  totalSelectedNights: booking.totalSelectedNights,
+                  room: booking.room,
+                  city: booking.city,
+              }
+            }
             }),
           });
         })
@@ -225,9 +241,11 @@ const ModalNoSignUp = ({ onClose, visible, booking }) => {
               <p className="flex flex-row items-start gap-2 lg:flex-row lg:items-center">
                 Vous souhaitez réaliser une{" "}
                 <span className=" ">
-                  <span className="font-bold	 ">
+                 
+                  <span className="font-bold ">
                     <BookingDataSpan
                       string={booking.surgeries[0].surgeryCategoryName}
+                      
                     />{" "}
                   </span>
                   sur{" "}
@@ -237,6 +255,7 @@ const ModalNoSignUp = ({ onClose, visible, booking }) => {
                 </span>
               </p>
               <p className="">
+              {console.log(booking)}
                 Votre voyage s&apos;étendra du{" "}
                 <span className="font-bold">
                   <BookingDataSpan>
@@ -328,8 +347,8 @@ const ModalNoSignUp = ({ onClose, visible, booking }) => {
             </div>
 
             <p className="pb-6 !mt-0 flex flex-col items-start gap-2 lg:flex-row lg:items-center">
-              Le prix tout compris de votre voyage sur-mesure est de{" "}
-              <span className="text-2xl rounded text-white px-4 py-2 mx-2 bg-shamrock ">
+              Le prix tout compris de votre voyage sur-mesure est de :{" "}
+              <span className="text-2xl rounded text-shamrock px-4 py-2 mx-2 bg-white ">
                 {formatPrice(
                   isChecked
                     ? totalPrice - userProfile.referalBalance

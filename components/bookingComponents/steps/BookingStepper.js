@@ -186,7 +186,7 @@ const handleOnClose= () => {
               )}
             </div>
           </form>
-          <ModalNoSignUp onClose={handleOnClose} visible={showModal} booking={booking}/>
+          <ModalNoSignUp onClose={handleOnClose} visible={showModal} />
         </div>
       </div>
     </BookingUi>

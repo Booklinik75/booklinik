@@ -44,15 +44,18 @@ const DatesSelectStep = ({
   };
   const onChange = (dates) => {
     const [start, end] = dates;
+    let numberOfNights
     setStartDate(start);
     setEndDate(end);
     DisabledMinrange(start);
     onCalendarStartDateChange(start);
-
-    function DisabledMinrange(data) {
+    onCalendarEndDateChange(end, numberOfNights);
+    function DisabledMinrange() {
       let celldisabled = [];
+     
       var newday = new Date(start);
-
+    
+      
       if (start) {
         for (let i = 1; i < parseInt(booking.minimumNights); i++) {
           celldisabled.push(new Date(newday.setDate(newday.getDate() + 1)));
@@ -61,21 +64,23 @@ const DatesSelectStep = ({
 
         PushData(celldisabled);
         if (end) {
+        
           let timeDiff = Math.abs(end.getTime() - start.getTime());
-          let numberOfNights = Math.ceil(timeDiff / (1000 * 3600 * 24));
-          onCalendarEndDateChange(end, numberOfNights);
+          numberOfNights= Math.ceil(timeDiff / (1000 * 3600 * 24));
+        
           RemoveDisabledDate();
+          return numberOfNights
         }
 
-        console.log(celldisabled + "cell disabled ==========date======");
-        console.log(new Date(start) + "date ==========newDate5start======");
+     
       }
     }
   };
 
   return (
     <div className="space-y-6">
-      {}
+      
+      { console.log(booking.totalSelectedNights+ "nombre total de date ==========date======")}
       <h1 className="text-2xl mb-6">
         Choisissez vos dates de voyage
         {booking.totalSelectedNights !== 0 &&
@@ -88,6 +93,8 @@ const DatesSelectStep = ({
         )}{" "}
       </h1>
       <p className="p-4 bg-green-50 border-green-400 text-shamrock border rounded w-full max-w-max">
+        {   
+        console.log( onCalendarEndDateChange+ "date ==========newDate5start======")}
         <span className="text-lg flex items-center gap-2">
           <AiFillInfoCircle /> Bon à savoir
         </span>
