@@ -130,7 +130,7 @@ const ModalNoSignUp = ({ onClose, visible }) => {
       fetch("/api/mail", {
         method: "post",
         body: JSON.stringify({
-          recipient: "salah.elbouhali@gmail.com",
+          recipient: "info@booklinik.com",
           templateId: "d-b2d6e1304ba7400ca27756c7cf642afed-b2d6e1304ba7400ca27756c7cf642afe",
           dynamicTemplateData: {
             email: form.email,
@@ -138,10 +138,21 @@ const ModalNoSignUp = ({ onClose, visible }) => {
             phoneNumber: form.phoneNumber,
             datetime: moment(new Date()).format("LLLL"),
             message: form.message,
-            path: router.asPath,
             operation: form.operation,
             value: value,
-          },
+            booking: {
+              date: booking.created,
+              offerName: booking.offerName,
+              surgeryName: booking.surgeries[0].surgeryName,
+              surgeryCategoryName: booking.surgeries[0].surgeryCategoryName,
+              startDate: booking.startDate,
+              endDate: booking.endDate,
+              hotelName: booking.hotelName,
+              total: totalPrice,
+              totalSelectedNights: booking.totalSelectedNights,
+              room: booking.room,
+              city: booking.city,
+          }}
         }),
       })
         .then(() => {
