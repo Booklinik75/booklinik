@@ -100,7 +100,7 @@ const FormStepper = ({
 
   });
 };
-const handleOnClose= () => {
+const handleOnClose= (e) => {
     
   setShowModal(false);
 
@@ -186,7 +186,7 @@ const handleOnClose= () => {
               )}
             </div>
           </form>
-          <ModalNoSignUp onClose={handleOnClose} visible={showModal} />
+          <ModalNoSignUp onClose={handleOnClose} visible={showModal} booking={booking} />
         </div>
       </div>
     </BookingUi>

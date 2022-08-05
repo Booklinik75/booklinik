@@ -369,7 +369,9 @@ const SignUp = () => {
           />
           
         </div>
-        <ModalNoSignUp onClose={handleOnClose} visible={showModal} />
+        <ModalNoSignUp onClose={handleOnClose} visible={showModal} booking={ JSON.parse(
+                  localStorage.getItem("bookBooklinik")
+                )} />
       </div>
       
     </div>

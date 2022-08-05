@@ -12,6 +12,7 @@ import { useRouter } from "next/router";
 import validateContactForm from "../utils/validateContactForm";
 import PhoneInput from "react-phone-input-2";
 import MD5 from "crypto-js/md5";
+import { useAuth } from "hooks/useAuth";
 import "react-phone-input-2/lib/style.css";
 
 import firebase from "../firebase/clientApp";
@@ -21,6 +22,7 @@ import errors from "utils/firebase_auth_errors";
 
 export const getServerSideProps = async (ctx) => {
   const auth = await checkAuth(ctx);
+  
   if (auth.props.userProfile) return serverRedirect("/dashboard");
 
   return {
@@ -30,7 +32,8 @@ export const getServerSideProps = async (ctx) => {
   };
 };
 
-const ModalNoSignUp = ({ onClose, visible }) => {
+const ModalNoSignUp = ({ onClose, visible,booking }) => {
+  const { signOut } = useAuth();
   const [form, setForm] = useState({
     email: "",
     message: "",
@@ -38,9 +41,7 @@ const ModalNoSignUp = ({ onClose, visible }) => {
     phoneNumber: "",
     value: "",
   });
-  const booking = JSON.parse(
-    localStorage.getItem("bookBooklinik")
-  );
+
 
   const totalPrice =
     Number(booking.surgeries[0].surgeryPrice) +
@@ -87,6 +88,7 @@ const ModalNoSignUp = ({ onClose, visible }) => {
                 .firestore()
                 .collection("bookingsNoConnexion")
                 .add({
+                  email:email,
                   user: user.uid,
                   status: message,
                   name: name,
@@ -127,17 +129,18 @@ const ModalNoSignUp = ({ onClose, visible }) => {
         .finally(() => {
           setLoading("idle");
         });
+        if (email){
       fetch("/api/mail", {
         method: "post",
         body: JSON.stringify({
-          recipient: "info@booklinik.com",
-          templateId: "d-b2d6e1304ba7400ca27756c7cf642afed-b2d6e1304ba7400ca27756c7cf642afe",
+          recipient: email,
+          templateId: "d-b2d6e1304ba7400ca27756c7cf642afe",
           dynamicTemplateData: {
-            email: form.email,
-            name: form.name,
-            phoneNumber: form.phoneNumber,
+            email: email,
+            name: name,
+            phoneNumber: phoneNumber,
             datetime: moment(new Date()).format("LLLL"),
-            message: form.message,
+            message: message,
             operation: form.operation,
             value: value,
             booking: {
@@ -156,19 +159,20 @@ const ModalNoSignUp = ({ onClose, visible }) => {
         }),
       })
         .then(() => {
-          setFormSent(true);
-
+          console.log("test email");
+        console.log(email)
+        setFormSent(true);
           fetch("/api/mail", {
             method: "post",
             body: JSON.stringify({
-              recipient: form.email,
-              templateId: "d-54ea2f11e4da48bb923afcc2e43b95fe",
+              recipient: email,
+              templateId: "d-54ea2f11e4da48bb923afcc2e43b95fee",
               dynamicTemplateData: {
-                email: form.email,
-                name: form.name,
-                phoneNumber: form.phoneNumber,
+                email: email,
+                name: name,
+                phoneNumber: phoneNumber,
                 datetime: moment(new Date()).format("LLLL"),
-                message: form.message,
+                message: message,
                 operation: form.operation,
                 value: value,
                 booking: {
@@ -184,17 +188,19 @@ const ModalNoSignUp = ({ onClose, visible }) => {
                   room: booking.room,
                   city: booking.city,
               }
-            }
-            }),
+            
+            }  }),
+          
           });
         })
         .catch((error) => {
           Sentry.captureException(error);
+          console.log(error+"erreurmail--")
         })
         .finally(() => {
           setIsSubmitting(false);
           setErrros({});
-        });
+        });}
     }
   };
 
@@ -218,17 +224,7 @@ const ModalNoSignUp = ({ onClose, visible }) => {
     });
   };
 
-  const signout = () => {
-    firebase
-      .auth()
-      .signOut()
-      .then(() => {
-        // Sign-out successful.
-      })
-      .catch((error) => {
-        // An error happened.
-      });
-  };
+  
   const getInitialState = () => {
     const value = "";
     return value;
@@ -486,10 +482,11 @@ const ModalNoSignUp = ({ onClose, visible }) => {
                     Votre message a bien été envoyé. Nous vous recontacterons
                     dans les plus brefs délais.
                   </p>
+                 
                   <button
                     type="submit"
                     className="float-right rounded bg-white bg-opacity-10 p-3 transition hover:bg-opacity-100 mx-5  hover:text-shamrock item-center"
-                    onClick={onClose}
+                    onClick={onClose&&signOut}
                   >
                     Fermer
                   </button>
