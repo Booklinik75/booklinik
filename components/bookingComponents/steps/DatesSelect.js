@@ -15,19 +15,12 @@ const DatesSelectStep = ({
   addDays,
   setNextStep,
 }) => {
-  const initialvalue = new Date();
+
   const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState(null);
   const [focusRange, setFocusRange] = useState([]);
   const [disabledDate, setDisabledDate] = useState(new Array());
-  const [dateCalendar, setDateCalendar] = useState([
-    {
-      startDate: new Date(),
-      endDate: new Date(),
-      key: "selection",
-    },
-  ]);
-  const test = {};
+
 
   useEffect(() => {
     // setNextStep to true when all inputs are filled
@@ -44,12 +37,14 @@ const DatesSelectStep = ({
   };
   const onChange = (dates) => {
     const [start, end] = dates;
+   
     let numberOfNights
     setStartDate(start);
-    setEndDate(end);
-    DisabledMinrange(start);
     onCalendarStartDateChange(start);
-    onCalendarEndDateChange(end, numberOfNights);
+    setEndDate(end);
+    DisabledMinrange();
+
+  
     function DisabledMinrange() {
       let celldisabled = [];
      
@@ -69,6 +64,7 @@ const DatesSelectStep = ({
           numberOfNights= Math.ceil(timeDiff / (1000 * 3600 * 24));
         
           RemoveDisabledDate();
+          onCalendarEndDateChange(end, numberOfNights);
           return numberOfNights
         }
 
@@ -94,7 +90,7 @@ const DatesSelectStep = ({
       </h1>
       <p className="p-4 bg-green-50 border-green-400 text-shamrock border rounded w-full max-w-max">
         {   
-        console.log( onCalendarEndDateChange+ "date ==========newDate5start======")}
+        console.log( booking.startDate+ "date ==========date start======")}
         <span className="text-lg flex items-center gap-2">
           <AiFillInfoCircle /> Bon à savoir
         </span>
@@ -108,6 +104,7 @@ const DatesSelectStep = ({
         .
       </p>
       <div className="space-y-2">
+        {console.log(onCalendarStartDateChange+":///////////////fonction date debut/////////////")}
         <div className="flex flex-col lg:flex-row gap-4">
           <div className="w-full lg:w-1/2 xl:w-1/3 space-y-3">
             <style>

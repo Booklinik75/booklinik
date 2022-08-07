@@ -169,7 +169,7 @@ const NewBookingContainer = ({
   };
 
   const onCalendarStartDateChange = (e) => {
-    console.log(e+'-------------------------f-index');
+    console.log(e+"=========test onCalendarStartDate=============");
     setBooking({
       ...booking,
       startDate: e,
