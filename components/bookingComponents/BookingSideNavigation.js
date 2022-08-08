@@ -31,7 +31,7 @@ const BookingSideNavigation = ({ step, bookingData }) => {
         </BookingStep>
       </div>
       <div className="flex flex-col gap-3">
-        <p className="text-xs text-gray-500 uppercase">2. Date de départ</p>
+        <p className="text-xs text-gray-500 uppercase">2. Dates</p>
         <BookingStep currentStep={step} stepId={1}>
           <FaCalendarAlt />
           <p>

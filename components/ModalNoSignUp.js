@@ -22,7 +22,7 @@ import errors from "utils/firebase_auth_errors";
 
 export const getServerSideProps = async (ctx) => {
   const auth = await checkAuth(ctx);
-  
+
   if (auth.props.userProfile) return serverRedirect("/dashboard");
 
   return {
@@ -133,7 +133,7 @@ const ModalNoSignUp = ({ onClose, visible,booking }) => {
       fetch("/api/mail", {
         method: "post",
         body: JSON.stringify({
-          recipient: email,
+          recipient: "info@booklinik.com",
           templateId: "d-b2d6e1304ba7400ca27756c7cf642afe",
           dynamicTemplateData: {
             email: email,
@@ -188,9 +188,9 @@ const ModalNoSignUp = ({ onClose, visible,booking }) => {
                   room: booking.room,
                   city: booking.city,
               }
-            
+
             }  }),
-          
+
           });
         })
         .catch((error) => {
@@ -224,7 +224,7 @@ const ModalNoSignUp = ({ onClose, visible,booking }) => {
     });
   };
 
-  
+
   const getInitialState = () => {
     const value = "";
     return value;
@@ -248,11 +248,11 @@ const ModalNoSignUp = ({ onClose, visible,booking }) => {
               <p className="flex flex-row items-start gap-2 lg:flex-row lg:items-center">
                 Vous souhaitez réaliser une{" "}
                 <span className=" ">
-                 
+
                   <span className="font-bold ">
                     <BookingDataSpan
                       string={booking.surgeries[0].surgeryCategoryName}
-                      
+
                     />{" "}
                   </span>
                   sur{" "}
@@ -482,7 +482,7 @@ const ModalNoSignUp = ({ onClose, visible,booking }) => {
                     Votre message a bien été envoyé. Nous vous recontacterons
                     dans les plus brefs délais.
                   </p>
-                 
+
                   <button
                     type="submit"
                     className="float-right rounded bg-white bg-opacity-10 p-3 transition hover:bg-opacity-100 mx-5  hover:text-shamrock item-center"

@@ -37,20 +37,20 @@ const DatesSelectStep = ({
   };
   const onChange = (dates) => {
     const [start, end] = dates;
-   
+
     let numberOfNights
     setStartDate(start);
     onCalendarStartDateChange(start);
     setEndDate(end);
     DisabledMinrange();
 
-  
+
     function DisabledMinrange() {
       let celldisabled = [];
-     
+
       var newday = new Date(start);
-    
-      
+
+
       if (start) {
         for (let i = 1; i < parseInt(booking.minimumNights); i++) {
           celldisabled.push(new Date(newday.setDate(newday.getDate() + 1)));
@@ -59,23 +59,23 @@ const DatesSelectStep = ({
 
         PushData(celldisabled);
         if (end) {
-        
+
           let timeDiff = Math.abs(end.getTime() - start.getTime());
           numberOfNights= Math.ceil(timeDiff / (1000 * 3600 * 24));
-        
+
           RemoveDisabledDate();
           onCalendarEndDateChange(end, numberOfNights);
           return numberOfNights
         }
 
-     
+
       }
     }
   };
 
   return (
     <div className="space-y-6">
-      
+
       { console.log(booking.totalSelectedNights+ "nombre total de date ==========date======")}
       <h1 className="text-2xl mb-6">
         Choisissez vos dates de voyage
@@ -89,7 +89,7 @@ const DatesSelectStep = ({
         )}{" "}
       </h1>
       <p className="p-4 bg-green-50 border-green-400 text-shamrock border rounded w-full max-w-max">
-        {   
+        {
         console.log( booking.startDate+ "date ==========date start======")}
         <span className="text-lg flex items-center gap-2">
           <AiFillInfoCircle /> Bon à savoir
@@ -141,7 +141,7 @@ const DatesSelectStep = ({
 
       }`}
             </style>
-            <h2 className="text-xs uppercase text-gray-500">Date de départ</h2>
+            <h2 className="text-xs uppercase text-gray-500">Dates</h2>
             <DatePicker
               moveRangeOnFirstSelection={true}
               focusPlage={setFocusRange}
