@@ -188,7 +188,6 @@ const ModalNoSignUp = ({ onClose, visible,booking }) => {
                   room: booking.room,
                   city: booking.city,
               }
-
             }  }),
 
           });
