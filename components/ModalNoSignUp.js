@@ -166,7 +166,7 @@ const ModalNoSignUp = ({ onClose, visible,booking }) => {
             method: "post",
             body: JSON.stringify({
               recipient: email,
-              templateId: "d-54ea2f11e4da48bb923afcc2e43b95fee",
+              templateId: "d-54ea2f11e4da48bb923afcc2e43b95fe",
               dynamicTemplateData: {
                 email: email,
                 name: name,
