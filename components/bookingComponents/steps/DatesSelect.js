@@ -24,7 +24,9 @@ const DatesSelectStep = ({
 
   useEffect(() => {
     // setNextStep to true when all inputs are filled
-    if (startDate && endDate !== startDate) {
+    if ( booking.startDate &&
+      booking.endDate &&
+      booking.endDate !== booking.startDate) {
       setNextStep(true);
     }
   }, [booking]);
@@ -104,7 +106,6 @@ const DatesSelectStep = ({
         .
       </p>
       <div className="space-y-2">
-        {console.log(onCalendarStartDateChange+":///////////////fonction date debut/////////////")}
         <div className="flex flex-col lg:flex-row gap-4">
           <div className="w-full lg:w-1/2 xl:w-1/3 space-y-3">
             <style>
