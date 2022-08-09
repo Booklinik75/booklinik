@@ -33,6 +33,7 @@ export const getServerSideProps = async (ctx) => {
 };
 
 const ModalNoSignUp = ({ onClose, visible,booking }) => {
+
   const { signOut } = useAuth();
   const [form, setForm] = useState({
     email: "",

@@ -180,6 +180,14 @@ const SignUp = () => {
       });
   }
 
+  const doBookWithLogin=() => {
+    router.push("/login");
+    localStorage.setItem("bookBooklinik",
+      localStorage.getItem("bookBooklinik")
+    );
+    return;
+  }
+
   const handleChange = (e) => {
     updateFormData({
       ...formData,
@@ -218,10 +226,11 @@ const SignUp = () => {
         </Link>
 
         <div className="flex flex-row gap-1">
+          {console.log(router.query.i)}
           <p>Vous avez déjà un compte ?</p>
-          <Link href="/login">
-            <a className="text-gray-700 hover:underline">Se connecter</a>
-          </Link>
+           
+            <a className="text-gray-700 hover:underline" onClick={doBookWithLogin}>Se connecter</a>
+          
         </div>
       </div>
       <div className="grid grid-cols-10 h-full">
