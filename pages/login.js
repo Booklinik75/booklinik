@@ -55,7 +55,6 @@ const Login = () => {
         const userData = firestoreUserObject.data();
      
        
-
         firebase
           .firestore()
           .collection("users")
