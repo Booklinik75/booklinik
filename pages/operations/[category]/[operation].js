@@ -79,7 +79,7 @@ const OperationPage = ({ surgeryData, categoryPhoto, relatedSurgeries }) => {
             <Image
               src={surgeryData.data.photoUrl || categoryPhoto}
               layout="fill"
-              objectFit="cover"
+              objectFit="contain"
               objectPosition="center center"
               alt="TBD"
             />{" "}
