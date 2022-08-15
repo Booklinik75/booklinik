@@ -398,3 +398,23 @@ export async function getRelatedSurgeries(categoryName) {
     return relatedSurgeries;
   } catch (error) {}
 }
+
+export async function getDoctorSurgeries(Name) {
+  try {
+    const doctorSurgeries = [];
+    const snapshot = await firebase
+      .firestore()
+      .collection("surgeries")
+      .where("name", "==", Name)
+      .get();
+
+    for (let i = 0; i < 4; i++) {
+      if (snapshot.docs[i]) {
+        doctorSurgeries.push(snapshot.docs[i].data());
+      }
+    }
+
+    return doctorSurgeries;
+  } catch (error) {}
+}
+

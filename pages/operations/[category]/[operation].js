@@ -13,6 +13,7 @@ import {
   getRelatedSurgeries,
   getSurgeries,
   getSurgeryData,
+  getDoctorSurgeries,
 } from "../../../utils/ServerHelpers";
 
 export const getStaticPaths = async () => {
@@ -43,18 +44,20 @@ export const getStaticProps = async (context) => {
   const categoryData = await getOperationData(category);
   const categoryPhoto = await getBackEndAsset(categoryData.data.photo);
   const relatedSurgeries = await getRelatedSurgeries(surgeryData.data.category);
+  const doctorSurgeries= await getDoctorSurgeries(surgeryData.data.name)
 
   return {
     props: {
       surgeryData,
       categoryPhoto,
       relatedSurgeries,
+      doctorSurgeries
     },
     revalidate: 120,
   };
 };
 
-const OperationPage = ({ surgeryData, categoryPhoto, relatedSurgeries }) => {
+const OperationPage = ({ surgeryData, categoryPhoto, relatedSurgeries, doctorSurgeries }) => {
   return (
     <div className="space-y-6">
       <Head>
@@ -79,7 +82,7 @@ const OperationPage = ({ surgeryData, categoryPhoto, relatedSurgeries }) => {
             <Image
               src={surgeryData.data.photoUrl || categoryPhoto}
               layout="fill"
-              objectFit="contain"
+              objectFit="cover"
               objectPosition="center center"
               alt="TBD"
             />{" "}
@@ -106,8 +109,32 @@ const OperationPage = ({ surgeryData, categoryPhoto, relatedSurgeries }) => {
               );
             })}
           </div>
+         
         </div>
+        {doctorSurgeries[0].doctor?(
+       
+        <div className="space-y-6">
+          <h2 className="text-2xl">Médecin</h2>
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+            {doctorSurgeries[0].doctor.map((surgery) => {
+              return (
+                <RelatedElement
+                  title={surgery.name}
+                  target={`/operations/${surgery.category}/${surgery.slug}`}
+                  key={surgery.id}
+                  picture={surgery.photoUrl}
+              //  picture={surgeryData.data.photoUrl || categoryPhoto} // meme photo
+
+                />
+              );
+            })}
+          </div>
+        </div>
+     ) :(
+      ""
+    )}
       </div>
+     
       <ContactHelper />
       <Footer />
     </div>

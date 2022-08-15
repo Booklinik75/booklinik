@@ -53,6 +53,7 @@ const EditSurgery = ({
     excerpt: surgeryData.data.excerpt,
     startingPrice: surgeryData.data.startingPrice,
     minimumNights: surgeryData.data.minimumNights,
+    doctor:""
   });
   const [isLoading, setLoading] = useState("idle");
   const [inputList, setInputList] = useState(surgeryData.data.requiredPictures);
@@ -60,7 +61,9 @@ const EditSurgery = ({
   const router = useRouter();
   const [mdValue, setMdValue] = useState(surgeryData.data.descriptionBody);
   const [isUploading, setIsUploading] = useState(false);
+  const [isUploadingDoctorUrl, setIsUploadingDoctorUrl] = useState(false);
   const [photoUrl, setphotoUrl] = useState(surgeryData.data.photoUrl);
+  const [photoDoctorUrl, setPhotoDoctorUrl] = useState();
 
   const handleChange = (e) => {
     if (e.target.name === "name") {
@@ -146,6 +149,32 @@ const EditSurgery = ({
     );
   };
 
+  const handlePhotoDoctorUpload = (e) => {
+    const file = e.target.files[0];
+    const storageRef = firebase.storage().ref();
+    const uploadTask = storageRef.child(`doctor/${file.name}`).put(file);
+
+    // upload file then store it in its state
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        setIsUploadingDoctorUrl(true);
+      },
+      (error) => {
+        console.log(error);
+      },
+      () => {
+        setIsUploadingDoctorUrl(false);
+        storageRef
+          .child(`doctor/${file.name}`)
+          .getDownloadURL()
+          .then((url) => {
+          setPhotoDoctorUrl(url);
+          });
+      }
+    );
+  };
+
   async function doAdd() {
     setLoading("loading");
 
@@ -161,24 +190,67 @@ const EditSurgery = ({
       descriptionBody: mdValue,
       minimumNights: parseInt(form.minimumNights),
       photoUrl: photoUrl,
-    };
+     
+     
+        };
+       
+  
+      
+      var firestoreUserObject=   await   firebase
+        .firestore()
+        .collection("surgeries")
+        .doc(surgeryData.id)
+        .get()
+        console.log(firestoreUserObject.data())
+        
+        if(!firestoreUserObject.data().doctor){
+         let doctorfield={doctor:[{
+          name:form.doctor,
+        photoUrl:photoDoctorUrl}]}
+          let dataCollection={...docData,...doctorfield}
+          firebase
+          .firestore()
+          .collection("surgeries")
+          .doc(surgeryData.id)
+          .update(dataCollection)
+            .catch((error) => {})
+            .finally(() => {
+              setLoading("done");
+              setTimeout(() => {
+                setLoading("idle");
+              }, 1000);
+              router.push(`/dashboard/admin/surgeries/edit/${form.slug}`);
+            }); 
+            return;
+        }
 
-    firebase
-      .firestore()
-      .collection("surgeries")
-      .doc(surgeryData.id)
-      .set(docData)
-      .then((docRef) => {})
-      .catch((error) => {})
+        else {
+        let objectFiestoreDoctor=Object.values(firestoreUserObject.data().doctor)
+        let collectionvalue={...docData,...{doctor:firebase.firestore.FieldValue.arrayUnion(...objectFiestoreDoctor,{
+          name:form.doctor,
+          photoUrl:photoDoctorUrl})}}
+
+        firebase
+        .firestore()
+        .collection("surgeries")
+        .doc(surgeryData.id)
+        .update(collectionvalue)
+        .then((docRef) => {})
+      
+      
+        .catch((error) => {consolz.log(error+"fffffffffffffff")})
       .finally(() => {
         setLoading("done");
         setTimeout(() => {
           setLoading("idle");
         }, 1000);
         router.push(`/dashboard/admin/surgeries/edit/${form.slug}`);
-      });
+      }); 
+    
+    }
+    
+  
   }
-
   return (
     <DashboardUi userProfile={auth.props.userProfile} token={auth.props.token}>
       <div className="col-span-10 space-y-4">
@@ -278,6 +350,25 @@ const EditSurgery = ({
             value={form.category}
             onChange={handleChange}
             multiple={false}
+          />
+               <DashboardInput
+            type="text"
+            name="doctor"
+            value={form.doctor}
+            onChange={handleChange}
+            disabled={false}
+            label="Medecin"
+            required={true}
+          />
+
+<DashboardInput
+            type="file"
+            name="photoDoctor"
+            value={form.photoDoctor}
+            onChange={handlePhotoDoctorUpload}
+            disabled={false}
+            label="Photo"
+            required={false}
           />
           <div>
             <label className="text-xs uppercase text-gray-500 w-full">

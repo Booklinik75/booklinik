@@ -64,7 +64,7 @@ const SignUp = () => {
       setLoading("idle");
       return setError("Le numéro de téléphone ne doit pas être vide");
     }
-
+    
     firebase
       .auth()
       .createUserWithEmailAndPassword(email, password)

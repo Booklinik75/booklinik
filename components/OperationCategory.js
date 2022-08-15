@@ -26,7 +26,7 @@ const OpCategory = ({ operation, surgeries }) => {
                   width={1000}
                   height={400}
                   objectFit="cover"
-                  className="rounded-xl "
+                  className="rounded-xl"
                   alt="TBD"
                 />
               </div>

@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import "../styles/globals.css";
 import { AuthProvider } from "../utils/UserContext";
 import { BookProvider } from "utils/bookContext";
-
+import "@uiw/react-md-editor/dist/markdown-editor.css";
+import "@uiw/react-markdown-preview/dist/markdown.css";
 import { ToastContainer } from "react-toastify";
 import Head from "next/head";
 import "../styles/calendar.css";
