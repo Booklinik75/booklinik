@@ -61,6 +61,7 @@ const EditSurgery = ({
   const router = useRouter();
   const [mdValue, setMdValue] = useState(surgeryData.data.descriptionBody);
   const [isUploading, setIsUploading] = useState(false);
+  const [isDoctorRequired, setIsDoctorRequired] = useState(false);
   const [isUploadingDoctorUrl, setIsUploadingDoctorUrl] = useState(false);
   const [photoUrl, setphotoUrl] = useState(surgeryData.data.photoUrl);
   const [photoDoctorUrl, setPhotoDoctorUrl] = useState();
@@ -68,6 +69,9 @@ const EditSurgery = ({
   const handleChange = (e) => {
     if (e.target.name === "name") {
       form.slug = slugify(e.target.value, { lower: true });
+    }
+    if (e.target.name === "doctor") {
+      setIsDoctorRequired(true)
     }
 
     setFormData({
@@ -144,6 +148,7 @@ const EditSurgery = ({
           .getDownloadURL()
           .then((url) => {
             setphotoUrl(url);
+            setIsDoctorRequired(true)
           });
       }
     );
@@ -194,20 +199,23 @@ const EditSurgery = ({
      
         };
        
-  
+   //get firebase surgeries doc
       
       var firestoreUserObject=   await   firebase
         .firestore()
         .collection("surgeries")
         .doc(surgeryData.id)
         .get()
-        console.log(firestoreUserObject.data())
-        
+
+         //condition if doctor name or photo exist 
         if(!firestoreUserObject.data().doctor){
          let doctorfield={doctor:[{
           name:form.doctor,
         photoUrl:photoDoctorUrl}]}
-          let dataCollection={...docData,...doctorfield}
+          let dataCollection
+          photoDoctorUrl?dataCollection={...docData,...doctorfield}:
+          dataCollection={docData}
+          console.log(dataCollection)
           firebase
           .firestore()
           .collection("surgeries")
@@ -225,10 +233,14 @@ const EditSurgery = ({
         }
 
         else {
+          //IF form doctor and photo exists
+          let collectionvalue
         let objectFiestoreDoctor=Object.values(firestoreUserObject.data().doctor)
-        let collectionvalue={...docData,...{doctor:firebase.firestore.FieldValue.arrayUnion(...objectFiestoreDoctor,{
+        form.doctor || photoDoctorUrl ?
+        collectionvalue ={...docData,...{doctor:firebase.firestore.FieldValue.arrayUnion(...objectFiestoreDoctor,{
           name:form.doctor,
-          photoUrl:photoDoctorUrl})}}
+          photoUrl:photoDoctorUrl})}}:
+          collectionvalue ={...docData,...{doctor:firebase.firestore.FieldValue.arrayUnion(...objectFiestoreDoctor)}}
 
         firebase
         .firestore()
@@ -357,8 +369,9 @@ const EditSurgery = ({
             value={form.doctor}
             onChange={handleChange}
             disabled={false}
-            label="Medecin"
-            required={true}
+            label="Médecin"
+            required={isDoctorRequired}
+            
           />
 
 <DashboardInput
@@ -367,8 +380,8 @@ const EditSurgery = ({
             value={form.photoDoctor}
             onChange={handlePhotoDoctorUpload}
             disabled={false}
-            label="Photo"
-            required={false}
+            label="Photo Médecin"
+            required={isDoctorRequired}
           />
           <div>
             <label className="text-xs uppercase text-gray-500 w-full">

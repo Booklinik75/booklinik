@@ -62,12 +62,7 @@ export const getStaticProps = async (context) => {
 };
 
 const OperationPage = ({ surgeryData, categoryPhoto, relatedSurgeries, doctorSurgeries,beforeAfter }) => {
-  const FIRST_IMAGE = {
-    imageUrl:doctorSurgeries[0].doctor[0].photoUrl
-  }
-  const Second_IMAGE = {
-    imageUrl:doctorSurgeries[0].doctor[1].photoUrl
-  }
+
   return (
     <div className="space-y-6">
       <Head>
@@ -125,6 +120,7 @@ const OperationPage = ({ surgeryData, categoryPhoto, relatedSurgeries, doctorSur
         {doctorSurgeries[0].doctor?(
        
         <div className="space-y-6">
+          {console.log(beforeAfter)}
           <h2 className="text-2xl">Médecin</h2>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
             {doctorSurgeries[0].doctor.map((surgery) => {
@@ -141,11 +137,21 @@ const OperationPage = ({ surgeryData, categoryPhoto, relatedSurgeries, doctorSur
             })}
           </div>
           
-          <div className="space-y-6">
+       
+        
+        </div>
+        
+        
+
+     ) :(
+      ""
+    )}
+     {beforeAfter.length>0?(
+       <div className="space-y-6">
           <h2 className="text-2xl">Avant/aprés</h2>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
           {beforeAfter.map((slide) => {
-          console.log(slide.rightimage)
+          console.log(beforeAfter.length+4)
               return (
            
                   <div className="col-span-1 rounded relative h-60 transition shadow hover:shadow-lg group">
@@ -161,17 +167,14 @@ const OperationPage = ({ surgeryData, categoryPhoto, relatedSurgeries, doctorSur
         
            )
           })}
+          
           </div>
           
+          
         </div>
-        
-        </div>
-        
-        
-
-     ) :(
-      ""
-    )}
+         ) :(
+          ""
+        )}
       </div>
      
       <ContactHelper />
