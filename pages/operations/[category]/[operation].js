@@ -6,6 +6,7 @@ import Head from "next/head";
 import Image from "next/image";
 import MDEditor from "@uiw/react-md-editor";
 import RelatedElement from "../../../components/RelatedSuggestionElement";
+import ReactCompareImage from 'react-compare-image';
 import {
   getBackEndAsset,
   getOperationCategories,
@@ -14,6 +15,7 @@ import {
   getSurgeries,
   getSurgeryData,
   getDoctorSurgeries,
+  getAfterBeforeSurgeries
 } from "../../../utils/ServerHelpers";
 
 export const getStaticPaths = async () => {
@@ -45,19 +47,27 @@ export const getStaticProps = async (context) => {
   const categoryPhoto = await getBackEndAsset(categoryData.data.photo);
   const relatedSurgeries = await getRelatedSurgeries(surgeryData.data.category);
   const doctorSurgeries= await getDoctorSurgeries(surgeryData.data.name)
+  const beforeAfter=await getAfterBeforeSurgeries(surgeryData.data.slug)
 
   return {
     props: {
       surgeryData,
       categoryPhoto,
       relatedSurgeries,
-      doctorSurgeries
+      doctorSurgeries,
+      beforeAfter
     },
     revalidate: 120,
   };
 };
 
-const OperationPage = ({ surgeryData, categoryPhoto, relatedSurgeries, doctorSurgeries }) => {
+const OperationPage = ({ surgeryData, categoryPhoto, relatedSurgeries, doctorSurgeries,beforeAfter }) => {
+  const FIRST_IMAGE = {
+    imageUrl:doctorSurgeries[0].doctor[0].photoUrl
+  }
+  const Second_IMAGE = {
+    imageUrl:doctorSurgeries[0].doctor[1].photoUrl
+  }
   return (
     <div className="space-y-6">
       <Head>
@@ -97,6 +107,7 @@ const OperationPage = ({ surgeryData, categoryPhoto, relatedSurgeries, doctorSur
           <h2 className="text-2xl">Opérations similaires</h2>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
             {relatedSurgeries.map((surgery) => {
+               console.log(surgery)
               return (
                 <RelatedElement
                   title={surgery.name}
@@ -129,7 +140,35 @@ const OperationPage = ({ surgeryData, categoryPhoto, relatedSurgeries, doctorSur
               );
             })}
           </div>
+          
+          <div className="space-y-6">
+          <h2 className="text-2xl">Avant/aprés</h2>
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+          {beforeAfter.map((slide) => {
+          console.log(slide.rightimage)
+              return (
+           
+                  <div className="col-span-1 rounded relative h-60 transition shadow hover:shadow-lg group">
+                   <ReactCompareImage 
+                  key={slide.title}
+                  leftImage={slide.leftimage}
+                  rightImage={slide.rightimage} />
+                   
+                  </div>
+           
+         
+         
+        
+           )
+          })}
+          </div>
+          
         </div>
+        
+        </div>
+        
+        
+
      ) :(
       ""
     )}
