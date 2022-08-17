@@ -74,7 +74,7 @@ const OperationPage = ({ surgeryData, categoryPhoto, relatedSurgeries, doctorSur
           <div className="col-span-3 lg:col-span-1 bg-gray-100 p-14 space-y-4">
             <h1 className="text-5xl">{surgeryData.data.name}</h1>
             <p className="text-shamrock">
-              À partir de {surgeryData.data.startingPrice}€
+              À partir de {surgeryData.data.startingPrice} €
             </p>
             <pre>{surgeryData.data.excerpt} </pre>
             <Link href="/book" passHref={true}>
