@@ -146,35 +146,18 @@ const OperationPage = ({ surgeryData, categoryPhoto, relatedSurgeries, doctorSur
      ) :(
       ""
     )}
-     {beforeAfter.length>0?(
+   
        <div className="space-y-6">
           <h2 className="text-2xl">Avant/aprés</h2>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-          {beforeAfter.map((slide) => {
-          console.log(beforeAfter.length+4)
-              return (
-           
-                  <div className="col-span-1 rounded relative h-60 transition shadow hover:shadow-lg group">
-                   <ReactCompareImage 
-                  key={slide.title}
-                  leftImage={slide.leftimage}
-                  rightImage={slide.rightimage} />
-                   
-                  </div>
-           
-         
-         
-        
-           )
-          })}
+          
+             
           
           </div>
           
           
         </div>
-         ) :(
-          ""
-        )}
+         
       </div>
      
       <ContactHelper />
