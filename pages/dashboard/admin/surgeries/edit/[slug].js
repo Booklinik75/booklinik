@@ -53,7 +53,8 @@ const EditSurgery = ({
     excerpt: surgeryData.data.excerpt,
     startingPrice: surgeryData.data.startingPrice,
     minimumNights: surgeryData.data.minimumNights,
-    doctor:""
+    doctor: surgeryData.data.doctor,
+    beforeafter: surgeryData.data.beforeafter
   });
   const [isLoading, setLoading] = useState("idle");
   const [inputList, setInputList] = useState(surgeryData.data.requiredPictures);
@@ -61,25 +62,47 @@ const EditSurgery = ({
   const router = useRouter();
   const [mdValue, setMdValue] = useState(surgeryData.data.descriptionBody);
   const [isUploading, setIsUploading] = useState(false);
-  const [isDoctorRequired, setIsDoctorRequired] = useState(false);
   const [isUploadingDoctorUrl, setIsUploadingDoctorUrl] = useState(false);
   const [photoUrl, setphotoUrl] = useState(surgeryData.data.photoUrl);
-  const [photoDoctorUrl, setPhotoDoctorUrl] = useState();
+  const [photoBeforeAfterUrl, setPhotoBeforeAfterUrl] = useState([]);
+  const [photoDoctorUrl, setPhotoDoctorUrl] = useState(
+    {
+      photodoc1: "",
+      photodoc2: "",
+      photodoc3: "",
+      photodoc4: "",
+    }
+
+    
+ );
 
   const handleChange = (e) => {
-    if (e.target.name === "name") {
-      form.slug = slugify(e.target.value, { lower: true });
-    }
-    if (e.target.name === "doctor") {
-      setIsDoctorRequired(true)
-    }
-
-    setFormData({
-      ...form,
-
-      // Trimming any whitespace
-      [e.target.name]: e.target.value,
-    });
+     if (e.target.name.startsWith('doctor')) {
+      
+       setFormData(
+      {...form,doctor:
+         form.doctor.map((doc)=>
+         doc.id===e.target.name?
+         {...doc,name:e.target.value}:{...doc}       
+          )
+         }
+ 
+       
+        )
+         return
+       }
+     if (e.target.name === "name") {
+     
+        form.slug = slugify(e.target.value, { lower: true });
+       
+      }
+      setFormData({
+        ...form,
+  
+        // Trimming any whitespace
+        [e.target.name]: e.target.value,
+      });
+   
   };
 
   const handleCountries = (e) => {
@@ -129,9 +152,10 @@ const EditSurgery = ({
 
   const handlePhotoUpload = (e) => {
     const file = e.target.files[0];
+  
     const storageRef = firebase.storage().ref();
     const uploadTask = storageRef.child(`surgery/${file.name}`).put(file);
-
+  
     // upload file then store it in its state
     uploadTask.on(
       "state_changed",
@@ -148,18 +172,22 @@ const EditSurgery = ({
           .getDownloadURL()
           .then((url) => {
             setphotoUrl(url);
-            setIsDoctorRequired(true)
+
           });
       }
     );
   };
 
   const handlePhotoDoctorUpload = (e) => {
-    const file = e.target.files[0];
+    const {name,files}=e.target
+   
+   
     const storageRef = firebase.storage().ref();
-    const uploadTask = storageRef.child(`doctor/${file.name}`).put(file);
+     
 
-    // upload file then store it in its state
+    
+    const uploadTask = storageRef.child(`doctor/${files[0].name}`).put(files);
+       // upload file then store it in its state
     uploadTask.on(
       "state_changed",
       (snapshot) => {
@@ -171,19 +199,55 @@ const EditSurgery = ({
       () => {
         setIsUploadingDoctorUrl(false);
         storageRef
-          .child(`doctor/${file.name}`)
+          .child(`doctor/${files[0].name}`)
           .getDownloadURL()
           .then((url) => {
-          setPhotoDoctorUrl(url);
+      
+            setPhotoDoctorUrl({...photoDoctorUrl,[name]:url});
+          });
+      }
+    );   
+  };
+
+  const handlePhotoAfterBefore = (e) => {
+  
+  
+    for(let i=0;i<e.target.files.length;i++){
+      const file = e.target.files[i];
+      file["id"]=Math.random()
+      
+      console.log(file)
+    const storageRef = firebase.storage().ref();
+    const uploadTask = storageRef.child(`before_after/${file.name}`).put(file);
+  
+    // upload file then store it in its state
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        setIsUploading(true);
+      },
+      (error) => {
+        console.log(error);
+      },
+      () => {
+        setIsUploading(false);
+        storageRef
+          .child(`before_after/${file.name}`)
+          .getDownloadURL()
+          .then((url) => {
+            setPhotoBeforeAfterUrl((prevState)=>[...prevState,url]);
+     
           });
       }
     );
+  }
+  
   };
 
   async function doAdd() {
     setLoading("loading");
-
-    let docData = {
+   
+    let Data = {
       slug: form.slug,
       name: form.name,
       requiredPictures: inputList,
@@ -195,32 +259,37 @@ const EditSurgery = ({
       descriptionBody: mdValue,
       minimumNights: parseInt(form.minimumNights),
       photoUrl: photoUrl,
-     
+      doctor:[{
+        name:form.doctor[0].name,
+        photoUrl:photoDoctorUrl.photodoc1
+      },
+      {
+        name:form.doctor[1].name,
+        photoUrl:photoDoctorUrl.photodoc2
+      },
+      {
+        name:form.doctor[2].name,
+        photoUrl:photoDoctorUrl.photodoc3
+      },
+      {
+        name:form.doctor[3].name,
+        photoUrl:photoDoctorUrl.photodoc4
+      }
+
+    ],beforeafter:[...form.beforeafter,{
+       slug:form.slug,
+       id:Math.random(),
+       leftimage:photoBeforeAfterUrl[0],
+       rightimage:photoBeforeAfterUrl[1]
+    }]
      
         };
        
-   //get firebase surgeries doc
-      
-      var firestoreUserObject=   await   firebase
-        .firestore()
-        .collection("surgeries")
-        .doc(surgeryData.id)
-        .get()
-
-         //condition if doctor name or photo exist 
-        if(!firestoreUserObject.data().doctor){
-         let doctorfield={doctor:[{
-          name:form.doctor,
-        photoUrl:photoDoctorUrl}]}
-          let dataCollection
-          photoDoctorUrl?dataCollection={...docData,...doctorfield}:
-          dataCollection={docData}
-          console.log(dataCollection)
           firebase
           .firestore()
           .collection("surgeries")
           .doc(surgeryData.id)
-          .update(dataCollection)
+          .update(Data)
             .catch((error) => {})
             .finally(() => {
               setLoading("done");
@@ -229,43 +298,18 @@ const EditSurgery = ({
               }, 1000);
               router.push(`/dashboard/admin/surgeries/edit/${form.slug}`);
             }); 
-            return;
-        }
-
-        else {
-          //IF form doctor and photo exists
-          let collectionvalue
-        let objectFiestoreDoctor=Object.values(firestoreUserObject.data().doctor)
-        form.doctor || photoDoctorUrl ?
-        collectionvalue ={...docData,...{doctor:firebase.firestore.FieldValue.arrayUnion(...objectFiestoreDoctor,{
-          name:form.doctor,
-          photoUrl:photoDoctorUrl})}}:
-          collectionvalue ={...docData,...{doctor:firebase.firestore.FieldValue.arrayUnion(...objectFiestoreDoctor)}}
-
-        firebase
-        .firestore()
-        .collection("surgeries")
-        .doc(surgeryData.id)
-        .update(collectionvalue)
-        .then((docRef) => {})
-      
-      
-        .catch((error) => {consolz.log(error+"fffffffffffffff")})
-      .finally(() => {
-        setLoading("done");
-        setTimeout(() => {
-          setLoading("idle");
-        }, 1000);
-        router.push(`/dashboard/admin/surgeries/edit/${form.slug}`);
-      }); 
+          
+     
     
     }
     
   
-  }
+
   return (
     <DashboardUi userProfile={auth.props.userProfile} token={auth.props.token}>
       <div className="col-span-10 space-y-4">
+    
+ {console.log(form)}
         <div className="flex justify-between items-center">
           <div className="space-y-3">
             <div className="flex gap-2">
@@ -365,23 +409,95 @@ const EditSurgery = ({
           />
                <DashboardInput
             type="text"
-            name="doctor"
-            value={form.doctor}
+            name="doctor1"
+            value={form.doctor?form.doctor[0].name:""}
             onChange={handleChange}
             disabled={false}
-            label="Médecin"
-            required={isDoctorRequired}
-            
+            label="Nom Médecin n1"
+            required={false}
+       
           />
 
-<DashboardInput
+          <DashboardInput
             type="file"
-            name="photoDoctor"
+            name="photodoc1"
             value={form.photoDoctor}
             onChange={handlePhotoDoctorUpload}
             disabled={false}
-            label="Photo Médecin"
-            required={isDoctorRequired}
+            label="Photo Médecin n1"
+            required={false}
+          />
+          <DashboardInput
+            type="text"
+            name="doctor2"
+            value={form.doctor?form.doctor[1].name:""}
+            onChange={handleChange}
+            disabled={false}
+            label="Nom Médecin n2"
+            required={false}
+            
+          />
+
+          <DashboardInput
+            type="file"
+            name="photodoc2"
+            value={form.photoDoctor}
+            onChange={handlePhotoDoctorUpload}
+            disabled={false}
+            label="Photo Médecin n2"
+            required={false}
+          />
+          <DashboardInput
+            type="text"
+            name="doctor3"
+            value={form.doctor?form.doctor[2].name:""}
+            onChange={handleChange}
+            disabled={false}
+            label="Nom Médecin n3"
+            required={false}
+            
+          />
+
+          <DashboardInput
+            type="file"
+            name="photodoc3"
+            value={form.photoDoctor}
+            onChange={handlePhotoDoctorUpload}
+            disabled={false}
+            label="Photo Médecin n3"
+            required={false}
+          />
+          <DashboardInput
+            type="text"
+            name="doctor4"
+            value={form.doctor?form.doctor[3].name:""}
+            onChange={handleChange}
+            disabled={false}
+            label="Nom Médecin n4"
+            required={false}
+            
+          />
+
+          <DashboardInput
+            type="file"
+            name="photodoc4"
+            value={form.photoDoctor}
+            onChange={handlePhotoDoctorUpload}
+            disabled={false}
+            label="Photo Médecin n4"
+            required={false}
+          />
+
+        <DashboardInput
+            type="file"
+            name="beforeafter"
+            value={form.photoBeforeAfter}
+            onChange={handlePhotoAfterBefore}
+            disabled={false}
+            label="Avant/Aprés"
+            required={false}
+            multiple
+            
           />
           <div>
             <label className="text-xs uppercase text-gray-500 w-full">

@@ -109,7 +109,7 @@ const OperationPage = ({ surgeryData, categoryPhoto, relatedSurgeries, doctorSur
                   target={`/operations/${surgery.category}/${surgery.slug}`}
                   key={surgery.slug}
                   picture={surgery.photoUrl || categoryPhoto}
-              //  picture={surgeryData.data.photoUrl || categoryPhoto} // meme photo
+                  //picture={surgeryData.data.photoUrl || categoryPhoto} // meme photo
 
                 />
               );
