@@ -4,7 +4,7 @@ import Image from "next/image";
 import SideBanner from "../public/assets/login.jpeg";
 import firebase from "../firebase/clientApp";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useContext,useState,useEffect } from "react";
 import DashboardButton from "../components/DashboardButton";
 import * as Yup from "yup";
 import { BiError } from "react-icons/bi";
@@ -15,7 +15,7 @@ import MD5 from "crypto-js/md5";
 import PhoneInput from "react-phone-input-2";
 import ModalNoSignUp from "Components/ModalNoSignUp";
 import "react-phone-input-2/lib/style.css";
-
+import {ModalContext} from "../utils/modalContext"
 export const getServerSideProps = async (ctx) => {
   const auth = await checkAuth(ctx);
   if (auth.props.userProfile) return serverRedirect("/dashboard");
@@ -28,6 +28,7 @@ export const getServerSideProps = async (ctx) => {
 };
 
 const SignUp = () => {
+  const { openModal, UpdatesetOpenModal } = useContext(ModalContext);
   const [formData, updateFormData] = useState({
     email: "",
     password: "",
@@ -49,6 +50,9 @@ const SignUp = () => {
       "Les mots de passe ne correspondent pas"
     ),
   });
+useEffect(()=>{
+ 
+},[])
 
   function doSignUp() {
     const { email, password, confirmPassword, phoneNumber } = formData;
@@ -150,7 +154,7 @@ const SignUp = () => {
                     });
                   })
                   .then(() => {
-                    localStorage.removeItem("bookBooklinik");
+                    
                     router.push("/dashboard");
                   });
               } else {
@@ -218,6 +222,7 @@ const SignUp = () => {
 
   return (
     <div className="h-screen relative signup">
+      {console.log(UpdatesetOpenModal+"==================================openModal==================")}
       <div className="nav top-0 absolute flex flex-row w-full justify-between z-50 p-10 bg-white shadow-lg">
         <Link href="/">
           <a>

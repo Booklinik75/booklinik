@@ -1,7 +1,9 @@
-import { useEffect, useState } from "react";
+import { useRef ,useEffect, useState } from "react";
 import "../styles/globals.css";
+import ReactOuibounce from 'react-ouibounce'
 import { AuthProvider } from "../utils/UserContext";
 import { BookProvider } from "utils/bookContext";
+import { parseCookies, setCookie, destroyCookie } from 'nookies';
 import "@uiw/react-md-editor/dist/markdown-editor.css";
 import "@uiw/react-markdown-preview/dist/markdown.css";
 import { ToastContainer } from "react-toastify";
@@ -11,23 +13,67 @@ import moment from "moment";
 import "moment/locale/fr";
 import "react-toastify/dist/ReactToastify.css";
 import "react-dropdown/style.css";
-
 import Loading from "components/Loading";
 import { useRouter } from "node_modules/next/dist/client/router";
-
+import { ModaleProvider } from "../utils/modalContext"
 import "tippy.js/dist/tippy.css";
-
+import ouibounce  from "ouibounce";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import TagManager from 'react-gtm-module'
-
+import TagManager from 'react-gtm-module';
+import ModalOuibounce from "components/ModalOuibounce";
 moment.locale("fr");
 
 function BooklinikClient({ Component, pageProps }) {
   const router = useRouter();
-  const [loadingAnimation, setLoadingAnimation] = useState(false);
 
+  const [loadingAnimation, setLoadingAnimation] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [cookiesModal, setCookiesModal] = useState(true);
+
+
+  const booking={
+    surgeries: [
+      {
+        surgeryCategory: "",
+        surgeryCategoryName: "",
+        surgery: "",
+        surgeryPrice: 0,
+        surgeryName: "",
+        surgeryMinDays: 0,
+        cities: [],
+      },
+    ],
+    startDate: new Date(),
+    endDate: "",
+    totalSelectedNights: 0,
+    extraTravellers: 0,
+    extraChilds: 0,
+    extraBabies: 0,
+    totalExtraTravellersPrice: 0,
+    city: "",
+    hotel: "",
+    hotelPrice: 0,
+    hotelPhotoLink: "",
+    hotelName: "",
+    hotelRating: "",
+    hotelId: "",
+    room: "",
+    roomName: "",
+    roomPrice: 0,
+    roomPhotoLink: "",
+  
+  }
   useEffect(() => {
+     
+   
+  
+   
+  
+  
+  },[])
+  useEffect(() => {
+    console.log(document.cookie)
     window.$crisp = [];
     window.CRISP_WEBSITE_ID = "ab422553-9bcf-4ce4-ac32-d53b0d6e3b6b";
     (() => {
@@ -192,10 +238,21 @@ function BooklinikClient({ Component, pageProps }) {
       router.events.off("routeChangeError", handleComplete);
     };
   }, [router]);
+ 
 
+  const handleOnClose= () => {
+    
+    setCookiesModal(true);
+
+  };
+  
+  
+  
   return (
     <>
+    <ModaleProvider>
       <AuthProvider>
+       
         <BookProvider>
           <Head>
             <link
@@ -226,9 +283,22 @@ function BooklinikClient({ Component, pageProps }) {
           </Head>
           {loadingAnimation && <Loading />}
           <Component {...pageProps} />
+         
+       
+       
           <ToastContainer />
-        </BookProvider>
+          <ReactOuibounce
+        cookieName="test-event"
+        cookieExpire={600}
+      
+      >
+        <ModalOuibounce props={true}/>
+      </ReactOuibounce>
+         </BookProvider>
+        
       </AuthProvider>
+      </ModaleProvider>
+    
     </>
   );
 }

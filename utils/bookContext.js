@@ -12,6 +12,7 @@ export const BookProvider = ({ children }) => {
   return (
     <BookContext.Provider value={{ isChecked, handleUseReferral }}>
       {children}
+      <h1>TEST</h1>
     </BookContext.Provider>
   );
 };

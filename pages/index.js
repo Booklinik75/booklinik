@@ -21,7 +21,6 @@ import {
 import firebase from "firebase/clientApp";
 import moment from "moment";
 import { useEffect, useRef } from "react";
-
 // TODO: add unit test for weird characters like apostrophes and such
 
 export const getServerSideProps = async (ctx) => {
@@ -322,6 +321,7 @@ sont mis à votre disposition."
 
       {/* footer */}
       <Footer />
+   
     </div>
   );
 }
