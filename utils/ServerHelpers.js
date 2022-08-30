@@ -423,7 +423,7 @@ export async function getAfterBeforeSurgeries(slug) {
     const AfterBefore = [];
     const snapshot = await firebase
       .firestore()
-      .collection("before-after")
+      .collection("surgeries")
       .where("slug", "==", slug)
       .get();
 

@@ -53,11 +53,11 @@ const EditSurgery = ({
     excerpt: surgeryData.data.excerpt,
     startingPrice: surgeryData.data.startingPrice,
     minimumNights: surgeryData.data.minimumNights,
-    doctor: surgeryData.data.doctor,
-    beforeafter: surgeryData.data.beforeafter
   });
   const [isLoading, setLoading] = useState("idle");
   const [inputList, setInputList] = useState(surgeryData.data.requiredPictures);
+  const [inputDoctorList, setInputDoctorList] = useState(surgeryData.data.doctor);
+  const [inputBeforeAfterList, setInputBeforeAfterList] = useState(surgeryData.data.beforeafter);
   const [selectedCities, setselectedCities] = useState(surgeryData.data.cities);
   const router = useRouter();
   const [mdValue, setMdValue] = useState(surgeryData.data.descriptionBody);
@@ -76,21 +76,7 @@ const EditSurgery = ({
     
  );
 
-  const handleChange = (e) => {
-     if (e.target.name.startsWith('doctor')) {
-      
-       setFormData(
-      {...form,doctor:
-         form.doctor.map((doc)=>
-         doc.id===e.target.name?
-         {...doc,name:e.target.value}:{...doc}       
-          )
-         }
- 
-       
-        )
-         return
-       }
+  const handleChange = (e) => {   
      if (e.target.name === "name") {
      
         form.slug = slugify(e.target.value, { lower: true });
@@ -111,6 +97,7 @@ const EditSurgery = ({
   };
 
   const handleInputChange = (e, index) => {
+  
     const { name } = e.target;
     const value =
       e.target.type === "checkbox" ? e.target.checked : e.target.value;
@@ -120,11 +107,32 @@ const EditSurgery = ({
     list[index][name] = value;
     setInputList(list);
   };
+  const handleInputDoctorChange = (e, index) => {
+  
+    const { name } = e.target;
+    const value =
+      e.target.type === "checkbox" ? e.target.checked : e.target.value;
 
+    const list = [...inputDoctorList];
+    console.log(list+"list handle doctor")
+    list[index][name] = value;
+    setInputDoctorList(list);
+  };
+  
   const handleRemoveClick = (index) => {
     const list = [...inputList];
     list.splice(index, 1);
     setInputList(list);
+  };
+  const handleDoctorRemoveClick = (index) => {
+    const list = [...inputDoctorList];
+    list.splice(index, 1);
+    setInputDoctorList(list);
+  };
+  const handleBeforeAfterRemoveClick = (index) => {
+    const list = [...inputBeforeAfterList];
+    list.splice(index, 1);
+    setInputBeforeAfterList(list);
   };
 
   // handle click event of the Add button
@@ -138,6 +146,29 @@ const EditSurgery = ({
       },
     ]);
   };
+
+  const handleDoctorAddClick = () => {
+    setInputDoctorList([
+      ...inputDoctorList,
+      {
+        name: "",
+        photoUrl: "",
+       
+      },
+    ]);
+  };
+  
+  const handlebeforeafterAddClick = () => {
+    setInputBeforeAfterList([
+      ...inputBeforeAfterList,
+      {
+        leftimage: "",
+        rightimage: ""
+      },
+    ]);
+  };
+  
+  
 
   function deleteSelf() {
     firebase
@@ -178,75 +209,72 @@ const EditSurgery = ({
     );
   };
 
-  const handlePhotoDoctorUpload = (e) => {
+  const handlePhotoDoctorUpload = (e,index) => {
     const {name,files}=e.target
-   
+   console.log(e.target.files)
    
     const storageRef = firebase.storage().ref();
-     
-
+    const list = [...inputDoctorList];
+    console.log(files)
     
-    const uploadTask = storageRef.child(`doctor/${files[0].name}`).put(files);
+    const uploadTask = storageRef.child(`doctor/${files[0].name}`).put(files[0]);
        // upload file then store it in its state
     uploadTask.on(
       "state_changed",
       (snapshot) => {
-        setIsUploadingDoctorUrl(true);
+      //  setIsUploadingDoctorUrl(true);
       },
       (error) => {
         console.log(error);
       },
       () => {
-        setIsUploadingDoctorUrl(false);
+      //  setIsUploadingDoctorUrl(false);
         storageRef
           .child(`doctor/${files[0].name}`)
           .getDownloadURL()
           .then((url) => {
-      
-            setPhotoDoctorUrl({...photoDoctorUrl,[name]:url});
+            list[index][name] = url;
+            console.log(list)
+            setInputDoctorList(list)
           });
       }
     );   
   };
 
-  const handlePhotoAfterBefore = (e) => {
-  
-  
-    for(let i=0;i<e.target.files.length;i++){
-      const file = e.target.files[i];
-      file["id"]=Math.random()
-      
-      console.log(file)
+  const handleBeforeAfterUpload = (e,index) => {
+    const {name,files}=e.target
+   console.log(e.target.files)
+   
     const storageRef = firebase.storage().ref();
-    const uploadTask = storageRef.child(`before_after/${file.name}`).put(file);
-  
-    // upload file then store it in its state
+    const list = [...inputBeforeAfterList];
+    
+    
+    const uploadTask = storageRef.child(`before_after/${files[0].name}`).put(files[0]);
+       // upload file then store it in its state
     uploadTask.on(
       "state_changed",
       (snapshot) => {
-        setIsUploading(true);
+      //  setIsUploadingDoctorUrl(true);
       },
       (error) => {
         console.log(error);
       },
       () => {
-        setIsUploading(false);
+      //  setIsUploadingDoctorUrl(false);
         storageRef
-          .child(`before_after/${file.name}`)
+          .child(`before_after/${files[0].name}`)
           .getDownloadURL()
           .then((url) => {
-            setPhotoBeforeAfterUrl((prevState)=>[...prevState,url]);
-     
+            list[index][name] = url;
+            console.log(list)
+            setInputBeforeAfterList(list)
           });
       }
-    );
-  }
-  
+    );   
   };
-
   async function doAdd() {
     setLoading("loading");
-   
+    
     let Data = {
       slug: form.slug,
       name: form.name,
@@ -259,32 +287,10 @@ const EditSurgery = ({
       descriptionBody: mdValue,
       minimumNights: parseInt(form.minimumNights),
       photoUrl: photoUrl,
-      doctor:[{
-        name:form.doctor[0].name,
-        photoUrl:photoDoctorUrl.photodoc1
-      },
-      {
-        name:form.doctor[1].name,
-        photoUrl:photoDoctorUrl.photodoc2
-      },
-      {
-        name:form.doctor[2].name,
-        photoUrl:photoDoctorUrl.photodoc3
-      },
-      {
-        name:form.doctor[3].name,
-        photoUrl:photoDoctorUrl.photodoc4
-      }
-
-    ],beforeafter:[...form.beforeafter,{
-       slug:form.slug,
-       id:Math.random(),
-       leftimage:photoBeforeAfterUrl[0],
-       rightimage:photoBeforeAfterUrl[1]
-    }]
-     
+      doctor:inputDoctorList,
+      beforeafter:inputBeforeAfterList
         };
-       
+        console.log(Data)
           firebase
           .firestore()
           .collection("surgeries")
@@ -309,7 +315,7 @@ const EditSurgery = ({
     <DashboardUi userProfile={auth.props.userProfile} token={auth.props.token}>
       <div className="col-span-10 space-y-4">
     
- {console.log(form)}
+ {console.log(inputBeforeAfterList)}
         <div className="flex justify-between items-center">
           <div className="space-y-3">
             <div className="flex gap-2">
@@ -407,98 +413,8 @@ const EditSurgery = ({
             onChange={handleChange}
             multiple={false}
           />
-               <DashboardInput
-            type="text"
-            name="doctor1"
-            value={form.doctor?form.doctor[0].name:""}
-            onChange={handleChange}
-            disabled={false}
-            label="Nom Médecin n1"
-            required={false}
+
        
-          />
-
-          <DashboardInput
-            type="file"
-            name="photodoc1"
-            value={form.photoDoctor}
-            onChange={handlePhotoDoctorUpload}
-            disabled={false}
-            label="Photo Médecin n1"
-            required={false}
-          />
-          <DashboardInput
-            type="text"
-            name="doctor2"
-            value={form.doctor?form.doctor[1].name:""}
-            onChange={handleChange}
-            disabled={false}
-            label="Nom Médecin n2"
-            required={false}
-            
-          />
-
-          <DashboardInput
-            type="file"
-            name="photodoc2"
-            value={form.photoDoctor}
-            onChange={handlePhotoDoctorUpload}
-            disabled={false}
-            label="Photo Médecin n2"
-            required={false}
-          />
-          <DashboardInput
-            type="text"
-            name="doctor3"
-            value={form.doctor?form.doctor[2].name:""}
-            onChange={handleChange}
-            disabled={false}
-            label="Nom Médecin n3"
-            required={false}
-            
-          />
-
-          <DashboardInput
-            type="file"
-            name="photodoc3"
-            value={form.photoDoctor}
-            onChange={handlePhotoDoctorUpload}
-            disabled={false}
-            label="Photo Médecin n3"
-            required={false}
-          />
-          <DashboardInput
-            type="text"
-            name="doctor4"
-            value={form.doctor?form.doctor[3].name:""}
-            onChange={handleChange}
-            disabled={false}
-            label="Nom Médecin n4"
-            required={false}
-            
-          />
-
-          <DashboardInput
-            type="file"
-            name="photodoc4"
-            value={form.photoDoctor}
-            onChange={handlePhotoDoctorUpload}
-            disabled={false}
-            label="Photo Médecin n4"
-            required={false}
-          />
-
-        <DashboardInput
-            type="file"
-            name="beforeafter"
-            value={form.photoBeforeAfter}
-            onChange={handlePhotoAfterBefore}
-            disabled={false}
-            label="Avant/Aprés"
-            required={false}
-            multiple
-            
-          />
           <div>
             <label className="text-xs uppercase text-gray-500 w-full">
               Excerpt
@@ -521,11 +437,133 @@ const EditSurgery = ({
             </label>
             <MDEditor value={mdValue} onChange={setMdValue} />
           </div>
+          {inputDoctorList.map((x,i) => {
+            console.log(x.photoUrl)
+            return(
+              <div key={(x, i)}>
+                <label className="text-sm text-gray-500 uppercase">
+                      Titre + photo Médecin n°{i+1}
+                    </label>
+              <DashboardInput
+              type="text"
+              name="name"
+              value={x.name}
+              onChange={(e) => handleInputDoctorChange(e, i)}
+              disabled={false}
+              label="Nom "
+              required={false}
+         
+            />
+  
+            <DashboardInput
+              type="file"
+              name="photoUrl"
+            
+              onChange={(e) => handlePhotoDoctorUpload(e, i)}
+              disabled={false}
+              label="Photo Médecin"
+              required={false}
+            />
+            <div className="btn-box space-x-2 my-2 transition">
+      
+                    {inputDoctorList.length - 1 === i && inputDoctorList.length <4 && (
+                      <button
+                        onClick={handleDoctorAddClick}
+                        className="py-1 px-3 rounded text-white bg-shamrock border border-shamrock hover:bg-white hover:text-shamrock transition"
+                      >
+                        Ajouter
+                      </button>
+                    )}
 
+                    <button
+                      className="py-1 px-3 rounded text-white bg-red-500 border border-red-500 hover:bg-white hover:text-red-500 transition"
+                      onClick={() => handleDoctorRemoveClick(i)}
+                    >
+                      Supprimer
+                    </button>
+                  </div>
+            </div>
+            )
+          })
+
+          }
+             {inputDoctorList.length === 0 && (
+            <div
+              onClick={handleDoctorAddClick}
+              className="w-full flex justify-center rounded transition py-4 border border-dashed border-gray-500 bg-gray-100 hover:cursor-pointer hover:bg-gray-200"
+            >
+              <button className="py-3 px-10 rounded text-center border border-shamrock text-shamrock transition">
+                Ajouter des photos
+              </button>
+            </div>
+          )}
+                {inputBeforeAfterList.map((x,i) => {
+                  return(
+            <div key={(x,i)}>
+              {console.log("test")}
+             <label className="text-sm text-gray-500 uppercase">
+            Photo Avant/Aprés n°{i+1}
+             </label>
+             <DashboardInput
+             type="file"
+             name="leftimage"
+            
+             onChange={(e) => handleBeforeAfterUpload(e, i)}
+             disabled={false}
+             label="Avant"
+             required={false}
+            
+             />
+             <DashboardInput
+             type="file"
+             name="rightimage"
+           
+             onChange={(e) => handleBeforeAfterUpload(e, i)}
+             disabled={false}
+             label="Aprés"
+             required={false}
+            
+             />
+          
+               <div className="btn-box space-x-2 my-2 transition">
+      
+               {inputBeforeAfterList.length - 1 === i && inputBeforeAfterList.length <4 && (
+                 <button
+                   onClick={handlebeforeafterAddClick}
+                   className="py-1 px-3 rounded text-white bg-shamrock border border-shamrock hover:bg-white hover:text-shamrock transition"
+                 >
+                   Ajouter
+                 </button>
+               )}
+
+               <button
+                 className="py-1 px-3 rounded text-white bg-red-500 border border-red-500 hover:bg-white hover:text-red-500 transition"
+                 onClick={() => handleBeforeAfterRemoveClick(i)}
+               >
+                 Supprimer
+               </button>
+             </div>
+             
+       </div>)
+       
+          })}
+          {inputBeforeAfterList.length === 0 && (
+            <div
+              onClick={handlebeforeafterAddClick}
+              className="w-full flex justify-center rounded transition py-4 border border-dashed border-gray-500 bg-gray-100 hover:cursor-pointer hover:bg-gray-200"
+            >
+              <button className="py-3 px-10 rounded text-center border border-shamrock text-shamrock transition">
+                Ajouter des photos
+              </button>
+            </div>
+          )}
+        
           {inputList.map((x, i) => {
+            console.log(inputBeforeAfterList)
             return (
               <div className="box w-full" key={(x, i)}>
                 <div className="flex gap-2 w-full">
+
                   <div className="flex flex-col w-full gap-2">
                     <label className="text-sm text-gray-500 uppercase">
                       Titre du set de photos
@@ -550,6 +588,7 @@ const EditSurgery = ({
                       disabled={false}
                       label="Nombre de photos"
                     />
+                    {console.log(photoUrl)}
                     <label className="text-xs uppercase text-gray-500 w-full">
                       Description
                     </label>
@@ -587,6 +626,8 @@ const EditSurgery = ({
               </div>
             );
           })}
+
+   
 
           {inputList.length === 0 && (
             <div

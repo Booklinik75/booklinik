@@ -62,14 +62,16 @@ export const getStaticProps = async (context) => {
 };
 
 const OperationPage = ({ surgeryData, categoryPhoto, relatedSurgeries, doctorSurgeries,beforeAfter }) => {
-
   return (
     <div className="space-y-6">
       <Head>
         <title>Booklinik | {surgeryData.data.name}</title>
       </Head>
       <Navigation />
+      
       <div className="mx-4 space-y-10">
+        { console.log(beforeAfter)
+ }
         <div className="grid grid-cols-3 gap-6">
           <div className="col-span-3 lg:col-span-1 bg-gray-100 p-14 space-y-4">
             <h1 className="text-5xl">{surgeryData.data.name}</h1>
@@ -102,7 +104,6 @@ const OperationPage = ({ surgeryData, categoryPhoto, relatedSurgeries, doctorSur
           <h2 className="text-2xl">Opérations similaires</h2>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
             {relatedSurgeries.map((surgery) => {
-               console.log(surgery)
               return (
                 <RelatedElement
                   title={surgery.name}
@@ -120,16 +121,15 @@ const OperationPage = ({ surgeryData, categoryPhoto, relatedSurgeries, doctorSur
         {doctorSurgeries[0].doctor?(
        
         <div className="space-y-6">
-          {console.log(beforeAfter)}
           <h2 className="text-2xl">Médecin</h2>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-            {doctorSurgeries[0].doctor.map((surgery) => {
+            {doctorSurgeries[0].doctor.map((x,i) => {
               return (
                 <RelatedElement
-                  title={surgery.name}
-                  target={`/operations/${surgery.category}/${surgery.slug}`}
-                  key={surgery.id}
-                  picture={surgery.photoUrl}
+                  title={x.name}
+                  target={`/operations/${x.category}/${x.slug}`}
+                  key={(x,i)}
+                  picture={x.photoUrl}
               //  picture={surgeryData.data.photoUrl || categoryPhoto} // meme photo
 
                 />
@@ -147,19 +147,19 @@ const OperationPage = ({ surgeryData, categoryPhoto, relatedSurgeries, doctorSur
       ""
     )}
      
-     {beforeAfter.length>0?(
+     {beforeAfter[0].beforeafter?(
        <div className="space-y-6">
           <h2 className="text-2xl">Avant/aprés</h2>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-          {beforeAfter.map((slide) => {
+          {beforeAfter[0].beforeafter.map((x,i) => {
        
               return (
 
-                  <div key={slide.title} className="col-span-1 rounded relative h-60 transition shadow hover:shadow-lg group">
+                  <div key={(x,i)} className="col-span-1 rounded relative h-60 transition shadow hover:shadow-lg group">
                    <ReactCompareImage 
 
-                  leftImage={slide.leftimage}
-                  rightImage={slide.rightimage} />
+                  leftImage={x.leftimage}
+                  rightImage={x.rightimage} />
                    
                   </div>
            
