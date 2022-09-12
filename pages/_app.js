@@ -15,7 +15,6 @@ import "react-toastify/dist/ReactToastify.css";
 import "react-dropdown/style.css";
 import Loading from "components/Loading";
 import { useRouter } from "node_modules/next/dist/client/router";
-import { ModaleProvider } from "../utils/modalContext"
 import "tippy.js/dist/tippy.css";
 import ouibounce  from "ouibounce";
 import "slick-carousel/slick/slick.css";
@@ -250,7 +249,7 @@ function BooklinikClient({ Component, pageProps }) {
   
   return (
     <>
-    <ModaleProvider>
+   
       <AuthProvider>
        
         <BookProvider>
@@ -289,7 +288,7 @@ function BooklinikClient({ Component, pageProps }) {
           <ToastContainer />
           <ReactOuibounce
         cookieName="test-event"
-        cookieExpire={600}
+        
       
       >
         <ModalOuibounce props={true}/>
@@ -297,7 +296,6 @@ function BooklinikClient({ Component, pageProps }) {
          </BookProvider>
         
       </AuthProvider>
-      </ModaleProvider>
     
     </>
   );

@@ -12,7 +12,8 @@ const ModalOuibounce = (props) => {
         firstname: "",
         lastname: "",
         phoneNumber: "",
-        message:""
+        message:"",
+        value :""
       });
       const [isSubmitting, setIsSubmitting] = useState(false);
       const [formSent, setFormSent] = useState(false);
@@ -30,13 +31,14 @@ const ModalOuibounce = (props) => {
           fetch("/api/mail", {
             method: "post",
             body: JSON.stringify({
-              recipient: "info@booklinik.com",
-              templateId: "d-6b9ed961cfdc44228824603584a8b740",
+              recipient: "salah.elbouhali@gmail.com",
+              templateId: "d-c2b02b9d8e8448da934509a658d1e884",
               dynamicTemplateData: {
                     email: form.email,
                     firstname: form.firstname,
                     lastname: form.lastname,
                     phoneNumber: form.phoneNumber,
+                    value : value,
                     datetime: moment(new Date()).format("LLLL"),
                   
                   
@@ -50,12 +52,13 @@ const ModalOuibounce = (props) => {
                 method: "post",
                 body: JSON.stringify({
                   recipient: form.email,
-                  templateId: "d-57cbc54b5ac345beb1bfc6509381ccee",
+                  templateId: "d-335fc72a314142a18dce581cd7ebf059",
                   dynamicTemplateData: {
                     email: form.email,
                     firstname: form.firstname,
                     lastname: form.lastname,
                     phoneNumber: form.phoneNumber,
+                    value : value,
                     datetime: moment(new Date()).format("LLLL"),
                     
                   
@@ -91,7 +94,17 @@ const ModalOuibounce = (props) => {
           phoneNumber: `+${phone}`,
         });
       };
-
+     
+      const getInitialState = () => {
+        const value = "";
+        return value;
+      };
+  
+      const [value, setValue] = useState(getInitialState);
+  
+      const handleChange = (e) => {
+        setValue(e.target.value);
+      };
 
 
       if (!props.shouldDisplay) return null;
@@ -120,6 +133,7 @@ const ModalOuibounce = (props) => {
             <div className="space-y-6">
             {!formSent ? (
             <>
+              <div className='grid grid-cols-2 gap-8'>
               <div>
                 <p className="uppercase text-sm mb-2">Prénom</p>
                 <input
@@ -160,8 +174,10 @@ const ModalOuibounce = (props) => {
                   ""
                 )}
               </div>
+              </div>
+              <div className='grid grid-cols-2 gap-8 items-center'>
 
-
+             
               <div
                 className={`${
                   errors && errors.phoneNumber ? "error-input" : ""
@@ -202,6 +218,39 @@ const ModalOuibounce = (props) => {
                   ""
                 )}
               </div>
+              </div>
+              <div>
+                 <label className="uppercase text-sm mb-2">Sélectionnez votre opération
+                   <select value={value} onChange={handleChange}   className="w-full bg-transparent border-b outline-none placeholder-white  text-xl hover:text-shamrock block hover:bg-gray-100 w-full p-5 py-3 cursor-pointer">
+                     <option value="Greffe de cheveux" >Greffe de cheveux</option>
+                     <option value="Chirurgie mammaire" >Chirurgie mammaire</option>
+                     <option value="Chirurgie du nez" >Chirurgie du nez</option>
+                     <option value="Chirurgie des fesses" >Chirurgie des fesses</option>
+                     <option value="Chirurgie du visage"  >Chirurgie du visage</option>
+                     <option value="Chirurgie du corps" >Chirurgie du corps</option>
+                     <option value="Medecine esthétique" >Médecine esthétique</option>
+                     <option value="Chirurgie de l oeil" >Chirurgie de l oeil</option>
+                     <option value="Chirurgie dentaires"  >Chirurgie dentaires</option>
+                     <option value="Autre"  >Autre </option>
+                   </select>
+                   {value=="Autre" ? (
+                     <span className=" text-sm mt-3">
+                       <div>
+                         <input
+                           type="text"
+                           className="w-full bg-transparent border-b outline-none placeholder-white py-5"
+                           placeholder="Précisez..."
+                           name="operation"
+                           value={form.operation}
+                           onChange={handleFormChange}
+                         />
+                       </div>
+                     </span>
+                   ) : (
+                     ""
+                   )}
+                 </label>
+                 </div>
 
              
               <div className="flex-wrap ">
@@ -212,6 +261,7 @@ const ModalOuibounce = (props) => {
                 >
                   Envoyer
                 </button>
+                {console.log(value)}
                 <button
                    type="submit"
                    className="mx-1 float-right rounded bg-white  text-gray-500  border border-gray-500 px-5 py-3 transition hover:bg-gray-500 hover:text-white"

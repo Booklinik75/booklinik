@@ -200,7 +200,7 @@ const ContactHelper = () => {
                   ""
                 )}
               </div>
-
+{console.log(form)}
               <div>
                  <label className="uppercase text-sm mb-2">Sélectionnez votre opération
                    <select value={value} onChange={handleChange}   className="w-full bg-transparent border-b outline-none placeholder-white  text-xl hover:text-shamrock block hover:bg-gray-100 w-full p-5 py-3 cursor-pointer">

@@ -246,18 +246,17 @@ const ModalNoSignUp = ({ onClose, visible,booking }) => {
           <div className="space-y-6 h-full">
             <h1 className="text-2xl mb-6">Parfait, on y est presque !</h1>
             <div className="py-6 space-y-6">
-              <p className="flex flex-row items-start gap-2 lg:flex-row lg:items-center">
+              <p className=" gap-2 lg:flex-row lg:items-center">
                 Vous souhaitez réaliser une{" "}
-                <span className=" ">
-
-                  <span className="font-bold ">
+                
+                  <span className="font-bold  ">
                     <BookingDataSpan
                       string={booking.surgeries[0].surgeryCategoryName}
 
                     />{" "}
                   </span>
                   sur{" "}
-                </span>
+              
                 <span className="font-bold	 ">
                   <BookingDataSpan string={booking.surgeries[0].surgeryName} />
                 </span>
@@ -335,8 +334,10 @@ const ModalNoSignUp = ({ onClose, visible,booking }) => {
                 <span className="font-bold">
                   <BookingDataSpan string={booking.hotelName} />{" "}
                 </span>
-                (très bon choix) et vous logerez en{" "}
-                <span className="font-bold">
+               </p>
+               <p>
+                (très bon choix) et vous logerez en
+                <span className="font-bold">{" "} 
                   <BookingDataSpan string={booking.roomName} />
                 </span>
               </p>
