@@ -65,7 +65,7 @@ const RoomsSelectStep = ({ booking, rooms, handleRoomSelect, setNextStep,setStep
                   <label
                     htmlFor={room.slug}
                     className={
-                      "p-4 transition flex items-center justify-between hover:shadow hover:cursor-pointer border rounded hover:border-bali " +
+                      "p-4 transition flex items-center justify-between hover:shadow hover:cursor-pointer border rounded hover:border-bali hover:border-shamrock" +
                       (room.slug === booking.room
                         ? "border-shamrock text-shamrock"
                         : "")

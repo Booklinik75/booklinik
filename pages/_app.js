@@ -16,19 +16,17 @@ import "react-dropdown/style.css";
 import Loading from "components/Loading";
 import { useRouter } from "node_modules/next/dist/client/router";
 import "tippy.js/dist/tippy.css";
-import ouibounce  from "ouibounce";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import TagManager from 'react-gtm-module';
 import ModalOuibounce from "components/ModalOuibounce";
+import Script from 'next/script'
 moment.locale("fr");
 
 function BooklinikClient({ Component, pageProps }) {
   const router = useRouter();
 
   const [loadingAnimation, setLoadingAnimation] = useState(false);
-  const [showModal, setShowModal] = useState(false);
-  const [cookiesModal, setCookiesModal] = useState(true);
 
 
   const booking={
@@ -63,14 +61,7 @@ function BooklinikClient({ Component, pageProps }) {
     roomPhotoLink: "",
   
   }
-  useEffect(() => {
-     
-   
-  
-   
-  
-  
-  },[])
+ 
   useEffect(() => {
     console.log(document.cookie)
     window.$crisp = [];
@@ -225,7 +216,7 @@ function BooklinikClient({ Component, pageProps }) {
     //Google TagManager
 
     const tagManagerArgs = {
-        gtmId: 'GTM-TB3SWNW'
+        gtmId: 'GTM-NGCD8B7'
     }
 
     TagManager.initialize(tagManagerArgs)
@@ -237,19 +228,10 @@ function BooklinikClient({ Component, pageProps }) {
       router.events.off("routeChangeError", handleComplete);
     };
   }, [router]);
- 
-
-  const handleOnClose= () => {
-    
-    setCookiesModal(true);
-
-  };
-  
-  
-  
+   
   return (
     <>
-   
+     
       <AuthProvider>
        
         <BookProvider>
@@ -280,6 +262,15 @@ function BooklinikClient({ Component, pageProps }) {
             <meta name="msapplication-TileColor" content="#33c783" />
             <meta name="theme-color" content="#33c783" />
           </Head>
+          <Script id="google-tag-manager" strategy="afterInteractive">
+{`
+          (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+          'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+          })(window,document,'script','dataLayer','GTM-TB3SWNW');
+
+`}    </Script>
           {loadingAnimation && <Loading />}
           <Component {...pageProps} />
          

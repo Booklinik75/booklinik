@@ -139,6 +139,12 @@ const DatesSelectStep = ({
 .react-datepicker__navigation--previous {
   left: 1em;
 }
+.react-datepicker__day--keyboard-selected{
+  background-color: #33c383 !important;
+}
+.react-datepicker__day--in-range {
+  background-color: #33c383 !important;
+}
 
       }`}
             </style>

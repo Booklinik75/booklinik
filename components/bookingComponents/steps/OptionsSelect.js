@@ -91,7 +91,7 @@ const OptionsSelectStep = ({
                 <div key={index} className="col-span-2 lg:col-span-1">
                   <label
                     htmlFor={slugify(option.name)}
-                    className={`border-2 px-6 py-3 rounded w-full flex justify-between items-center hover:border-bali ${
+                    className={`border-2 px-6 py-3 rounded w-full flex justify-between items-center hover:border-bali hover:border-shamrock ${
                       optionsList[index].isChecked === true
                         ? "border-shamrock"
                         : ""

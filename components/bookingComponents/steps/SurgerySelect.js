@@ -74,7 +74,7 @@ const SurgerySelectStep = ({
                 />
                 <label
                   htmlFor={surgeryCategory.slug}
-                  className={`flex flex-col transition items-center justify-center border w-full h-full rounded hover:shadow p-6 ${
+                  className={`flex flex-col transition items-center justify-center border w-full h-full rounded hover:shadow p-6 hover:border-shamrock ${
                     getSurgeryCategory.surgeryCategory === surgeryCategory.slug
                       ? "border-shamrock"
                       : ""
@@ -123,7 +123,7 @@ const SurgerySelectStep = ({
                 />
                 <label
                   htmlFor={surgery.slug}
-                  className={`flex transition text-center items-center justify-center border w-full h-full rounded hover:shadow py-2 px-4 ${
+                  className={`flex transition text-center items-center justify-center border w-full h-full rounded hover:shadow py-2 px-4 hover:border-shamrock ${
                     (booking.surgeries && booking.surgeries[0].surgery) ===
                     surgery.slug
                       ? "border-shamrock"

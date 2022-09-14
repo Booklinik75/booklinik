@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { useState } from "react";
 import StarRating from "../../StarRating";
 import { AiOutlineCheckCircle } from "react-icons/ai";
 import { BsCircle } from "react-icons/bs";
@@ -17,7 +18,7 @@ const HotelSelectStep = ({
     // setNextStep to true when all inputs are filled
     if (booking.hotel) setNextStep(true);
   }, [booking]);
-
+  const [hover,setHover]=useState(false);
   return (
     <div className="space-y-6">
       <h1 className="text-2xl mb-6">
@@ -25,7 +26,7 @@ const HotelSelectStep = ({
       </h1>
       <p className="text-xs text-gray-500 uppercase">Hôtel</p>
       <div className="grid grid-cols-9 gap-4">
-        {hotels.map((hotel) => {
+        {hotels.map((hotel,x) => {
           return hotel.city === booking.city ? (
             <div
               className={`col-span-9 lg:col-span-3 space-y-2 transition-opacity ${
@@ -34,7 +35,9 @@ const HotelSelectStep = ({
                   : "opacity-100"
               }`}
               key={hotel.slug}
+              
             >
+              {console.log(x)}
               <input
                 type="radio"
                 name="hotel"
@@ -57,6 +60,8 @@ const HotelSelectStep = ({
               <label
                 htmlFor={hotel.slug}
                 className="transition hover:shadow hover:cursor-pointer"
+                onMouseEnter={(e)=>setHover(true)}
+                onMouseLeave={(e)=>setHover(false)}
               >
                 <div className="h-64 relative">
                   <Image
@@ -64,7 +69,7 @@ const HotelSelectStep = ({
                     layout="fill"
                     objectFit="cover"
                     alt={hotel.name}
-                    className="rounded transition brightness-90 hover:brightness-50 bg-gray-200"
+                    className= {`${hover ?"brightness-50 bg-gray-200 scale-150 transition duration-800 ":"rounded transition brightness-90  scale-100  duration-700"}`}
                   />
                   <div className="absolute bottom-0 left-0 p-4 h-full flex justify-between flex-col">
                     {hotel.slug === booking.hotel ? (
