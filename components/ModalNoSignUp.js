@@ -82,8 +82,6 @@ const ModalNoSignUp = ({ onClose, visible,booking }) => {
           // update current user
           firebase.auth().onAuthStateChanged((user) => {
             if (user) {
-              console.log(user.uid + "---------------user ");
-
               const booking = JSON.parse(localStorage.getItem("bookBooklinik"));
               var firestoreObjectSetBooking = firebase
                 .firestore()
@@ -108,9 +106,7 @@ const ModalNoSignUp = ({ onClose, visible,booking }) => {
                       .reduce((a, b) => a + b),
                   ...booking,
                 });
-              console.log(
-                firestoreObjectSetBooking + "===========LocalStorage"
-              );
+            
             }
           });
 
@@ -119,7 +115,6 @@ const ModalNoSignUp = ({ onClose, visible,booking }) => {
         })
 
         .catch((error) => {
-          console.log(error + "eror-----------------");
           if (errors[error.code]) {
             setError(errors[error.code]);
           } else {
@@ -160,8 +155,6 @@ const ModalNoSignUp = ({ onClose, visible,booking }) => {
         }),
       })
         .then(() => {
-          console.log("test email");
-        console.log(email)
         setFormSent(true);
           fetch("/api/mail", {
             method: "post",
@@ -196,7 +189,6 @@ const ModalNoSignUp = ({ onClose, visible,booking }) => {
         })
         .catch((error) => {
           Sentry.captureException(error);
-          console.log(error+"erreurmail--")
         })
         .finally(() => {
           setIsSubmitting(false);
@@ -242,14 +234,14 @@ const ModalNoSignUp = ({ onClose, visible,booking }) => {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center  overflow-auto  z-50">
       <div id="contactform" className="py-40 mt-40 lg:mt-0 xl:mt-0 absolute">
-        <div className="mx-4 xl:mx-auto  mt-20 lg:mt-0 xl:mt-0 l py-14 my-10 rounded-xl bg-shamrock grid gric-cols-1 lg:grid-cols-2 gap-0 px-10 text-white placeholder-white ">
+        <div className="mx-4 xl:mx-auto  mt-40 lg:mt-0 xl:mt-0 l py-14 my-10 rounded-xl bg-shamrock grid gric-cols-1 lg:grid-cols-2 gap-0 px-10 text-white placeholder-white ">
           <div className="space-y-6 h-full">
             <h1 className="text-2xl mb-6">Parfait, on y est presque !</h1>
-            <div className="py-6 space-y-6">
-              <p className=" gap-2 lg:flex-row lg:items-center">
+            <div className="py-6 space-y-6 leading-9 ">
+              <p className=" lg:flex-row lg:items-center">
                 Vous souhaitez réaliser une{" "}
                 
-                  <span className="font-bold  ">
+                  <span className="font-bold">
                     <BookingDataSpan
                       string={booking.surgeries[0].surgeryCategoryName}
 
@@ -262,7 +254,6 @@ const ModalNoSignUp = ({ onClose, visible,booking }) => {
                 </span>
               </p>
               <p className="">
-              {console.log(booking)}
                 Votre voyage s&apos;étendra du{" "}
                 <span className="font-bold">
                   <BookingDataSpan>

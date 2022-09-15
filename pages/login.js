@@ -43,7 +43,6 @@ const Login = () => {
       .signInWithEmailAndPassword(email, password)
       .then(async (userCredential) => {
         var user = userCredential.user;
-        console.log(user+"test")
         var firestoreUserObject = await firebase
         .firestore()
         .collection("users")
@@ -115,7 +114,6 @@ const Login = () => {
           setError(errors[error.code]);
         } else {
           setError("Une erreur est survenue");
-          console.log(error+"teste")
         }
 
         Sentry.captureException(error);
@@ -151,7 +149,6 @@ const Login = () => {
           </Link>
         </div>
       </div>
-      { console.log(booking+"==========localstorage get item v")}
       <div className="grid grid-cols-10 h-full">
         <div className="flex items-center col-span-10 lg:col-span-6">
           <div className="mx-auto w-2/3 md:w-1/2 space-y-6">
@@ -189,8 +186,6 @@ const Login = () => {
               >
                 Mot de passe
               </label>
-              {console.log(    localStorage.getItem("bookBooklinik")
-)+"ee"}
               <input
                 type="password"
                 name="password"

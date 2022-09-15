@@ -38,6 +38,7 @@ const SignUp = () => {
   const [showModal, setShowModal] = useState(false);
   const router = useRouter();
   const [error, setError] = useState(null);
+  const [booking, setBooking] = useState(null);
   const [isLoading, setLoading] = useState("idle");
   const validationSchema = Yup.object({
     
@@ -48,9 +49,14 @@ const SignUp = () => {
       "Les mots de passe ne correspondent pas"
     ),
   });
-useEffect(()=>{
- 
-},[])
+  useEffect(()=>{
+    if (typeof window !== 'undefined') {
+      setBooking(JSON.parse(
+        localStorage.getItem("bookBooklinik")
+      ));
+    }
+  },[])
+  
 
   function doSignUp() {
     const { email, password, confirmPassword, phoneNumber } = formData;
@@ -124,6 +130,7 @@ useEffect(()=>{
                 const booking = JSON.parse(
                   localStorage.getItem("bookBooklinik")
                 );
+                
                 firebase
                   .firestore()
                   .collection("bookings")
@@ -228,7 +235,6 @@ useEffect(()=>{
         </Link>
 
         <div className="flex flex-row gap-1">
-          {console.log(router.query.i)}
           <p>Vous avez déjà un compte ?</p>
            
             <a className="text-gray-700 hover:underline" onClick={doBookWithLogin}>Se connecter</a>
@@ -380,9 +386,8 @@ useEffect(()=>{
           />
           
         </div>
-        <ModalNoSignUp onClose={handleOnClose} visible={showModal} booking={ JSON.parse(
-                  localStorage.getItem("bookBooklinik")
-                )} />
+        {booking?(  <ModalNoSignUp onClose={handleOnClose} visible={showModal} booking={booking} />):""}
+      
       </div>
       
     </div>

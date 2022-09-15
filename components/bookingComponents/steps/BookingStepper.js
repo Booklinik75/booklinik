@@ -130,7 +130,7 @@ const handleOnClose= (e) => {
           >
             {stepsArray[step]}
 
-            <div className="flex items-center gap-3">
+            <div className="flex flex-col gap-3 xl:flex-row items-center xl:gap-2">
               {step > 0 ? (
                 <button
                   onClick={() => {

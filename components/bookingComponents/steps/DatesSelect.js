@@ -1,10 +1,8 @@
 import { AiFillInfoCircle } from "react-icons/ai";
-import Calendar from "react-calendar";
 import DatePicker from "react-datepicker";
 import { getDate, isWithinInterval } from "date-fns";
 import { useState } from "react";
 import { useEffect } from "react";
-import { DateRange } from "react-date-range";
 import "react-datepicker/dist/react-datepicker.css";
 import format from "date-fns/format";
 
@@ -56,7 +54,6 @@ const DatesSelectStep = ({
       if (start) {
         for (let i = 1; i < parseInt(booking.minimumNights); i++) {
           celldisabled.push(new Date(newday.setDate(newday.getDate() + 1)));
-          console.log(i + "increment ==========date======");
         }
 
         PushData(celldisabled);
@@ -77,8 +74,6 @@ const DatesSelectStep = ({
 
   return (
     <div className="space-y-6">
-
-      { console.log(booking.totalSelectedNights+ "nombre total de date ==========date======")}
       <h1 className="text-2xl mb-6">
         Choisissez vos dates de voyage
         {booking.totalSelectedNights !== 0 &&
@@ -91,8 +86,6 @@ const DatesSelectStep = ({
         )}{" "}
       </h1>
       <p className="p-4 bg-green-50 border-green-400 text-shamrock border rounded w-full max-w-max">
-        {
-        console.log( booking.startDate+ "date ==========date start======")}
         <span className="text-lg flex items-center gap-2">
           <AiFillInfoCircle /> Bon à savoir
         </span>

@@ -366,7 +366,6 @@ const Booking = ({
 
   const offerName = booking.offerName;
 
-  console.log();
 
   useEffect(() => {
     // this is initialPrice before referal, we use this for referal

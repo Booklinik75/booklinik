@@ -66,8 +66,6 @@ const Parrainage = ({ auth, referer, referalCodes }) => {
   const router = useRouter();
   const [ref, setRef] = useState(referer);
 
-  console.log(referalCodes);
-  console.log(userProfile);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -92,7 +90,7 @@ const Parrainage = ({ auth, referer, referalCodes }) => {
         .get()
         .then((docRef) =>
           docRef.forEach((doc) => {
-            console.log(doc);
+          
             firebase
               .firestore()
               .collection("bookings")

@@ -254,7 +254,6 @@ Remplissez le formulaire aujourd&apos;hui et recevez 150 € de réduction sur v
                 >
                   Envoyer
                 </button>
-                {console.log(value)}
                 <button
                    type="submit"
                    className="mx-1 float-right rounded bg-white  text-gray-500  border border-gray-500 px-5 py-3 transition hover:bg-gray-500 hover:text-white"

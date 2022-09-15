@@ -150,7 +150,6 @@ const NewBookingContainer = ({
       extraTravellersSupplement * booking.extraTravellers +
       extraChildsSupplement * booking.extraChilds +
       extraBabiesSupplement * booking.extraBabies;
-      console.log( nextStep+' ---------------c est le step index useeffect');
     setBooking({
       ...booking,
       totalExtraTravellersPrice: totalExtraTravellers * booking.totalSelectedNights,
@@ -169,7 +168,6 @@ const NewBookingContainer = ({
   };
 
   const onCalendarStartDateChange = (e) => {
-    console.log(e+"=========test onCalendarStartDate=============");
     setBooking({
       ...booking,
       startDate: e,

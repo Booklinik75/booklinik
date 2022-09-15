@@ -70,7 +70,6 @@ const OperationPage = ({ surgeryData, categoryPhoto, relatedSurgeries, doctorSur
       <Navigation />
       
       <div className="mx-4 space-y-10">
-        { console.log(beforeAfter)}
         <div className="grid grid-cols-3 gap-6">
           <div className="col-span-3 lg:col-span-1 bg-gray-100 p-14 space-y-4">
             <h1 className="text-5xl">{surgeryData.data.name}</h1>

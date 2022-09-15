@@ -49,7 +49,6 @@ const CitySelectStep = ({
                   onMouseEnter={()=>setHover(true)}
                   onMouseLeave={()=>setHover(false)}
                 >
-                  {console.log(hover)}
                   <div className="flex justify-between items-center">
                     <p className="">
                       {city.name}, {country.name} &bull;{" "}

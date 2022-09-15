@@ -37,7 +37,7 @@ const HotelSelectStep = ({
               key={hotel.slug}
               
             >
-              {console.log(x)}
+            
               <input
                 type="radio"
                 name="hotel"

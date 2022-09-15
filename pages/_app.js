@@ -63,7 +63,6 @@ function BooklinikClient({ Component, pageProps }) {
   }
  
   useEffect(() => {
-    console.log(document.cookie)
     window.$crisp = [];
     window.CRISP_WEBSITE_ID = "ab422553-9bcf-4ce4-ac32-d53b0d6e3b6b";
     (() => {
@@ -181,8 +180,6 @@ function BooklinikClient({ Component, pageProps }) {
             });
           }
         }
-
-        console.log(getAllLanguageSwitch);
 
         if (window.location.pathname === "/") {
           Weglot.on("initialized", handleWeglotSwitcher);

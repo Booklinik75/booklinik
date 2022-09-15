@@ -103,7 +103,6 @@ const EditSurgery = ({
       e.target.type === "checkbox" ? e.target.checked : e.target.value;
 
     const list = [...inputDoctorList];
-    console.log(list + "list handle doctor");
     list[index][name] = value;
     setInputDoctorList(list);
   };
@@ -196,11 +195,10 @@ const EditSurgery = ({
 
   const handlePhotoDoctorUpload = (e, index) => {
     const { name, files } = e.target;
-    console.log(e.target.files);
-
+    
     const storageRef = firebase.storage().ref();
     const list = [...inputDoctorList];
-    console.log(files);
+ 
 
     const uploadTask = storageRef
       .child(`doctor/${files[0].name}`)
@@ -221,7 +219,6 @@ const EditSurgery = ({
           .getDownloadURL()
           .then((url) => {
             list[index][name] = url;
-            console.log(list);
             setInputDoctorList(list);
           });
       }
@@ -230,7 +227,6 @@ const EditSurgery = ({
 
   const handleBeforeAfterUpload = (e, index) => {
     const { name, files } = e.target;
-    console.log(e.target.files);
 
     const storageRef = firebase.storage().ref();
     const list = [...inputBeforeAfterList];
@@ -254,7 +250,6 @@ const EditSurgery = ({
           .getDownloadURL()
           .then((url) => {
             list[index][name] = url;
-            console.log(list);
             setInputBeforeAfterList(list);
           });
       }
@@ -278,7 +273,6 @@ const EditSurgery = ({
       doctor: inputDoctorList,
       beforeafter: inputBeforeAfterList,
     };
-    console.log(Data);
     firebase
       .firestore()
       .collection("surgeries")
@@ -297,7 +291,6 @@ const EditSurgery = ({
   return (
     <DashboardUi userProfile={auth.props.userProfile} token={auth.props.token}>
       <div className="col-span-10 space-y-4">
-        {console.log(inputBeforeAfterList)}
         <div className="flex justify-between items-center">
           <div className="space-y-3">
             <div className="flex gap-2">
@@ -420,7 +413,6 @@ const EditSurgery = ({
           </div>
           {inputDoctorList
             ? inputDoctorList.map((x, i) => {
-                console.log(x.photoUrl);
                 return (
                   <div key={(x, i)}>
                     <label className="text-sm text-gray-500 uppercase">
@@ -482,7 +474,6 @@ const EditSurgery = ({
             ? inputBeforeAfterList.map((x, i) => {
                 return (
                   <div key={(x, i)}>
-                    {console.log("test")}
                     <label className="text-sm text-gray-500 uppercase">
                       Photo Avant/Aprés n°{i + 1}
                     </label>
@@ -539,7 +530,6 @@ const EditSurgery = ({
           ) :    setInputBeforeAfterList([])}
 
           {inputList.map((x, i) => {
-            console.log(inputBeforeAfterList);
             return (
               <div className="box w-full" key={(x, i)}>
                 <div className="flex gap-2 w-full">
@@ -567,7 +557,7 @@ const EditSurgery = ({
                       disabled={false}
                       label="Nombre de photos"
                     />
-                    {console.log(photoUrl)}
+                
                     <label className="text-xs uppercase text-gray-500 w-full">
                       Description
                     </label>
