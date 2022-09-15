@@ -18,7 +18,7 @@ const HotelSelectStep = ({
     // setNextStep to true when all inputs are filled
     if (booking.hotel) setNextStep(true);
   }, [booking]);
-  const [hover,setHover]=useState(false);
+  const [hover,setHover]=useState(null);
   return (
     <div className="space-y-6">
       <h1 className="text-2xl mb-6">
@@ -60,8 +60,8 @@ const HotelSelectStep = ({
               <label
                 htmlFor={hotel.slug}
                 className="transition hover:shadow hover:cursor-pointer"
-                onMouseEnter={(e)=>setHover(true)}
-                onMouseLeave={(e)=>setHover(false)}
+                onMouseEnter={(e)=>setHover(hotel.slug)}
+                onMouseLeave={(e)=>setHover(null)}
               >
                 <div className="h-64 relative">
                   <Image
@@ -69,7 +69,7 @@ const HotelSelectStep = ({
                     layout="fill"
                     objectFit="cover"
                     alt={hotel.name}
-                    className= {`${hover ?"brightness-50 bg-gray-200 scale-150 transition duration-800 ":"rounded transition brightness-90  scale-100  duration-700"}`}
+                    className= {`${hover===hotel.slug ?"brightness-50 bg-gray-200 scale-150 transition duration-800 ":"rounded transition brightness-90  scale-100  duration-700"}`}
                   />
                   <div className="absolute bottom-0 left-0 p-4 h-full flex justify-between flex-col">
                     {hotel.slug === booking.hotel ? (
