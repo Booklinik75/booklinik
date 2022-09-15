@@ -31,7 +31,7 @@ const ModalOuibounce = (props) => {
           fetch("/api/mail", {
             method: "post",
             body: JSON.stringify({
-              recipient: "salah.elbouhali@gmail.com",
+              recipient: "info@booklinik.com",
               templateId: "d-c2b02b9d8e8448da934509a658d1e884",
               dynamicTemplateData: {
                     email: form.email,
