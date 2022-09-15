@@ -22,7 +22,7 @@ const ModalOuibounce = (props) => {
       const handleFormSubmit = (e) => {
         e.preventDefault();
         setIsSubmitting(true);
-    
+
         const { errors, valid } = validateModalOuibounce(form);
         if (!valid) {
           setErrros(errors);
@@ -40,14 +40,14 @@ const ModalOuibounce = (props) => {
                     phoneNumber: form.phoneNumber,
                     value : value,
                     datetime: moment(new Date()).format("LLLL"),
-                  
-                  
+
+
               },
             }),
           })
             .then(() => {
               setFormSent(true);
-    
+
               fetch("/api/mail", {
                 method: "post",
                 body: JSON.stringify({
@@ -60,8 +60,8 @@ const ModalOuibounce = (props) => {
                     phoneNumber: form.phoneNumber,
                     value : value,
                     datetime: moment(new Date()).format("LLLL"),
-                    
-                  
+
+
                   },
                 }),
               });
@@ -87,21 +87,21 @@ const ModalOuibounce = (props) => {
               : e.target.value,
         });
       };
-    
+
       const handlePhoneNumber = (phone) => {
         setForm({
           ...form,
           phoneNumber: `+${phone}`,
         });
       };
-     
+
       const getInitialState = () => {
         const value = "";
         return value;
       };
-  
+
       const [value, setValue] = useState(getInitialState);
-  
+
       const handleChange = (e) => {
         setValue(e.target.value);
       };
@@ -114,23 +114,16 @@ const ModalOuibounce = (props) => {
        <div className="mx-4  xl:mx-auto  py-14 my-10 rounded-xl bg-shamrock grid gric-cols-1  gap-0 px-10 text-white placeholder-white ">
           <div className="space-y-6 h-full">
           <div className="text-white">
-        <p className="uppercase text-sm mb-2">Une question ?</p>
+        <p className="uppercase text-sm mb-2"></p>
         <h2 className="text-4xl mb-2">
-          CONSULTATION MEDICALE GRATUITE par nos médecins.
+          Profitez d&apos;une remise !
         </h2>
-        <h2 className="text-2xl mb-2 mt-4">
-          Remplisez le formulaire nous vous contacterons sous 24h.
-        </h2>
-        <p className="mt-4 mb-2">Par téléphone au</p>
-        <Link href="tel:0186653500">
-          <a className="hover:underline text-xl font-bold flex items-center">
-            +33 1 86 65 35 00
-          </a>
-        </Link>
+        <h2 className="text-3xl mb-2 mt-10">
+Remplissez le formulaire aujourd&apos;hui et recevez 150 € de réduction sur votre intervention  </h2>
       </div>
-           
+
              <form onSubmit={handleFormSubmit}>
-            <div className="space-y-6">
+            <div className="space-y-6 mt-10">
             {!formSent ? (
             <>
               <div className='grid grid-cols-2 gap-8'>
@@ -177,7 +170,7 @@ const ModalOuibounce = (props) => {
               </div>
               <div className='grid grid-cols-2 gap-8 items-center'>
 
-             
+
               <div
                 className={`${
                   errors && errors.phoneNumber ? "error-input" : ""
@@ -252,7 +245,7 @@ const ModalOuibounce = (props) => {
                  </label>
                  </div>
 
-             
+
               <div className="flex-wrap ">
                 <button
                   type="submit"
