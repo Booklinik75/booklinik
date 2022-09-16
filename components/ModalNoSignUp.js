@@ -470,20 +470,20 @@ const ModalNoSignUp = ({ onClose, visible,booking }) => {
                   </div>
                 </>
               ) : (
-                <div className="w-full h-full flex-col items-center justify-center">
-                  <p className="text-center">
-                    Votre message a bien été envoyé. Nous vous recontacterons
+                <div className="w-full h-full flex-col justify-items-center ">
+                  <p className="text-center  xl:text-lg">
+                    Votre message a bien été envoyé.<br/> Nous vous recontacterons
                     dans les plus brefs délais.
                   </p>
-
+                
                   <button
                     type="submit"
-                    className="float-right rounded bg-white bg-opacity-10 p-3 transition hover:bg-opacity-100 mx-5  hover:text-shamrock item-center"
+                    className="rounded bg-white bg-opacity-10 p-3 transition hover:bg-opacity-100 mx-5  hover:text-shamrock item-center"
                     onClick={onClose&&signOut}
                   >
-                    Fermer
-                  </button>
-                </div>
+                    Fermer </button>
+                  </div>
+                
               )}
             </div>
           </form>
