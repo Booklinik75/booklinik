@@ -116,9 +116,10 @@ const OperationPage = ({ surgeryData, categoryPhoto, relatedSurgeries, doctorSur
           </div>
          
         </div>
-        {doctorSurgeries[0].doctor?(
+        {doctorSurgeries[0].doctor.length!==0 ?(
        doctorSurgeries[0].doctor&&(
         <div className="space-y-6">
+          {console.log(beforeAfter[0].beforeafter )}
           <h2 className="text-2xl">Médecin</h2>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
             {doctorSurgeries[0].doctor.map((x,i) => {
@@ -145,9 +146,9 @@ const OperationPage = ({ surgeryData, categoryPhoto, relatedSurgeries, doctorSur
         )) :(
       ""
     )}
-     
-     {beforeAfter[0].beforeafter  ?(
-      beforeAfter[0].beforeafter.lengh>0 &&(
+    
+     {beforeAfter[0].beforeafter.length!==0 ?(
+      beforeAfter[0].beforeafter&&(
        <div className="space-y-6">
           <h2 className="text-2xl">Avant/aprés</h2>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">

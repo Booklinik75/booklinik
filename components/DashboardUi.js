@@ -19,7 +19,7 @@ const DashboardUi = ({ children, userProfile, token }) => {
         }}
       >
         <DashboardSideNav
-          userProfile={userProfile}
+          userProfile={userPrtrofile}
           token={token}
           isSideNavOpen={sideNavOpen}
         />

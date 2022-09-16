@@ -34,7 +34,7 @@ export const getServerSideProps = async (ctx) => {
 
 const ModalNoSignUp = ({ onClose, visible,booking }) => {
 
-  const { signOut } = useAuth();
+ 
   const [form, setForm] = useState({
     email: "",
     message: "",
@@ -124,6 +124,8 @@ const ModalNoSignUp = ({ onClose, visible,booking }) => {
         })
         .finally(() => {
           setLoading("idle");
+          firebase.auth().signOut();
+          router.push("/");
         });
         if (email){
       fetch("/api/mail", {
@@ -479,9 +481,10 @@ const ModalNoSignUp = ({ onClose, visible,booking }) => {
                   <button
                     type="submit"
                     className="rounded bg-white bg-opacity-10 p-3 transition hover:bg-opacity-100 mx-5  hover:text-shamrock item-center"
-                    onClick={onClose&&signOut}
+                    onClick={onClose}
                   >
                     Fermer </button>
+                  
                   </div>
                 
               )}
