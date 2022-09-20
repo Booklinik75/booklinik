@@ -29,10 +29,8 @@ const Login = () => {
   const { isChecked, handleUseReferral } = useContext(BookContext);
   const [error, setError] = useState(null);
   const [isLoading, setLoading] = useState("idle");
-  
-  const booking = JSON.parse(
-    localStorage.getItem("bookBooklinik")
-  );
+  const [booking, setBooking] = useState(null);
+
   
   function doLogIn() {
     const { email, password } = formData;
@@ -68,8 +66,11 @@ const Login = () => {
                 templateId: "d-51683413333641cc9bd64848bda8fa19",
               }),
             });
-
-           
+   
+            if(booking){
+              const booking = JSON.parse(
+                localStorage.getItem("bookBooklinik")
+              );
               firebase
                 .firestore()
                 .collection("bookings")
@@ -97,17 +98,17 @@ const Login = () => {
                     }),
                   });
                 })
-                
+              }
             
           })
         
-      
+        
      
     
       // redirect to dashboard
       // router.push("/dashboard");
     })
-        
+    
       
       .catch((error) => {
         if (errors[error.code]) {
