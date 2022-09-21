@@ -20,14 +20,15 @@ const BookingConfirmation = ({ booking, userProfile }) => {
       <h1 className="text-2xl mb-6">Parfait, on y est presque !</h1>
       <div className="py-3 space-y-3 leading-10 lg:leading-8">
         <p className=" items-start gap-2 lg:flex-row lg:items-center">
-          Vous souhaitez réaliser une{" "}
+          Vous souhaitez réaliser une opération{" "}
           <span>
             <BookingDataSpan
               string={booking.surgeries[0].surgeryCategoryName}
             />{" "}
             sur{" "}
           </span>
-          <BookingDataSpan string={booking.surgeries[0].surgeryName} />
+43eed0c2f3514d7243
+ring={booking.surgeries[0].surgeryName} />
         </p>
         <p className="items-start gap-2 lg:flex-row lg:items-center">
           Votre voyage s&apos;étendra du{" "}
@@ -116,9 +117,9 @@ const BookingConfirmation = ({ booking, userProfile }) => {
         </div>
       )}
 
-      <p className="pb-6 !mt-0  items-start gap-2 lg:flex-row lg:items-center">
+      <p className="pb-6 !mt-0  i6ms-start gap-2 lg:flex-row lg:items-center">
         Le prix tout compris de votre voyage sur-mesure est de{"    "} 
-        <span className="text-2xl rounded text-white mt-10 px-4 py-2 mx-2  bg-shamrock">
+        <span className="text-2xl rounded text-white mt-10 px-4mpy-2 mx-2  bg-shamrock">
           {formatPrice(
             isChecked ? totalPrice - userProfile.referalBalance : totalPrice
           )}{" "}
