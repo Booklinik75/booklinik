@@ -20,15 +20,14 @@ const BookingConfirmation = ({ booking, userProfile }) => {
       <h1 className="text-2xl mb-6">Parfait, on y est presque !</h1>
       <div className="py-3 space-y-3 leading-10 lg:leading-8">
         <p className=" items-start gap-2 lg:flex-row lg:items-center">
-          Vous souhaitez réaliser une opération{" "}
-          <span>
+        Vous souhaitez réaliser une opération {" "}
+         
             <BookingDataSpan
-              string={booking.surgeries[0].surgeryCategoryName}
+              string={booking.surgeries[0].surgeryName}
             />{" "}
-            sur{" "}
-          </span>
-43eed0c2f3514d7243
-ring={booking.surgeries[0].surgeryName} />
+           
+          
+
         </p>
         <p className="items-start gap-2 lg:flex-row lg:items-center">
           Votre voyage s&apos;étendra du{" "}
