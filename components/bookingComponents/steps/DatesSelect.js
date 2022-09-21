@@ -73,7 +73,7 @@ const DatesSelectStep = ({
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-2">
       <h1 className="text-2xl mb-6">
         Choisissez vos dates de voyage
         {booking.totalSelectedNights !== 0 &&
