@@ -27,7 +27,7 @@ export default function Navigation() {
                     <Image src={Logo} alt="Booklinik+ Logo" />
                   </a>
                 </Link>
-                
+
                 <button
                   className="text-shamrock cursor-pointer text-xl leading-none px-3 py-1 border border-solid border-transparent rounded bg-transparent block lg:hidden outline-none focus:outline-none "
                   type="button"
@@ -127,7 +127,7 @@ export default function Navigation() {
                       navBottom
                     />
                     <NavigationItem
-                      title=" +33 1 86 65 35 00"
+                      title=" 01 86 65 35 00"
                       extraStyle="gap-2 text-lg  items-center mx-5 lg:mx-0 !justify-center lg:justify-start !py-3 rounded flex bg-shamrock lg:bg-transparent text-white lg:text-shamrock"
                       target="tel:0186653500"
                       navBottom
@@ -147,7 +147,7 @@ export default function Navigation() {
                     <Link href="tel:0186653500">
                       <a className="gap-2 text-lg items-center flex transition-colors text-shamrock">
                         <FaPhone className="stroke-1  text-shamrock"/>
-                        +33 1 86 65 35 00
+                        01 86 65 35 00
                       </a>
                     </Link>
                   </li>
