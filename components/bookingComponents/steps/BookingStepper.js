@@ -122,6 +122,19 @@ const handleOnClose= (e) => {
           </div>
         )}
         <div className="p-12 pt-32 lg:p-10 lg:pt-32">
+        {step > 0 ? (
+                <button
+                  onClick={() => {
+                    window.scrollTo({ top: 0 });
+                    setStep((s) => s - 1);
+                  }}
+                  className="flex items-center gap-1 mb-2 border border-gray-500 bg-white text-gray-500 transition hover:bg-gray-500 hover:text-white px-5 py-2 rounded"
+                >
+                  <BsArrowLeft /> Précédent
+                </button>
+              ) : (
+                ""
+              )}
           <form
             onSubmit={(e) => {
               e.preventDefault();
@@ -131,19 +144,7 @@ const handleOnClose= (e) => {
             {stepsArray[step]}
 
             <div className="flex flex-col gap-3 xl:flex-row items-center xl:gap-2">
-              {step > 0 ? (
-                <button
-                  onClick={() => {
-                    window.scrollTo({ top: 0 });
-                    setStep((s) => s - 1);
-                  }}
-                  className="flex items-center gap-1 border border-gray-500 bg-white text-gray-500 transition hover:bg-gray-500 hover:text-white px-5 py-2 rounded"
-                >
-                  <BsArrowLeft /> Précédent
-                </button>
-              ) : (
-                ""
-              )}
+              
               {step === stepsArray.length - 1 ? (
                 <>
                 <button

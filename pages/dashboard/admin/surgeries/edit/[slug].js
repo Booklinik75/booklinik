@@ -496,7 +496,7 @@ const EditSurgery = ({
 
                     <div className="btn-box space-x-2 my-2 transition">
                       {inputBeforeAfterList.length - 1 === i &&
-                        inputBeforeAfterList.length < 4 && (
+                        (
                           <button
                             onClick={handlebeforeafterAddClick}
                             className="py-1 px-3 rounded text-white bg-shamrock border border-shamrock hover:bg-white hover:text-shamrock transition"

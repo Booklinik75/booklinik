@@ -95,59 +95,7 @@ const OperationPage = ({ surgeryData, categoryPhoto, relatedSurgeries, doctorSur
         </div>
       </div>
       <div className="mx-4 xl:mx-auto max-w-7xl space-y-10">
-        <div>
-          <MDEditor.Markdown source={surgeryData.data.descriptionBody} />
-        </div>
-        <div className="space-y-6">
-          <h2 className="text-2xl">Opérations similaires</h2>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-            {relatedSurgeries.map((surgery) => {
-              return (
-                <RelatedElement
-                  title={surgery.name}
-                  target={`/operations/${surgery.category}/${surgery.slug}`}
-                  key={surgery.slug}
-                  picture={surgery.photoUrl || categoryPhoto}
-                  //picture={surgeryData.data.photoUrl || categoryPhoto} // meme photo
-
-                />
-              );
-            })}
-          </div>
-         {console.log()}
-        </div>
-        {doctorSurgeries[0].doctor?(
-       doctorSurgeries[0].doctor.length>0&&(
-        <div className="space-y-6">
-          {console.log(beforeAfter[0].beforeafter )}
-          <h2 className="text-2xl">Médecin</h2>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-            {doctorSurgeries[0].doctor.map((x,i) => {
-
-              return (
-                <RelatedElement
-                  title={x.name}
-                  target={`/operations/${x.category}/${x.slug}`}
-                  key={(x,i)}
-                  picture={x.photoUrl}
-              //  picture={surgeryData.data.photoUrl || categoryPhoto} // meme photo
-
-                />
-              );
-            })}
-          </div>
-          
-       
-        
-        </div>
-        
-        
-
-        )) :(
-      ""
-    )}
-    
-     {beforeAfter[0].beforeafter ?(
+      {beforeAfter[0].beforeafter ?(
        beforeAfter[0].beforeafter.length>0&&(
        <div className="space-y-6">
           <h2 className="text-2xl">Avant/aprés</h2>
@@ -182,6 +130,64 @@ const OperationPage = ({ surgeryData, categoryPhoto, relatedSurgeries, doctorSur
       ""
     )}
   
+        <div>
+          <MDEditor.Markdown source={surgeryData.data.descriptionBody} />
+        </div>
+        {doctorSurgeries[0].doctor?(
+       doctorSurgeries[0].doctor.length>0&&(
+        <div className="space-y-6">
+          {console.log(beforeAfter[0].beforeafter )}
+          <h2 className="text-2xl">Médecin</h2>
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+            {doctorSurgeries[0].doctor.map((x,i) => {
+
+              return (
+                <RelatedElement
+                  title={x.name}
+                  target={`/operations/${x.category}/${x.slug}`}
+                  key={(x,i)}
+                  picture={x.photoUrl}
+              //  picture={surgeryData.data.photoUrl || categoryPhoto} // meme photo
+
+                />
+              );
+            })}
+          </div>
+          
+       
+        
+        </div>
+        
+        
+
+        )) :(
+      ""
+    )}
+
+     
+
+
+        <div className="space-y-6">
+          <h2 className="text-2xl">Opérations similaires</h2>
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+            {relatedSurgeries.map((surgery) => {
+              return (
+                <RelatedElement
+                  title={surgery.name}
+                  target={`/operations/${surgery.category}/${surgery.slug}`}
+                  key={surgery.slug}
+                  picture={surgery.photoUrl || categoryPhoto}
+                  //picture={surgeryData.data.photoUrl || categoryPhoto} // meme photo
+
+                />
+              );
+            })}
+          </div>
+         {console.log()}
+        </div>
+        
+    
+   
      </div>
     
      <ContactHelper />

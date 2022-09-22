@@ -20,14 +20,18 @@ export default function Navigation() {
       <div className="flex flex-wrap">
         <div className="w-full">
           <nav className="flex flex-wrap items-center justify-between py-2 top-0 fixed w-full z-50 bg-white drop-shadow-sm">
-            <div className="xl:container w-full relative px-4 mx-auto flex flex-wrap items-center justify-between">
-              <div className="w-full relative flex justify-between lg:w-auto px-4 lg:static lg:block lg:justify-start">
+            <div className="xl:container w-full relative px-4 mx-auto flex flex-wrap items-center justify-between items-center">
+              <div className="w-full relative flex justify-between lg:w-auto px-4 lg:static lg:block lg:justify-start items-center">
                 <Link href="/">
                   <a className="text-sm font-bold leading-relaxed inline-block mr-4 py-2 shamrockspace-nowrap uppercase text-shamrock">
                     <Image src={Logo} alt="Booklinik+ Logo" />
                   </a>
                 </Link>
-
+              <div className="py-3">
+                <a href="#contactform" className="lg:hidden image-clignote text-white itrems-center bg-shamrock rounded-xl px-2 py-3  transition border border-shamrock hover:text-shamrock hover:bg-white">
+              Consultation Gratuite
+            </a>
+            </div>
                 <button
                   className="text-shamrock cursor-pointer text-xl leading-none px-3 py-1 border border-solid border-transparent rounded bg-transparent block lg:hidden outline-none focus:outline-none "
                   type="button"
@@ -92,7 +96,7 @@ export default function Navigation() {
                     </div>
                     <NavigationItem
                       title="Offres Spéciales"
-                      extraStyle="text-shamrock"
+                      extraStyle="text-shamrock "
                       target="/offres"
                     />
                     <li className="hidden lg:block lg:mt-[0.5rem]">|</li>
@@ -137,10 +141,11 @@ export default function Navigation() {
                       id="language-switcher"
                       className="language-switcher border-0 px-3 py-2 lg:p-0 flex items-center no-underline leading-snug lg:hover:underline font-medium gap-2 text-lg mx-5 lg:mx-0 !justify-center lg:justify-start normal-case rounded lg:bg-transparent text-white lg:text-shamrock"
                     ></ul>
-                    <a href="#contactform" className="  image-clignote text-white bg-shamrock rounded-2xl px-3 py-3  transition border border-shamrock hover:text-shamrock hover:bg-white">
+                    <a href="#contactform" className="hidden lg:block image-clignote text-white bg-shamrock rounded-2xl px-3 py-3  transition border border-shamrock hover:text-shamrock hover:bg-white">
               Consultation Gratuite
             </a>
                   </div>
+                  
                   {/*
                   <li className="hidden lg:flex group gap-1 items-center">
 

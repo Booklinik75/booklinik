@@ -73,7 +73,7 @@ const DatesSelectStep = ({
   };
 
   return (
-    <div className="space-y-2">
+    <div className="space-y-6">
       <h1 className="text-2xl mb-6">
         Choisissez vos dates de voyage
         {booking.totalSelectedNights !== 0 &&
@@ -142,6 +142,7 @@ const DatesSelectStep = ({
       }`}
             </style>
             <h2 className="text-xs uppercase text-gray-500">Dates</h2>
+            <div className="h-64 relative">
             <DatePicker
               moveRangeOnFirstSelection={true}
               focusPlage={setFocusRange}
@@ -154,6 +155,7 @@ const DatesSelectStep = ({
               selectsDisabledDaysInRange
               inline
             />
+            </div>
           </div>
         </div>
       </div>
