@@ -195,10 +195,10 @@ const EditSurgery = ({
 
   const handlePhotoDoctorUpload = (e, index) => {
     const { name, files } = e.target;
-    
+
     const storageRef = firebase.storage().ref();
     const list = [...inputDoctorList];
- 
+
 
     const uploadTask = storageRef
       .child(`doctor/${files[0].name}`)
@@ -475,7 +475,7 @@ const EditSurgery = ({
                 return (
                   <div key={(x, i)}>
                     <label className="text-sm text-gray-500 uppercase">
-                      Photo Avant/Aprés n°{i + 1}
+                      Photo Avant/Après n°{i + 1}
                     </label>
                     <DashboardInput
                       type="file"
@@ -557,7 +557,7 @@ const EditSurgery = ({
                       disabled={false}
                       label="Nombre de photos"
                     />
-                
+
                     <label className="text-xs uppercase text-gray-500 w-full">
                       Description
                     </label>
