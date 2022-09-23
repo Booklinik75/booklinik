@@ -141,7 +141,9 @@ const DatesSelectStep = ({
 
       }`}
             </style>
+
             <h2 className="text-xs uppercase text-gray-500">Dates</h2>
+            <div className="grid grid-cols-9 gap-4">
             <div className="h-90 relative">
             <DatePicker
               moveRangeOnFirstSelection={true}
@@ -155,6 +157,7 @@ const DatesSelectStep = ({
               selectsDisabledDaysInRange
               inline
             />
+             </div>
             </div>
           </div>
         </div>

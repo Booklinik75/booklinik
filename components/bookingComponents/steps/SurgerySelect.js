@@ -114,6 +114,7 @@ const SurgerySelectStep = ({
                       surgery.minimumNights,
                       surgery.cities
                     );
+                    window.scrollTo(0, 0);
                     setStep((s) => s + 1)}
                   }
                  
