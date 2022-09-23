@@ -18,16 +18,16 @@ const BookingConfirmation = ({ booking, userProfile }) => {
   return (
     <div className="space-y-6 h-full">
       <h1 className="text-2xl mb-6">Parfait, on y est presque !</h1>
-      <div className="py-3 space-y-3 leading-10 lg:leading-8">
-        <p className=" items-start gap-2 lg:flex-row lg:items-center">
-        Vous souhaitez réaliser une opération {" "}
-         
-            <BookingDataSpan
+      <div className="py-2 space-y-3 leading-10 xl:leading-10">
+        <p className="flex flex-wrap items-start lg:gap-2 lg:flex-row lg:items-center">
+        Vous souhaitez réaliser une opération{" "} 
+          <span className="">
+                       <BookingDataSpan
               string={booking.surgeries[0].surgeryName}
             />{" "}
-            
+            </span> 
 
-        </p>
+        </p> 
         <p className="items-start gap-2 lg:flex-row lg:items-center">
           Votre voyage s&apos;étendra du{" "}
           <span>
@@ -98,7 +98,7 @@ const BookingConfirmation = ({ booking, userProfile }) => {
             );
           })}
         </p>
-      </div>
+     
       {userProfile && userProfile.referalBalance > 0 && (
         <div className="pt-6 flex flex-row items-center gap-2">
           <input
@@ -124,6 +124,7 @@ const BookingConfirmation = ({ booking, userProfile }) => {
           €
         </span>
       </p>
+    </div>
     </div>
   );
 };
