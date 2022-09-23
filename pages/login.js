@@ -106,7 +106,7 @@ const Login = () => {
      
     
       // redirect to dashboard
-      // router.push("/dashboard");
+       router.push("/dashboard");
     })
     
       
@@ -122,6 +122,7 @@ const Login = () => {
       .finally(() => {
         
         setLoading("idle");
+    
       });
   }
 

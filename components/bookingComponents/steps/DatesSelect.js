@@ -142,7 +142,7 @@ const DatesSelectStep = ({
       }`}
             </style>
             <h2 className="text-xs uppercase text-gray-500">Dates</h2>
-            <div className="h-92 relative">
+            <div className="h-90 relative">
             <DatePicker
               moveRangeOnFirstSelection={true}
               focusPlage={setFocusRange}
