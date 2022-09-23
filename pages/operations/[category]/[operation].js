@@ -68,7 +68,7 @@ const OperationPage = ({ surgeryData, categoryPhoto, relatedSurgeries, doctorSur
         <title>Booklinik | {surgeryData.data.name}</title>
       </Head>
       <Navigation />
-      
+
       <div className="mx-4 space-y-10">
         <div className="grid grid-cols-3 gap-6">
           <div className="col-span-3 lg:col-span-1 bg-gray-100 p-14 space-y-4">
@@ -98,26 +98,26 @@ const OperationPage = ({ surgeryData, categoryPhoto, relatedSurgeries, doctorSur
       {beforeAfter[0].beforeafter ?(
        beforeAfter[0].beforeafter.length>0&&(
        <div className="space-y-6">
-          <h2 className="text-2xl">Avant/aprés</h2>
-          <div className="p-3 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 lg:p-0 gap-6 h-max-10">
+          <h2 className="text-2xl">Avant/Après</h2>
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
           {beforeAfter[0].beforeafter.map((x,i) => {
-       
+
               return (
 
                   <div key={(x,i)} className="col-span-1 rounded relative transition shadow hover:shadow-lg group">
-                   <ReactCompareImage 
-                
-                 
+                   <ReactCompareImage
+
+
                   leftImage={x.leftimage}
                   rightImage={x.rightimage} />
-                   
+
                   </div>
-           
+
 
            )
           })}
 
-        
+
 
 
         </div>
@@ -129,7 +129,7 @@ const OperationPage = ({ surgeryData, categoryPhoto, relatedSurgeries, doctorSur
      )) :(
       ""
     )}
-  
+
         <div>
           <MDEditor.Markdown source={surgeryData.data.descriptionBody} />
         </div>
@@ -137,7 +137,7 @@ const OperationPage = ({ surgeryData, categoryPhoto, relatedSurgeries, doctorSur
        doctorSurgeries[0].doctor.length>0&&(
         <div className="space-y-6">
           {console.log(beforeAfter[0].beforeafter )}
-          <h2 className="text-2xl">Médecin</h2>
+          <h2 className="text-2xl">Nos médecins</h2>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
             {doctorSurgeries[0].doctor.map((x,i) => {
 
@@ -153,18 +153,18 @@ const OperationPage = ({ surgeryData, categoryPhoto, relatedSurgeries, doctorSur
               );
             })}
           </div>
-          
-       
-        
+
+
+
         </div>
-        
-        
+
+
 
         )) :(
       ""
     )}
 
-     
+
 
 
         <div className="space-y-6">
@@ -185,11 +185,11 @@ const OperationPage = ({ surgeryData, categoryPhoto, relatedSurgeries, doctorSur
           </div>
          {console.log()}
         </div>
-        
-    
-   
+
+
+
      </div>
-    
+
      <ContactHelper />
      <Footer />
    </div>
