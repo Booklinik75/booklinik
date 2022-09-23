@@ -120,7 +120,7 @@ const Login = () => {
         Sentry.captureException(error);
       })
       .finally(() => {
-        router.push("/dashboard");
+        
         setLoading("idle");
       });
   }
