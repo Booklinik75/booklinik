@@ -436,9 +436,25 @@ const EditSurgery = ({
                       label="Photo Médecin"
                       required={false}
                     />
+                    
+            <label className="text-xs uppercase text-gray-500 w-full">
+              Doctor excerpt
+            </label>
+            <textarea
+              name="doctorExcerpt"
+              value={x.doctorExcerpt}
+              onChange={(e) => handleInputDoctorChange(e, i)}
+              disabled={false}
+              label="Doctor excerpt"
+              required={true}
+              rows={3}
+              placeholder="Écrivez une courte description"
+              className="w-full rounded border-2 outline-none border-gray-200 p-3 transition hover:border-bali focus:border-shamrock disabled:bg-gray-300 disabled:border-gray-400 disabled:cursor-not-allowed"
+            />
+         
                     <div className="btn-box space-x-2 my-2 transition">
                       {inputDoctorList.length - 1 === i &&
-                        inputDoctorList.length < 4 && (
+                        (
                           <button
                             onClick={handleDoctorAddClick}
                             className="py-1 px-3 rounded text-white bg-shamrock border border-shamrock hover:bg-white hover:text-shamrock transition"
