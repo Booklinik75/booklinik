@@ -5,6 +5,8 @@ import "react-phone-input-2/lib/style.css";
 import moment from "moment";
 import * as Sentry from "@sentry/browser";
 import validateModalOuibounce from 'utils/validateModalOuibounce';
+import { AiOutlineClose } from "react-icons/ai";
+
 
 const ModalOuibounce = (props) => {
     const [form, setForm] = useState({
@@ -111,10 +113,20 @@ const ModalOuibounce = (props) => {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center z-50 overflow-auto">
     <div id="contactform" className="py-40 mt-15 absolute ">
-       <div className="mx-4  xl:mx-auto  py-14 my-10 rounded-xl bg-shamrock grid gric-cols-1  gap-0 px-10 text-white placeholder-white ">
+      
+       <div className=" my-10 rounded-xl bg-shamrock   gap-0 text-white placeholder-white ">
+       <div className="p-4">
+        <span className="cursor-pointer">
+        
+          <AiOutlineClose className="hover:text-gray-500" size={20}  onClick={props.handleDismiss}/>
+        </span>
+
+      </div>
+<div className='grid gric-cols-1 py-14 mx-4  xl:mx-auto pt-3  px-10'>
           <div className="space-y-6 h-full">
+
           <div className="text-white">
-        <p className="uppercase text-sm mb-2"></p>
+      
         <h2 className="text-4xl mb-2">
           Profitez d&apos;une remise !
         </h2>
@@ -254,13 +266,7 @@ Remplissez le formulaire aujourd&apos;hui et recevez 150 € de réduction sur v
                 >
                   Envoyer
                 </button>
-                <button
-                   type="submit"
-                   className="mx-1 float-right rounded bg-white  text-gray-500  border border-gray-500 px-5 py-3 transition hover:bg-gray-500 hover:text-white"
-                   onClick={props.handleDismiss}
-                   >
-                Fermer
-                </button>
+               
               </div>
             </>
           ) : (
@@ -269,18 +275,13 @@ Remplissez le formulaire aujourd&apos;hui et recevez 150 € de réduction sur v
                 Votre message a bien été envoyé. Nous vous recontacterons dans
                 les plus brefs délais.
               </p>
-              <button
-                   type="submit"
-                   className="mx-1 float-right rounded bg-white  text-gray-500  border border-gray-500 px-5 py-3 transition hover:bg-gray-500 hover:text-white"
-                   onClick={props.handleDismiss}
-                   >
-                Fermer
-                </button>
+             
             </div>
           )}
             </div>
             </form>
           </div>
+       </div>
        </div>
     </div>
  </div>

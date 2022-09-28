@@ -14,6 +14,7 @@ import PhoneInput from "react-phone-input-2";
 import MD5 from "crypto-js/md5";
 import { useAuth } from "hooks/useAuth";
 import "react-phone-input-2/lib/style.css";
+import { AiOutlineClose } from "react-icons/ai";
 
 import firebase from "../firebase/clientApp";
 
@@ -236,8 +237,19 @@ const ModalNoSignUp = ({ onClose, visible,booking }) => {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center  overflow-auto  z-50">
       <div id="contactform" className="py-40 mt-40 lg:mt-0 xl:mt-0 absolute">
-        <div className="mx-4 xl:mx-auto  mt-40 lg:mt-0 xl:mt-0 l py-14 my-10 rounded-xl bg-shamrock grid gric-cols-1 lg:grid-cols-2 gap-0 px-10 text-white placeholder-white ">
+        <div className=" mt-30 lg:mt-0 xl:mt-0   my-10 rounded-xl bg-shamrock gap-0 text-white placeholder-white ">
+        <div className="p-3">
+        <span className="cursor-pointer">
+        
+          <AiOutlineClose className="hover:text-gray-500" size={20}  onClick={onClose}/>
+        </span>
+
+      </div>
+      <div className="mx-4 xl:mx-auto py-14 px-10 grid grid-cols-1 lg:grid-cols-2 pt-5">
+      
+
           <div className="space-y-6 h-full">
+         
             <h1 className="text-2xl mb-6">Parfait, on y est presque !</h1>
             <div className="py-6 space-y-6 leading-9 ">
               <p className=" lg:flex-row lg:items-center">
@@ -462,13 +474,7 @@ const ModalNoSignUp = ({ onClose, visible,booking }) => {
                     >
                       Envoyer
                     </button>
-                    <button
-                      type="submit"
-                      className="flex items-center gap-1 border border-gray-500 bg-white text-gray-500 transition hover:bg-gray-500 hover:text-white px-5 py-2 rounded"
-                      onClick={onClose}
-                    >
-                      Fermer
-                    </button>
+                   
                   </div>
                 </>
               ) : (
@@ -478,12 +484,7 @@ const ModalNoSignUp = ({ onClose, visible,booking }) => {
                     dans les plus brefs délais.
                   </p>
                 
-                  <button
-                    type="submit"
-                    className="rounded bg-white bg-opacity-10 p-3 transition hover:bg-opacity-100 mx-5  hover:text-shamrock item-center"
-                    onClick={onClose}
-                  >
-                    Fermer </button>
+                 
                   
                   </div>
                 
@@ -493,6 +494,8 @@ const ModalNoSignUp = ({ onClose, visible,booking }) => {
         </div>
       </div>
     </div>
+    </div>
+
   );
 };
 
