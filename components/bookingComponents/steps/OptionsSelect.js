@@ -39,7 +39,7 @@ const OptionsSelectStep = ({
         complémentaires ?
       </h1>
       <div className="grid grid-cols-9 gap-12 h-3/4 max-h-full">
-        <div className="col-span-9 lg:col-span-3 space-y-3 order-last lg:order-first">
+        <div className="hidden  col-span-9 lg:col-span-3 space-y-3 order-last lg:block lg:order-first">
           <p className="text-xs text-gray-500 uppercase pt-2">Hôtel</p>
           <div className="h-64 relative">
             <Image

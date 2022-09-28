@@ -350,21 +350,23 @@ const SignUp = () => {
                 </div>
                 
               </div>
-              <div className="flex flex-row">
-                  
-              <DashboardButton
-                    defaultText="S'inscrire"
-                    status={isLoading}
-                  ></DashboardButton>
-              <div className="flex items-center gap-3 pt-6 mx-3">
+              <div className="grid grid-cols-1 lg:flex lg:flex-row lg:gap-3 ">
+           
+            <div className="flex items-center gap-3 pt-6 ">
                  <button
                   type="submit"
                   onClick={()=>setShowModal(true)}
-                  className={`min-w-max transition px-10 py-3 rounded border border-shamrock bg-shamrock text-white && "hover:text-shamrock group hover:bg-white"`}
+                  className={`min-w-max transition px-4  py-3 lg:px-10 rounded border border-shamrock bg-shamrock text-white && "hover:text-shamrock group hover:bg-white"`}
                   >Continuer sans inscription
                   </button>
                   
               </div>
+
+              <DashboardButton
+                    defaultText="S'inscrire"
+                    status={isLoading}
+                  ></DashboardButton>
+              
               
                  
                   
