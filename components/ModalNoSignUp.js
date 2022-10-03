@@ -235,9 +235,9 @@ const ModalNoSignUp = ({ onClose, visible,booking }) => {
   if (!visible) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center  overflow-auto  z-50">
-      <div id="contactform" className="py-40 mt-40 lg:mt-0 xl:mt-0 absolute">
-        <div className=" mt-30 lg:mt-0 xl:mt-0   my-10 rounded-xl bg-shamrock gap-0 text-white placeholder-white ">
+    <div className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex flex-wrap justify-center items-center  overflow-auto  z-50">
+      <div id="contactform" className="  lg:mt-0 xl:mt-0 lg:absolute p-4 ">
+        <div className="lg:mt-0 xl:mt-0 relative  rounded-xl bg-shamrock gap-0 text-white placeholder-white ">
         <div className="p-3">
         <span className="cursor-pointer">
         
