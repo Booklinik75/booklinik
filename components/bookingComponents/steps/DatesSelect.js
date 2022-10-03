@@ -44,7 +44,7 @@ const DatesSelectStep = ({
     setEndDate(end);
     DisabledMinrange();
 
-
+//To disabled min day
     function DisabledMinrange() {
       let celldisabled = [];
 
@@ -139,6 +139,8 @@ const DatesSelectStep = ({
   background-color: #33c383 !important;
 }
 
+
+
       }`}
             </style>
 
@@ -146,6 +148,7 @@ const DatesSelectStep = ({
             <div className="grid grid-cols-9 gap-4">
             <div className="h-90 relative">
             <DatePicker
+              disabledKeyboardNavigation
               moveRangeOnFirstSelection={true}
               focusPlage={setFocusRange}
               onChange={onChange}
@@ -153,6 +156,7 @@ const DatesSelectStep = ({
               endDate={endDate}
               minDate={new Date()}
               excludeDates={disabledDate}
+              selected={startDate}
               selectsRange
               selectsDisabledDaysInRange
               inline
