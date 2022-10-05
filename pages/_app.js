@@ -28,6 +28,19 @@ function BooklinikClient({ Component, pageProps }) {
 
   const [loadingAnimation, setLoadingAnimation] = useState(false);
 
+  const [showModal, setShowModal] = useState(false);
+
+  const handleOnClose= () => {
+    
+    setShowModal(false);
+
+  };
+
+  useEffect(() => {
+    setTimeout(() => {
+      setShowModal(true);
+  }, 10000);
+  }, []);
 
   const booking={
     surgeries: [
@@ -61,6 +74,8 @@ function BooklinikClient({ Component, pageProps }) {
     roomPhotoLink: "",
   
   }
+
+  
  
   useEffect(() => {
     window.$crisp = [];
@@ -274,13 +289,9 @@ function BooklinikClient({ Component, pageProps }) {
        
        
           <ToastContainer />
-          <ReactOuibounce
-        cookieName="test-event"
-        
       
-      >
-        <ModalOuibounce props={true}/>
-      </ReactOuibounce>
+        <ModalOuibounce onClose={handleOnClose} showModal={showModal}/>
+  
          </BookProvider>
         
       </AuthProvider>

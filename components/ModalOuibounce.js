@@ -8,7 +8,7 @@ import validateModalOuibounce from 'utils/validateModalOuibounce';
 import { AiOutlineClose } from "react-icons/ai";
 
 
-const ModalOuibounce = (props) => {
+const ModalOuibounce = ({ onClose, showModal}) => {
     const [form, setForm] = useState({
         email: "",
         firstname: "",
@@ -109,16 +109,16 @@ const ModalOuibounce = (props) => {
       };
 
 
-      if (!props.shouldDisplay) return null;
+      if (!showModal) return null;
   return (
     <div className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center z-50 overflow-auto">
-    <div id="contactform" className="py-40 mt-15 absolute ">
+    <div id="contactform" className="py-40 mt-15 px-3">
       
-       <div className=" my-10 rounded-xl bg-shamrock   gap-0 text-white placeholder-white ">
-       <div className="p-4">
+       <div className=" my-10 rounded-xl bg-shamrock  gap-0 text-white placeholder-white p-4">
+       <div className="">
         <span className="cursor-pointer">
         
-          <AiOutlineClose className="hover:text-gray-500" size={20}  onClick={props.handleDismiss}/>
+          <AiOutlineClose className="hover:text-gray-500" size={20}  onClick={onClose}/>
         </span>
 
       </div>
