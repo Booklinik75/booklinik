@@ -18,7 +18,7 @@ import "react-phone-input-2/lib/style.css";
 export const getServerSideProps = async (ctx) => {
   const auth = await checkAuth(ctx);
   if (auth.props.userProfile) return serverRedirect("/dashboard");
- 
+
   return {
     props: {
       auth,
@@ -41,7 +41,7 @@ const SignUp = () => {
   const [booking, setBooking] = useState(null);
   const [isLoading, setLoading] = useState("idle");
   const validationSchema = Yup.object({
-    
+
     email: Yup.string().email().required(),
     password: Yup.string().required("Le mot de passe est requis"),
     passwordConfirmation: Yup.string().oneOf(
@@ -56,7 +56,7 @@ const SignUp = () => {
       ));
     }
   },[])
-  
+
 
   function doSignUp() {
     const { email, password, confirmPassword, phoneNumber } = formData;
@@ -72,7 +72,7 @@ const SignUp = () => {
       setLoading("idle");
       return setError("Le numéro de téléphone ne doit pas être vide");
     }
-    
+
     firebase
       .auth()
       .createUserWithEmailAndPassword(email, password)
@@ -130,7 +130,7 @@ const SignUp = () => {
                 const booking = JSON.parse(
                   localStorage.getItem("bookBooklinik")
                 );
-                
+
                 firebase
                   .firestore()
                   .collection("bookings")
@@ -159,7 +159,7 @@ const SignUp = () => {
                     });
                   })
                   .then(() => {
-                    
+
                     router.push("/dashboard");
                   });
               } else {
@@ -218,7 +218,7 @@ const SignUp = () => {
   };
 
   const handleOnClose= () => {
-    
+
     setShowModal(false);
 
   };
@@ -236,9 +236,9 @@ const SignUp = () => {
 
         <div className="flex flex-row gap-1">
           <p>Vous avez déjà un compte ?</p>
-           
+
             <a className="text-gray-700 hover:underline" onClick={doBookWithLogin}>Se connecter</a>
-          
+
         </div>
       </div>
       <div className="grid grid-cols-10 h-full">
@@ -348,36 +348,38 @@ const SignUp = () => {
                     </a>
                   </Link>
                 </div>
-                
+
               </div>
-              <div className="grid grid-cols-1 lg:flex lg:flex-row lg:gap-3 ">
-           
-            <div className="flex items-center gap-3 pt-6 ">
+              <div className="grid grid-cols-1 lg:flex lg:flex-row lg:gap-3 grid justify-items-center">
+
+
+                            <DashboardButton
+                                  defaultText="S'inscrire"
+                                  status={isLoading}
+                                ></DashboardButton>
+
+
+
+            <div className="flex gap-3 pt-6 ">
                  <button
                   type="submit"
                   onClick={()=>setShowModal(true)}
                   className={`min-w-max transition px-4  py-3 lg:px-10 rounded border border-shamrock bg-shamrock text-white && "hover:text-shamrock group hover:bg-white"`}
                   >Continuer sans inscription
                   </button>
-                  
+
               </div>
 
-              <DashboardButton
-                    defaultText="S'inscrire"
-                    status={isLoading}
-                  ></DashboardButton>
-              
-              
-                 
-                  
+
+
                 </div>
-               
+
             </form>
-         
+
           </div>
-          
+
         </div>
-        
+
         <div className="relative hidden col-span-4 lg:block">
           <Image
             src={SideBanner}
@@ -386,12 +388,12 @@ const SignUp = () => {
             className="h-full"
             alt=""
           />
-          
+
         </div>
         {booking?(  <ModalNoSignUp onClose={handleOnClose} visible={showModal} booking={booking} />):""}
-      
+
       </div>
-      
+
     </div>
   );
 };
