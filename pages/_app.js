@@ -1,14 +1,11 @@
-import { useRef ,useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import "../styles/globals.css";
-import ReactOuibounce from 'react-ouibounce'
 import { AuthProvider } from "../utils/UserContext";
 import { BookProvider } from "utils/bookContext";
-import { parseCookies, setCookie, destroyCookie } from 'nookies';
 import "@uiw/react-md-editor/dist/markdown-editor.css";
 import "@uiw/react-markdown-preview/dist/markdown.css";
 import { ToastContainer } from "react-toastify";
 import Head from "next/head";
-import "../styles/calendar.css";
 import moment from "moment";
 import "moment/locale/fr";
 import "react-toastify/dist/ReactToastify.css";
@@ -39,7 +36,7 @@ function BooklinikClient({ Component, pageProps }) {
   useEffect(() => {
     setTimeout(() => {
       setShowModal(true);
-  }, 10000);
+  }, 20000);
   }, []);
 
   const booking={

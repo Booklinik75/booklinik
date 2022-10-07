@@ -1,5 +1,4 @@
 import {React,useState} from 'react'
-import Link from 'node_modules/next/link';
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import moment from "moment";
@@ -180,7 +179,7 @@ Remplissez le formulaire aujourd&apos;hui et recevez 150 € de réduction sur v
                 )}
               </div>
               </div>
-              <div className='grid grid-cols-2 gap-8 items-center'>
+              <div className='grid grid-cols-1 lg:grid-cols-2 gap-8 items-center'>
 
 
               <div

@@ -142,10 +142,11 @@ const OperationPage = ({ surgeryData, categoryPhoto, relatedSurgeries, doctorSur
             {doctorSurgeries[0].doctor.map((x,i) => {
 
               return (
-                <div  key={x.slug}>
+                <div  key={x.slug} className="pointer-events-none">
                 <RelatedElement
                   title={x.name}
                   target={`/operations/${x.category}/${x.slug}`}
+              
                   key={(x,i)}
                   picture={x.photoUrl}
               //  picture={surgeryData.data.photoUrl || categoryPhoto} // meme photo

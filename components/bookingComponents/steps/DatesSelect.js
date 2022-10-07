@@ -1,10 +1,8 @@
 import { AiFillInfoCircle } from "react-icons/ai";
 import DatePicker from "react-datepicker";
-import { getDate, isWithinInterval } from "date-fns";
 import { useState } from "react";
 import { useEffect } from "react";
 import "react-datepicker/dist/react-datepicker.css";
-import format from "date-fns/format";
 
 const DatesSelectStep = ({
   onCalendarStartDateChange,
@@ -27,7 +25,7 @@ const DatesSelectStep = ({
       booking.endDate !== booking.startDate) {
       setNextStep(true);
     }
-  }, [booking]);
+  }, []);
   const PushData = (data) => {
     setDisabledDate([[], ...data]);
   };
