@@ -14,7 +14,7 @@ const FormStepper = ({
   user,
   nextStep,
   step,
-  setStep, 
+  setStep,
   setNextStep,
   userProfile,
 }) => {
@@ -42,7 +42,7 @@ const FormStepper = ({
       localStorage.setItem("bookBooklinik", JSON.stringify(booking));
       return;
     }
-   
+
     setIsSaving(true);
 
     firebase
@@ -103,7 +103,7 @@ const FormStepper = ({
 
 
 const handleOnClose= (e) => {
-    
+
   setShowModal(false);
 
 };
@@ -144,7 +144,7 @@ const handleOnClose= (e) => {
             {stepsArray[step]}
 
             <div className="flex flex-col gap-3 xl:flex-row items-center xl:gap-3">
-              
+
               {step === stepsArray.length - 1 ? (
                 <>
                 <button
@@ -180,9 +180,9 @@ const handleOnClose= (e) => {
                   }}
                   className="flex items-center gap-1 border border-shamrock bg-shamrock text-white transition hover:bg-white hover:text-shamrock px-5 py-2 rounded disabled:hover:bg-shamrock disabled:hover:text-white disabled:opacity-30 disabled:cursor-not-allowed"
                   disabled={!nextStep}
-                  
+
                 >
-               
+
                   {step === stepsArray.length - 2 ? "Finaliser" : "Continuer"}
                   <BsArrowRight />
                 </button>
