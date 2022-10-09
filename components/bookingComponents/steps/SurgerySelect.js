@@ -52,7 +52,7 @@ const SurgerySelectStep = ({
                     key={surgeryCategory.slug}
                     className="m-2 absolute top-0 right-0 transition opacity-20 hover:opacity-100"
                   >
-                //    <IoIosCloseCircle size={24} />
+                    <IoIosCloseCircle size={24} />
                   </button>
                 ) : (
                   ""
@@ -117,7 +117,7 @@ const SurgerySelectStep = ({
                     window.scrollTo(0, 0);
                     setStep((s) => s + 1)}
                   }
-
+                 
                   name="surgery"
                   type="radio"
                   required={true}
@@ -151,8 +151,8 @@ const SurgerySelectStep = ({
           {getSurgeryCategory.surgeryCategory === "" ? (
             <div className="col-span-12 rounded border border-blue-300 bg-blue-50 text-blue-900">
               <p className="p-4">
-                👋 Veuillez sélectionner une catégorie ci-dessus
-
+                👋 Veuillez sélectionner une catégorie ci-dessus 
+             
               </p>
             </div>
           ) : (
