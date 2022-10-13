@@ -136,7 +136,6 @@ const OperationPage = ({ surgeryData, categoryPhoto, relatedSurgeries, doctorSur
         {doctorSurgeries[0].doctor?(
        doctorSurgeries[0].doctor.length>0&&(
         <div className="space-y-6">
-          {console.log(beforeAfter[0].beforeafter )}
           <h2 className="text-2xl">Nos médecins</h2>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
             {doctorSurgeries[0].doctor.map((x,i) => {
@@ -189,7 +188,7 @@ const OperationPage = ({ surgeryData, categoryPhoto, relatedSurgeries, doctorSur
               );
             })}
           </div>
-         {console.log()}
+
         </div>
 
 

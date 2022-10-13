@@ -113,8 +113,8 @@ const ModalOuibounce = ({ onClose, showModal}) => {
     <div className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center z-50 overflow-auto">
     <div id="contactform" className="py-40 mt-15 px-3">
       
-       <div className=" my-10 rounded-xl bg-shamrock  gap-0 text-white placeholder-white p-4">
-       <div className="">
+       <div className=" my-10 rounded-xl bg-shamrock  gap-0 text-white placeholder-white p-5">
+       <div className="p-2 ">
         <span className="cursor-pointer">
         
           <AiOutlineClose className="hover:text-gray-500" size={20}  onClick={onClose}/>
@@ -165,7 +165,7 @@ Remplissez le formulaire aujourd&apos;hui et recevez 150 € de réduction sur v
                   className={`w-full bg-transparent border-b outline-none placeholder-white ${
                     errors && errors.lastname ? "border-red-600 " : "border-white"
                   } p-3`}
-                  placeholder="Prénom"
+                  placeholder="Nom de famille"
                   name="lastname"
                   value={form.lastname}
                   onChange={handleFormChange}

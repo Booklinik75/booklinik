@@ -111,7 +111,9 @@ const handleOnClose= (e) => {
 
 
   return (
+    
     <BookingUi bookingData={booking} step={step} userProfile={userProfile}>
+       {console.log(nextStep)}
       <div className="col-span-12 relative">
         {isSaving && (
           <div className="w-full h-full absolute z-30 bg-opacity-20 bg-black flex flex-col gap-4 items-center justify-center">

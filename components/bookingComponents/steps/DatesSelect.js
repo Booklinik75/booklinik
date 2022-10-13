@@ -20,12 +20,13 @@ const DatesSelectStep = ({
 
   useEffect(() => {
     // setNextStep to true when all inputs are filled
-    if ( booking.startDate &&
+    if (   booking.startDate &&
       booking.endDate &&
-      booking.endDate !== booking.startDate) {
+      booking.endDate !== booking.startDate
+     ) {
       setNextStep(true);
     }
-  }, []);
+  }, [booking]);
   const PushData = (data) => {
     setDisabledDate([[], ...data]);
   };
@@ -141,12 +142,11 @@ const DatesSelectStep = ({
 
       }`}
             </style>
-
+ 
             <h2 className="text-xs uppercase text-gray-500">Dates</h2>
             <div className="grid grid-cols-9 gap-4">
             <div className="h-90 relative">
             <DatePicker
-              disabledKeyboardNavigation
               moveRangeOnFirstSelection={true}
               focusPlage={setFocusRange}
               onChange={onChange}
