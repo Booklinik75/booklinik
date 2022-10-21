@@ -30,7 +30,7 @@ const BookingConfirmation = ({ booking, userProfile }) => {
         </p>
         <p className="items-start gap-2 lg:flex-row lg:items-center">
           Votre voyage s&apos;étendra du  </p>{" "}
-            <span >
+            <span>
               <BookingDataSpan>
                 <Moment
                   format="DD MMM YYYY"
@@ -88,10 +88,15 @@ const BookingConfirmation = ({ booking, userProfile }) => {
           ""
         )}{" "}
         <p className="items-start gap-2 lg:flex-row lg:items-center">
-          L&apos;hôtel dans lequel vous résiderez est au{" "}
-          <BookingDataSpan string={booking.hotelName} /> (très bon choix) et
-          vous logerez en <BookingDataSpan string={booking.roomName} />
-        </p>
+          L&apos;hôtel dans lequel vous résiderez est au</p>{" "}
+            <span>
+          <BookingDataSpan string={booking.hotelName} />
+          (très bon choix) et vous logerez en
+          <p className="items-start gap-2 lg:flex-row lg:items-center">
+{" "}
+          </p>
+          <BookingDataSpan string={booking.roomName} />
+          </span>
         <p className="items-start gap-2 lg:flex-row lg:items-center">
           Vous avez selectionné les options suivantes :{" "}
           {booking.options.map((option) => {
