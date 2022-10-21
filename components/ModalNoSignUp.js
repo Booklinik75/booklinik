@@ -289,8 +289,9 @@ const ModalNoSignUp = ({ onClose, visible,booking }) => {
               {booking.extraBabies > 0 ||
               booking.extraChilds > 0 ||
               booking.extraTravellers > 0 ? (
-                <p className="flex ">
-                  Vous serez accompagné-e par{" "}
+                <p>
+                  Vous serez accompagné-e par
+                  <p>{" "}</p>
                   <span className="font-bold">
                     {booking.extraTravellers > 0 ? (
                       <BookingDataSpan
@@ -320,7 +321,8 @@ const ModalNoSignUp = ({ onClose, visible,booking }) => {
                       ""
                     )}
                   </span>
-                  de votre choix pour découvrir{" "}
+                  <p>de votre choix pour découvrir</p>
+                  <p>{" "}</p>
                   <span className="font-bold">
                     <BookingDataSpan string={booking.city} />
                   </span>
