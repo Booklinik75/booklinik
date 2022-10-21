@@ -53,7 +53,9 @@ const BookingConfirmation = ({ booking, userProfile }) => {
         booking.extraChilds > 0 ||
         booking.extraTravellers > 0 ? (
           <p className=" items-start gap-2 lg:flex-row lg:items-center">
-            Vous serez accompagné-e par{" "}
+            Vous serez accompagné-e par
+            <p>{" "}</p>
+
             {booking.extraTravellers > 0 ? (
               <BookingDataSpan
                 string={`${booking.extraTravellers} voyageur${
@@ -81,7 +83,8 @@ const BookingConfirmation = ({ booking, userProfile }) => {
             ) : (
               ""
             )}
-            de votre choix pour découvrir{" "}
+            <p>de votre choix pour découvrir</p>
+            <p>{" "}</p>
             <BookingDataSpan string={booking.city} />
           </p>
         ) : (
