@@ -94,7 +94,8 @@ const BookingConfirmation = ({ booking, userProfile }) => {
           L&apos;hôtel dans lequel vous résiderez est au</p>{" "}
             <span>
           <BookingDataSpan string={booking.hotelName} />
-          (très bon choix) et vous logerez en
+          <p className="items-start gap-2 lg:flex-row lg:items-center">
+(très bon choix) et vous logerez en </p>
           <p className="items-start gap-2 lg:flex-row lg:items-center">
 {" "}
           </p>
