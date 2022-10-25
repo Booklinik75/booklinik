@@ -4,7 +4,7 @@ const Category = ({ href, title, imageSrc }) => {
   return (
     <Link href={href}>
       <a className="w-full">
-        <div className="flex bg-white rounded-lg border overflow-hidden border-black border-opacity-10 shadow transition hover:cursor-pointer hover:shadow-md hover:border-opacity-20 hover:bg-gray-50 group">
+        <div className="flex bg-white rounded-lg border overflow-hidden border-black border-opacity-10 shadow transition hover:cursor-pointer hover:shadow-md hover:border-shamrock hover:bg-gray-50 group">
           <div
             style={{
               backgroundImage: `url("${imageSrc}")`,

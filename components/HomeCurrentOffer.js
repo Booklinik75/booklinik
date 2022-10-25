@@ -19,7 +19,7 @@ const Offer = ({ data }) => {
               src={imageUrl}
               layout="fill"
               objectFit="cover"
-              className="w-full transform transition-transform duration-1000 group-hover:scale-110"
+              className="w-full transform transition-transform duration-1000 group-hover:scale-150"
               alt={name}
             />
           </div>

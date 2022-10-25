@@ -1,7 +1,8 @@
 import { AiFillInfoCircle } from "react-icons/ai";
-import Calendar from "react-calendar";
+import DatePicker from "react-datepicker";
 import { useState } from "react";
 import { useEffect } from "react";
+import "react-datepicker/dist/react-datepicker.css";
 
 const DatesSelectStep = ({
   onCalendarStartDateChange,
@@ -10,24 +11,72 @@ const DatesSelectStep = ({
   addDays,
   setNextStep,
 }) => {
-  const [hideReturnCalendar, setHideReturnCalendar] = useState(true);
+
+  const [startDate, setStartDate] = useState();
+  const [endDate, setEndDate] = useState(null);
+  const [focusRange, setFocusRange] = useState([]);
+  const [disabledDate, setDisabledDate] = useState(new Array());
+
 
   useEffect(() => {
     // setNextStep to true when all inputs are filled
-    if (
-      booking.startDate &&
+    if (   booking.startDate &&
       booking.endDate &&
       booking.endDate !== booking.startDate
-    ) {
+     ) {
       setNextStep(true);
     }
   }, [booking]);
+  const PushData = (data) => {
+    setDisabledDate([[], ...data]);
+  };
+
+  const RemoveDisabledDate = () => {
+    setDisabledDate([]);
+  };
+  const onChange = (dates) => {
+    const [start, end] = dates;
+
+    let numberOfNights
+    setStartDate(start);
+    onCalendarStartDateChange(start);
+    setEndDate(end);
+    DisabledMinrange();
+
+//To disabled min day
+    function DisabledMinrange() {
+      let celldisabled = [];
+
+      var newday = new Date(start);
+
+
+      if (start) {
+        for (let i = 1; i < parseInt(booking.minimumNights); i++) {
+          celldisabled.push(new Date(newday.setDate(newday.getDate() + 1)));
+        }
+
+        PushData(celldisabled);
+        if (end) {
+
+          let timeDiff = Math.abs(end.getTime() - start.getTime());
+          numberOfNights= Math.ceil(timeDiff / (1000 * 3600 * 24));
+
+          RemoveDisabledDate();
+          onCalendarEndDateChange(end, numberOfNights);
+          return numberOfNights
+        }
+
+
+      }
+    }
+  };
 
   return (
     <div className="space-y-6">
       <h1 className="text-2xl mb-6">
         Choisissez vos dates de voyage
-        {booking.totalSelectedNights !== 0 ? (
+        {booking.totalSelectedNights !== 0 &&
+        booking.totalSelectedNights >= parseInt(booking.minimumNights) ? (
           <span className="text-white p-2 ml-2 bg-shamrock rounded text-lg">
             {booking.totalSelectedNights} nuits
           </span>
@@ -51,43 +100,66 @@ const DatesSelectStep = ({
       <div className="space-y-2">
         <div className="flex flex-col lg:flex-row gap-4">
           <div className="w-full lg:w-1/2 xl:w-1/3 space-y-3">
-            <h2 className="text-xs uppercase text-gray-500">Date de départ</h2>
-            <Calendar
-              onChange={(e) => {
-                onCalendarStartDateChange(e);
-                setHideReturnCalendar(false);
-              }}
-              value={booking.startDate}
-              locale="fr"
+            <style>
+              {`.react-datepicker {
+  font-size: 1em;
+  font-family:helvetica;
+}
+.react-datepicker__header {
+  padding-top: 0.8em;
+}
+.react-datepicker__month {
+  margin: 0.4em 1em;
+}
+.react-datepicker__day-name, .react-datepicker__day {
+  width: 2.9em;
+  height:2.5em;
+  line-height: 1.9em;
+  margin: 0.166em;
+}
+.react-datepicker__day-names{
+  margin-top: 5px;
+}
+.react-datepicker__current-month {
+  font-size: 1.3em;
+}
+.react-datepicker__navigation {
+  top: 1em;
+  line-height: 1.7em;
+  border: 0.45em solid transparent;
+}
+.react-datepicker__navigation--previous {
+  left: 1em;
+}
+.react-datepicker__day--keyboard-selected{
+  background-color: #33c383 !important;
+}
+.react-datepicker__day--in-range {
+  background-color: #33c383 !important;
+}
+
+
+
+      }`}
+            </style>
+ 
+            <h2 className="text-xs uppercase text-gray-500">Dates</h2>
+            <div className="grid grid-cols-9 gap-4">
+            <div className="h-90 relative">
+            <DatePicker
+              moveRangeOnFirstSelection={true}
+              focusPlage={setFocusRange}
+              onChange={onChange}
+              startDate={startDate}
+              endDate={endDate}
               minDate={new Date()}
-              defaultValue={new Date()}
+              excludeDates={disabledDate}
+              selected={startDate}
+              selectsRange
+              selectsDisabledDaysInRange
+              inline
             />
-          </div>
-          <div className="w-full lg:w-1/2 xl:w-1/3 space-y-3">
-            <h2 className="text-xs uppercase text-gray-500">Date de retour</h2>
-            <div className="relative">
-              {hideReturnCalendar && (
-                <div className="w-full h-full absolute bg-white bg-opacity-70 z-20 flex items-center justify-center">
-                  <p className="bg-shamrock px-4 py-2.5 rounded shadow text-white">
-                    Sélectionnez une date de départ
-                  </p>
-                </div>
-              )}
-              <Calendar
-                onChange={(e) => {
-                  let timeDiff = Math.abs(
-                    e.getTime() - booking.startDate.getTime()
-                  );
-                  let numberOfNights = Math.ceil(timeDiff / (1000 * 3600 * 24));
-                  onCalendarEndDateChange(e, numberOfNights);
-                }}
-                value={booking.endDate}
-                locale="fr"
-                minDate={addDays(
-                  booking.startDate,
-                  parseInt(booking.minimumNights)
-                )}
-              />
+             </div>
             </div>
           </div>
         </div>

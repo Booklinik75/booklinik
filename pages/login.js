@@ -4,7 +4,8 @@ import Image from "next/image";
 import SideBanner from "../public/assets/login.jpeg";
 import firebase from "../firebase/clientApp";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useState,useContext } from "react";
+import { BookContext } from "utils/bookContext";
 import { BiError } from "react-icons/bi";
 import DashboardButton from "../components/DashboardButton";
 import { checkAuth, serverRedirect } from "utils/ServerHelpers";
@@ -25,19 +26,90 @@ export const getServerSideProps = async (ctx) => {
 const Login = () => {
   const [formData, updateFormData] = useState({ email: "", password: "" });
   const router = useRouter();
+  const { isChecked, handleUseReferral } = useContext(BookContext);
   const [error, setError] = useState(null);
   const [isLoading, setLoading] = useState("idle");
+  const [booking, setBooking] = useState(null);
 
+  
   function doLogIn() {
     const { email, password } = formData;
     setLoading("loading");
+    
     firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
-      .then((userCredential) => {
+      .then(async (userCredential) => {
         var user = userCredential.user;
-        router.push("/dashboard");
-      })
+        var firestoreUserObject = await firebase
+        .firestore()
+        .collection("users")
+        .doc(user.uid)
+        .get();
+    
+        
+     
+        const userData = firestoreUserObject.data();
+     
+       
+        firebase
+          .firestore()
+          .collection("users")
+          .doc(user.uid)
+          .set(userData)
+          .then((docRef) => {
+            // send confirmation email
+            fetch("/api/mail", {
+              method: "POST",
+              body: JSON.stringify({
+                recipient: email,
+                templateId: "d-51683413333641cc9bd64848bda8fa19",
+              }),
+            });
+   
+            if(booking){
+              const booking = JSON.parse(
+                localStorage.getItem("bookBooklinik")
+              );
+              firebase
+                .firestore()
+                .collection("bookings")
+                .add({
+                  user: user.uid,
+                  status: "awaitingDocuments",
+                  total:
+                    Number(booking.surgeries[0].surgeryPrice) +
+                    Number(booking.totalExtraTravellersPrice) +
+                    Number(booking.roomPrice) *
+                    Number(booking.totalSelectedNights) +
+                    booking.options
+                      ?.map(
+                        (option) => option.isChecked && Number(option.price)
+                      )
+                      .reduce((a, b) => a + b),
+                  ...booking,
+                })
+                .then(() => {
+                  fetch("/api/mail", {
+                    method: "post",
+                    body: JSON.stringify({
+                      recipient: user.email,
+                      templateId: "d-b504c563b53846fbadb0a53151a82d57",
+                    }),
+                  });
+                })
+              }
+            
+          })
+        
+        
+     
+    
+      // redirect to dashboard
+       router.push("/dashboard");
+    })
+    
+      
       .catch((error) => {
         if (errors[error.code]) {
           setError(errors[error.code]);
@@ -48,7 +120,9 @@ const Login = () => {
         Sentry.captureException(error);
       })
       .finally(() => {
+        
         setLoading("idle");
+    
       });
   }
 

@@ -14,7 +14,7 @@ const DestinationHotel = ({ hotel, city }) => {
             layout="fill"
             objectFit="cover"
             alt="TBD"
-            className="rounded-lg bg-gray-500 scale-100 group-hover:scale-110 transition duration-700"
+            className="rounded-lg bg-gray-500 scale-100 group-hover:scale-150 transition duration-800"
           />
           <div className="opacity-30 bg-gradient-to-t from-black rounded-lg w-full h-full absolute"></div>
         </div>

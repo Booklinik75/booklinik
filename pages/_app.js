@@ -2,32 +2,78 @@ import { useEffect, useState } from "react";
 import "../styles/globals.css";
 import { AuthProvider } from "../utils/UserContext";
 import { BookProvider } from "utils/bookContext";
-
-import { ToastContainer } from "react-toastify";
-import Head from "next/head";
 import "@uiw/react-md-editor/dist/markdown-editor.css";
 import "@uiw/react-markdown-preview/dist/markdown.css";
-import "../styles/calendar.css";
+import { ToastContainer } from "react-toastify";
+import Head from "next/head";
 import moment from "moment";
 import "moment/locale/fr";
 import "react-toastify/dist/ReactToastify.css";
 import "react-dropdown/style.css";
-
 import Loading from "components/Loading";
 import { useRouter } from "node_modules/next/dist/client/router";
-
 import "tippy.js/dist/tippy.css";
-
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import TagManager from 'react-gtm-module'
-
+import TagManager from 'react-gtm-module';
+import ModalOuibounce from "components/ModalOuibounce";
+import Script from 'next/script'
 moment.locale("fr");
 
 function BooklinikClient({ Component, pageProps }) {
   const router = useRouter();
+
   const [loadingAnimation, setLoadingAnimation] = useState(false);
 
+  const [showModal, setShowModal] = useState(false);
+
+  const handleOnClose= () => {
+    
+    setShowModal(false);
+
+  };
+
+  useEffect(() => {
+    setTimeout(() => {
+      setShowModal(true);
+  }, 20000);
+  }, []);
+
+  const booking={
+    surgeries: [
+      {
+        surgeryCategory: "",
+        surgeryCategoryName: "",
+        surgery: "",
+        surgeryPrice: 0,
+        surgeryName: "",
+        surgeryMinDays: 0,
+        cities: [],
+      },
+    ],
+    startDate: new Date(),
+    endDate: "",
+    totalSelectedNights: 0,
+    extraTravellers: 0,
+    extraChilds: 0,
+    extraBabies: 0,
+    totalExtraTravellersPrice: 0,
+    city: "",
+    hotel: "",
+    hotelPrice: 0,
+    hotelPhotoLink: "",
+    hotelName: "",
+    hotelRating: "",
+    hotelId: "",
+    room: "",
+    roomName: "",
+    roomPrice: 0,
+    roomPhotoLink: "",
+  
+  }
+
+  
+ 
   useEffect(() => {
     window.$crisp = [];
     window.CRISP_WEBSITE_ID = "ab422553-9bcf-4ce4-ac32-d53b0d6e3b6b";
@@ -147,8 +193,6 @@ function BooklinikClient({ Component, pageProps }) {
           }
         }
 
-        console.log(getAllLanguageSwitch);
-
         if (window.location.pathname === "/") {
           Weglot.on("initialized", handleWeglotSwitcher);
         } else {
@@ -181,7 +225,7 @@ function BooklinikClient({ Component, pageProps }) {
     //Google TagManager
 
     const tagManagerArgs = {
-        gtmId: 'GTM-TB3SWNW'
+        gtmId: 'GTM-NGCD8B7'
     }
 
     TagManager.initialize(tagManagerArgs)
@@ -193,10 +237,12 @@ function BooklinikClient({ Component, pageProps }) {
       router.events.off("routeChangeError", handleComplete);
     };
   }, [router]);
-
+   
   return (
     <>
+     
       <AuthProvider>
+       
         <BookProvider>
           <Head>
             <link
@@ -225,11 +271,28 @@ function BooklinikClient({ Component, pageProps }) {
             <meta name="msapplication-TileColor" content="#33c783" />
             <meta name="theme-color" content="#33c783" />
           </Head>
+          <Script id="google-tag-manager" strategy="afterInteractive">
+{`
+          (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+          'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+          })(window,document,'script','dataLayer','GTM-TB3SWNW');
+
+`}    </Script>
           {loadingAnimation && <Loading />}
           <Component {...pageProps} />
+         
+       
+       
           <ToastContainer />
-        </BookProvider>
+      
+        <ModalOuibounce onClose={handleOnClose} showModal={showModal}/>
+  
+         </BookProvider>
+        
       </AuthProvider>
+    
     </>
   );
 }

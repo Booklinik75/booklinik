@@ -139,6 +139,7 @@ const NewBookingContainer = ({
   const extraBabiesSupplement = 0;
 
   const [nextStep, setNextStep] = useState(false);
+  const [step, setStep] = useState(0);
   const [surgeryCategory, setSurgeryCategory] = useState({
     surgeryCategory: "",
     surgeryCategoryName: "",
@@ -149,10 +150,10 @@ const NewBookingContainer = ({
       extraTravellersSupplement * booking.extraTravellers +
       extraChildsSupplement * booking.extraChilds +
       extraBabiesSupplement * booking.extraBabies;
-
     setBooking({
       ...booking,
       totalExtraTravellersPrice: totalExtraTravellers * booking.totalSelectedNights,
+      
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [booking.extraTravellers, booking.extraChilds, booking.extraBabies]);
@@ -162,10 +163,11 @@ const NewBookingContainer = ({
       ...booking,
       [e.target.name]: e.target.value,
     });
+    setStep((s) => s + 1);
+    
   };
 
   const onCalendarStartDateChange = (e) => {
-    console.log(e);
     setBooking({
       ...booking,
       startDate: e,
@@ -182,8 +184,8 @@ const NewBookingContainer = ({
 
   function addDays(date, days) {
     var result = new Date(date);
-    result.setDate(result.getDate() + days);
-    return result;
+    return result.setDate(result.getDate() + days);
+   
   }
 
   const handleSurgeryCategorySelect = (category, name) => {
@@ -260,7 +262,8 @@ const NewBookingContainer = ({
           nextStep={nextStep}
           setNextStep={setNextStep}
           userProfile={userProfile}
-        >
+          step={step}
+          setStep={setStep}        >
           <SurgerySelectStep
             surgeryCategories={surgeryCategories}
             booking={booking}
@@ -269,8 +272,11 @@ const NewBookingContainer = ({
             setBooking={setBooking}
             handleSurgerySelect={handleSurgerySelect}
             handleSurgeryCategorySelect={handleSurgeryCategorySelect}
+            nextStep={nextStep}
+            setStep={setStep}
             setNextStep={setNextStep}
             surgeryCategory={surgeryCategory}
+           
           />
 
           <DatesSelectStep
@@ -294,6 +300,7 @@ const NewBookingContainer = ({
             hotels={hotels}
             handleChange={handleChange}
             setNextStep={setNextStep}
+           
           />
 
           <HotelSelectStep
@@ -301,6 +308,7 @@ const NewBookingContainer = ({
             hotels={hotels}
             handleHotelSelect={handleHotelSelect}
             setNextStep={setNextStep}
+            setStep={setStep}
           />
 
           <RoomsSelectStep
@@ -308,6 +316,7 @@ const NewBookingContainer = ({
             rooms={rooms}
             handleRoomSelect={handleRoomSelect}
             setNextStep={setNextStep}
+            setStep={setStep}
           />
 
           <OptionsSelectStep

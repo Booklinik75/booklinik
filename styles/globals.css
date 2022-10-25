@@ -8,6 +8,14 @@ html {
   color: #444444;
 }
 
+div[data-testid="container"]{
+  height: 15rem !important;
+}
+
+
+
+
+
 /* import tailwind */
 @tailwind base;
 @tailwind components;
@@ -74,6 +82,15 @@ html {
   display: none;
 }
 
+@media only screen and (max-width: 1000px) {
+  .react-datepicker__day.react-datepicker__day--in-selecting-range:not(.react-datepicker__day--selected):not(.react-datepicker__day--disabled){
+    background: white !important ;
+    color: black !important;
+  }
+  
+}
+
+
 @media (min-width: 768px) {
   .home-hero-surgery-categories > div:nth-child(4),
   .home-hero-surgery-categories > div:nth-child(5),
@@ -82,6 +99,7 @@ html {
   .home-hero-surgery-categories > div:nth-child(8) {
     display: flex;
   }
+  
 }
 
 @media (min-width: 1024px) {

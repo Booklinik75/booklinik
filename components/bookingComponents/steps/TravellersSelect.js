@@ -61,7 +61,7 @@ const TravellersSelectStep = ({ booking, setBooking, setNextStep }) => {
               >
                 -
               </button>
-              <p>{booking.extraTravellers}</p>
+              <p>{booking.extraTravellers+1}</p>
               <button
                 className="text-shamrock border border-shamrock transition rounded px-3 pb-1 hover:bg-shamrock hover:text-white"
                 name="extraTravellers"

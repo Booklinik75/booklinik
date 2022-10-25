@@ -21,7 +21,7 @@ const ContactHelper = () => {
   const [formSent, setFormSent] = useState(false);
   const [errors, setErrros] = useState({});
 
-  const router = useRouter();
+  const router = useRouter();//stop
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
@@ -130,7 +130,7 @@ const ContactHelper = () => {
         <p className="mt-4 mb-2">Par téléphone au</p>
         <Link href="tel:0186653500">
           <a className="hover:underline text-xl font-bold flex items-center">
-            +33 1 86 65 35 00
+            01 86 65 35 00
           </a>
         </Link>
       </div>
@@ -200,7 +200,6 @@ const ContactHelper = () => {
                   ""
                 )}
               </div>
-
               <div>
                  <label className="uppercase text-sm mb-2">Sélectionnez votre opération
                    <select value={value} onChange={handleChange}   className="w-full bg-transparent border-b outline-none placeholder-white  text-xl hover:text-shamrock block hover:bg-gray-100 w-full p-5 py-3 cursor-pointer">

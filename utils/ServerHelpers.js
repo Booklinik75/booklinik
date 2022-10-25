@@ -398,3 +398,42 @@ export async function getRelatedSurgeries(categoryName) {
     return relatedSurgeries;
   } catch (error) {}
 }
+
+export async function getDoctorSurgeries(docName) {
+  try {
+    const doctorSurgeries = [];
+    const snapshot = await firebase
+      .firestore()
+      .collection("surgeries")
+      .where("name", "==", docName)
+      .get();
+
+    for (let i = 0; i < 4; i++) {
+      if (snapshot.docs[i]) {
+        doctorSurgeries.push(snapshot.docs[i].data());
+      }
+    }
+
+    return doctorSurgeries;
+  } catch (error) {}
+}
+
+export async function getAfterBeforeSurgeries(slug) {
+  try {
+    const AfterBefore = [];
+    const snapshot = await firebase
+      .firestore()
+      .collection("surgeries")
+      .where("slug", "==", slug)
+      .get();
+
+    for (let i = 0; i < 4; i++) {
+      if (snapshot.docs[i]) {
+        AfterBefore.push(snapshot.docs[i].data());
+      }
+    }
+
+    return AfterBefore;
+  } catch (error) {}
+}
+
