@@ -39,7 +39,7 @@ const OptionsSelectStep = ({
         complémentaires ?
       </h1>
       <div className="grid grid-cols-9 gap-12 h-3/4 max-h-full">
-        <div className="col-span-9 lg:col-span-3 space-y-3">
+        <div className="hidden  col-span-9 lg:col-span-3 space-y-3 order-last lg:block lg:order-first">
           <p className="text-xs text-gray-500 uppercase pt-2">Hôtel</p>
           <div className="h-64 relative">
             <Image
@@ -91,7 +91,7 @@ const OptionsSelectStep = ({
                 <div key={index} className="col-span-2 lg:col-span-1">
                   <label
                     htmlFor={slugify(option.name)}
-                    className={`border-2 px-6 py-3 rounded w-full flex justify-between items-center hover:border-bali ${
+                    className={`border-2 px-6 py-3 rounded w-full flex justify-between items-center hover:border-bali hover:border-shamrock ${
                       optionsList[index].isChecked === true
                         ? "border-shamrock"
                         : ""

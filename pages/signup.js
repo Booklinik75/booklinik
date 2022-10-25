@@ -4,7 +4,7 @@ import Image from "next/image";
 import SideBanner from "../public/assets/login.jpeg";
 import firebase from "../firebase/clientApp";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useContext,useState,useEffect } from "react";
 import DashboardButton from "../components/DashboardButton";
 import * as Yup from "yup";
 import { BiError } from "react-icons/bi";
@@ -13,8 +13,8 @@ import errors from "utils/firebase_auth_errors";
 import * as Sentry from "@sentry/browser";
 import MD5 from "crypto-js/md5";
 import PhoneInput from "react-phone-input-2";
+import ModalNoSignUp from "Components/ModalNoSignUp";
 import "react-phone-input-2/lib/style.css";
-
 export const getServerSideProps = async (ctx) => {
   const auth = await checkAuth(ctx);
   if (auth.props.userProfile) return serverRedirect("/dashboard");
@@ -35,12 +35,13 @@ const SignUp = () => {
   });
 
   const [isChecked, setChecked] = useState(false);
-
+  const [showModal, setShowModal] = useState(false);
   const router = useRouter();
   const [error, setError] = useState(null);
+  const [booking, setBooking] = useState(null);
   const [isLoading, setLoading] = useState("idle");
-
   const validationSchema = Yup.object({
+
     email: Yup.string().email().required(),
     password: Yup.string().required("Le mot de passe est requis"),
     passwordConfirmation: Yup.string().oneOf(
@@ -48,6 +49,14 @@ const SignUp = () => {
       "Les mots de passe ne correspondent pas"
     ),
   });
+  useEffect(()=>{
+    if (typeof window !== 'undefined') {
+      setBooking(JSON.parse(
+        localStorage.getItem("bookBooklinik")
+      ));
+    }
+  },[])
+
 
   function doSignUp() {
     const { email, password, confirmPassword, phoneNumber } = formData;
@@ -121,6 +130,7 @@ const SignUp = () => {
                 const booking = JSON.parse(
                   localStorage.getItem("bookBooklinik")
                 );
+
                 firebase
                   .firestore()
                   .collection("bookings")
@@ -131,7 +141,7 @@ const SignUp = () => {
                       Number(booking.surgeries[0].surgeryPrice) +
                       Number(booking.totalExtraTravellersPrice) +
                       Number(booking.roomPrice) *
-                        Number(booking.totalSelectedNights) +
+                      Number(booking.totalSelectedNights) +
                       booking.options
                         ?.map(
                           (option) => option.isChecked && Number(option.price)
@@ -149,7 +159,7 @@ const SignUp = () => {
                     });
                   })
                   .then(() => {
-                    localStorage.removeItem("bookBooklinik");
+
                     router.push("/dashboard");
                   });
               } else {
@@ -179,6 +189,14 @@ const SignUp = () => {
       });
   }
 
+  const doBookWithLogin=() => {
+    router.push("/login");
+    localStorage.setItem("bookBooklinik",
+      localStorage.getItem("bookBooklinik")
+    );
+    return;
+  }
+
   const handleChange = (e) => {
     updateFormData({
       ...formData,
@@ -199,6 +217,14 @@ const SignUp = () => {
     });
   };
 
+  const handleOnClose= () => {
+
+    setShowModal(false);
+
+  };
+
+
+
   return (
     <div className="h-screen relative signup">
       <div className="nav top-0 absolute flex flex-row w-full justify-between z-50 p-10 bg-white shadow-lg">
@@ -210,9 +236,9 @@ const SignUp = () => {
 
         <div className="flex flex-row gap-1">
           <p>Vous avez déjà un compte ?</p>
-          <Link href="/login">
-            <a className="text-gray-700 hover:underline">Se connecter</a>
-          </Link>
+
+            <a className="text-gray-700 hover:underline" onClick={doBookWithLogin}>Se connecter</a>
+
         </div>
       </div>
       <div className="grid grid-cols-10 h-full">
@@ -322,16 +348,38 @@ const SignUp = () => {
                     </a>
                   </Link>
                 </div>
-                <div>
-                  <DashboardButton
-                    defaultText="S'inscrire"
-                    status={isLoading}
-                  ></DashboardButton>
-                </div>
+
               </div>
+              <div className="grid grid-cols-1 lg:flex lg:flex-row lg:gap-3 grid justify-items-center">
+
+
+                            <DashboardButton
+                                  defaultText="S'inscrire"
+                                  status={isLoading}
+                                ></DashboardButton>
+
+
+
+            <div className="flex gap-3 pt-6 ">
+                 <button
+                  type="submit"
+                  onClick={()=>setShowModal(true)}
+                  className={`min-w-max transition px-4  py-3 lg:px-10 rounded border border-shamrock bg-shamrock text-white && "hover:text-shamrock group hover:bg-white"`}
+                  >Continuer sans inscription
+                  </button>
+
+              </div>
+
+
+
+                </div>
+
             </form>
+
           </div>
+
         </div>
+
         <div className="relative hidden col-span-4 lg:block">
           <Image
             src={SideBanner}
@@ -340,8 +388,12 @@ const SignUp = () => {
             className="h-full"
             alt=""
           />
+
         </div>
+        {booking?(  <ModalNoSignUp onClose={handleOnClose} visible={showModal} booking={booking} />):""}
+
       </div>
+
     </div>
   );
 };

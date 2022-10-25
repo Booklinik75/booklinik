@@ -9,6 +9,7 @@ const SurgerySelectStep = ({
   setBooking,
   handleSurgerySelect,
   handleSurgeryCategorySelect,
+  setStep,
   setNextStep,
   surgeryCategory: getSurgeryCategory,
 }) => {
@@ -51,7 +52,6 @@ const SurgerySelectStep = ({
                     key={surgeryCategory.slug}
                     className="m-2 absolute top-0 right-0 transition opacity-20 hover:opacity-100"
                   >
-                    <IoIosCloseCircle size={24} />
                   </button>
                 ) : (
                   ""
@@ -62,17 +62,18 @@ const SurgerySelectStep = ({
                   name="surgeryCategory"
                   value={surgeryCategory.slug}
                   onChange={(e) =>
-                    handleSurgeryCategorySelect(
+                    {handleSurgeryCategorySelect(
                       surgeryCategory.slug,
                       surgeryCategory.name
-                    )
+                    );
+                    window.scrollTo(0, document.body.scrollHeight);}
                   }
                   className="hidden"
                   required={true}
                 />
                 <label
                   htmlFor={surgeryCategory.slug}
-                  className={`flex flex-col transition items-center justify-center border w-full h-full rounded hover:shadow p-6 ${
+                  className={`flex flex-col transition items-center justify-center border w-full h-full rounded hover:shadow p-6 hover:border-shamrock ${
                     getSurgeryCategory.surgeryCategory === surgeryCategory.slug
                       ? "border-shamrock"
                       : ""
@@ -104,22 +105,25 @@ const SurgerySelectStep = ({
                   id={surgery.slug}
                   value={surgery.slug}
                   className="hidden"
-                  onChange={(e) =>
+                  onChange={(e) =>{
                     handleSurgerySelect(
                       surgery.slug,
                       surgery.startingPrice,
                       surgery.name,
                       surgery.minimumNights,
                       surgery.cities
-                    )
+                    );
+                    window.scrollTo(0, 0);
+                    setStep((s) => s + 1)}
                   }
+
                   name="surgery"
                   type="radio"
                   required={true}
                 />
                 <label
                   htmlFor={surgery.slug}
-                  className={`flex transition text-center items-center justify-center border w-full h-full rounded hover:shadow py-2 px-4 ${
+                  className={`flex transition text-center items-center justify-center border w-full h-full rounded hover:shadow py-2 px-4 hover:border-shamrock ${
                     (booking.surgeries && booking.surgeries[0].surgery) ===
                     surgery.slug
                       ? "border-shamrock"
@@ -146,7 +150,8 @@ const SurgerySelectStep = ({
           {getSurgeryCategory.surgeryCategory === "" ? (
             <div className="col-span-12 rounded border border-blue-300 bg-blue-50 text-blue-900">
               <p className="p-4">
-                👋 Veuillez sélectionner une catégorie ci-dessus.
+                👋 Veuillez sélectionner une catégorie ci-dessus
+
               </p>
             </div>
           ) : (

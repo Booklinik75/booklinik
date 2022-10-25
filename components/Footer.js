@@ -117,7 +117,7 @@ const Footer = () => {
                   </div>
                 </a>
               </Link>
-              <Link href="#">
+              <Link href="https://www.facebook.com/booklinik">
                 <a>
                   <div className="cursor-pointer transition hover:text-shamrock">
                     <FaFacebookSquare size={24} />

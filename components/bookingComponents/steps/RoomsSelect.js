@@ -5,7 +5,7 @@ import { AiFillCheckCircle } from "react-icons/ai";
 import { BsCircle } from "react-icons/bs";
 import { useEffect } from "react";
 
-const RoomsSelectStep = ({ booking, rooms, handleRoomSelect, setNextStep }) => {
+const RoomsSelectStep = ({ booking, rooms, handleRoomSelect, setNextStep,setStep }) => {
   useEffect(() => {
     // setNextStep to true when all inputs are filled
     if (booking.room) setNextStep(true);
@@ -50,20 +50,22 @@ const RoomsSelectStep = ({ booking, rooms, handleRoomSelect, setNextStep }) => {
                     id={room.slug}
                     value={room.slug}
                     formNoValidate={true}
-                    onChange={(e) =>
+                    onChange={(e) =>{
                       handleRoomSelect(
                         room.slug,
                         room.extraPrice,
                         room.photos[0],
                         room.name
-                      )
+                      );
+                      setStep((s) => s + 1)
+                    }
                     }
                     className="hidden"
                   />
                   <label
                     htmlFor={room.slug}
                     className={
-                      "p-4 transition flex items-center justify-between hover:shadow hover:cursor-pointer border rounded hover:border-bali " +
+                      "p-4 transition flex items-center justify-between hover:shadow hover:cursor-pointer border rounded hover:border-bali hover:border-shamrock" +
                       (room.slug === booking.room
                         ? "border-shamrock text-shamrock"
                         : "")

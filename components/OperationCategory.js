@@ -26,7 +26,7 @@ const OpCategory = ({ operation, surgeries }) => {
                   width={1000}
                   height={400}
                   objectFit="cover"
-                  className="rounded-xl "
+                  className="rounded-xl"
                   alt="TBD"
                 />
               </div>
@@ -42,7 +42,7 @@ const OpCategory = ({ operation, surgeries }) => {
                   <Link href={`/operations/${operation.slug}/${surgery.slug}`}>
                     <a>
                       <div
-                        className="border border-gray-100 shadow-sm rounded col-span-1 w-full transition hover:shadow-lg hover:border-gray-300 hover:bg-gray-50 hover:cursor-pointer"
+                        className="border border-gray-100 shadow-sm rounded col-span-1 w-full transition hover:shadow-lg hover:border-shamrock hover:bg-gray-50 hover:cursor-pointer"
                         id={surgery.id}
                       >
                         <div className="flex items-center justify-between justify-items-center h-full px-6 py-6 lg:py-auto">

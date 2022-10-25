@@ -5,7 +5,9 @@ const moduleExports = removeImports({
   webpack5: true,
   reactStrictMode: true,
   outputFileTracing: false, // fix sentry error related to vercel & next.js upgrade to v12
-  images: {
+
+  images: {dangerouslyAllowSVG: true,
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
     domains: [
       "via.placeholder.com",
       "lh3.googleusercontent.com",
@@ -14,7 +16,6 @@ const moduleExports = removeImports({
   },
   webpack(config) {
     config.resolve.modules.push(__dirname);
-
     config.resolve.fallback = {
       ...config.resolve.fallback,
       fs: false,

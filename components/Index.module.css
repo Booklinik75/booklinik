@@ -11,6 +11,7 @@
   background-attachment: unset;
 }
 
+
 @supports (background-attachment: fixed) {
   @media (min-width: 768px) {
     .values {

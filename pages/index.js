@@ -21,7 +21,6 @@ import {
 import firebase from "firebase/clientApp";
 import moment from "moment";
 import { useEffect, useRef } from "react";
-
 // TODO: add unit test for weird characters like apostrophes and such
 
 export const getServerSideProps = async (ctx) => {
@@ -173,7 +172,7 @@ export default function Home({
                     return Object.keys(orderedCategory)[0].toString() ===
                       category.id ? (
                       <div
-                        className="col-span-1 lg:col-span-2"
+                        className="col-span-1 lg:col-span-2 hover:border-shamrock"
                         key={category.slug}
                       >
                         <Operation data={category} surgeries={surgeries} />
@@ -189,7 +188,7 @@ export default function Home({
         </div>
       </div>
 
-      <div className="mx-4 xl:mx-auto max-w-7xl py-5">
+      <div className="mx-4 xl:mx-auto max-w-7xl py-5 ">
         <div className="flex flex-row items-baseline justify-between mb-2">
           <h3 className="text-xl mr-2">
             Découvrez les offres Booklinik du moment
@@ -201,7 +200,7 @@ export default function Home({
             </a>
           </Link>
         </div>
-        <div className="xl:w-10/12">
+        <div className="xl:w-10/12  ">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-6">
             {offers.map((offer) => {
               // if today is before offerExpiration
@@ -322,6 +321,7 @@ sont mis à votre disposition."
 
       {/* footer */}
       <Footer />
+   
     </div>
   );
 }

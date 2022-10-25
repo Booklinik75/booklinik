@@ -20,7 +20,7 @@ const Operation = ({ extraStyle, data, surgeries }) => {
         <a className="w-full">
           <div
             className={
-              "flex flex-col p-4 items-center bg-white hover:cursor-pointer rounded-lg border border-black border-opacity-10 shadow transition hover:shadow-md hover:border-opacity-20 hover:bg-gray-50 h-full justify-center " +
+              "flex flex-col p-4 items-center bg-white hover:cursor-pointer rounded-lg border border-black border-opacity-10 shadow transition hover:shadow-md hover:border-shamrock hover:bg-gray-50 h-full justify-center " +
               extraStyle
             }
           >

@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { useState,react } from "react";
 import { AiOutlineCheckCircle } from "react-icons/ai";
 import { BsCircle } from "react-icons/bs";
 import { useEffect } from "react";
@@ -12,10 +13,11 @@ const CitySelectStep = ({
   setNextStep,
 }) => {
   useEffect(() => {
+    
     // setNextStep to true when all inputs are filled
     if (booking.city) setNextStep(true);
   }, [booking]);
-
+  const [hover,setHover]=useState(false);
   return (
     <div className="space-y-6">
       <h1 className="text-2xl mb-6">Où voulez-vous partir ?</h1>
@@ -28,20 +30,24 @@ const CitySelectStep = ({
             }).length;
 
             return city.country === country.slug ? (
-              <div className="col-span-9 lg:col-span-3 space-y-2 p-4 border bg-gray-100 border-gray-400 rounded">
+              <div className="col-span-9 lg:col-span-3 space-y-2 p-4 border bg-gray-100 border-gray-400 rounded " 
+                 >
                 <input
                   type="radio"
                   name="city"
                   value={city.slug}
                   id={city.slug}
-                  className="hidden"
+                  className="hidden "
                   required={true}
                   onChange={handleChange}
                   noValidate
+                
                 />
                 <label
                   htmlFor={city.slug}
-                  className="transition hover:shadow hover:cursor-pointer space-y-4"
+                  className=" transition hover:shadow hover:cursor-pointer space-y-4 group-hover:scale-150 transition duration-800"
+                  onMouseEnter={()=>setHover(true)}
+                  onMouseLeave={()=>setHover(false)}
                 >
                   <div className="flex justify-between items-center">
                     <p className="">
@@ -57,7 +63,7 @@ const CitySelectStep = ({
                       layout="fill"
                       objectFit="cover"
                       alt={city.name}
-                      className="rounded bg-gray-200"
+                      className={`${hover?"scale-150 transition duration-800 ":"rounded bg-gray-200 scale-100  duration-700"}`}
                     />
                     <h2 className="text-4xl block absolute w-full top-28 text-white text-center">
                       {city.name}

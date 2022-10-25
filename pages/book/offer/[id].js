@@ -8,7 +8,6 @@ import { VscLoading } from "react-icons/vsc";
 import BookingSideNavigation from "components/bookingComponents/BookingSideNavigation";
 import BookingTopNavigation from "components/bookingComponents/BookingTopNavigation";
 import BookingDataSpan from "components/bookingComponents/BookingDataSpan";
-import Calendar from "react-calendar";
 import { AiFillInfoCircle } from "react-icons/ai";
 import DashboardButton from "Components/DashboardButton";
 import { useRouter } from "next/router";
