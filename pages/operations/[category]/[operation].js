@@ -152,18 +152,14 @@ const OperationPage = ({ surgeryData, categoryPhoto, relatedSurgeries, doctorSur
 
                 />
               <div>
-                <MDEditor.Markdown className="text-gray-600 overflow-ellipsis transition line-clamp-4 hover:line-clamp-none" source={x.doctorExcerpt}/>
+                <MDEditor.Markdown className="text-gray-600 overflow-ellipsis transition line-clamp-1" source={x.doctorExcerpt}/>
                 </div>
               </div>
               );
             })}
           </div>
 
-
-
         </div>
-
-
 
         )) :(
       ""
