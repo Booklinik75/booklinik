@@ -145,14 +145,16 @@ const OperationPage = ({ surgeryData, categoryPhoto, relatedSurgeries, doctorSur
                 <RelatedElement
                   title={x.name}
                   target={`/operations/${x.category}/${x.slug}`}
-              
+
                   key={(x,i)}
                   picture={x.photoUrl}
               //  picture={surgeryData.data.photoUrl || categoryPhoto} // meme photo
 
                 />
-                <MDEditor.Markdown className="text-gray-600 overflow-ellipsis transition line-clamp-3 hover:line-clamp-none" source={x.doctorExcerpt}/>
+              <div>
+                <MDEditor.Markdown className="text-gray-600 overflow-ellipsis transition line-clamp-4 hover:line-clamp-none" source={x.doctorExcerpt}/>
                 </div>
+              </div>
               );
             })}
           </div>
@@ -175,7 +177,7 @@ const OperationPage = ({ surgeryData, categoryPhoto, relatedSurgeries, doctorSur
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
             {relatedSurgeries.map((surgery) => {
               return (
-              
+
                 <RelatedElement
                   title={surgery.name}
                   target={`/operations/${surgery.category}/${surgery.slug}`}
@@ -184,7 +186,7 @@ const OperationPage = ({ surgeryData, categoryPhoto, relatedSurgeries, doctorSur
                   //picture={surgeryData.data.photoUrl || categoryPhoto} // meme photo
 
                 />
-              
+
               );
             })}
           </div>
