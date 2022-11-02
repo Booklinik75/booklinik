@@ -15,7 +15,7 @@ export default function NavigationItem({
   ...props
 }) {
   const router = useRouter();
-  const [user, loading, error] = useAuthState(firebase.auth());
+  const [loading] = useAuthState(firebase.auth());
 
   return (
     <li
