@@ -35,7 +35,7 @@ export const getServerSideProps = async (ctx) => {
 
 const ModalNoSignUp = ({ onClose, visible,booking }) => {
 
- 
+
   const [form, setForm] = useState({
     email: "",
     message: "",
@@ -107,7 +107,7 @@ const ModalNoSignUp = ({ onClose, visible,booking }) => {
                       .reduce((a, b) => a + b),
                   ...booking,
                 });
-            
+
             }
           });
 
@@ -240,35 +240,29 @@ const ModalNoSignUp = ({ onClose, visible,booking }) => {
         <div className="lg:mt-0 xl:mt-0 relative  rounded-xl bg-shamrock gap-0 text-white placeholder-white ">
         <div className="p-3">
         <span className="cursor-pointer">
-        
+
           <AiOutlineClose className="hover:text-gray-500" size={20}  onClick={onClose}/>
         </span>
 
       </div>
       <div className="mx-4 xl:mx-auto py-14 px-10 grid grid-cols-1 lg:grid-cols-2 pt-5">
-      
+
 
           <div className="space-y-6 h-full">
-         
+
             <h1 className="text-2xl mb-6">Parfait, on y est presque !</h1>
             <div className="py-6 space-y-6 leading-9 ">
               <p className=" lg:flex-row lg:items-center">
-                Vous souhaitez réaliser une{" "}
-                
-                  <span className="font-bold">
-                    <BookingDataSpan
-                      string={booking.surgeries[0].surgeryCategoryName}
-
-                    />{" "}
+              Vous souhaitez réaliser une opération</p><span>{" "}
+                <span className="">
+                             <BookingDataSpan
+                    string={booking.surgeries[0].surgeryName}
+                  />{" "}
                   </span>
-                  sur{" "}
-              
-                <span className="font-bold	 ">
-                  <BookingDataSpan string={booking.surgeries[0].surgeryName} />
-                </span>
-              </p>
-              <p className="">
-                Votre voyage s&apos;étendra du{" "}
+
+              </span>
+              <p className=" lg:flex-row lg:items-center">
+              Votre voyage s&apos;étendra du </p>{" "}
                 <span className="font-bold">
                   <BookingDataSpan>
                     <Moment
@@ -277,7 +271,7 @@ const ModalNoSignUp = ({ onClose, visible,booking }) => {
                       locale="fr"
                     />
                   </BookingDataSpan>
-                  au{" "}
+                  au {" "}
                   <BookingDataSpan>
                     <Moment
                       format="DD MMM YYYY"
@@ -285,18 +279,19 @@ const ModalNoSignUp = ({ onClose, visible,booking }) => {
                       locale="fr"
                     />
                   </BookingDataSpan>
-                </span>
-                pour une durée de{" "}
+                </span><p>
+                pour une durée de {" "}
                 <span className="font-bold">
                   {booking.totalSelectedNights}{" "}
                 </span>
-                jours.
-              </p>
+                jours.</p>
+
               {booking.extraBabies > 0 ||
               booking.extraChilds > 0 ||
               booking.extraTravellers > 0 ? (
-                <p className="flex ">
-                  Vous serez accompagné-e par{" "}
+                <p>
+                  Vous serez accompagné-e par
+                  <p>{" "}</p>
                   <span className="font-bold">
                     {booking.extraTravellers > 0 ? (
                       <BookingDataSpan
@@ -326,7 +321,8 @@ const ModalNoSignUp = ({ onClose, visible,booking }) => {
                       ""
                     )}
                   </span>
-                  de votre choix pour découvrir{" "}
+                  <p>de votre choix pour découvrir</p>
+                  <p>{" "}</p>
                   <span className="font-bold">
                     <BookingDataSpan string={booking.city} />
                   </span>
@@ -342,7 +338,7 @@ const ModalNoSignUp = ({ onClose, visible,booking }) => {
                </p>
                <p>
                 (très bon choix) et vous logerez en
-                <span className="font-bold">{" "} 
+                <span className="font-bold">{" "}
                   <BookingDataSpan string={booking.roomName} />
                 </span>
               </p>
@@ -474,7 +470,7 @@ const ModalNoSignUp = ({ onClose, visible,booking }) => {
                     >
                       Envoyer
                     </button>
-                   
+
                   </div>
                 </>
               ) : (
@@ -483,11 +479,11 @@ const ModalNoSignUp = ({ onClose, visible,booking }) => {
                     Votre message a bien été envoyé.<br/> Nous vous recontacterons
                     dans les plus brefs délais.
                   </p>
-                
-                 
-                  
+
+
+
                   </div>
-                
+
               )}
             </div>
           </form>
