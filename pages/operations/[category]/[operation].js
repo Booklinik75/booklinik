@@ -133,18 +133,18 @@ const OperationPage = ({ surgeryData, categoryPhoto, relatedSurgeries, doctorSur
         <div>
           <MDEditor.Markdown source={surgeryData.data.descriptionBody} />
         </div>
-        {
-       doctorSurgeries[0]?.doctor?.length>0?(
+        {doctorSurgeries[0].doctor?(
+       doctorSurgeries[0].doctor.length>0&&(
         <div className="space-y-6">
           <h2 className="text-2xl">Nos médecins</h2>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
             {doctorSurgeries[0].doctor.map((x,i) => {
 
               return (
-                <div  key={x.slug} className="">
+                <div  key={x.slug} className="pointer-events-none">
                 <RelatedElement
                   title={x.name}
-                  target="URL:void(0)"
+                  target={`/operations/${x.category}/${x.slug}`}
               
                   key={(x,i)}
                   picture={x.photoUrl}
@@ -163,7 +163,7 @@ const OperationPage = ({ surgeryData, categoryPhoto, relatedSurgeries, doctorSur
 
 
 
-        ) :(
+        )) :(
       ""
     )}
 
