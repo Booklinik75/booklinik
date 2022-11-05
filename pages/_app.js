@@ -33,11 +33,6 @@ function BooklinikClient({ Component, pageProps }) {
 
   };
 
-  useEffect(() => {
-    setTimeout(() => {
-      setShowModal(true);
-  }, 20000);
-  }, []);
 
   const booking={
     surgeries: [
