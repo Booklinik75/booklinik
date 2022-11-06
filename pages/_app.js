@@ -283,7 +283,7 @@ function BooklinikClient({ Component, pageProps }) {
           <ToastContainer />
       
         <ModalOuibounce onClose={handleOnClose} showModal={showModal}/>
-  
+
          </BookProvider>
         
       </AuthProvider>

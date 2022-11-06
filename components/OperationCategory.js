@@ -4,7 +4,7 @@ import { FaChevronRight } from "react-icons/fa";
 
 const OpCategory = ({ operation, surgeries }) => {
   return (
-    <div className="pt-1" id={operation.slug}>
+    <div className="pt-1" key={operation.slug}>
       <div className="flex flex-col max-w-7xl mx-4 xl:mx-auto my-10">
         <h2 className="mb-4 font-medium text-xl">{operation.name}</h2>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -38,7 +38,7 @@ const OpCategory = ({ operation, surgeries }) => {
           >
             {surgeries.map((surgery) => {
               return surgery.category === operation.slug ? (
-                <div key={surgery.id}>
+                <div key={surgery.slug}>
                   <Link href={`/operations/${operation.slug}/${surgery.slug}`}>
                     <a>
                       <div
@@ -48,6 +48,7 @@ const OpCategory = ({ operation, surgeries }) => {
                         <div className="flex items-center justify-between justify-items-center h-full px-6 py-6 lg:py-auto">
                           <div>
                             <h3 className="text-lg">{surgery.name}</h3>
+                            {console.log(surgery)}
                             <p className="text-sm">
                               À partir de {surgery.startingPrice}€
                             </p>
