@@ -38,7 +38,7 @@ const OpCategory = ({ operation, surgeries }) => {
           >
             {surgeries.map((surgery) => {
               return surgery.category === operation.slug ? (
-                <div key={surgery.id}>
+                <div key={surgery.slug}>
                   <Link href={`/operations/${operation.slug}/${surgery.slug}`}>
                     <a>
                       <div
@@ -48,6 +48,7 @@ const OpCategory = ({ operation, surgeries }) => {
                         <div className="flex items-center justify-between justify-items-center h-full px-6 py-6 lg:py-auto">
                           <div>
                             <h3 className="text-lg">{surgery.name}</h3>
+                            {console.log(surgery)}
                             <p className="text-sm">
                               À partir de {surgery.startingPrice}€
                             </p>
