@@ -4,7 +4,7 @@ import { FaChevronRight } from "react-icons/fa";
 
 const OpCategory = ({ operation, surgeries }) => {
   return (
-    <div className="pt-1" key={operation.slug}>
+    <div className="pt-1" id={operation.slug}>
       <div className="flex flex-col max-w-7xl mx-4 xl:mx-auto my-10">
         <h2 className="mb-4 font-medium text-xl">{operation.name}</h2>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
