@@ -114,6 +114,7 @@ const OperationsList = ({
 
       {operationCategories.map((category) => (
         <div key={category.slug}>
+          
           <OperationCategory operation={category} surgeries={surgeries} />
         </div>
       ))}

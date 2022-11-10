@@ -35,7 +35,7 @@ const DestinationHotel = ({ hotel, city }) => {
         //     only show the two first sentences of the excerpt
             {excerpt.split(".").slice(0, 2).join(".")}.
           </p>
-        */}
+        */} 
           <MDEditor.Markdown className="text-gray-500 overflow-ellipsis transition line-clamp-3 hover:line-clamp-none" source={hotel.excerpt} />
 
       </div>
