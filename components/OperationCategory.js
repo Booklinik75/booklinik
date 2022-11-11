@@ -62,7 +62,7 @@ const OpCategory = ({ operation, surgeries }) => {
                   </Link>
                 </div>
               ) : (
-                ""
+               <p>Data no fetch</p>
               );
             })}
           </div>
