@@ -39,7 +39,8 @@ const OpCategory = ({ operation, surgeries }) => {
             {surgeries.map((surgery) => {
               return surgery.category === operation.slug ? (
                 <div key={surgery.slug}>
-                  {console.log(surgery.category )}
+                  {console.log(surgery )}
+               
                   <Link href={`/operations/${operation.slug}/${surgery.slug}`}>
                     <a>
                       <div
