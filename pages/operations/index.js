@@ -114,7 +114,7 @@ const OperationsList = ({
 
       {operationCategories.map((category) => (
         <div key={category.slug}>
-          
+          {console.log(operationCategories)}
           <OperationCategory operation={category} surgeries={surgeries} />
         </div>
       ))}
