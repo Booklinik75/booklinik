@@ -63,7 +63,7 @@ export const getStaticProps = async (context) => {
 
 const OperationPage = ({ surgeryData, categoryPhoto, relatedSurgeries, doctorSurgeries,beforeAfter }) => {
   return (
-    <div className="space-y-6">
+    <div className="space-y-6" >
       <Head>
         <title>Booklinik | {surgeryData.data.name}</title>
       </Head>
@@ -103,11 +103,8 @@ const OperationPage = ({ surgeryData, categoryPhoto, relatedSurgeries, doctorSur
           {beforeAfter[0].beforeafter.map((x,i) => {
 
               return (
-
                   <div key={(x,i)} className="col-span-1 rounded relative transition shadow hover:shadow-lg group">
                    <ReactCompareImage
-
-
                   leftImage={x.leftimage}
                   rightImage={x.rightimage} />
 
@@ -133,26 +130,37 @@ const OperationPage = ({ surgeryData, categoryPhoto, relatedSurgeries, doctorSur
         <div>
           <MDEditor.Markdown source={surgeryData.data.descriptionBody} />
         </div>
-        {
+        
+{
        doctorSurgeries[0]?.doctor?.length>0?(
         <div className="space-y-6">
           <h2 className="text-2xl">Nos médecins</h2>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
             {doctorSurgeries[0].doctor.map((x,i) => {
 
               return (
-                <div  key={x.slug} className="">
-                <RelatedElement
-                  title={x.name}
-                  target="URL:void(0)"
+                <div className="col-span-1 space-y-2 rounded-lg group" key={i}>
+          <div className="w-full rounded-xl relative ">
+            <div className="relative h-64 rounded-sm overflow-hidden">
+              <Image
+                src={x.photoUrl}
+                layout="fill"
+                objectFit="cover"
+                alt="TBD"
+                className="rounded-lg "
+              />
+              <div className="opacity-20 bg-gradient-to-t from-black rounded-lg w-full h-full absolute"></div>
+            </div>
+            <div className="absolute mx-4 text-white bottom-4 space-y-1">
+              <h3 className="text-lg bottom-4">{x.name}</h3>
+             
+            </div>
+          </div>
+          <div>
+          <MDEditor.Markdown className="text-gray-600 inline overflow-ellipsis transition line-clamp-3 hover:line-clamp-none" source={x.doctorExcerpt}/>
 
-                  key={(x,i)}
-                  picture={x.photoUrl}
-              //  picture={surgeryData.data.photoUrl || categoryPhoto} // meme photo
-
-                />
-                <MDEditor.Markdown className="text-gray-600 overflow-ellipsis transition line-clamp-3 hover:line-clamp-none" source={x.doctorExcerpt}/>
-                </div>
+          </div>
+        </div>
               );
             })}
           </div>
@@ -170,26 +178,7 @@ const OperationPage = ({ surgeryData, categoryPhoto, relatedSurgeries, doctorSur
 
 
 
-        <div className="space-y-6">
-          <h2 className="text-2xl">Opérations similaires</h2>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-            {relatedSurgeries.map((surgery) => {
-              return (
-
-                <RelatedElement
-                  title={surgery.name}
-                  target={`/operations/${surgery.category}/${surgery.slug}`}
-                  key={surgery.slug}
-                  picture={surgery.photoUrl || categoryPhoto}
-                  //picture={surgeryData.data.photoUrl || categoryPhoto} // meme photo
-
-                />
-
-              );
-            })}
-          </div>
-
-        </div>
+       
 
 
 
