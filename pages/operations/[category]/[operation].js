@@ -168,8 +168,6 @@ const OperationPage = ({ surgeryData, categoryPhoto, relatedSurgeries, doctorSur
     )}
 
 
-
-
         <div className="space-y-6">
           <h2 className="text-2xl">Opérations similaires</h2>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
