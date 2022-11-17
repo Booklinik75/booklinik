@@ -145,7 +145,7 @@ const OperationPage = ({ surgeryData, categoryPhoto, relatedSurgeries, doctorSur
                 <RelatedElement
                   title={x.name}
                   target="URL:void(0)"
-              
+
                   key={(x,i)}
                   picture={x.photoUrl}
               //  picture={surgeryData.data.photoUrl || categoryPhoto} // meme photo
@@ -168,14 +168,12 @@ const OperationPage = ({ surgeryData, categoryPhoto, relatedSurgeries, doctorSur
     )}
 
 
-
-
         <div className="space-y-6">
           <h2 className="text-2xl">Opérations similaires</h2>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
             {relatedSurgeries.map((surgery) => {
               return (
-              
+
                 <RelatedElement
                   title={surgery.name}
                   target={`/operations/${surgery.category}/${surgery.slug}`}
@@ -184,14 +182,12 @@ const OperationPage = ({ surgeryData, categoryPhoto, relatedSurgeries, doctorSur
                   //picture={surgeryData.data.photoUrl || categoryPhoto} // meme photo
 
                 />
-              
+
               );
             })}
           </div>
 
         </div>
-
-
 
      </div>
 

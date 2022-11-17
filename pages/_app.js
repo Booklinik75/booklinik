@@ -33,6 +33,12 @@ function BooklinikClient({ Component, pageProps }) {
 
   };
 
+  useEffect(() => {
+    setTimeout(() => {
+      setShowModal(true);
+  }, 20000);
+  }, []);
+
 
   const booking={
     surgeries: [
@@ -283,7 +289,7 @@ function BooklinikClient({ Component, pageProps }) {
           <ToastContainer />
       
         <ModalOuibounce onClose={handleOnClose} showModal={showModal}/>
-  
+
          </BookProvider>
         
       </AuthProvider>
