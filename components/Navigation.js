@@ -55,7 +55,9 @@ export default function Navigation() {
                 <ul className="flex flex-col w-full lg:w-[unset] justify-between lg:justify-start h-[calc(100%-5.5rem)] lg:h-[unset] lg:items-center lg:flex-row list-none lg:ml-auto transition">
 
                   <div className="flex flex-col lg:flex-row">
-                    <NavigationItem title="Opérations" target="/operations" />
+                  
+                    <NavigationItem title="Opérations" target="/operations" onClick={()=>location.assign("/operations")}/>
+                   
                     <NavigationItem title="Cliniques" target="/cliniques" />
                     <NavigationItem
                       title="Destinations"
