@@ -56,7 +56,7 @@ export default function Navigation() {
 
                   <div className="flex flex-col lg:flex-row">
                   
-                    <NavigationItem title="Opérations" target="/operations" onClick={()=>window.location.reload()}/>
+                    <NavigationItem title="Opérations" target="/operations" onClick={()=>location.assign("/operations")}/>
                    
                     <NavigationItem title="Cliniques" target="/cliniques" />
                     <NavigationItem
