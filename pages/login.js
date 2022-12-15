@@ -58,15 +58,8 @@ const Login = () => {
           .doc(user.uid)
           .set(userData)
           .then((docRef) => {
-            // send confirmation email
-            fetch("/api/mail", {
-              method: "POST",
-              body: JSON.stringify({
-                recipient: email,
-                templateId: "d-51683413333641cc9bd64848bda8fa19",
-              }),
-            });
-   
+          
+           
             if(booking){
               const booking = JSON.parse(
                 localStorage.getItem("bookBooklinik")
