@@ -130,7 +130,7 @@ const ModalOuibounce = ({ onClose, showModal}) => {
           Profitez d&apos;une remise !
         </h2>
         <h2 className="text-3xl mb-2 mt-10">
-Remplissez le formulaire aujourd&apos;hui et recevez 150 € de réduction sur votre intervention  </h2>
+Remplissez le formulaire aujourd&apos;hui et recevez 150€ de réduction sur votre intervention  </h2>
       </div>
 
              <form onSubmit={handleFormSubmit}>
