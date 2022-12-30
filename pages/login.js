@@ -29,7 +29,9 @@ const Login = () => {
   const { isChecked, handleUseReferral } = useContext(BookContext);
   const [error, setError] = useState(null);
   const [isLoading, setLoading] = useState("idle");
-  const [booking, setBooking] = useState(null);
+  const [booking, setBooking] = useState(null || JSON.parse(
+    localStorage.getItem("bookBooklinik")
+  ));
 
   
   function doLogIn() {
@@ -62,17 +64,23 @@ const Login = () => {
             fetch("/api/mail", {
               method: "POST",
               body: JSON.stringify({
-                recipient: email,
-                templateId: "d-51683413333641cc9bd64848bda8fa19",
+                recipient:  user.email,
+                templateId: "d-b504c563b53846fbadb0a53151a82d57",
               }),
             });
            
             if(booking){
-              const booking = JSON.parse(
-                localStorage.getItem("bookBooklinik")
-              );
+              const totalPrice =
+    Number(booking.surgeries[0].surgeryPrice) +
+    Number(booking.totalExtraTravellersPrice) +
+    booking.options
+      ?.map((option) => option.isChecked && Number(option.price))
+      .reduce((a, b) => a + b) +
+    Number(booking.roomPrice) * Number(booking.totalSelectedNights);
+             
               firebase
                 .firestore()
+                
                 .collection("bookings")
                 .add({
                   user: user.uid,
@@ -93,8 +101,23 @@ const Login = () => {
                   fetch("/api/mail", {
                     method: "post",
                     body: JSON.stringify({
-                      recipient: user.email,
-                      templateId: "d-b504c563b53846fbadb0a53151a82d57",
+                      recipient: "salahelbouhali93@gmail.com",
+                      templateId: "d-351874c7be9348778ef89f40ddfe8729",
+                      dynamicTemplateData: {
+                        booking: {
+                          date: booking.created,
+                          offerName: booking.offerName,
+                          surgeryName: booking.surgeries[0].surgeryName,
+                          surgeryCategoryName: booking.surgeries[0].surgeryCategoryName,
+                          startDate: booking.startDate,
+                          endDate: booking.endDate,
+                          hotelName: booking.hotelName,
+                          total:totalPrice,
+                          totalSelectedNights: booking.totalSelectedNights,
+                          room: booking.room,
+                          city: booking.city,
+                        },
+                      },
                     }),
                   });
                 })
@@ -153,6 +176,7 @@ const Login = () => {
       </div>
       <div className="grid grid-cols-10 h-full">
         <div className="flex items-center col-span-10 lg:col-span-6">
+          {console.log(booking)}
           <div className="mx-auto w-2/3 md:w-1/2 space-y-6">
             <h1 className="text-4xl">Bonjour !</h1>
             {error && (

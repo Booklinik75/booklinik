@@ -227,6 +227,7 @@ const SignUp = () => {
 
   return (
     <div className="h-screen relative signup">
+      {console.log(booking)}
       <div className="nav top-0 absolute flex flex-row w-full justify-between z-50 p-10 bg-white shadow-lg">
         <Link href="/">
           <a>
