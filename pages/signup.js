@@ -131,6 +131,14 @@ const SignUp = () => {
                   localStorage.getItem("bookBooklinik")
                 );
 
+                 const totalPrice =
+                Number(booking.surgeries[0].surgeryPrice) +
+                Number(booking.totalExtraTravellersPrice) +
+                booking.options
+                  ?.map((option) => option.isChecked && Number(option.price))
+                  .reduce((a, b) => a + b) +
+                Number(booking.roomPrice) * Number(booking.totalSelectedNights);
+
                 firebase
                   .firestore()
                   .collection("bookings")
@@ -153,8 +161,23 @@ const SignUp = () => {
                     fetch("/api/mail", {
                       method: "post",
                       body: JSON.stringify({
-                        recipient: user.email,
-                        templateId: "d-b504c563b53846fbadb0a53151a82d57",
+                        recipient: "info@booklinik.com",
+                        templateId: "d-351874c7be9348778ef89f40ddfe8729",
+                        dynamicTemplateData: {
+                          booking: {
+                            date: booking.created,
+                            offerName: booking.offerName,
+                            surgeryName: booking.surgeries[0].surgeryName,
+                            surgeryCategoryName: booking.surgeries[0].surgeryCategoryName,
+                            startDate: booking.startDate,
+                            endDate: booking.endDate,
+                            hotelName: booking.hotelName,
+                            total:totalPrice,
+                            totalSelectedNights: booking.totalSelectedNights,
+                            room: booking.room,
+                            city: booking.city,
+                          },
+                        },
                       }),
                     });
                   })

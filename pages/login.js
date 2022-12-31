@@ -98,7 +98,7 @@ const Login = () => {
                   ...booking,
                 })
                 .then(() => {
-                  fetch("/api/mail", {
+                 fetch("/api/mail", {
                     method: "post",
                     body: JSON.stringify({
                       recipient: "info@booklinik.com",
