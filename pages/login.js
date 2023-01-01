@@ -61,13 +61,7 @@ const Login = () => {
           .set(userData)
           .then((docRef) => {
             // send confirmation email
-            fetch("/api/mail", {
-              method: "POST",
-              body: JSON.stringify({
-                recipient:  user.email,
-                templateId: "d-b504c563b53846fbadb0a53151a82d57",
-              }),
-            });
+            
            
             if(booking){
               const totalPrice =
@@ -127,7 +121,7 @@ const Login = () => {
         
         
      
-    
+        localStorage.removeItem("bookBooklinik");
       // redirect to dashboard
        router.push("/dashboard");
     })
@@ -212,6 +206,7 @@ const Login = () => {
               >
                 Mot de passe
               </label>
+              {console.log(booking?"false":"true")}
               <input
                 type="password"
                 name="password"

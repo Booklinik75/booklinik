@@ -182,7 +182,7 @@ const SignUp = () => {
                     });
                   })
                   .then(() => {
-
+                    localStorage.removeItem("bookBooklinik");
                     router.push("/dashboard");
                   });
               } else {
