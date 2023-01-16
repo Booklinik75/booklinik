@@ -385,12 +385,13 @@ const SignUp = () => {
 
 
             <div className="flex gap-3 pt-6 ">
-                 <button
+         {   booking?( <button
                   type="submit"
                   onClick={()=>setShowModal(true)}
                   className={`min-w-max transition px-4  py-3 lg:px-10 rounded border border-shamrock bg-shamrock text-white && "hover:text-shamrock group hover:bg-white"`}
                   >Continuer sans inscription
-                  </button>
+                  </button>):("")
+           }     
 
               </div>
 
@@ -405,6 +406,7 @@ const SignUp = () => {
         </div>
 
         <div className="relative hidden col-span-4 lg:block">
+          {console.log(booking)}
           <Image
             src={SideBanner}
             layout="fill"
