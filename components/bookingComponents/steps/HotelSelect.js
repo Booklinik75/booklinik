@@ -46,7 +46,8 @@ const HotelSelectStep = ({
                 className="hidden"
                 required={true}
                 onChange={(e) =>{
-                  window.scrollTo({ top: 0 });
+                  window.scrollTo(0, 0);
+                  setTimeout(() => { window.scrollTo(0, 0); }, 100);
                   handleHotelSelect(
                     hotel.slug,
                     hotel.extraPrice,
