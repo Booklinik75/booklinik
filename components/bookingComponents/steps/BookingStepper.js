@@ -12,7 +12,7 @@ const FormStepper = ({
   children,
   booking,
   user,
-  nextStep,
+  nextStep, 
   step,
   setStep, 
   setNextStep,

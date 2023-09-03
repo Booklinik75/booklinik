@@ -131,6 +131,14 @@ const SignUp = () => {
                   localStorage.getItem("bookBooklinik")
                 );
 
+                 const totalPrice =
+                Number(booking.surgeries[0].surgeryPrice) +
+                Number(booking.totalExtraTravellersPrice) +
+                booking.options
+                  ?.map((option) => option.isChecked && Number(option.price))
+                  .reduce((a, b) => a + b) +
+                Number(booking.roomPrice) * Number(booking.totalSelectedNights);
+
                 firebase
                   .firestore()
                   .collection("bookings")
@@ -153,13 +161,28 @@ const SignUp = () => {
                     fetch("/api/mail", {
                       method: "post",
                       body: JSON.stringify({
-                        recipient: user.email,
-                        templateId: "d-b504c563b53846fbadb0a53151a82d57",
+                        recipient: "info@booklinik.com",
+                        templateId: "d-351874c7be9348778ef89f40ddfe8729",
+                        dynamicTemplateData: {
+                          booking: {
+                            date: booking.created,
+                            offerName: booking.offerName,
+                            surgeryName: booking.surgeries[0].surgeryName,
+                            surgeryCategoryName: booking.surgeries[0].surgeryCategoryName,
+                            startDate: booking.startDate,
+                            endDate: booking.endDate,
+                            hotelName: booking.hotelName,
+                            total:totalPrice,
+                            totalSelectedNights: booking.totalSelectedNights,
+                            room: booking.room,
+                            city: booking.city,
+                          },
+                        },
                       }),
                     });
                   })
                   .then(() => {
-
+                    localStorage.removeItem("bookBooklinik");
                     router.push("/dashboard");
                   });
               } else {
@@ -227,6 +250,7 @@ const SignUp = () => {
 
   return (
     <div className="h-screen relative signup">
+      {console.log(booking)}
       <div className="nav top-0 absolute flex flex-row w-full justify-between z-50 p-10 bg-white shadow-lg">
         <Link href="/">
           <a>
@@ -361,12 +385,13 @@ const SignUp = () => {
 
 
             <div className="flex gap-3 pt-6 ">
-                 <button
+         {   booking?( <button
                   type="submit"
                   onClick={()=>setShowModal(true)}
                   className={`min-w-max transition px-4  py-3 lg:px-10 rounded border border-shamrock bg-shamrock text-white && "hover:text-shamrock group hover:bg-white"`}
                   >Continuer sans inscription
-                  </button>
+                  </button>):("")
+           }     
 
               </div>
 
@@ -381,6 +406,7 @@ const SignUp = () => {
         </div>
 
         <div className="relative hidden col-span-4 lg:block">
+          {console.log(booking)}
           <Image
             src={SideBanner}
             layout="fill"

@@ -6,7 +6,8 @@ const moduleExports = removeImports({
   reactStrictMode: true,
   outputFileTracing: false, // fix sentry error related to vercel & next.js upgrade to v12
 
-  images: {dangerouslyAllowSVG: true,
+  images: {
+    dangerouslyAllowSVG: true,
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
     domains: [
       "via.placeholder.com",
