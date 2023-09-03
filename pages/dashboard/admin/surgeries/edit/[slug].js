@@ -12,7 +12,9 @@ import DashboardInput from "../../../../../components/DashboardInput";
 import DashboardButton from "../../../../../components/DashboardButton";
 import { useRouter } from "next/router";
 import ProfileSelect from "../../../../../components/ProfileSelect";
-import MDEditor from "@uiw/react-md-editor";
+import dynamic from "next/dynamic";
+
+const MDEditor = dynamic(() => import("@uiw/react-md-editor"), { ssr: false });
 
 export const getServerSideProps = async (ctx) => {
   const auth = await checkAdmin(ctx);
@@ -68,7 +70,6 @@ const EditSurgery = ({
   const [isUploading, setIsUploading] = useState(false);
   const [isUploadingDoctorUrl, setIsUploadingDoctorUrl] = useState(false);
   const [photoUrl, setphotoUrl] = useState(surgeryData.data.photoUrl);
-
 
   const handleChange = (e) => {
     if (e.target.name === "name") {
@@ -198,7 +199,6 @@ const EditSurgery = ({
 
     const storageRef = firebase.storage().ref();
     const list = [...inputDoctorList];
-
 
     const uploadTask = storageRef
       .child(`doctor/${files[0].name}`)
@@ -436,32 +436,31 @@ const EditSurgery = ({
                       label="Photo Médecin"
                       required={false}
                     />
-                    
-            <label className="text-xs uppercase text-gray-500 w-full">
-              Doctor excerpt
-            </label>
-            <textarea
-              name="doctorExcerpt"
-              value={x.doctorExcerpt}
-              onChange={(e) => handleInputDoctorChange(e, i)}
-              disabled={false}
-              label="Doctor excerpt"
-              required={true}
-              rows={3}
-              placeholder="Écrivez une courte description"
-              className="w-full rounded border-2 outline-none border-gray-200 p-3 transition hover:border-bali focus:border-shamrock disabled:bg-gray-300 disabled:border-gray-400 disabled:cursor-not-allowed"
-            />
-         
+
+                    <label className="text-xs uppercase text-gray-500 w-full">
+                      Doctor excerpt
+                    </label>
+                    <textarea
+                      name="doctorExcerpt"
+                      value={x.doctorExcerpt}
+                      onChange={(e) => handleInputDoctorChange(e, i)}
+                      disabled={false}
+                      label="Doctor excerpt"
+                      required={true}
+                      rows={3}
+                      placeholder="Écrivez une courte description"
+                      className="w-full rounded border-2 outline-none border-gray-200 p-3 transition hover:border-bali focus:border-shamrock disabled:bg-gray-300 disabled:border-gray-400 disabled:cursor-not-allowed"
+                    />
+
                     <div className="btn-box space-x-2 my-2 transition">
-                      {inputDoctorList.length - 1 === i &&
-                        (
-                          <button
-                            onClick={handleDoctorAddClick}
-                            className="py-1 px-3 rounded text-white bg-shamrock border border-shamrock hover:bg-white hover:text-shamrock transition"
-                          >
-                            Ajouter
-                          </button>
-                        )}
+                      {inputDoctorList.length - 1 === i && (
+                        <button
+                          onClick={handleDoctorAddClick}
+                          className="py-1 px-3 rounded text-white bg-shamrock border border-shamrock hover:bg-white hover:text-shamrock transition"
+                        >
+                          Ajouter
+                        </button>
+                      )}
 
                       <button
                         className="py-1 px-3 rounded text-white bg-red-500 border border-red-500 hover:bg-white hover:text-red-500 transition"
@@ -474,18 +473,18 @@ const EditSurgery = ({
                 );
               })
             : ""}
-          {inputDoctorList ? (
-            inputDoctorList.length === 0 && (
-              <div
-                onClick={handleDoctorAddClick}
-                className="w-full flex justify-center rounded transition py-4 border border-dashed border-gray-500 bg-gray-100 hover:cursor-pointer hover:bg-gray-200"
-              >
-                <button className="py-3 px-10 rounded text-center border border-shamrock text-shamrock transition">
-                  Ajouter des photos de Médecin
-                </button>
-              </div>
-            )
-          ) :  setInputDoctorList([])}
+          {inputDoctorList
+            ? inputDoctorList.length === 0 && (
+                <div
+                  onClick={handleDoctorAddClick}
+                  className="w-full flex justify-center rounded transition py-4 border border-dashed border-gray-500 bg-gray-100 hover:cursor-pointer hover:bg-gray-200"
+                >
+                  <button className="py-3 px-10 rounded text-center border border-shamrock text-shamrock transition">
+                    Ajouter des photos de Médecin
+                  </button>
+                </div>
+              )
+            : setInputDoctorList([])}
           {inputBeforeAfterList
             ? inputBeforeAfterList.map((x, i) => {
                 return (
@@ -511,15 +510,14 @@ const EditSurgery = ({
                     />
 
                     <div className="btn-box space-x-2 my-2 transition">
-                      {inputBeforeAfterList.length - 1 === i &&
-                        (
-                          <button
-                            onClick={handlebeforeafterAddClick}
-                            className="py-1 px-3 rounded text-white bg-shamrock border border-shamrock hover:bg-white hover:text-shamrock transition"
-                          >
-                            Ajouter
-                          </button>
-                        )}
+                      {inputBeforeAfterList.length - 1 === i && (
+                        <button
+                          onClick={handlebeforeafterAddClick}
+                          className="py-1 px-3 rounded text-white bg-shamrock border border-shamrock hover:bg-white hover:text-shamrock transition"
+                        >
+                          Ajouter
+                        </button>
+                      )}
 
                       <button
                         className="py-1 px-3 rounded text-white bg-red-500 border border-red-500 hover:bg-white hover:text-red-500 transition"
@@ -532,18 +530,18 @@ const EditSurgery = ({
                 );
               })
             : ""}
-          {inputBeforeAfterList ? (
-            inputBeforeAfterList.length === 0 && (
-              <div
-                onClick={handlebeforeafterAddClick}
-                className="w-full flex justify-center rounded transition py-4 border border-dashed border-gray-500 bg-gray-100 hover:cursor-pointer hover:bg-gray-200"
-              >
-                <button className="py-3 px-10 rounded text-center border border-shamrock text-shamrock transition">
-                  Ajouter des photos
-                </button>
-              </div>
-            )
-          ) :    setInputBeforeAfterList([])}
+          {inputBeforeAfterList
+            ? inputBeforeAfterList.length === 0 && (
+                <div
+                  onClick={handlebeforeafterAddClick}
+                  className="w-full flex justify-center rounded transition py-4 border border-dashed border-gray-500 bg-gray-100 hover:cursor-pointer hover:bg-gray-200"
+                >
+                  <button className="py-3 px-10 rounded text-center border border-shamrock text-shamrock transition">
+                    Ajouter des photos
+                  </button>
+                </div>
+              )
+            : setInputBeforeAfterList([])}
 
           {inputList.map((x, i) => {
             return (

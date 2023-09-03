@@ -4,7 +4,6 @@ import Footer from "../../../../components/Footer";
 import ContactHelper from "../../../../components/ContactHelper";
 import Head from "next/head";
 import Image from "next/image";
-import MDEditor from "@uiw/react-md-editor";
 import {
   getBackEndAsset,
   getCities,
@@ -12,6 +11,12 @@ import {
   getCountries,
   getClinicData,
 } from "../../../../utils/ServerHelpers";
+import dynamic from "next/dynamic";
+
+const Markdown = dynamic(
+  () => import("@uiw/react-markdown-preview").then((mod) => mod.default),
+  { ssr: false }
+);
 
 export const getStaticPaths = async () => {
   const countries = await getCountries();
@@ -87,7 +92,7 @@ const ClinicPage = ({ clinicData, clinicPhoto }) => {
       </div>
       <div className="mx-4 xl:mx-auto max-w-7xl space-y-10">
         <div>
-          <MDEditor.Markdown source={clinicData.props.data.descriptionBody} />
+          <Markdown source={clinicData.props.data.descriptionBody} />
         </div>
         {/* <div className="space-y-6">
           <h2 className="text-2xl">Opérations similaires</h2>

@@ -4,8 +4,12 @@ import StarRating from "../../StarRating";
 import { AiOutlineCheckCircle } from "react-icons/ai";
 import { BsCircle } from "react-icons/bs";
 import { useEffect } from "react";
-import MDEditor from "@uiw/react-md-editor";
+import dynamic from "next/dynamic";
 
+const Markdown = dynamic(
+  () => import("@uiw/react-markdown-preview").then((mod) => mod.default),
+  { ssr: false }
+);
 
 const HotelSelectStep = ({
   booking,
@@ -105,7 +109,7 @@ const HotelSelectStep = ({
                   </div>
                 </div>
                 <div>
-                <MDEditor.Markdown source={hotel.excerpt} />
+                <Markdown source={hotel.excerpt} />
                 </div>
               </label>
             </div>

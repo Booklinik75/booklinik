@@ -9,7 +9,13 @@ import { getBackEndAsset } from "utils/ServerHelpers";
 import Footer from "components/Footer";
 import ContactHelper from "components/ContactHelper";
 import Slider from "react-slick";
-import MDEditor from "@uiw/react-md-editor";
+import dynamic from "next/dynamic";
+
+
+const MDEditor = dynamic(
+  () => import("@uiw/react-md-editor"),
+  { ssr: false }
+);
 
 
 // get server side props
