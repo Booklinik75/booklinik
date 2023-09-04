@@ -1,8 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
-import MDEditor from "@uiw/react-md-editor";
+import dynamic from "next/dynamic";
 
-
+const Markdown = dynamic(
+  () => import("@uiw/react-markdown-preview").then((mod) => mod.default),
+  { ssr: false }
+);
 const Clinic = ({ clinic, city, citySlug, countrySlug }) => {
   return (
     <Link href={`cliniques/${countrySlug}/${citySlug}/${clinic.slug}`}>
@@ -27,7 +30,7 @@ const Clinic = ({ clinic, city, citySlug, countrySlug }) => {
             </div>
           </div>
           <div>
-          <MDEditor.Markdown className="text-gray-600 overflow-ellipsis transition line-clamp-3 hover:line-clamp-none" source={clinic.excerpt}/>
+          <Markdown className="text-gray-600 overflow-ellipsis transition line-clamp-3 hover:line-clamp-none" source={clinic.excerpt}/>
           </div>
         </div>
       </a>

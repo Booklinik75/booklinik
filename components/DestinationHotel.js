@@ -1,8 +1,11 @@
 import Image from "next/image";
 import StarRating from "./StarRating";
-import Link from "next/link";
-import MDEditor from "@uiw/react-md-editor";
+import dynamic from "next/dynamic";
 
+const Markdown = dynamic(
+  () => import("@uiw/react-markdown-preview").then((mod) => mod.default),
+  { ssr: false }
+);
 
 const DestinationHotel = ({ hotel, city }) => {
   return (
@@ -36,7 +39,7 @@ const DestinationHotel = ({ hotel, city }) => {
             {excerpt.split(".").slice(0, 2).join(".")}.
           </p>
         */} 
-          <MDEditor.Markdown className="text-gray-500 overflow-ellipsis transition line-clamp-3 hover:line-clamp-none" source={hotel.excerpt} />
+          <Markdown className="text-gray-500 overflow-ellipsis transition line-clamp-3 hover:line-clamp-none" source={hotel.excerpt} />
 
       </div>
     </div>

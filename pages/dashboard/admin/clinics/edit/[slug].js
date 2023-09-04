@@ -1,4 +1,3 @@
-import MDEditor from "@uiw/react-md-editor";
 import DashboardUi from "../../../../../components/DashboardUi";
 import {
   checkAdmin,
@@ -13,6 +12,9 @@ import DashboardButton from "../../../../../components/DashboardButton";
 import { doFileUpload } from "../../../../../utils/ClientHelpers";
 import slugify from "slugify";
 import ProfileSelect from "../../../../../components/ProfileSelect";
+import dynamic from "next/dynamic";
+
+const MDEditor = dynamic(() => import("@uiw/react-md-editor"), { ssr: false });
 
 export const getServerSideProps = async (ctx) => {
   const auth = await checkAdmin(ctx);

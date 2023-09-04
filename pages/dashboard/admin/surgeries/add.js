@@ -12,7 +12,9 @@ import DashboardInput from "../../../../components/DashboardInput";
 import DashboardButton from "../../../../components/DashboardButton";
 import { useRouter } from "next/router";
 import ProfileSelect from "../../../../components/ProfileSelect";
-import MDEditor from "@uiw/react-md-editor";
+import dynamic from "next/dynamic";
+
+const MDEditor = dynamic(() => import("@uiw/react-md-editor"), { ssr: false });
 
 export const getServerSideProps = async (ctx) => {
   const auth = await checkAdmin(ctx);

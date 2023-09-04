@@ -4,7 +4,12 @@ import Footer from "../../components/Footer";
 import ContactHelper from "../../components/ContactHelper";
 import Head from "next/head";
 import firebase from "firebase/clientApp";
-import MDEditor from "@uiw/react-md-editor";
+import dynamic from "next/dynamic";
+
+const Markdown = dynamic(
+  () => import("@uiw/react-markdown-preview").then((mod) => mod.default),
+  { ssr: false }
+);
 
 export const getStaticPaths = async () => {
   const docs = [];
@@ -86,7 +91,7 @@ const LegalPage = ({ legal, paths }) => {
           <div className="col-span-6 lg:col-span-4">
             <h1 className="text-2xl font-semibold mb-6">{legal.metaTitle}</h1>
             <p className="flex flex-col">
-              <MDEditor.Markdown
+              <Markdown
                 source={legal.body.replace(/\\n/g, "\n")}
                 className="flex flex-col"
               />

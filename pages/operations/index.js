@@ -79,8 +79,9 @@ const OperationsList = ({
           className="mx-4  text-xl flex items-center  w-full bg-white shadow  bg-opacity-75 space-x-2 space-y-2 justify-between p-5 text-black cursor-pointer"
           onClick={() => setOpenDropdown((openDropdown) => !openDropdown)}
         >
-        Recherchez une opération <IoIosArrowDown size="20" className="text-shamrock" />
-        {/* category} <IoIosArrowDown size="20" className="text-shamrock" /> */}
+          Recherchez une opération{" "}
+          <IoIosArrowDown size="20" className="text-shamrock" />
+          {/* category} <IoIosArrowDown size="20" className="text-shamrock" /> */}
         </div>
         <AnimatePresence>
           {openDropdown && (
@@ -114,7 +115,6 @@ const OperationsList = ({
 
       {operationCategories.map((category) => (
         <div key={category.slug}>
-          {console.log(operationCategories)}
           <OperationCategory operation={category} surgeries={surgeries} />
         </div>
       ))}
