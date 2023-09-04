@@ -1,4 +1,7 @@
-{
+{   "extends": [
+  "plugin:react",
+  "airbnb"
+],
     "rules": {
       "react/no-unknown-property": [
         2,
