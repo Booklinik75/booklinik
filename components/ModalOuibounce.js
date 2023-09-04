@@ -4,7 +4,7 @@ import "react-phone-input-2/lib/style.css";
 import moment from "moment";
 import * as Sentry from "@sentry/browser";
 import validateModalOuibounce from "utils/validateModalOuibounce";
-import { AiOutlineClose } from "react-icons/Ai";
+import { AiOutlineClose } from "react-icons/ai";
 
 const ModalOuibounce = ({ onClose, showModal }) => {
   const [form, setForm] = useState({
