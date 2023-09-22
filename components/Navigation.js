@@ -9,14 +9,16 @@ import firebase from "../firebase/clientApp";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaPhone } from "react-icons/fa";
+import { useMediaQuery } from "react-responsive";
 
 export default function Navigation() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [user, loading, error] = useAuthState(firebase.auth());
   const [dropdownVisibility, setDropdownVisibility] = useState(false);
-  const variants = {
-    open: { opacity: 1, x: 0, y: 0 },
-    closed: { opacity: 0, x: 200 },
+  const isMobile = typeof window !== "undefined" && window.innerWidth <= 1024;
+  const variants = isMobile && {
+    open: { opacity: 1, x: 0 },
+    closed: { opacity: 0, x: "100%" },
   };
 
   return (
@@ -24,37 +26,40 @@ export default function Navigation() {
       <div className="flex flex-wrap">
         <div className="w-full">
           <nav className="flex flex-wrap items-center justify-between py-2 top-0 fixed w-full z-50 bg-white drop-shadow-sm">
-            <div className="xl:container w-full relative px-4 mx-auto flex flex-wrap items-center justify-between items-center">
+            <div className="xl:container w-full relative lg:px-2 mx-auto flex flex-wrap  justify-between items-center">
               <div className="w-full relative flex justify-between lg:w-auto px-4 lg:static lg:block lg:justify-start items-center">
                 <Link href="/">
                   <a className="text-sm font-bold leading-relaxed inline-block mr-4 py-2 shamrockspace-nowrap uppercase text-shamrock">
                     <Image src={Logo} alt="Booklinik+ Logo" />
                   </a>
                 </Link>
-                <div className="py-3">
-                  <a
+                <a
+                  href="#contactform"
+                  className=" items-center cursor-pointer "
+                >
+                  <div
+                    className=" lg:hidden py-2 bg-shamrock text-center image-clignote  rounded-xl px-2 text-white hover:text-shamrock hover:bg-white  transition border    border-shamrock   "
                     href="#contactform"
-                    className="lg:hidden image-clignote text-white itrems-center bg-shamrock rounded-xl px-2 py-3  transition border border-shamrock hover:text-shamrock hover:bg-white"
                   >
                     Consultation Gratuite
-                  </a>
-                </div>
+                  </div>
+                </a>
                 <button
                   className="text-shamrock cursor-pointer text-[32px] leading-none px-3 py-1 border border-solid border-transparent rounded bg-transparent block lg:hidden outline-none focus:outline-none "
                   type="button"
-                  onClick={() => setMenuOpen(!menuOpen)}
+                  onClick={() => setMenuOpen((menuOpen) => !menuOpen)}
                 >
                   {menuOpen === false ? <CgMenu /> : <CgClose />}
                 </button>
               </div>
               <motion.div
+                initial={false}
                 variants={variants}
                 className={
-                  "lg:flex flex-grow  lg:items-center bg-white lg:bg-transparent shadow h-[calc(100vh-3.75rem)] lg:h-[unset] w-[70%] lg:w-[unset] max-w-xs lg:max-w-full lg:shadow-none lg:p-5 absolute right-0 top-[calc(100%+.5rem)] lg:static z-30 " +
-                  (menuOpen ? " flex" : " flex")
+                  " lg:flex flex-grow  lg:items-center bg-white lg:bg-transparent shadow h-[calc(100vh-3.75rem)] lg:h-[unset] w-[70%] lg:w-[unset] max-w-xs lg:max-w-full lg:shadow-none lg:p-5 absolute right-0 top-[calc(100%+.5rem)] lg:static z-30 "
                 }
                 animate={menuOpen ? "open" : "closed"}
-                transition={{ duration: 1 }}
+                transition={{ duration: 0.6 }}
               >
                 <ul className="flex flex-col w-full lg:w-[unset] justify-between lg:justify-start h-[calc(100%-5.5rem)] lg:h-[unset] lg:items-center lg:flex-row list-none lg:ml-auto transition">
                   <div className="flex flex-col lg:flex-row">
