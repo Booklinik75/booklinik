@@ -161,10 +161,12 @@ export default function Home({
               ref={mainBox}
             >
               <h2 className="text-l md:text-l lg:text-3xl font-bold text-center">
-                Ne cherchez plus ! Booklinik a sélectionné les meilleurs cliniques et médecins dans leur domaine.
+                Ne cherchez plus ! Booklinik a sélectionné les meilleurs
+                cliniques et médecins dans leur domaine.
               </h2>
               <h2 className="text-l md:text-l lg:text-2xl text-center mb-6">
-                Estimez gratuitement et réservez en ligne votre voyage esthétique en 3 clics !
+                Estimez gratuitement et réservez en ligne votre voyage
+                esthétique en 3 clics !
               </h2>
               <div className="grid grid-cols-3 md:grid-cols-3 lg:grid-cols-10 gap-6 home-hero-surgery-categories">
                 {categoriesSettings.map((orderedCategory) => {
@@ -172,7 +174,7 @@ export default function Home({
                     return Object.keys(orderedCategory)[0].toString() ===
                       category.id ? (
                       <div
-                        className="col-span-1 lg:col-span-2 hover:border-shamrock"
+                        className="text-center col-span-1 lg:col-span-2 hover:border-shamrock"
                         key={category.slug}
                       >
                         <Operation data={category} surgeries={surgeries} />
@@ -247,7 +249,9 @@ export default function Home({
           ref={discoverBookLinkText}
         >
           <p className="uppercase text-sm mb-2">Découvrez Booklinik</p>
-          <h2 className="text-4xl">Parce que votre bien-être est notre priorité</h2>
+          <h2 className="text-4xl">
+            Parce que votre bien-être est notre priorité
+          </h2>
           <p className="mt-4 mb-2">Les 8 étapes clé de votre voyage</p>
           <Link href="/etapes">
             <a className="hover:underline flex items-center">
@@ -321,7 +325,6 @@ sont mis à votre disposition."
 
       {/* footer */}
       <Footer />
-   
     </div>
   );
 }

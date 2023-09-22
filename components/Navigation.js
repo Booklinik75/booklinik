@@ -3,7 +3,7 @@ import Image from "next/image";
 import NavigationItem from "./NavigationItem";
 import Logo from "../public/booklinik-logo.svg";
 import Link from "next/link";
-import { FaBars, FaChevronRight } from "react-icons/fa";
+import { CgClose, CgMenu } from "react-icons/cg";
 import { VscLoading } from "react-icons/vsc";
 import firebase from "../firebase/clientApp";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -14,6 +14,10 @@ export default function Navigation() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [user, loading, error] = useAuthState(firebase.auth());
   const [dropdownVisibility, setDropdownVisibility] = useState(false);
+  const variants = {
+    open: { opacity: 1, x: 0, y: 0 },
+    closed: { opacity: 0, x: 200 },
+  };
 
   return (
     <div className="w-full z-50 mb-8 top-0 h-20">
@@ -27,37 +31,39 @@ export default function Navigation() {
                     <Image src={Logo} alt="Booklinik+ Logo" />
                   </a>
                 </Link>
-              <div className="py-3">
-                <a href="#contactform" className="lg:hidden image-clignote text-white itrems-center bg-shamrock rounded-xl px-2 py-3  transition border border-shamrock hover:text-shamrock hover:bg-white">
-              Consultation Gratuite
-            </a>
-            </div>
+                <div className="py-3">
+                  <a
+                    href="#contactform"
+                    className="lg:hidden image-clignote text-white itrems-center bg-shamrock rounded-xl px-2 py-3  transition border border-shamrock hover:text-shamrock hover:bg-white"
+                  >
+                    Consultation Gratuite
+                  </a>
+                </div>
                 <button
-                  className="text-shamrock cursor-pointer text-xl leading-none px-3 py-1 border border-solid border-transparent rounded bg-transparent block lg:hidden outline-none focus:outline-none "
+                  className="text-shamrock cursor-pointer text-[32px] leading-none px-3 py-1 border border-solid border-transparent rounded bg-transparent block lg:hidden outline-none focus:outline-none "
                   type="button"
                   onClick={() => setMenuOpen(!menuOpen)}
                 >
-                  { menuOpen === false ? (
-                  <FaBars />
-                  )
-                  : (
-                    <FaChevronRight />
-                  )}
-
+                  {menuOpen === false ? <CgMenu /> : <CgClose />}
                 </button>
               </div>
-              <div
+              <motion.div
+                variants={variants}
                 className={
                   "lg:flex flex-grow  lg:items-center bg-white lg:bg-transparent shadow h-[calc(100vh-3.75rem)] lg:h-[unset] w-[70%] lg:w-[unset] max-w-xs lg:max-w-full lg:shadow-none lg:p-5 absolute right-0 top-[calc(100%+.5rem)] lg:static z-30 " +
-                  (menuOpen ? " flex" : " hidden")
+                  (menuOpen ? " flex" : " flex")
                 }
+                animate={menuOpen ? "open" : "closed"}
+                transition={{ duration: 1 }}
               >
                 <ul className="flex flex-col w-full lg:w-[unset] justify-between lg:justify-start h-[calc(100%-5.5rem)] lg:h-[unset] lg:items-center lg:flex-row list-none lg:ml-auto transition">
-
                   <div className="flex flex-col lg:flex-row">
-                  
-                    <NavigationItem title="Opérations" target="/operations" onClick={()=>location.assign("/operations")}/>
-                   
+                    <NavigationItem
+                      title="Opérations"
+                      target="/operations"
+                      onClick={() => location.assign("/operations")}
+                    />
+
                     <NavigationItem title="Cliniques" target="/cliniques" />
                     <NavigationItem
                       title="Destinations"
@@ -143,11 +149,14 @@ export default function Navigation() {
                       id="language-switcher"
                       className="language-switcher border-0 px-3 py-2 lg:p-0 flex items-center no-underline leading-snug lg:hover:underline font-medium gap-2 text-lg mx-5 lg:mx-0 !justify-center lg:justify-start normal-case rounded lg:bg-transparent text-white lg:text-shamrock"
                     ></ul>
-                    <a href="#contactform" className="hidden lg:block image-clignote text-white bg-shamrock rounded-2xl px-3 py-3  transition border border-shamrock hover:text-shamrock hover:bg-white">
-              Consultation Gratuite
-              </a>
+                    <a
+                      href="#contactform"
+                      className="hidden lg:block image-clignote text-white bg-shamrock rounded-2xl px-3 py-3  transition border border-shamrock hover:text-shamrock hover:bg-white"
+                    >
+                      Consultation Gratuite
+                    </a>
                   </div>
-                  
+
                   {/*
                   <li className="hidden lg:flex group gap-1 items-center">
 
@@ -160,7 +169,7 @@ export default function Navigation() {
                   </li>
                   */}
                 </ul>
-              </div>
+              </motion.div>
             </div>
           </nav>
         </div>
