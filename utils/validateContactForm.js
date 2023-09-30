@@ -3,7 +3,7 @@ export default function validateContactForm({
   message,
   name,
   phoneNumber,
-
+  date,
 }) {
   const errors = {};
   if (email.trim() === "") {

@@ -26,7 +26,7 @@ export default function Navigation() {
       <div className="flex flex-wrap">
         <div className="w-full">
           <nav className="flex flex-wrap items-center justify-between py-2 top-0 fixed w-full z-50 bg-white drop-shadow-sm">
-            <div className="xl:container w-full relative lg:px-2 mx-auto flex flex-wrap  justify-between items-center">
+            <div className="xl:container w-full relative px-4 mx-auto flex flex-wrap items-center justify-between items-center">
               <div className="w-full relative flex justify-between lg:w-auto px-4 lg:static lg:block lg:justify-start items-center">
                 <Link href="/">
                   <a className="text-sm font-bold leading-relaxed inline-block mr-4 py-2 shamrockspace-nowrap uppercase text-shamrock">

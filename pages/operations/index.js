@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import PhotoBanner from "../../components/PhotoBanner";
 import Navigation from "../../components/Navigation";
 import Footer from "../../components/Footer";
@@ -14,6 +14,7 @@ import {
   getBackEndAsset,
 } from "../../utils/ServerHelpers";
 import { IoIosArrowDown } from "react-icons/io";
+import { useRouter } from "next/router";
 
 export const getStaticProps = async (context) => {
   const operationCategories = await getOperationCategories();
@@ -59,7 +60,14 @@ const OperationsList = ({
     "https://firebasestorage.googleapis.com/v0/b/booklinik.appspot.com/o/frontendassets%2Ff3f4e34aca2cab87619cb04c6610b4c7%20copie.jpg?alt=media&token=c402bd27-0ea9-411a-9960-78ce51c29558";
   const [openDropdown, setOpenDropdown] = useState(false);
   const [category, setCategory] = useState(operationCategories[0].name);
+  const router = useRouter();
 
+  useEffect(() => {
+    if (router.asPath === "/operations#greffe-de-cheveux") {
+      console.log(router);
+      window.scrollTo({ top: 0 });
+    }
+  }, []);
   return (
     <div>
       <Head>

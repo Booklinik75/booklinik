@@ -16,7 +16,7 @@ const Operation = ({ extraStyle, data, surgeries }) => {
 
   return (
     <div className="w-full">
-      <Link scroll={false} href={`/operations/#${data.slug}`}>
+      <Link href={`/operations/#${data.slug}`}>
         <a className="w-full">
           <div
             className={
