@@ -382,7 +382,7 @@ const SignUp = () => {
                   </Link>
                 </div>
               </div>
-              <div className="flex flex-row gap-2 grid-cols-2 lg:flex lg:flex-row lg:gap-3  justify-items-center">
+              <div className="flex flex-row gap-4 grid-cols-2 lg:flex lg:flex-row lg:gap-3  justify-items-center">
                 <DashboardButton
                   defaultText="S'inscrire"
                   status={isLoading}
