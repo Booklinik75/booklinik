@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import BookingDataSpan from "./bookingComponents/BookingDataSpan";
 import Moment from "node_modules/react-moment/dist/index";
 import formatPrice from "utils/formatPrice";
@@ -64,6 +64,7 @@ const ModalNoSignUp = ({ onClose, visible, booking }) => {
     bookingOptionsTotalPrice +
     Number(booking.roomPrice) * Number(totalSelectedNights);
   const { isChecked, handleUseReferral } = useContext(BookContext);
+  const ref = useRef(null);
   const [isLoading, setLoading] = useState("idle");
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -234,7 +235,6 @@ const ModalNoSignUp = ({ onClose, visible, booking }) => {
 
   const [value, setValue] = useState(getInitialState);
   useEffect(() => {
-    document.activeElement.blur();
     if (!endDate) {
       setErrros({ ...errors, date: "Sélectionnez une date de retour" });
       setIsSubmitting(true);
@@ -251,7 +251,6 @@ const ModalNoSignUp = ({ onClose, visible, booking }) => {
     <div className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex flex-wrap justify-center items-center  overflow-auto  z-50">
       <div id="contactform" className="  lg:mt-0 xl:mt-0 lg:absolute p-4 ">
         <div className="lg:mt-0 xl:mt-0 relative  rounded-xl bg-shamrock gap-0 text-white placeholder-white">
-          <input type="date" name="bday" />
           <div className="px-3 pt-4">
             <span className="cursor-pointer">
               <AiOutlineClose
@@ -293,6 +292,7 @@ const ModalNoSignUp = ({ onClose, visible, booking }) => {
                       onChange={(date) => {
                         setStartDate(date), setEndDate();
                       }}
+                      disabledKeyboardNavigation
                       className={"bg-shamrock   "}
                     />
                   </span>
