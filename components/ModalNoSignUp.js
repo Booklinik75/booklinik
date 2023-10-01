@@ -264,7 +264,7 @@ const ModalNoSignUp = ({ onClose, visible, booking }) => {
             <div className="space-y-6 h-full">
               <h1 className="text-2xl mb-6">Parfait, on y est presque !</h1>
               <div className="py-6 space-y-6 leading-9 ">
-                {console.log(startDate)}
+                {console.log(booking)}
                 <p className=" lg:flex-row lg:items-center">
                   Vous souhaitez réaliser une opération
                 </p>
@@ -322,6 +322,8 @@ const ModalNoSignUp = ({ onClose, visible, booking }) => {
                         setEndDate(date);
                         setTotalSelectedNights(numberOfNights);
                       }}
+                      disabledKeyboardNavigation
+                      onFocus={(e) => e.target.blur()}
                     />
                   </span>
                 </div>
@@ -518,13 +520,12 @@ const ModalNoSignUp = ({ onClose, visible, booking }) => {
                         ""
                       )}
                     </div>
-                    <div className="flex flex-row  justify-end ">
+                    <div className="flex flex-row justify-center  md:justify-end group ">
                       <button
                         type="submit"
-                        className={`mx-3 float-right rounded bg-white/10 ${
-                          !isSubmitting
-                            ? " hover:text-shamrock hover:bg-white "
-                            : ""
+                        className={`mx-3 text-2xl px-2 md:px-3 float-right border rounded bg-shamrock text-white disabled:opacity-50 disabled:cursor-not-allowed disabled:col-span-full ${
+                          !isSubmitting &&
+                          "group-hover:text-shamrock group-hover:bg-white "
                         }' p-3 transition `}
                         disabled={isSubmitting}
                       >

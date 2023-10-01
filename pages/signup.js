@@ -351,19 +351,7 @@ const SignUp = () => {
                 value={formData.phoneNumber}
                 onChange={(phone) => handlePhoneNumber(phone)}
               />
-              <div className="flex flex-row items-center gap-2">
-                <input
-                  type="checkbox"
-                  name="acceptsMarketing"
-                  id="acceptsMarketing"
-                  onChange={handleCChange}
-                  checked={isChecked}
-                  className="rounded-full"
-                />
-                <label htmlFor="acceptsMarketing" className="">
-                  Recevoir les bons plans Booklinik
-                </label>
-              </div>
+
               <p className="text-xs text-gray-500">
                 En créant mon compte je reconnais avoir lu et accepté les
                 Conditions Générales de Vente et les Conditions Générales
