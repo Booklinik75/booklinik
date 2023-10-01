@@ -370,18 +370,7 @@ const SignUp = () => {
                 d&apos;Utilisation, et je confirme être âgé d&apos;au moins 18
                 ans.
               </p>
-              <div className="flex flex-row justify-between">
-                <div>
-                  <p className="text-sm text-gray-700">
-                    Vous avez déjà un compte ?
-                  </p>
-                  <Link href="/login">
-                    <a className="text-sm text-gray-500 transition hover:underline">
-                      Se connecter
-                    </a>
-                  </Link>
-                </div>
-              </div>
+
               <div className="flex flex-row gap-4 lg:flex lg:flex-row lg:gap-3  md:justify-items-center">
                 <DashboardButton
                   defaultText="S'inscrire"

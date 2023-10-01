@@ -293,7 +293,8 @@ const ModalNoSignUp = ({ onClose, visible, booking }) => {
                         setStartDate(date), setEndDate();
                       }}
                       disabledKeyboardNavigation
-                      className={"bg-shamrock   "}
+                      onFocus={(e) => e.target.blur()}
+                      className={"bg-shamrock"}
                     />
                   </span>
                   au{" "}
