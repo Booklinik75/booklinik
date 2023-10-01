@@ -16,9 +16,9 @@ const BookingConfirmation = ({ booking, userProfile }) => {
     Number(booking.roomPrice) * Number(booking.totalSelectedNights);
 
   return (
-    <div className="space-y-6 h-full">
-      <h1 className="text-2xl mb-6">Parfait, on y est pdresque !</h1>
-      <div className="py-2 space-y-3 leading-10 xl:leading-10">
+    <div className="space-y-2 h-full">
+      <h1 className="text-2xl md:mb-6">Parfait, on y est pdresque !</h1>
+      <div className="py-2 space-y-3 leading-8 xl:leading-10">
         <p className="flex flex-wrap items-start lg:gap-2 lg:flex-row lg:items-center">
           Vous souhaitez réaliser une opération{" "}
           <span className="">

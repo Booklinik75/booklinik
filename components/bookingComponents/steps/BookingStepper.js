@@ -137,7 +137,7 @@ const FormStepper = ({
           >
             {stepsArray[step]}
 
-            <div className="flex flex-col gap-3 xl:flex-row items-center xl:gap-3">
+            <div className="flex flex-row gap-3 xl:flex-row items-center xl:gap-3">
               {step === stepsArray.length - 1 ? (
                 <>
                   <button

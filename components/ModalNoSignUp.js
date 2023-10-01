@@ -250,7 +250,7 @@ const ModalNoSignUp = ({ onClose, visible, booking }) => {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex flex-wrap justify-center items-center  overflow-auto  z-50">
       <div id="contactform" className="  lg:mt-0 xl:mt-0 lg:absolute p-4 ">
-        <div className="lg:mt-0 xl:mt-0 relative  rounded-xl bg-shamrock gap-0 text-white placeholder-white">
+        <div className="lg:mt-0 xl:mt-0 relative  rounded-xl bg-white gap-0 text-black ">
           <div className="px-3 pt-4">
             <span className="cursor-pointer">
               <AiOutlineClose
@@ -282,7 +282,7 @@ const ModalNoSignUp = ({ onClose, visible, booking }) => {
                   </p>{" "}
                   <span
                     id="inputStartDate"
-                    className="border py-1 px-2 md:py-2 md:px-4 rounded align-middle mx-2 border-white cursor-pointer w-max  text-white"
+                    className="border py-1 px-2 md:py-2 md:px-4 rounded align-middle mx-2 border-black cursor-pointer w-max  "
                   >
                     <ReactDatePicker
                       minDate={new Date()}
@@ -294,14 +294,13 @@ const ModalNoSignUp = ({ onClose, visible, booking }) => {
                       }}
                       disabledKeyboardNavigation
                       onFocus={(e) => e.target.blur()}
-                      className={"bg-shamrock"}
                     />
                   </span>
                   au{" "}
                   <span
                     id="inputEndDate"
-                    className={`border py-1 px-2 md:py-2 md:px-4 rounded align-middle mx-2 cursor-pointer w-max text-white  ${
-                      !endDate ? "border-red-600" : "border-white"
+                    className={`border py-1 px-2 md:py-2 md:px-4 rounded align-middle mx-2 cursor-pointer w-max  ${
+                      !endDate ? "border-red-600" : "border-black"
                     }`}
                   >
                     <ReactDatePicker
@@ -313,7 +312,6 @@ const ModalNoSignUp = ({ onClose, visible, booking }) => {
                           : addDays(startDate, parseInt(booking.minimumNights))
                       }
                       dateFormat="dd/MM/yyyy"
-                      className="bg-shamrock"
                       onChange={(date) => {
                         let timeDiff = Math.abs(
                           date.getTime() - new Date(startDate).getTime()
@@ -416,7 +414,7 @@ const ModalNoSignUp = ({ onClose, visible, booking }) => {
 
               <p className="pb-6 !mt-0 flex flex-col items-start gap-2 lg:flex-row lg:whitespace-nowrap lg:items-center">
                 Le prix tout compris de votre voyage sur-mesure est de :{" "}
-                <span className="text-2xl flex-row flex  rounded text-shamrock px-4 py-2 mx-2 bg-white ">
+                <span className="text-2xl flex-row flex  rounded px-4 py-2 mx-2 bg-shamrock text-white ">
                   {formatPrice(
                     isChecked
                       ? totalPrice - userProfile.referalBalance
@@ -435,10 +433,10 @@ const ModalNoSignUp = ({ onClose, visible, booking }) => {
                       <p className="uppercase text-sm mb-2">Nom</p>
                       <input
                         type="text"
-                        className={`w-full bg-transparent border-b outline-none placeholder-white ${
+                        className={`w-full bg-transparent border-b outline-none   ${
                           errors && errors.name
                             ? "border-red-600 "
-                            : "border-white"
+                            : "border-black"
                         } p-3`}
                         placeholder="Nom"
                         name="name"
@@ -480,10 +478,10 @@ const ModalNoSignUp = ({ onClose, visible, booking }) => {
                       <p className="uppercase text-sm mb-2">Votre email</p>
                       <input
                         type="email"
-                        className={`w-full bg-transparent border-b outline-none placeholder-white ${
+                        className={`w-full bg-transparent border-b outline-none  ${
                           errors && errors.email
                             ? "border-red-600 "
-                            : "border-white"
+                            : "border-black"
                         } p-3`}
                         placeholder="Email"
                         name="email"
@@ -502,10 +500,10 @@ const ModalNoSignUp = ({ onClose, visible, booking }) => {
                     <div>
                       <p className="uppercase text-sm mb-2">Votre message</p>
                       <textarea
-                        className={`w-full h-24 bg-white bg-opacity-10 border-b outline-none placeholder-white ${
+                        className={`w-full h-24 bg-white bg-opacity-10 border-b outline-none ${
                           errors && errors.message
                             ? "border-red-600 "
-                            : "border-white"
+                            : "border-black"
                         } p-3`}
                         placeholder="J&lsquo;ai une question à propos de ..."
                         value={form.message}
