@@ -104,12 +104,12 @@ const ModalOuibounce = ({ onClose, showModal }) => {
 
   if (!showModal) return null;
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center z-50  overflow-y-scroll">
+    <div className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center z-50 ">
       {
         //
       }
       <div id="contactform" className="py-40 mt-15 px-3 max-h-1 ">
-        <div className="mt-20 md:my-10 rounded-xl bg-shamrock  gap-0 text-white placeholder-white p-5  md:h-5/6 max-h-screen">
+        <div className="md:mt-20 md:my-10 rounded-xl bg-shamrock  gap-0 text-white placeholder-white p-5 h-[calc(100vh-3rem)] md:h-5/6 overflow-y-scroll ">
           <div className="p-2 ">
             <span className="cursor-pointer">
               <AiOutlineClose
