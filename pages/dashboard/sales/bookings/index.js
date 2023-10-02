@@ -133,7 +133,9 @@ const BookingsList = ({ auth, bookings }) => {
             "DD[/]MM[/]YY"
           )} - ${moment(booking.endDate).format("DD[/]MM[/]YY")}`,
           created:
-            booking.created === "" ? "-" : moment(booking.created).format("LL"),
+            booking.created === ""
+              ? "-"
+              : moment(booking.created).format("YYYY[/]MM[/]DD"),
         };
       }),
     ],

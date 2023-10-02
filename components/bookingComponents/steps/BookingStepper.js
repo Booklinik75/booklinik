@@ -4,7 +4,7 @@ import { VscLoading } from "react-icons/vsc";
 import { Children, useState } from "react";
 import { useRouter } from "next/router";
 import firebase from "../../../firebase/clientApp";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { BookContext } from "../../../utils/bookContext";
 import ModalNoSignUp from "Components/ModalNoSignUp";
 

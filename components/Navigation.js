@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import NavigationItem from "./NavigationItem";
 import Logo from "../public/booklinik-logo.svg";
@@ -128,7 +128,7 @@ export default function Navigation() {
                     )}
                     <li className="hidden lg:block lg:mt-[0.5rem]">| &nbsp;</li>
                     <li className="hidden lg:flex group gap-1 items-center">
-                      <Link href="tel:0186653500">
+                      <Link href="tel:+33186653500">
                         <a className="gap-2 text-lg items-center flex transition-colors text-shamrock">
                           <FaPhone className="stroke-1  text-shamrock" />
                         </a>
@@ -144,9 +144,9 @@ export default function Navigation() {
                       navBottom
                     />
                     <NavigationItem
-                      title=" 01 86 65 35 00"
+                      title="+33 1 86 65 35 00"
                       extraStyle="gap-2 text-lg  items-center mx-5 lg:mx-0 !justify-center lg:justify-start !py-3 rounded flex bg-shamrock lg:bg-transparent text-white lg:text-shamrock"
-                      target="tel:0186653500"
+                      target="tel:+33186653500"
                       navBottom
                       phone
                     />

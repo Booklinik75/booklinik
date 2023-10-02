@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import PhotoBanner from "../../components/PhotoBanner";
 import Navigation from "../../components/Navigation";
 import Footer from "../../components/Footer";
