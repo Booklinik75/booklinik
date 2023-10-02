@@ -137,6 +137,8 @@ const OfferBooking = ({ offer, id }) => {
     roomPrice: offer.hotelRoom.extraPrice,
     roomPhotoLink: offer.hotelRoom.photos[0],
     created: firebase.firestore.Timestamp.fromDate(new Date()).toDate(),
+    dates: offer.dates,
+    price: offer.price,
     minimumNights: offer.minimumNights,
   });
 

@@ -106,8 +106,6 @@ const CustomersList = ({ auth, users }) => {
 
   const [newRows, setNewRows] = useState(rows);
 
-  console.log(users);
-
   // for filter in searc
   const getFilter = (value) => {
     let newRowLists;

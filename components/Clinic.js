@@ -30,7 +30,11 @@ const Clinic = ({ clinic, city, citySlug, countrySlug }) => {
             </div>
           </div>
           <div>
-          <Markdown className="text-gray-600 overflow-ellipsis transition line-clamp-3 hover:line-clamp-none" source={clinic.excerpt}/>
+            <Markdown
+              wrapperElement={{ "data-color-mode": "light" }}
+              className="text-gray-600 overflow-ellipsis transition line-clamp-3 hover:line-clamp-none"
+              source={clinic.excerpt}
+            />
           </div>
         </div>
       </a>

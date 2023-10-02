@@ -20,6 +20,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import firebase from "../firebase/clientApp";
 import { BiError } from "react-icons/bi";
 import errors from "utils/firebase_auth_errors";
+import Select from "react-select";
 
 export const getServerSideProps = async (ctx) => {
   const auth = await checkAuth(ctx);
@@ -58,11 +59,12 @@ const ModalNoSignUp = ({ onClose, visible, booking }) => {
         ?.map((option) => option.isChecked && Number(option.price))
         .reduce((a, b) => a + b)
     : 0;
-  const totalPrice =
-    Number(booking.surgeries[0].surgeryPrice) +
-    Number(booking.totalExtraTravellersPrice) +
-    bookingOptionsTotalPrice +
-    Number(booking.roomPrice) * Number(totalSelectedNights);
+  const totalPrice = !booking.price
+    ? Number(booking.surgeries[0].surgeryPrice) +
+      Number(booking.totalExtraTravellersPrice) +
+      bookingOptionsTotalPrice +
+      Number(booking.roomPrice) * Number(totalSelectedNights)
+    : booking.price;
   const { isChecked, handleUseReferral } = useContext(BookContext);
   const ref = useRef(null);
   const [isLoading, setLoading] = useState("idle");
@@ -245,6 +247,15 @@ const ModalNoSignUp = ({ onClose, visible, booking }) => {
     };
   }, [endDate]);
 
+  const dates = booking.dates?.map((date) => {
+    return {
+      value: date,
+      label: `${moment(date.startDate).format("ddd ll")} - ${moment(
+        date.endDate
+      ).format("ddd ll")}`,
+    };
+  });
+
   if (!visible) return null;
 
   return (
@@ -264,7 +275,6 @@ const ModalNoSignUp = ({ onClose, visible, booking }) => {
             <div className="space-y-6 h-full">
               <h1 className="text-2xl mb-6">Parfait, on y est presque !</h1>
               <div className="py-6 space-y-6 leading-9 ">
-                {console.log(booking)}
                 <p className=" lg:flex-row lg:items-center">
                   Vous souhaitez réaliser une opération
                 </p>
@@ -276,58 +286,82 @@ const ModalNoSignUp = ({ onClose, visible, booking }) => {
                     />{" "}
                   </span>
                 </span>
-                <div className="flex items-center flex-wrap md:flex-nowrap whitespace-nowrap mb-5">
+                <div className="flex items-center gap-2 flex-wrap md:flex-nowrap whitespace-nowrap mb-5">
                   <p className="lg:flex-row lg:items-center">
+                    {console.log(startDate)}
                     Votre voyage s&apos;étendra du{" "}
                   </p>{" "}
-                  <span
-                    id="inputStartDate"
-                    className="border py-1 px-2 md:py-2 md:px-4 rounded align-middle mx-2 border-black cursor-pointer w-max  "
-                  >
-                    <ReactDatePicker
-                      minDate={new Date()}
-                      locale="fr"
-                      dateFormat="dd/MM/yyyy"
-                      selected={new Date(startDate)}
-                      onChange={(date) => {
-                        setStartDate(date), setEndDate();
+                  {booking.dates ? (
+                    <Select
+                      options={dates}
+                      onChange={(e) => {
+                        setStartDate(new Date(e.value.startDate));
+                        setEndDate(new Date(e.value.endDate)),
+                          setTotalSelectedNights(
+                            moment(e.value.endDate).diff(
+                              moment(e.value.startDate),
+                              "days"
+                            )
+                          );
                       }}
-                      disabledKeyboardNavigation
-                      onFocus={(e) => e.target.blur()}
+                      className="w-72"
+                      placeholder="Choisissez une date"
                     />
-                  </span>
-                  au{" "}
-                  <span
-                    id="inputEndDate"
-                    className={`border py-1 px-2 md:py-2 md:px-4 rounded align-middle mx-2 cursor-pointer w-max  ${
-                      !endDate ? "border-red-600" : "border-black"
-                    }`}
-                  >
-                    <ReactDatePicker
-                      minDate={addDays(startDate, parseInt(minimumNights))}
-                      locale="fr"
-                      selected={
-                        endDate
-                          ? new Date(endDate)
-                          : addDays(startDate, parseInt(booking.minimumNights))
-                      }
-                      dateFormat="dd/MM/yyyy"
-                      onChange={(date) => {
-                        let timeDiff = Math.abs(
-                          date.getTime() - new Date(startDate).getTime()
-                        );
-                        let numberOfNights = Math.ceil(
-                          timeDiff / (1000 * 3600 * 24)
-                        );
-                        setEndDate(date);
-                        setTotalSelectedNights(numberOfNights);
-                      }}
-                      disabledKeyboardNavigation
-                      onFocus={(e) => e.target.blur()}
-                    />
-                  </span>
+                  ) : (
+                    <>
+                      <span
+                        id="inputStartDate"
+                        className="border py-1 px-2 md:py-2 md:px-4 rounded align-middle mx-2 border-black cursor-pointer w-max  "
+                      >
+                        <ReactDatePicker
+                          minDate={new Date()}
+                          locale="fr"
+                          dateFormat="dd/MM/yyyy"
+                          selected={new Date(startDate)}
+                          onChange={(date) => {
+                            setStartDate(date), setEndDate();
+                          }}
+                          disabledKeyboardNavigation
+                          onFocus={(e) => e.target.blur()}
+                        />
+                      </span>
+                      au{" "}
+                      <span
+                        id="inputEndDate"
+                        className={`border py-1 px-2 md:py-2 md:px-4 rounded align-middle mx-2 cursor-pointer w-max  ${
+                          !endDate ? "border-red-600" : "border-black"
+                        }`}
+                      >
+                        <ReactDatePicker
+                          minDate={addDays(startDate, parseInt(minimumNights))}
+                          locale="fr"
+                          selected={
+                            endDate
+                              ? new Date(endDate)
+                              : addDays(
+                                  startDate,
+                                  parseInt(booking.minimumNights)
+                                )
+                          }
+                          dateFormat="dd/MM/yyyy"
+                          onChange={(date) => {
+                            let timeDiff = Math.abs(
+                              date.getTime() - new Date(startDate).getTime()
+                            );
+                            let numberOfNights = Math.ceil(
+                              timeDiff / (1000 * 3600 * 24)
+                            );
+                            setEndDate(date);
+                            setTotalSelectedNights(numberOfNights);
+                          }}
+                          disabledKeyboardNavigation
+                          onFocus={(e) => e.target.blur()}
+                        />
+                      </span>
+                    </>
+                  )}
                 </div>
-                {errors && errors.date ? (
+                {!booking.dates && errors && errors.date ? (
                   <span className="text-red-600 text-sm mt-3">
                     {errors.date}
                   </span>

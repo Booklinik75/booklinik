@@ -62,12 +62,6 @@ const OperationsList = ({
   const [category, setCategory] = useState(operationCategories[0].name);
   const router = useRouter();
 
-  useEffect(() => {
-    if (router.asPath === "/operations#greffe-de-cheveux") {
-      console.log(router);
-      window.scrollTo({ top: 0 });
-    }
-  }, []);
   return (
     <div>
       <Head>

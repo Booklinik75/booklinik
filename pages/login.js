@@ -4,7 +4,7 @@ import Image from "next/image";
 import SideBanner from "../public/assets/login.jpeg";
 import firebase from "../firebase/clientApp";
 import { useRouter } from "next/router";
-import { useState,useContext } from "react";
+import { useState, useContext } from "react";
 import { BookContext } from "utils/bookContext";
 import { BiError } from "react-icons/bi";
 import DashboardButton from "../components/DashboardButton";
@@ -29,31 +29,27 @@ const Login = () => {
   const { isChecked, handleUseReferral } = useContext(BookContext);
   const [error, setError] = useState(null);
   const [isLoading, setLoading] = useState("idle");
-  const [booking, setBooking] = useState(null || JSON.parse(
-    localStorage.getItem("bookBooklinik")
-  ));
+  const [booking, setBooking] = useState(
+    null || JSON.parse(localStorage.getItem("bookBooklinik"))
+  );
 
-  
   function doLogIn() {
     const { email, password } = formData;
     setLoading("loading");
-    
+
     firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
       .then(async (userCredential) => {
         var user = userCredential.user;
         var firestoreUserObject = await firebase
-        .firestore()
-        .collection("users")
-        .doc(user.uid)
-        .get();
-    
-        
-     
+          .firestore()
+          .collection("users")
+          .doc(user.uid)
+          .get();
+
         const userData = firestoreUserObject.data();
-     
-       
+
         firebase
           .firestore()
           .collection("users")
@@ -61,20 +57,19 @@ const Login = () => {
           .set(userData)
           .then((docRef) => {
             // send confirmation email
-            
-           
-            if(booking){
+
+            if (booking) {
               const totalPrice =
-    Number(booking.surgeries[0].surgeryPrice) +
-    Number(booking.totalExtraTravellersPrice) +
-    booking.options
-      ?.map((option) => option.isChecked && Number(option.price))
-      .reduce((a, b) => a + b) +
-    Number(booking.roomPrice) * Number(booking.totalSelectedNights);
-             
+                Number(booking.surgeries[0].surgeryPrice) +
+                Number(booking.totalExtraTravellersPrice) +
+                booking.options
+                  ?.map((option) => option.isChecked && Number(option.price))
+                  .reduce((a, b) => a + b) +
+                Number(booking.roomPrice) * Number(booking.totalSelectedNights);
+
               firebase
                 .firestore()
-                
+
                 .collection("bookings")
                 .add({
                   user: user.uid,
@@ -83,7 +78,7 @@ const Login = () => {
                     Number(booking.surgeries[0].surgeryPrice) +
                     Number(booking.totalExtraTravellersPrice) +
                     Number(booking.roomPrice) *
-                    Number(booking.totalSelectedNights) +
+                      Number(booking.totalSelectedNights) +
                     booking.options
                       ?.map(
                         (option) => option.isChecked && Number(option.price)
@@ -92,7 +87,7 @@ const Login = () => {
                   ...booking,
                 })
                 .then(() => {
-                 fetch("/api/mail", {
+                  fetch("/api/mail", {
                     method: "post",
                     body: JSON.stringify({
                       recipient: "info@booklinik.com",
@@ -102,11 +97,12 @@ const Login = () => {
                           date: booking.created,
                           offerName: booking.offerName,
                           surgeryName: booking.surgeries[0].surgeryName,
-                          surgeryCategoryName: booking.surgeries[0].surgeryCategoryName,
+                          surgeryCategoryName:
+                            booking.surgeries[0].surgeryCategoryName,
                           startDate: booking.startDate,
                           endDate: booking.endDate,
                           hotelName: booking.hotelName,
-                          total:totalPrice,
+                          total: totalPrice,
                           totalSelectedNights: booking.totalSelectedNights,
                           room: booking.room,
                           city: booking.city,
@@ -114,19 +110,15 @@ const Login = () => {
                       },
                     }),
                   });
-                })
-              }
-            
-          })
-        
-        
-     
+                });
+            }
+          });
+
         localStorage.removeItem("bookBooklinik");
-      // redirect to dashboard
-       router.push("/dashboard");
-    })
-    
-      
+        // redirect to dashboard
+        router.push("/dashboard");
+      })
+
       .catch((error) => {
         if (errors[error.code]) {
           setError(errors[error.code]);
@@ -137,9 +129,7 @@ const Login = () => {
         Sentry.captureException(error);
       })
       .finally(() => {
-        
         setLoading("idle");
-    
       });
   }
 
@@ -170,7 +160,6 @@ const Login = () => {
       </div>
       <div className="grid grid-cols-10 h-full">
         <div className="flex items-center col-span-10 lg:col-span-6">
-          {console.log(booking)}
           <div className="mx-auto w-2/3 md:w-1/2 space-y-6">
             <h1 className="text-4xl">Bonjour !</h1>
             {error && (
@@ -206,7 +195,6 @@ const Login = () => {
               >
                 Mot de passe
               </label>
-              {console.log(booking?"false":"true")}
               <input
                 type="password"
                 name="password"
