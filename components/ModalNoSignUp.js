@@ -250,9 +250,11 @@ const ModalNoSignUp = ({ onClose, visible, booking }) => {
   const dates = booking.dates?.map((date) => {
     return {
       value: date,
-      label: `${moment(date.startDate).format("ddd ll")} - ${moment(
+      label: `${moment(date.startDate).lang("fr").format("ddd ll")} - ${moment(
         date.endDate
-      ).format("ddd ll")}`,
+      )
+        .lang("fr")
+        .format("ddd ll")}`,
     };
   });
 
