@@ -4,7 +4,7 @@ import Image from "next/image";
 import SideBanner from "../public/assets/login.jpeg";
 import firebase from "../firebase/clientApp";
 import { useRouter } from "next/router";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { BookContext } from "utils/bookContext";
 import { BiError } from "react-icons/bi";
 import DashboardButton from "../components/DashboardButton";
@@ -29,9 +29,7 @@ const Login = () => {
   const { isChecked, handleUseReferral } = useContext(BookContext);
   const [error, setError] = useState(null);
   const [isLoading, setLoading] = useState("idle");
-  const [booking, setBooking] = useState(
-    null || JSON.parse(localStorage.getItem("bookBooklinik"))
-  );
+  const [booking, setBooking] = useState(null);
 
   function doLogIn() {
     const { email, password } = formData;
@@ -141,6 +139,11 @@ const Login = () => {
       [e.target.name]: e.target.value.trim(),
     });
   };
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setBooking(JSON.parse(localStorage.getItem("bookBooklinik")));
+    }
+  }, []);
 
   return (
     <div className="h-screen relative">

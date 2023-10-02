@@ -137,7 +137,6 @@ const Offer = ({
             </div>
             <p className="text-lg">{description}</p>
             <p className="text-shamrock text-3xl">{price}€</p>
-            {console.log(id + "ddddddd-----")}
 
             <Link href={`/book/offer/${id}`} passHref>
               <button

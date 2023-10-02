@@ -288,7 +288,6 @@ const ModalNoSignUp = ({ onClose, visible, booking }) => {
                 </span>
                 <div className="flex items-center gap-2 flex-wrap md:flex-nowrap whitespace-nowrap mb-5">
                   <p className="lg:flex-row lg:items-center">
-                    {console.log(startDate)}
                     Votre voyage s&apos;étendra du{" "}
                   </p>{" "}
                   {booking.dates ? (
