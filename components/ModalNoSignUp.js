@@ -303,6 +303,7 @@ const ModalNoSignUp = ({ onClose, visible, booking }) => {
                             )
                           );
                       }}
+                      isSearchable={false}
                       className="w-72"
                       placeholder="Choisissez une date"
                     />
