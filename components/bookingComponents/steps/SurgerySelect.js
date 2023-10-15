@@ -27,6 +27,7 @@ const SurgerySelectStep = ({
   return (
     <div className="space-y-6">
       <h1 className="text-2xl mb-6">
+        {console.log(getSurgeryCategory)}
         Selectionnez votre opération et estimez le coût de votre voyage.
       </h1>
       <div className="space-y-2">
@@ -51,23 +52,23 @@ const SurgerySelectStep = ({
                     }
                     key={surgeryCategory.slug}
                     className="m-2 absolute top-0 right-0 transition opacity-20 hover:opacity-100"
-                  >
-                  </button>
+                  ></button>
                 ) : (
                   ""
                 )}
+
                 <input
                   id={surgeryCategory.slug}
                   type="radio"
                   name="surgeryCategory"
                   value={surgeryCategory.slug}
-                  onChange={(e) =>
-                    {handleSurgeryCategorySelect(
+                  onChange={(e) => {
+                    handleSurgeryCategorySelect(
                       surgeryCategory.slug,
                       surgeryCategory.name
                     );
-                    window.scrollTo(0, document.body.scrollHeight);}
-                  }
+                    window.scrollTo(0, document.body.scrollHeight);
+                  }}
                   className="hidden"
                   required={true}
                 />
@@ -105,7 +106,7 @@ const SurgerySelectStep = ({
                   id={surgery.slug}
                   value={surgery.slug}
                   className="hidden"
-                  onChange={(e) =>{
+                  onChange={(e) => {
                     handleSurgerySelect(
                       surgery.slug,
                       surgery.startingPrice,
@@ -114,9 +115,8 @@ const SurgerySelectStep = ({
                       surgery.cities
                     );
                     window.scrollTo(0, 0);
-                    setStep((s) => s + 1)}
-                  }
-
+                    setStep((s) => s + 1);
+                  }}
                   name="surgery"
                   type="radio"
                   required={true}
@@ -151,7 +151,6 @@ const SurgerySelectStep = ({
             <div className="col-span-12 rounded border border-blue-300 bg-blue-50 text-blue-900">
               <p className="p-4">
                 👋 Veuillez sélectionner une catégorie ci-dessus
-
               </p>
             </div>
           ) : (

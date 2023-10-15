@@ -31,7 +31,7 @@ const OptionsSelectStep = ({
   useEffect(() => {
     setNextStep(true);
   }, []);
-
+  console.log(optionsList);
   return (
     <div className="space-y-6 h-full">
       <h1 className="text-2xl mb-6">

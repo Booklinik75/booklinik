@@ -22,17 +22,6 @@ import { BiError } from "react-icons/bi";
 import errors from "utils/firebase_auth_errors";
 import Select from "react-select";
 
-export const getServerSideProps = async (ctx) => {
-  const auth = await checkAuth(ctx);
-
-  if (auth.props.userProfile) return serverRedirect("/dashboard");
-
-  return {
-    props: {
-      auth,
-    },
-  };
-};
 function addDays(date, days) {
   var result = new Date(date);
   result.setDate(result.getDate() + days);
@@ -75,7 +64,7 @@ const ModalNoSignUp = ({ onClose, visible, booking }) => {
 
   const router = useRouter(); //stop
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     const { email, message, name, phoneNumber } = form;
     setLoading("loading");
     e.preventDefault();
@@ -88,17 +77,18 @@ const ModalNoSignUp = ({ onClose, visible, booking }) => {
       setLoading("idle");
     } else {
       // Authentification firebase anonymous
-
-      firebase
+      await firebase
         .auth()
         .signInAnonymously()
         .then(() => {
           setFormSent(true);
           // update current user
           firebase.auth().onAuthStateChanged((user) => {
+            console.log(user + "user exist");
             if (user) {
+              console.log(user + "user exist");
               const booking = JSON.parse(localStorage.getItem("bookBooklinik"));
-              var firestoreObjectSetBooking = firebase
+              firebase
                 .firestore()
                 .collection("bookingsNoConnexion")
                 .add({
@@ -126,6 +116,7 @@ const ModalNoSignUp = ({ onClose, visible, booking }) => {
         .catch((error) => {
           if (errors[error.code]) {
             setError(errors[error.code]);
+            console.log(errors[error.code]);
           } else {
             setError("Une erreur est survenue");
           }
@@ -134,7 +125,6 @@ const ModalNoSignUp = ({ onClose, visible, booking }) => {
         .finally(() => {
           setLoading("idle");
           firebase.auth().signOut();
-          router.push("/");
         });
       if (email) {
         fetch("/api/mail", {

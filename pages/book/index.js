@@ -152,8 +152,8 @@ const NewBookingContainer = ({
       extraBabiesSupplement * booking.extraBabies;
     setBooking({
       ...booking,
-      totalExtraTravellersPrice: totalExtraTravellers * booking.totalSelectedNights,
-      
+      totalExtraTravellersPrice:
+        totalExtraTravellers * booking.totalSelectedNights,
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [booking.extraTravellers, booking.extraChilds, booking.extraBabies]);
@@ -164,7 +164,6 @@ const NewBookingContainer = ({
       [e.target.name]: e.target.value,
     });
     setStep((s) => s + 1);
-    
   };
 
   const onCalendarStartDateChange = (e) => {
@@ -185,7 +184,6 @@ const NewBookingContainer = ({
   function addDays(date, days) {
     var result = new Date(date);
     return result.setDate(result.getDate() + days);
-   
   }
 
   const handleSurgeryCategorySelect = (category, name) => {
@@ -263,7 +261,8 @@ const NewBookingContainer = ({
           setNextStep={setNextStep}
           userProfile={userProfile}
           step={step}
-          setStep={setStep}        >
+          setStep={setStep}
+        >
           <SurgerySelectStep
             surgeryCategories={surgeryCategories}
             booking={booking}
@@ -276,7 +275,6 @@ const NewBookingContainer = ({
             setStep={setStep}
             setNextStep={setNextStep}
             surgeryCategory={surgeryCategory}
-           
           />
 
           <DatesSelectStep
@@ -300,7 +298,6 @@ const NewBookingContainer = ({
             hotels={hotels}
             handleChange={handleChange}
             setNextStep={setNextStep}
-           
           />
 
           <HotelSelectStep
