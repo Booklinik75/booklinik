@@ -18,7 +18,18 @@ const ModalOuibounce = ({ onClose, showModal }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formSent, setFormSent] = useState(false);
   const [errors, setErrros] = useState({});
-
+  function gtag_report_conversion(url) {
+    var callback = function () {
+      if (typeof url != "undefined") {
+        window.location = url;
+      }
+    };
+    gtag("event", "conversion", {
+      send_to: "AW-11382787557/3yTwCN3Uy-8YEOWb3rMq",
+      event_callback: callback,
+    });
+    return false;
+  }
   const handleFormSubmit = (e) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -28,6 +39,7 @@ const ModalOuibounce = ({ onClose, showModal }) => {
       setErrros(errors);
       setIsSubmitting(false);
     } else {
+      gtag_report_conversion();
       fetch("/api/mail", {
         method: "post",
         body: JSON.stringify({
