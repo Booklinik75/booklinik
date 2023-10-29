@@ -116,7 +116,7 @@ const OperationsList = ({
       </div>
 
       {operationCategories.map((category) => (
-        <div key={category.slug}>
+        <div key={category.slug} className="top-[-250px]">
           <OperationCategory operation={category} surgeries={surgeries} />
         </div>
       ))}
