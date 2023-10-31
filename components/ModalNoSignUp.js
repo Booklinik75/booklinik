@@ -86,6 +86,7 @@ const ModalNoSignUp = ({ onClose, visible, booking }) => {
           firebase.auth().onAuthStateChanged((user) => {
             console.log(user + "user exist");
             if (user) {
+              console.log(email);
               console.log(user + "user exist");
               const booking = JSON.parse(localStorage.getItem("bookBooklinik"));
               firebase
@@ -126,77 +127,77 @@ const ModalNoSignUp = ({ onClose, visible, booking }) => {
           setLoading("idle");
           firebase.auth().signOut();
         });
-      if (email) {
-        fetch("/api/mail", {
-          method: "post",
-          body: JSON.stringify({
-            recipient: "info@booklinik.com",
-            templateId: "d-b2d6e1304ba7400ca27756c7cf642afe",
-            dynamicTemplateData: {
-              email: email,
-              name: name,
-              phoneNumber: phoneNumber,
-              datetime: moment(new Date()).format("LLLL"),
-              message: message,
-              operation: form.operation,
-              value: value,
-              booking: {
-                date: booking.created,
-                offerName: booking.offerName,
-                surgeryName: booking.surgeries[0].surgeryName,
-                surgeryCategoryName: booking.surgeries[0].surgeryCategoryName,
-                startDate: startDate,
-                endDate: endDate,
-                hotelName: booking.hotelName,
-                total: totalPrice,
-                totalSelectedNights: totalSelectedNights,
-                room: booking.room,
-                city: booking.city,
-              },
+      console.log("test passer");
+      fetch("/api/mail", {
+        method: "post",
+        body: JSON.stringify({
+          recipient: "info@booklinik.com",
+          templateId: "d-b2d6e1304ba7400ca27756c7cf642afe",
+          dynamicTemplateData: {
+            email: email,
+            name: name,
+            phoneNumber: phoneNumber,
+            datetime: moment(new Date()).format("LLLL"),
+            message: message,
+            operation: form.operation,
+            value: value,
+            booking: {
+              date: booking.created,
+              offerName: booking.offerName,
+              surgeryName: booking.surgeries[0].surgeryName,
+              surgeryCategoryName: booking.surgeries[0].surgeryCategoryName,
+              startDate: startDate,
+              endDate: endDate,
+              hotelName: booking.hotelName,
+              total: totalPrice,
+              totalSelectedNights: totalSelectedNights,
+              room: booking.room,
+              city: booking.city,
             },
-          }),
-        })
-          .then(() => {
-            setFormSent(true);
-            fetch("/api/mail", {
-              method: "post",
-              body: JSON.stringify({
-                recipient: email,
-                templateId: "d-54ea2f11e4da48bb923afcc2e43b95fee",
-                dynamicTemplateData: {
-                  email: email,
-                  name: name,
-                  phoneNumber: phoneNumber,
-                  datetime: moment(new Date()).format("LLLL"),
-                  message: message,
-                  operation: form.operation,
-                  value: value,
-                  booking: {
-                    date: booking.created,
-                    offerName: booking.offerName,
-                    surgeryName: booking.surgeries[0].surgeryName,
-                    surgeryCategoryName:
-                      booking.surgeries[0].surgeryCategoryName,
-                    startDate: startDate,
-                    endDate: endDate,
-                    hotelName: booking.hotelName,
-                    total: totalPrice,
-                    totalSelectedNights: totalSelectedNights,
-                    room: booking.room,
-                    city: booking.city,
-                  },
+          },
+        }),
+      })
+        .then(() => {
+          setFormSent(true);
+          fetch("/api/mail", {
+            method: "post",
+            body: JSON.stringify({
+              recipient: "salah.elbouhali@gmail.com",
+              templateId: "d-9dc1636238a84a4e969ddf101658aa53",
+              dynamicTemplateData: {
+                email: email,
+                name: name,
+                phoneNumber: phoneNumber,
+                datetime: moment(new Date()).format("LLLL"),
+                message: message,
+                operation: form.operation,
+                value: value,
+                booking: {
+                  date: booking.created,
+                  offerName: booking.offerName,
+                  surgeryName: booking.surgeries[0].surgeryName,
+                  surgeryCategoryName: booking.surgeries[0].surgeryCategoryName,
+                  startDate: startDate,
+                  endDate: endDate,
+                  hotelName: booking.hotelName,
+                  total: totalPrice,
+                  totalSelectedNights: totalSelectedNights,
+                  room: booking.room,
+                  city: booking.city,
                 },
-              }),
-            });
-          })
-          .catch((error) => {
-            Sentry.captureException(error);
-          })
-          .finally(() => {
-            setIsSubmitting(false);
-            setErrros({});
+              },
+            }),
           });
-      }
+        })
+
+        .catch((error) => {
+          console.log(error);
+          Sentry.captureException(error);
+        })
+        .finally(() => {
+          setIsSubmitting(false);
+          setErrros({});
+        });
     }
   };
 
