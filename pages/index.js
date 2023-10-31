@@ -171,6 +171,7 @@ export default function Home({
               <div className="grid grid-cols-3 md:grid-cols-3 lg:grid-cols-10 gap-6 home-hero-surgery-categories">
                 {categoriesSettings.map((orderedCategory) => {
                   return categories.map((category) => {
+                    categories;
                     return Object.keys(orderedCategory)[0].toString() ===
                       category.id ? (
                       <div

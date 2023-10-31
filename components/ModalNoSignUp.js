@@ -84,10 +84,7 @@ const ModalNoSignUp = ({ onClose, visible, booking }) => {
           setFormSent(true);
           // update current user
           firebase.auth().onAuthStateChanged((user) => {
-            console.log(user + "user exist");
             if (user) {
-              console.log(email);
-              console.log(user + "user exist");
               const booking = JSON.parse(localStorage.getItem("bookBooklinik"));
               firebase
                 .firestore()
@@ -117,7 +114,6 @@ const ModalNoSignUp = ({ onClose, visible, booking }) => {
         .catch((error) => {
           if (errors[error.code]) {
             setError(errors[error.code]);
-            console.log(errors[error.code]);
           } else {
             setError("Une erreur est survenue");
           }
@@ -127,7 +123,6 @@ const ModalNoSignUp = ({ onClose, visible, booking }) => {
           setLoading("idle");
           firebase.auth().signOut();
         });
-      console.log("test passer");
       fetch("/api/mail", {
         method: "post",
         body: JSON.stringify({
@@ -162,7 +157,7 @@ const ModalNoSignUp = ({ onClose, visible, booking }) => {
           fetch("/api/mail", {
             method: "post",
             body: JSON.stringify({
-              recipient: "salah.elbouhali@gmail.com",
+              recipient: email,
               templateId: "d-9dc1636238a84a4e969ddf101658aa53",
               dynamicTemplateData: {
                 email: email,
@@ -191,7 +186,6 @@ const ModalNoSignUp = ({ onClose, visible, booking }) => {
         })
 
         .catch((error) => {
-          console.log(error);
           Sentry.captureException(error);
         })
         .finally(() => {
