@@ -598,6 +598,7 @@ const OperationPage = ({
                     <p className="transition group-hover:text-white">
                       {document.name}
                     </p>
+
                     <FaDownload className="transition text-shamrock group-hover:text-white" />
                   </div>
                 </a>

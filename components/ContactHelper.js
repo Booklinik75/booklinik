@@ -264,23 +264,13 @@ const ContactHelper = () => {
                 <div>
                   <p className="uppercase text-sm mb-2">Votre message</p>
                   <textarea
-                    className={`w-full h-24 bg-white bg-opacity-10 border-b outline-none placeholder-white ${
-                      errors && errors.message
-                        ? "border-red-600 "
-                        : "border-white"
-                    } p-3`}
+                    className={`w-full h-24 bg-white bg-opacity-10 border-b outline-none placeholder-whiteborder-white
+                     p-3`}
                     placeholder="J&lsquo;ai une question à propos de ..."
                     value={form.message}
                     name="message"
                     onChange={handleFormChange}
                   ></textarea>
-                  {errors && errors.message ? (
-                    <span className="text-red-600 text-sm mt-3">
-                      {errors.message}
-                    </span>
-                  ) : (
-                    ""
-                  )}
                 </div>
                 <div className="w-full">
                   <button
