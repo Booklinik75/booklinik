@@ -238,6 +238,20 @@ const Booking = ({
         }, 1000);
         router.reload(window.location.pathname);
       });
+    if (status.value === "awaitingPayment") {
+      fetch("/api/mail", {
+        method: "post",
+        body: JSON.stringify({
+          recipient: booking.customer.email,
+          templateId: "d-4e1bda2d9da349d1987a1a8c69238484",
+          dynamicTemplateData: {
+            payment_link: `https://${process.env.ABSOLUTE_URL_ORIGIN}/checkout/${booking.id}`,
+          },
+        }),
+      }).then(() => {
+        definedStatusUpdate("awaitingPayment");
+      });
+    }
   };
 
   const definedStatusUpdate = (status) => {
@@ -282,19 +296,6 @@ const Booking = ({
         .doc(booking.id)
         .update({ alternativeTotal: newPrice })
         .then(() => {
-          fetch("/api/mail", {
-            method: "post",
-            body: JSON.stringify({
-              recipient: booking.customer.email,
-              templateId: "d-4e1bda2d9da349d1987a1a8c69238484",
-              dynamicTemplateData: {
-                payment_link: `https://${process.env.ABSOLUTE_URL_ORIGIN}/checkout/${booking.id}`,
-              },
-            }),
-          }).then(() => {
-            definedStatusUpdate("awaitingPayment");
-          });
-
           firebase
             .firestore()
             .collection("users")
