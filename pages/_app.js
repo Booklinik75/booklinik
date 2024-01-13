@@ -112,7 +112,6 @@ function BooklinikClient({ Component, pageProps }) {
       e.onload = () => {
         Weglot.initialize({
           api_key: "wg_48e609e9c8a8b4e4ecb5962b26f12a824",
-          hide_switcher: true,
         });
 
         const getAllLanguageSwitch = document.querySelectorAll(
