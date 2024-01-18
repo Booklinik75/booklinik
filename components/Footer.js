@@ -1,7 +1,14 @@
 import Link from "next/link";
 import Image from "next/image";
 import Logo from "../public/booklinik-logo.svg";
-import { FaInstagram, FaFacebookSquare, FaLinkedin, FaYoutube, FaTwitter } from "react-icons/fa";
+
+import {
+  FaInstagram,
+  FaFacebookSquare,
+  FaLinkedin,
+  FaYoutube,
+  FaTiktok,
+} from "react-icons/fa";
 
 const Footer = () => {
   return (
@@ -53,28 +60,28 @@ const Footer = () => {
             <div className="col-span-2 space-y-2">
               <p className="uppercase text-sm mb-3">Les opérations</p>
               <div className="flex space-x-5">
-                <div className="flex flex-col text-sm space-y-2">
+                <div className="flex flex-col  text-sm space-y-2">
                   <Link href="/operations">
                     <a className="hover:underline">Greffe de poils</a>
                   </Link>
-                  <Link href="/operations">
+                  <Link href="/operations#chirurgie-mammaire">
                     <a className="hover:underline">Chirurgie mammaire</a>
                   </Link>
-                  <Link href="/operations">
+                  <Link href="/operations#chirurgie-du-corps">
                     <a className="hover:underline">Chirurgie du corps</a>
                   </Link>
-                  <Link href="/operations">
+                  <Link href="/operations#chirurgie-des-fesses">
                     <a className="hover:underline">Chirurgie des fesses</a>
                   </Link>
                 </div>
                 <div className="flex flex-col text-sm space-y-2">
-                  <Link href="/operations">
+                  <Link href="/operations#chirurgie-du-visage">
                     <a className="hover:underline">Chirurgie du visage</a>
                   </Link>
-                  <Link href="/operations">
+                  <Link href="/operations#chirurgie-de-l'oeil">
                     <a className="hover:underline">Chirurgie de l&apos;oeil</a>
                   </Link>
-                  <Link href="/operations">
+                  <Link href="/operations#chirurgie-dentaires">
                     <a className="hover:underline">Dentaires</a>
                   </Link>
                   <Link href="/operations">
@@ -131,17 +138,17 @@ const Footer = () => {
                   </div>
                 </a>
               </Link>
-              <Link href="#">
+              <Link href="https://www.youtube.com/@booklinik715">
                 <a>
                   <div className="cursor-pointer transition hover:text-shamrock">
                     <FaYoutube size={24} />
                   </div>
                 </a>
               </Link>
-              <Link href="#">
+              <Link href="https://www.tiktok.com/@booklinik">
                 <a>
                   <div className="cursor-pointer transition hover:text-shamrock">
-                    <FaTwitter size={24} />
+                    <FaTiktok size={24} />
                   </div>
                 </a>
               </Link>
@@ -151,9 +158,8 @@ const Footer = () => {
       </div>
       <div className="bg-gray-200 p-4">
         <p className="uppercase text-center text-gray-500 text-sm">
-          Réalisé par{" "}
           <Link href="https://www.likeweb.fr/">
-            <a className="transition hover:underline">likeweb.fr</a>
+            <a className="transition hover:underline"></a>
           </Link>
         </p>
       </div>

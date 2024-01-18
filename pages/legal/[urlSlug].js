@@ -93,6 +93,7 @@ const LegalPage = ({ legal, paths }) => {
             <p className="flex flex-col">
               <Markdown
                 source={legal.body.replace(/\\n/g, "\n")}
+                wrapperElement={{ "data-color-mode": "light" }}
                 className="flex flex-col"
               />
             </p>

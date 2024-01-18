@@ -130,7 +130,10 @@ const OperationPage = ({
           : ""}
 
         <div>
-          <Markdown source={surgeryData.data.descriptionBody} />
+          <Markdown
+            source={surgeryData.data.descriptionBody}
+            wrapperElement={{ "data-color-mode": "light" }}
+          />
         </div>
         {doctorSurgeries[0]?.doctor?.length > 0 ? (
           <div className="space-y-6">

@@ -93,7 +93,7 @@ export async function getServerSideProps(context) {
   };
 }
 
-const OfferBooking = ({ offer }) => {
+const OfferBooking = ({ offer, id }) => {
   // date selection popup
   const [showDateSelection, setShowDateSelection] = useState(false);
   const [hideReturnCalendar, setHideReturnCalendar] = useState(true);
@@ -105,21 +105,18 @@ const OfferBooking = ({ offer }) => {
   const router = useRouter();
 
   const [user, loading] = useAuthState(firebase.auth());
-  if (user === null && loading === false) {
-    router.push("/signup?i=anonBooking");
-  }
 
   const [booking, setBooking] = useState({
     surgeries: [
       {
-    surgeryCategory: offer.surgery.category.slug,
-    surgeryCategoryName: offer.surgery.category.name,
-    surgery: offer.surgery.slug,
-    surgeryPrice: offer.surgery.startingPrice,
-    surgeryName: offer.surgery.name,
-    surgeryMinDays: offer.surgery.minimumNights,
-  },
-],
+        surgeryCategory: offer.surgery.category.slug,
+        surgeryCategoryName: offer.surgery.category.name,
+        surgery: offer.surgery.slug,
+        surgeryPrice: offer.surgery.startingPrice,
+        surgeryName: offer.surgery.name,
+        surgeryMinDays: offer.surgery.minimumNights,
+      },
+    ],
     offerName: offer.name,
     startDate: new Date(),
     endDate: "",
@@ -140,7 +137,16 @@ const OfferBooking = ({ offer }) => {
     roomPrice: offer.hotelRoom.extraPrice,
     roomPhotoLink: offer.hotelRoom.photos[0],
     created: firebase.firestore.Timestamp.fromDate(new Date()).toDate(),
+    dates: offer.dates,
+    price: offer.price,
+    minimumNights: offer.minimumNights,
   });
+
+  if (user === null && loading === false) {
+    router.push("/signup?i=anonOfferBooking");
+    localStorage.setItem("bookBooklinik", JSON.stringify(booking));
+    localStorage.setItem("idOffer", JSON.stringify(id));
+  }
 
   function addDays(date, days) {
     var result = new Date(date);
@@ -168,36 +174,35 @@ const OfferBooking = ({ offer }) => {
   const mail = require("@sendgrid/mail");
   mail.setApiKey(process.env.SENDGRID_API_KEY);
 
-  const totalPrice =
-    Number(offer.price);
+  const totalPrice = Number(offer.price);
 
-    const doBooking = () => {
-      // if user have't login and do book
-      if (user === null) {
-        router.push("/signup?i=anonBooking");
-        localStorage.setItem("bookBooklinik", JSON.stringify(booking));
-        return;
-      }
-      setIsSaving(true);
+  const doBooking = () => {
+    // if user have't login and do book
+    if (user === null) {
+      router.push("/signup?i=anonBooking");
+      localStorage.setItem("bookBooklinik", JSON.stringify(booking));
+      return;
+    }
+    setIsSaving(true);
 
-      firebase
-        .firestore()
-        .collection("bookings")
-        .add({
-          user: user.uid,
-          status: "awaitingDocuments",
-          total:  totalPrice,
-          ...booking,
-        })
-        .then(() => {
-            fetch("/api/mail", {
-              method: "post",
-              body: JSON.stringify({
-                recipient: user.email,
-                templateId: "d-b504c563b53846fbadb0a53151a82d57",
-              }),
-            });
-          })
+    firebase
+      .firestore()
+      .collection("bookings")
+      .add({
+        user: user.uid,
+        status: "awaitingDocuments",
+        total: totalPrice,
+        ...booking,
+      })
+      .then(() => {
+        fetch("/api/mail", {
+          method: "post",
+          body: JSON.stringify({
+            recipient: user.email,
+            templateId: "d-b504c563b53846fbadb0a53151a82d57",
+          }),
+        });
+      })
       .then(() => {
         fetch("/api/mail", {
           method: "post",
@@ -225,10 +230,8 @@ const OfferBooking = ({ offer }) => {
       })
       .then(() => {
         router.push("/dashboard");
-
       });
   };
-
 
   // build the dates from and to options for the select using offer.dates
   const dates = offer.dates.map((date) => {
@@ -240,8 +243,8 @@ const OfferBooking = ({ offer }) => {
     };
   });
 
-
-  {/*
+  {
+    /*
     const surgeryCategoriesName = () => {
     const surgeryNameCategories = [];
     booking.surgeries.map((operation) =>
@@ -254,7 +257,8 @@ const OfferBooking = ({ offer }) => {
       return surgeryNameCategories[0];
     }
   };
-  */}
+  */
+  }
 
   return (
     <div>
@@ -286,38 +290,40 @@ const OfferBooking = ({ offer }) => {
               <BookingSideNavigation step={7} bookingData={booking} />
             </div>
             <div className="col-span-10 lg:col-span-8 shadow-xl h-full grid grid-cols-12 overflow-y-scroll">
-                <div className="col-span-12 space-y-6 gap-6p-12 lg:pt-32 p-12 my-12">
-                <h1 className="text-2xl mb-6 pt-6">Parfait, on y est presque !</h1>
+              <div className="col-span-12 space-y-6 gap-6p-12 lg:pt-32 p-12 my-12">
+                <h1 className="text-2xl mb-6 pt-6">
+                  Parfait, on y est presque !
+                </h1>
                 <p className="flex flex-col items-start gap-2 lg:flex-row lg:items-center">
-                    Vous souhaitez réaliser une{" "}
-                    <BookingDataSpan string={offer.name} />
-                  </p>
-                  <p className="flex flex-col items-start gap-2 lg:flex-row lg:items-center">
-                    Votre voyage s&apos;étendra du{" "}
-                    <Select
-                      options={dates}
-                      onChange={(e) => {
-                        setBooking({
-                          ...booking,
-                          startDate: e.value.startDate,
-                          endDate: e.value.endDate,
-                          totalSelectedNights: moment(e.value.endDate).diff(
-                            moment(e.value.startDate),
-                            "days"
-                          ),
-                        });
-                      }}
-                      className="w-72"
-                      placeholder="Choisissez une date"
-                    />{" "}
-                    pour une durée de {booking.totalSelectedNights} jours.
-                  </p>
-                  <p className="flex flex-col items-start gap-2 lg:flex-row lg:items-center">
-                    L&apos;hôtel dans lequel vous résiderez est au{" "}
-                    <BookingDataSpan string={booking.hotelName} /> (très bon
-                    choix) et vous logerez en{" "}
-                    <BookingDataSpan string={booking.roomName} />
-                  </p>
+                  Vous souhaitez réaliser une{" "}
+                  <BookingDataSpan string={offer.name} />
+                </p>
+                <p className="flex flex-col items-start gap-2 lg:flex-row lg:items-center">
+                  Votre voyage s&apos;étendra du{" "}
+                  <Select
+                    options={dates}
+                    onChange={(e) => {
+                      setBooking({
+                        ...booking,
+                        startDate: e.value.startDate,
+                        endDate: e.value.endDate,
+                        totalSelectedNights: moment(e.value.endDate).diff(
+                          moment(e.value.startDate),
+                          "days"
+                        ),
+                      });
+                    }}
+                    className="w-72"
+                    placeholder="Choisissez une date"
+                  />{" "}
+                  pour une durée de {booking.totalSelectedNights} jours.
+                </p>
+                <p className="flex flex-col items-start gap-2 lg:flex-row lg:items-center">
+                  L&apos;hôtel dans lequel vous résiderez est au{" "}
+                  <BookingDataSpan string={booking.hotelName} /> (très bon
+                  choix) et vous logerez en{" "}
+                  <BookingDataSpan string={booking.roomName} />
+                </p>
                 <p className="flex flex-col items-start gap-2 lg:flex-row lg:items-center">
                   Le prix tout compris de votre voyage sur-mesure est de{" "}
                   <span className="text-2xl rounded text-white px-4 py-2 bg-shamrock">
@@ -339,10 +345,10 @@ const OfferBooking = ({ offer }) => {
                     }
                   />
                 }
-                </div>
               </div>
             </div>
           </div>
+        </div>
       ) : null}
     </div>
   );

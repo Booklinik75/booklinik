@@ -7,7 +7,7 @@ export default class MyDocument extends Document {
         <Head>
           <script
             async
-            src={`https://www.googletagmanager.com/gtag/js?id=G-JRNBDZGM05`}
+            src={`https://www.googletagmanager.com/gtag/js?id=AW-11382787557`}
           />
           <script
             dangerouslySetInnerHTML={{
@@ -15,7 +15,7 @@ export default class MyDocument extends Document {
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
-            gtag('config', 'G-JRNBDZGM05', {
+            gtag('config', 'AW-11382787557', {
               page_path: window.location.pathname,
             });
           `,
@@ -25,12 +25,12 @@ export default class MyDocument extends Document {
         <body>
           <Main />
           <NextScript />
-          <noscript 
-          dangerouslySetInnerHTML={{
-            __html: `<iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TB3SWNW"
-            height="0" width="0" style="display:none; visibility:hidden" />`
-            ,
-          }}/>
+          <noscript
+            dangerouslySetInnerHTML={{
+              __html: `<iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TB3SWNW"
+            height="0" width="0" style="display:none; visibility:hidden" />`,
+            }}
+          />
         </body>
       </Html>
     );

@@ -4,7 +4,7 @@ import "react-phone-input-2/lib/style.css";
 import moment from "moment";
 import * as Sentry from "@sentry/browser";
 import validateModalOuibounce from "utils/validateModalOuibounce";
-import { AiOutlineClose } from "react-icons/Ai";
+import { AiOutlineClose } from "react-icons/ai";
 
 const ModalOuibounce = ({ onClose, showModal }) => {
   const [form, setForm] = useState({
@@ -18,7 +18,18 @@ const ModalOuibounce = ({ onClose, showModal }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formSent, setFormSent] = useState(false);
   const [errors, setErrros] = useState({});
-
+  function gtag_report_conversion(url) {
+    var callback = function () {
+      if (typeof url != "undefined") {
+        window.location = url;
+      }
+    };
+    gtag("event", "conversion", {
+      send_to: "AW-11382787557/3yTwCN3Uy-8YEOWb3rMq",
+      event_callback: callback,
+    });
+    return false;
+  }
   const handleFormSubmit = (e) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -28,6 +39,7 @@ const ModalOuibounce = ({ onClose, showModal }) => {
       setErrros(errors);
       setIsSubmitting(false);
     } else {
+      gtag_report_conversion();
       fetch("/api/mail", {
         method: "post",
         body: JSON.stringify({
@@ -104,12 +116,12 @@ const ModalOuibounce = ({ onClose, showModal }) => {
 
   if (!showModal) return null;
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center z-50  overflow-y-scroll">
+    <div className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center z-50 ">
       {
         //
       }
       <div id="contactform" className="py-40 mt-15 px-3 max-h-1 ">
-        <div className="mt-20 md:my-10 rounded-xl bg-shamrock  gap-0 text-white placeholder-white p-5 h-[calc(100vh+1rem)] md:h-5/6 max-h-screen">
+        <div className="md:mt-20 md:my-10 rounded-xl bg-shamrock  gap-0 text-white placeholder-white p-5 h-[calc(100vh-3gitrem)] md:h-5/6 overflow-y-scroll ">
           <div className="p-2 ">
             <span className="cursor-pointer">
               <AiOutlineClose

@@ -135,7 +135,7 @@ const BookingsList = ({ auth, bookings }) => {
           created:
             booking.created === ""
               ? "-"
-              : moment(booking.created).format("DD[/]MM[/]YY"),
+              : moment(booking.created).format("YYYY[/]MM[/]DD"),
         };
       }),
     ],
@@ -176,6 +176,12 @@ const BookingsList = ({ auth, bookings }) => {
     } else if (value === "Dates") {
       newRowLists = rows.filter((row) =>
         row.values.dates.toLowerCase().includes(search)
+      );
+    } else if (value === "Date de la demande") {
+      setNewRows(
+        rows.sort(
+          (a, b) => new Date(b.values.created) - new Date(a.values.created)
+        )
       );
     } else {
       newRowLists = rows.filter(

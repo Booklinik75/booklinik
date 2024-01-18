@@ -128,6 +128,7 @@ const PasswordAndEmail = ({ userProfile, token }) => {
   };
 
   useEffect(() => {
+    console.log("loop");
     user?.email && setAuthObjectLoad(true);
   }, [firebase.auth().currentUser]);
 
@@ -135,9 +136,7 @@ const PasswordAndEmail = ({ userProfile, token }) => {
     <DashboardUi userProfile={userProfile} token={token}>
       <div className="col-span-10 space-y-4">
         <h1 className="text-4xl">Email et mot de passe</h1>
-        <p>
-        Renseignez les informations de votre compte.
-        </p>
+        <p>Renseignez les informations de votre compte.</p>
         {authObjectLoad && (
           <>
             <h2 className="text-2xl">Adresse e-mail</h2>

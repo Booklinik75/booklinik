@@ -16,9 +16,9 @@ import { useRouter } from "node_modules/next/dist/client/router";
 import "tippy.js/dist/tippy.css";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import TagManager from 'react-gtm-module';
+import TagManager from "react-gtm-module";
 import ModalOuibounce from "components/ModalOuibounce";
-import Script from 'next/script'
+import Script from "next/script";
 moment.locale("fr");
 
 function BooklinikClient({ Component, pageProps }) {
@@ -28,20 +28,17 @@ function BooklinikClient({ Component, pageProps }) {
 
   const [showModal, setShowModal] = useState(false);
 
-  const handleOnClose= () => {
-    
+  const handleOnClose = () => {
     setShowModal(false);
-
   };
 
   useEffect(() => {
     setTimeout(() => {
       setShowModal(true);
-  }, 20000);
+    }, 20000);
   }, []);
 
-
-  const booking={
+  const booking = {
     surgeries: [
       {
         surgeryCategory: "",
@@ -71,11 +68,8 @@ function BooklinikClient({ Component, pageProps }) {
     roomName: "",
     roomPrice: 0,
     roomPhotoLink: "",
-  
-  }
+  };
 
-  
- 
   useEffect(() => {
     window.$crisp = [];
     window.CRISP_WEBSITE_ID = "ab422553-9bcf-4ce4-ac32-d53b0d6e3b6b";
@@ -122,10 +116,10 @@ function BooklinikClient({ Component, pageProps }) {
     //Google TagManager
 
     const tagManagerArgs = {
-        gtmId: 'GTM-NGCD8B7'
-    }
+      gtmId: "GTM-NXRNNN7L",
+    };
 
-    TagManager.initialize(tagManagerArgs)
+    TagManager.initialize(tagManagerArgs);
 
     // Cleanup event listeners
     return () => {
@@ -134,12 +128,10 @@ function BooklinikClient({ Component, pageProps }) {
       router.events.off("routeChangeError", handleComplete);
     };
   }, [router]);
-   
+
   return (
     <>
-     
       <AuthProvider>
-       
         <BookProvider>
           <Head>
             <link
@@ -169,27 +161,23 @@ function BooklinikClient({ Component, pageProps }) {
             <meta name="theme-color" content="#33c783" />
           </Head>
           <Script id="google-tag-manager" strategy="afterInteractive">
-{`
+            {`
           (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
           new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
           j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-          })(window,document,'script','dataLayer','GTM-TB3SWNW');
+          })(window,document,'script','dataLayer','GTM-NXRNNN7L');
 
-`}    </Script>
+`}{" "}
+          </Script>
           {loadingAnimation && <Loading />}
           <Component {...pageProps} />
-         
-       
-       
-          <ToastContainer />
-      
-        <ModalOuibounce onClose={handleOnClose} showModal={showModal}/>
 
-         </BookProvider>
-        
+          <ToastContainer />
+
+          <ModalOuibounce onClose={handleOnClose} showModal={showModal} />
+        </BookProvider>
       </AuthProvider>
-    
     </>
   );
 }

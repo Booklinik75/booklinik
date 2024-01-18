@@ -92,7 +92,10 @@ const ClinicPage = ({ clinicData, clinicPhoto }) => {
       </div>
       <div className="mx-4 xl:mx-auto max-w-7xl space-y-10">
         <div>
-          <Markdown source={clinicData.props.data.descriptionBody} />
+          <Markdown
+            source={clinicData.props.data.descriptionBody}
+            wrapperElement={{ "data-color-mode": "light" }}
+          />
         </div>
         {/* <div className="space-y-6">
           <h2 className="text-2xl">Opérations similaires</h2>

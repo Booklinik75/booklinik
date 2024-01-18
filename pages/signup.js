@@ -4,7 +4,7 @@ import Image from "next/image";
 import SideBanner from "../public/assets/login.jpeg";
 import firebase from "../firebase/clientApp";
 import { useRouter } from "next/router";
-import { useContext,useState,useEffect } from "react";
+import { useContext, useState, useEffect } from "react";
 import DashboardButton from "../components/DashboardButton";
 import * as Yup from "yup";
 import { BiError } from "react-icons/bi";
@@ -15,6 +15,7 @@ import MD5 from "crypto-js/md5";
 import PhoneInput from "react-phone-input-2";
 import ModalNoSignUp from "Components/ModalNoSignUp";
 import "react-phone-input-2/lib/style.css";
+
 export const getServerSideProps = async (ctx) => {
   const auth = await checkAuth(ctx);
   if (auth.props.userProfile) return serverRedirect("/dashboard");
@@ -39,9 +40,10 @@ const SignUp = () => {
   const router = useRouter();
   const [error, setError] = useState(null);
   const [booking, setBooking] = useState(null);
+  const [id, setId] = useState(null);
+
   const [isLoading, setLoading] = useState("idle");
   const validationSchema = Yup.object({
-
     email: Yup.string().email().required(),
     password: Yup.string().required("Le mot de passe est requis"),
     passwordConfirmation: Yup.string().oneOf(
@@ -49,14 +51,12 @@ const SignUp = () => {
       "Les mots de passe ne correspondent pas"
     ),
   });
-  useEffect(()=>{
-    if (typeof window !== 'undefined') {
-      setBooking(JSON.parse(
-        localStorage.getItem("bookBooklinik")
-      ));
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setBooking(JSON.parse(localStorage.getItem("bookBooklinik")));
+      setId(JSON.parse(localStorage.getItem("idOffer")));
     }
-  },[])
-
+  }, []);
 
   function doSignUp() {
     const { email, password, confirmPassword, phoneNumber } = formData;
@@ -126,18 +126,19 @@ const SignUp = () => {
               });
 
               // if user have't login and do book
-              if (router.query.i === "anonBooking") {
+              if (router.query.i) {
                 const booking = JSON.parse(
                   localStorage.getItem("bookBooklinik")
                 );
 
-                 const totalPrice =
-                Number(booking.surgeries[0].surgeryPrice) +
-                Number(booking.totalExtraTravellersPrice) +
-                booking.options
-                  ?.map((option) => option.isChecked && Number(option.price))
-                  .reduce((a, b) => a + b) +
-                Number(booking.roomPrice) * Number(booking.totalSelectedNights);
+                const totalPrice =
+                  Number(booking.surgeries[0].surgeryPrice) +
+                  Number(booking.totalExtraTravellersPrice) +
+                  booking.options
+                    ?.map((option) => option.isChecked && Number(option.price))
+                    .reduce((a, b) => a + b) +
+                  Number(booking.roomPrice) *
+                    Number(booking.totalSelectedNights);
 
                 firebase
                   .firestore()
@@ -149,7 +150,7 @@ const SignUp = () => {
                       Number(booking.surgeries[0].surgeryPrice) +
                       Number(booking.totalExtraTravellersPrice) +
                       Number(booking.roomPrice) *
-                      Number(booking.totalSelectedNights) +
+                        Number(booking.totalSelectedNights) +
                       booking.options
                         ?.map(
                           (option) => option.isChecked && Number(option.price)
@@ -168,11 +169,12 @@ const SignUp = () => {
                             date: booking.created,
                             offerName: booking.offerName,
                             surgeryName: booking.surgeries[0].surgeryName,
-                            surgeryCategoryName: booking.surgeries[0].surgeryCategoryName,
+                            surgeryCategoryName:
+                              booking.surgeries[0].surgeryCategoryName,
                             startDate: booking.startDate,
                             endDate: booking.endDate,
                             hotelName: booking.hotelName,
-                            total:totalPrice,
+                            total: totalPrice,
                             totalSelectedNights: booking.totalSelectedNights,
                             room: booking.room,
                             city: booking.city,
@@ -182,11 +184,18 @@ const SignUp = () => {
                     });
                   })
                   .then(() => {
+                    if (router.query.i === "anonOfferBooking") {
+                      localStorage.removeItem("bookBooklinik");
+                      return router.push(`/book/offer/${id}`);
+                    }
+
+                    // redirect to dashboard
                     localStorage.removeItem("bookBooklinik");
                     router.push("/dashboard");
                   });
               } else {
                 // redirect to dashboard
+                localStorage.removeItem("bookBooklinik");
                 router.push("/dashboard");
               }
             })
@@ -212,13 +221,14 @@ const SignUp = () => {
       });
   }
 
-  const doBookWithLogin=() => {
+  const doBookWithLogin = () => {
     router.push("/login");
-    localStorage.setItem("bookBooklinik",
+    localStorage.setItem(
+      "bookBooklinik",
       localStorage.getItem("bookBooklinik")
     );
     return;
-  }
+  };
 
   const handleChange = (e) => {
     updateFormData({
@@ -240,17 +250,12 @@ const SignUp = () => {
     });
   };
 
-  const handleOnClose= () => {
-
+  const handleOnClose = () => {
     setShowModal(false);
-
   };
 
-
-
   return (
-    <div className="h-screen relative signup">
-      {console.log(booking)}
+    <div className="md:h-screen relative signup">
       <div className="nav top-0 absolute flex flex-row w-full justify-between z-50 p-10 bg-white shadow-lg">
         <Link href="/">
           <a>
@@ -261,13 +266,17 @@ const SignUp = () => {
         <div className="flex flex-row gap-1">
           <p>Vous avez déjà un compte ?</p>
 
-            <a className="text-gray-700 hover:underline" onClick={doBookWithLogin}>Se connecter</a>
-
+          <a
+            className="text-gray-700 hover:underline"
+            onClick={doBookWithLogin}
+          >
+            Se connecter
+          </a>
         </div>
       </div>
-      <div className="grid grid-cols-10 h-full">
+      <div className="grid grid-cols-10 h-full py-8">
         <div className="flex items-center col-span-10 lg:col-span-6">
-          <div className="mx-auto w-3/4 lg:w-1/2 space-y-6 mt-40 lg:mt-20">
+          <div className="mx-auto w-3/4 lg:w-1/2 space-y-6 mt-28 lg:mt-20">
             <h1 className="text-4xl">Bienvenue !</h1>
             {error && (
               <p className="text-red-500 flex items-center text-sm gap-1">
@@ -342,71 +351,33 @@ const SignUp = () => {
                 value={formData.phoneNumber}
                 onChange={(phone) => handlePhoneNumber(phone)}
               />
-              <div className="flex flex-row items-center gap-2">
-                <input
-                  type="checkbox"
-                  name="acceptsMarketing"
-                  id="acceptsMarketing"
-                  onChange={handleCChange}
-                  checked={isChecked}
-                  className="rounded-full"
-                />
-                <label htmlFor="acceptsMarketing" className="">
-                  Recevoir les bons plans Booklinik
-                </label>
-              </div>
+
               <p className="text-xs text-gray-500">
                 En créant mon compte je reconnais avoir lu et accepté les
                 Conditions Générales de Vente et les Conditions Générales
                 d&apos;Utilisation, et je confirme être âgé d&apos;au moins 18
                 ans.
               </p>
-              <div className="flex flex-row justify-between">
-                <div>
-                  <p className="text-sm text-gray-700">
-                    Vous avez déjà un compte ?
-                  </p>
-                  <Link href="/login">
-                    <a className="text-sm text-gray-500 transition hover:underline">
-                      Se connecter
-                    </a>
-                  </Link>
-                </div>
 
+              <div className="flex flex-row gap-4 lg:flex lg:flex-row lg:gap-3  md:justify-items-center">
+                <DashboardButton
+                  defaultText="S'inscrire"
+                  status={isLoading}
+                ></DashboardButton>
+                {booking ? (
+                  <DashboardButton
+                    defaultText="Continuer sans inscription"
+                    onClick={() => setShowModal(true)}
+                  ></DashboardButton>
+                ) : (
+                  ""
+                )}
               </div>
-              <div className="grid grid-cols-1 lg:flex lg:flex-row lg:gap-3 grid justify-items-center">
-
-
-                            <DashboardButton
-                                  defaultText="S'inscrire"
-                                  status={isLoading}
-                                ></DashboardButton>
-
-
-
-            <div className="flex gap-3 pt-6 ">
-         {   booking?( <button
-                  type="submit"
-                  onClick={()=>setShowModal(true)}
-                  className={`min-w-max transition px-4  py-3 lg:px-10 rounded border border-shamrock bg-shamrock text-white && "hover:text-shamrock group hover:bg-white"`}
-                  >Continuer sans inscription
-                  </button>):("")
-           }     
-
-              </div>
-
-
-
-                </div>
-
             </form>
-
           </div>
-
         </div>
 
         <div className="relative hidden col-span-4 lg:block">
-          {console.log(booking)}
           <Image
             src={SideBanner}
             layout="fill"
@@ -414,12 +385,17 @@ const SignUp = () => {
             className="h-full"
             alt=""
           />
-
         </div>
-        {booking?(  <ModalNoSignUp onClose={handleOnClose} visible={showModal} booking={booking} />):""}
-
+        {booking ? (
+          <ModalNoSignUp
+            onClose={handleOnClose}
+            visible={showModal}
+            booking={booking}
+          />
+        ) : (
+          ""
+        )}
       </div>
-
     </div>
   );
 };

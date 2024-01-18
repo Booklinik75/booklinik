@@ -23,6 +23,7 @@ import EditRooms from "components/editComponents/EditRooms";
 import EditOptions from "components/editComponents/EditOptions";
 import ReactDatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+
 import UpdateSuccessPopup from "Components/UpdateSuccessPopup";
 import { set } from "date-fns";
 import formatPrice from "utils/formatPrice";
@@ -237,6 +238,20 @@ const Booking = ({
         }, 1000);
         router.reload(window.location.pathname);
       });
+    if (status.value === "awaitingPayment") {
+      fetch("/api/mail", {
+        method: "post",
+        body: JSON.stringify({
+          recipient: booking.customer.email,
+          templateId: "d-4e1bda2d9da349d1987a1a8c69238484",
+          dynamicTemplateData: {
+            payment_link: `https://${process.env.ABSOLUTE_URL_ORIGIN}/checkout/${booking.id}`,
+          },
+        }),
+      }).then(() => {
+        definedStatusUpdate("awaitingPayment");
+      });
+    }
   };
 
   const definedStatusUpdate = (status) => {
@@ -281,19 +296,6 @@ const Booking = ({
         .doc(booking.id)
         .update({ alternativeTotal: newPrice })
         .then(() => {
-          fetch("/api/mail", {
-            method: "post",
-            body: JSON.stringify({
-              recipient: booking.customer.email,
-              templateId: "d-4e1bda2d9da349d1987a1a8c69238484",
-              dynamicTemplateData: {
-                payment_link: `https://${process.env.ABSOLUTE_URL_ORIGIN}/checkout/${booking.id}`,
-              },
-            }),
-          }).then(() => {
-            definedStatusUpdate("awaitingPayment");
-          });
-
           firebase
             .firestore()
             .collection("users")
@@ -366,7 +368,6 @@ const Booking = ({
 
   const offerName = booking.offerName;
 
-
   useEffect(() => {
     // this is initialPrice before referal, we use this for referal
     const initialPrice =
@@ -374,7 +375,7 @@ const Booking = ({
       Number(booking.totalExtraTravellersPrice) +
       booking.options
         ?.map((option) => option.isChecked && Number(option.price))
-        .reduce((a, b) => a + b) +
+        .reduce((a, b) => a + b, 0) +
       Number(booking.roomPrice) * Number(booking.totalSelectedNights);
     // this is new price
 
@@ -471,13 +472,11 @@ const Booking = ({
                     Opération
                   </p>
 
-                  { offerName ? (
+                  {offerName ? (
                     <p className="text-gray-600">{offerName}</p>
-                        )
-                        : (
-                      <p className="text-gray-600">{surgeriesName()}</p>
-                      )}
-
+                  ) : (
+                    <p className="text-gray-600">{surgeriesName()}</p>
+                  )}
                 </div>
                 <div>
                   <p className="text-sm text-gray-800 uppercase font-medium">
@@ -701,7 +700,7 @@ const Booking = ({
               <div className="flex items-center mt-14">
                 Le prix tout compris du voyage sur-mesure est de{" "}
                 <span className="border text-white whitespace-nowrap block p-2 px-4 border-shamrock bg-shamrock rounded  mx-3">
-                {booking.total}€
+                  {booking.total}€
                 </span>
               </div>
               <button

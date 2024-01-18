@@ -106,8 +106,6 @@ const CustomersList = ({ auth, users }) => {
 
   const [newRows, setNewRows] = useState(rows);
 
-  console.log(users);
-
   // for filter in searc
   const getFilter = (value) => {
     let newRowLists;
@@ -126,9 +124,16 @@ const CustomersList = ({ auth, users }) => {
         row.values.email.toLowerCase().includes(search)
       );
     } else if (value === "Date d'inscription") {
-      newRowLists = rows.filter((row) =>
-        row.values.creationTime.toLowerCase().includes(search)
+      setNewRows(
+        rows.sort(
+          (a, b) =>
+            new Date(b.values.creationTime) - new Date(a.values.creationTime)
+        )
       );
+      newRowLists = rows.sort(
+        (a, b) => b.values.creationTime - a.values.creationTime
+      );
+      console.log(newRowLists);
     } else {
       newRowLists = rows.filter(
         (row) =>
@@ -170,6 +175,7 @@ const CustomersList = ({ auth, users }) => {
       <div className="col-span-6 flex flex-col w-full gap-6">
         <div className="flex gap-4 justify-between items-center">
           <h1 className="text-4xl">Clients</h1>
+
           <CsvDownload
             data={users.map((user) => {
               return { ...user.auth, ...user.details };

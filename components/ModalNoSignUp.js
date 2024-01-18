@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import BookingDataSpan from "./bookingComponents/BookingDataSpan";
 import Moment from "node_modules/react-moment/dist/index";
 import formatPrice from "utils/formatPrice";
@@ -15,27 +15,20 @@ import MD5 from "crypto-js/md5";
 import { useAuth } from "hooks/useAuth";
 import "react-phone-input-2/lib/style.css";
 import { AiOutlineClose } from "react-icons/ai";
-
+import ReactDatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import firebase from "../firebase/clientApp";
-
 import { BiError } from "react-icons/bi";
 import errors from "utils/firebase_auth_errors";
+import Select from "react-select";
 
-export const getServerSideProps = async (ctx) => {
-  const auth = await checkAuth(ctx);
+function addDays(date, days) {
+  var result = new Date(date);
+  result.setDate(result.getDate() + days);
+  return result;
+}
 
-  if (auth.props.userProfile) return serverRedirect("/dashboard");
-
-  return {
-    props: {
-      auth,
-    },
-  };
-};
-
-const ModalNoSignUp = ({ onClose, visible,booking }) => {
-
-
+const ModalNoSignUp = ({ onClose, visible, booking }) => {
   const [form, setForm] = useState({
     email: "",
     message: "",
@@ -43,16 +36,26 @@ const ModalNoSignUp = ({ onClose, visible,booking }) => {
     phoneNumber: "",
     value: "",
   });
-
-
-  const totalPrice =
-    Number(booking.surgeries[0].surgeryPrice) +
-    Number(booking.totalExtraTravellersPrice) +
-    booking.options
-      ?.map((option) => option.isChecked && Number(option.price))
-      .reduce((a, b) => a + b) +
-    Number(booking.roomPrice) * Number(booking.totalSelectedNights);
+  const [bookingDataUpdate, setBookingDataUpdate] = useState(booking);
+  const [startDate, setStartDate] = useState(booking.startDate);
+  const [endDate, setEndDate] = useState(booking.endDate);
+  const [totalSelectedNights, setTotalSelectedNights] = useState(
+    booking.totalSelectedNights
+  );
+  const [minimumNights, setMinimumNights] = useState(booking.minimumNights);
+  const bookingOptionsTotalPrice = booking.options
+    ? booking.options
+        ?.map((option) => option.isChecked && Number(option.price))
+        .reduce((a, b) => a + b)
+    : 0;
+  const totalPrice = !booking.price
+    ? Number(booking.surgeries[0].surgeryPrice) +
+      Number(booking.totalExtraTravellersPrice) +
+      bookingOptionsTotalPrice +
+      Number(booking.roomPrice) * Number(totalSelectedNights)
+    : booking.price;
   const { isChecked, handleUseReferral } = useContext(BookContext);
+  const ref = useRef(null);
   const [isLoading, setLoading] = useState("idle");
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -61,7 +64,7 @@ const ModalNoSignUp = ({ onClose, visible,booking }) => {
 
   const router = useRouter(); //stop
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     const { email, message, name, phoneNumber } = form;
     setLoading("loading");
     e.preventDefault();
@@ -74,8 +77,7 @@ const ModalNoSignUp = ({ onClose, visible,booking }) => {
       setLoading("idle");
     } else {
       // Authentification firebase anonymous
-
-      firebase
+      await firebase
         .auth()
         .signInAnonymously()
         .then(() => {
@@ -84,11 +86,11 @@ const ModalNoSignUp = ({ onClose, visible,booking }) => {
           firebase.auth().onAuthStateChanged((user) => {
             if (user) {
               const booking = JSON.parse(localStorage.getItem("bookBooklinik"));
-              var firestoreObjectSetBooking = firebase
+              firebase
                 .firestore()
                 .collection("bookingsNoConnexion")
                 .add({
-                  email:email,
+                  email: email,
                   user: user.uid,
                   status: message,
                   name: name,
@@ -98,16 +100,10 @@ const ModalNoSignUp = ({ onClose, visible,booking }) => {
                   total:
                     Number(booking.surgeries[0].surgeryPrice) +
                     Number(booking.totalExtraTravellersPrice) +
-                    Number(booking.roomPrice) *
-                      Number(booking.totalSelectedNights) +
-                    booking.options
-                      ?.map(
-                        (option) => option.isChecked && Number(option.price)
-                      )
-                      .reduce((a, b) => a + b),
+                    Number(booking.roomPrice) * Number(totalSelectedNights) +
+                    bookingOptionsTotalPrice,
                   ...booking,
                 });
-
             }
           });
 
@@ -126,9 +122,7 @@ const ModalNoSignUp = ({ onClose, visible,booking }) => {
         .finally(() => {
           setLoading("idle");
           firebase.auth().signOut();
-          router.push("/");
         });
-        if (email){
       fetch("/api/mail", {
         method: "post",
         body: JSON.stringify({
@@ -147,23 +141,24 @@ const ModalNoSignUp = ({ onClose, visible,booking }) => {
               offerName: booking.offerName,
               surgeryName: booking.surgeries[0].surgeryName,
               surgeryCategoryName: booking.surgeries[0].surgeryCategoryName,
-              startDate: booking.startDate,
-              endDate: booking.endDate,
+              startDate: startDate,
+              endDate: endDate,
               hotelName: booking.hotelName,
               total: totalPrice,
-              totalSelectedNights: booking.totalSelectedNights,
+              totalSelectedNights: totalSelectedNights,
               room: booking.room,
               city: booking.city,
-          }}
+            },
+          },
         }),
       })
         .then(() => {
-        setFormSent(true);
+          setFormSent(true);
           fetch("/api/mail", {
             method: "post",
             body: JSON.stringify({
               recipient: email,
-              templateId: "d-54ea2f11e4da48bb923afcc2e43b95fee",
+              templateId: "d-9dc1636238a84a4e969ddf101658aa53",
               dynamicTemplateData: {
                 email: email,
                 name: name,
@@ -177,26 +172,26 @@ const ModalNoSignUp = ({ onClose, visible,booking }) => {
                   offerName: booking.offerName,
                   surgeryName: booking.surgeries[0].surgeryName,
                   surgeryCategoryName: booking.surgeries[0].surgeryCategoryName,
-                  startDate: booking.startDate,
-                  endDate: booking.endDate,
+                  startDate: startDate,
+                  endDate: endDate,
                   hotelName: booking.hotelName,
                   total: totalPrice,
-                  totalSelectedNights: booking.totalSelectedNights,
+                  totalSelectedNights: totalSelectedNights,
                   room: booking.room,
                   city: booking.city,
-              }
-
-            }  }),
-
+                },
+              },
+            }),
           });
         })
+
         .catch((error) => {
           Sentry.captureException(error);
         })
         .finally(() => {
           setIsSubmitting(false);
           setErrros({});
-        });}
+        });
     }
   };
 
@@ -220,278 +215,360 @@ const ModalNoSignUp = ({ onClose, visible,booking }) => {
     });
   };
 
-
   const getInitialState = () => {
     const value = "";
     return value;
   };
 
   const [value, setValue] = useState(getInitialState);
+  useEffect(() => {
+    if (!endDate) {
+      setErrros({ ...errors, date: "Sélectionnez une date de retour" });
+      setIsSubmitting(true);
+    }
+    return () => {
+      setErrros({ ...errors, date: "" });
+      setIsSubmitting(false);
+    };
+  }, [endDate]);
 
-  const handleChange = (e) => {
-    setValue(e.target.value);
-  };
+  const dates = booking.dates?.map((date) => {
+    return {
+      value: date,
+      label: `${moment(date.startDate).lang("fr").format("ddd ll")} - ${moment(
+        date.endDate
+      )
+        .lang("fr")
+        .format("ddd ll")}`,
+    };
+  });
 
   if (!visible) return null;
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex flex-wrap justify-center items-center  overflow-auto  z-50">
       <div id="contactform" className="  lg:mt-0 xl:mt-0 lg:absolute p-4 ">
-        <div className="lg:mt-0 xl:mt-0 relative  rounded-xl bg-shamrock gap-0 text-white placeholder-white ">
-        <div className="p-3">
-        <span className="cursor-pointer">
-
-          <AiOutlineClose className="hover:text-gray-500" size={20}  onClick={onClose}/>
-        </span>
-
-      </div>
-      <div className="mx-4 xl:mx-auto py-14 px-10 grid grid-cols-1 lg:grid-cols-2 pt-5">
-
-
-          <div className="space-y-6 h-full">
-
-            <h1 className="text-2xl mb-6">Parfait, on y est presque !</h1>
-            <div className="py-6 space-y-6 leading-9 ">
-              <p className=" lg:flex-row lg:items-center">
-              Vous souhaitez réaliser une opération</p><span>{" "}
-                <span className="">
-                             <BookingDataSpan
-                    string={booking.surgeries[0].surgeryName}
-                  />{" "}
+        <div className="lg:mt-0 xl:mt-0 relative  rounded-xl bg-white gap-0 text-black ">
+          <div className="px-3 pt-4">
+            <span className="cursor-pointer">
+              <AiOutlineClose
+                className="hover:text-gray-500"
+                size={20}
+                onClick={onClose}
+              />
+            </span>
+          </div>
+          <div className="mx-4 xl:mx-auto py-14 px-2  lg:px-10 grid grid-cols-1 lg:grid-cols-2 pt-5">
+            <div className="space-y-6 h-full">
+              <h1 className="text-2xl mb-6">Parfait, on y est presque !</h1>
+              <div className="py-6 space-y-6 leading-9 ">
+                <p className=" lg:flex-row lg:items-center">
+                  Vous souhaitez réaliser une opération
+                </p>
+                <span>
+                  {" "}
+                  <span className="">
+                    <BookingDataSpan
+                      string={booking.surgeries[0].surgeryName}
+                    />{" "}
                   </span>
-
-              </span>
-              <p className=" lg:flex-row lg:items-center">
-              Votre voyage s&apos;étendra du </p>{" "}
-                <span className="font-bold">
-                  <BookingDataSpan>
-                    <Moment
-                      format="DD MMM YYYY"
-                      date={booking.startDate}
-                      locale="fr"
-                    />
-                  </BookingDataSpan>
-                  au {" "}
-                  <BookingDataSpan>
-                    <Moment
-                      format="DD MMM YYYY"
-                      date={booking.endDate}
-                      locale="fr"
-                    />
-                  </BookingDataSpan>
-                </span><p>
-                pour une durée de {" "}
-                <span className="font-bold">
-                  {booking.totalSelectedNights}{" "}
                 </span>
-                jours.</p>
-
-              {booking.extraBabies > 0 ||
-              booking.extraChilds > 0 ||
-              booking.extraTravellers > 0 ? (
-                <p>
-                  Vous serez accompagné-e par
-                  <p>{" "}</p>
-                  <span className="font-bold">
-                    {booking.extraTravellers > 0 ? (
-                      <BookingDataSpan
-                        string={`${booking.extraTravellers} voyageur${
-                          booking.extraTravellers > 1 ? "s" : ""
+                <div className="flex items-center gap-2 flex-wrap md:flex-nowrap whitespace-nowrap mb-5">
+                  <p className="lg:flex-row lg:items-center">
+                    Votre voyage s&apos;étendra du{" "}
+                  </p>{" "}
+                  {booking.dates ? (
+                    <Select
+                      options={dates}
+                      onChange={(e) => {
+                        setStartDate(new Date(e.value.startDate));
+                        setEndDate(new Date(e.value.endDate)),
+                          setTotalSelectedNights(
+                            moment(e.value.endDate).diff(
+                              moment(e.value.startDate),
+                              "days"
+                            )
+                          );
+                      }}
+                      isSearchable={false}
+                      className="w-72"
+                      placeholder="Choisissez une date"
+                    />
+                  ) : (
+                    <>
+                      <span
+                        id="inputStartDate"
+                        className="border py-1 px-2 md:py-2 md:px-4 rounded align-middle mx-2 border-black cursor-pointer w-max  "
+                      >
+                        <ReactDatePicker
+                          minDate={new Date()}
+                          locale="fr"
+                          dateFormat="dd/MM/yyyy"
+                          selected={new Date(startDate)}
+                          onChange={(date) => {
+                            setStartDate(date), setEndDate();
+                          }}
+                          disabledKeyboardNavigation
+                          onFocus={(e) => e.target.blur()}
+                        />
+                      </span>
+                      au{" "}
+                      <span
+                        id="inputEndDate"
+                        className={`border py-1 px-2 md:py-2 md:px-4 rounded align-middle mx-2 cursor-pointer w-max  ${
+                          !endDate ? "border-red-600" : "border-black"
                         }`}
-                      />
-                    ) : (
-                      ""
-                    )}
-                    {booking.extraChilds > 0 ? (
-                      <BookingDataSpan
-                        string={`${booking.extraChilds} enfant${
-                          booking.extraChilds > 1 ? "s" : ""
-                        }`}
-                      />
-                    ) : (
-                      ""
-                    )}
-                    {booking.extraBabies > 0 ? (
-                      <BookingDataSpan
-                        string={`${booking.extraBabies} bébé${
-                          booking.extraBabies > 1 ? "s" : ""
-                        }`}
-                      />
-                    ) : (
-                      ""
-                    )}
+                      >
+                        <ReactDatePicker
+                          minDate={addDays(startDate, parseInt(minimumNights))}
+                          locale="fr"
+                          selected={
+                            endDate
+                              ? new Date(endDate)
+                              : addDays(
+                                  startDate,
+                                  parseInt(booking.minimumNights)
+                                )
+                          }
+                          dateFormat="dd/MM/yyyy"
+                          onChange={(date) => {
+                            let timeDiff = Math.abs(
+                              date.getTime() - new Date(startDate).getTime()
+                            );
+                            let numberOfNights = Math.ceil(
+                              timeDiff / (1000 * 3600 * 24)
+                            );
+                            setEndDate(date);
+                            setTotalSelectedNights(numberOfNights);
+                          }}
+                          disabledKeyboardNavigation
+                          onFocus={(e) => e.target.blur()}
+                        />
+                      </span>
+                    </>
+                  )}
+                </div>
+                {!booking.dates && errors && errors.date ? (
+                  <span className="text-red-600 text-sm mt-3">
+                    {errors.date}
                   </span>
-                  <p>de votre choix pour découvrir</p>
-                  <p>{" "}</p>
-                  <span className="font-bold">
-                    <BookingDataSpan string={booking.city} />
+                ) : (
+                  ""
+                )}
+                <p>
+                  pour une durée de{" "}
+                  <span className="font-bold">{totalSelectedNights} </span>
+                  jours.
+                </p>
+                {booking.extraBabies > 0 ||
+                booking.extraChilds > 0 ||
+                booking.extraTravellers > 0 ? (
+                  <p className="flex md:flex-row whitespace-">
+                    Vous serez accompagné-e par
+                    <p> </p>
+                    <span className="font-bold">
+                      {booking.extraTravellers > 0 ? (
+                        <BookingDataSpan
+                          string={`${booking.extraTravellers} voyageur${
+                            booking.extraTravellers > 1 ? "s" : ""
+                          }`}
+                        />
+                      ) : (
+                        ""
+                      )}
+                      {booking.extraChilds > 0 ? (
+                        <BookingDataSpan
+                          string={`${booking.extraChilds} enfant${
+                            booking.extraChilds > 1 ? "s" : ""
+                          }`}
+                        />
+                      ) : (
+                        ""
+                      )}
+                      {booking.extraBabies > 0 ? (
+                        <BookingDataSpan
+                          string={`${booking.extraBabies} bébé${
+                            booking.extraBabies > 1 ? "s" : ""
+                          }`}
+                        />
+                      ) : (
+                        ""
+                      )}
+                    </span>
+                    <p>de votre choix pour découvrir</p>
+                    <p> </p>
+                    <span className="font-bold">
+                      <BookingDataSpan string={booking.city} />
+                    </span>
+                  </p>
+                ) : (
+                  ""
+                )}{" "}
+                <p className="">
+                  L&apos;hôtel dans lequel vous résiderez est au{" "}
+                  <span className="font-bold whitespace-nowrap">
+                    <BookingDataSpan string={booking.hotelName} />{" "}
                   </span>
                 </p>
-              ) : (
-                ""
-              )}{" "}
-              <p className="">
-                L&apos;hôtel dans lequel vous résiderez est au{" "}
-                <span className="font-bold">
-                  <BookingDataSpan string={booking.hotelName} />{" "}
-                </span>
-               </p>
-               <p>
-                (très bon choix) et vous logerez en
-                <span className="font-bold">{" "}
-                  <BookingDataSpan string={booking.roomName} />
-                </span>
-              </p>
-              <p className="">
-                Vous avez selectionné les options suivantes :{" "}
-                <span className="font-bold">
-                  {booking.options.map((option) => {
-                    return option.isChecked === true ? (
-                      <BookingDataSpan string={option.name} />
-                    ) : (
-                      ""
-                    );
-                  })}
-                </span>
-              </p>
-            </div>
-
-            <p className="pb-6 !mt-0 flex flex-col items-start gap-2 lg:flex-row lg:items-center">
-              Le prix tout compris de votre voyage sur-mesure est de :{" "}
-              <span className="text-2xl rounded text-shamrock px-4 py-2 mx-2 bg-white ">
-                {formatPrice(
-                  isChecked
-                    ? totalPrice - userProfile.referalBalance
-                    : totalPrice
-                )}{" "}
-                €
-              </span>
-            </p>
-          </div>
-
-          <form onSubmit={handleFormSubmit}>
-            <div className="space-y-6">
-              {!formSent ? (
-                <>
-                  <div>
-                    <p className="uppercase text-sm mb-2">Nom</p>
-                    <input
-                      type="text"
-                      className={`w-full bg-transparent border-b outline-none placeholder-white ${
-                        errors && errors.name
-                          ? "border-red-600 "
-                          : "border-white"
-                      } p-3`}
-                      placeholder="Nom"
-                      name="name"
-                      value={form.name}
-                      onChange={handleFormChange}
-                    />
-                    {errors && errors.name ? (
-                      <span className="text-red-600 text-sm mt-3">
-                        {errors.name}
-                      </span>
-                    ) : (
-                      ""
-                    )}
-                  </div>
-
-                  <div
-                    className={`${
-                      errors && errors.phoneNumber ? "error-input" : ""
-                    }`}
-                  >
-                    <p className="uppercase text-sm mb-2">
-                      Numéro de téléphone
-                    </p>
-                    <PhoneInput
-                      country={"fr"}
-                      value={form.phoneNumber}
-                      onChange={(phone) => handlePhoneNumber(phone)}
-                    />
-                    {errors && errors.phoneNumber ? (
-                      <span className="text-red-600 text-sm mt-3">
-                        {errors.phoneNumber}
-                      </span>
-                    ) : (
-                      ""
-                    )}
-                  </div>
-
-                  <div>
-                    <p className="uppercase text-sm mb-2">Votre email</p>
-                    <input
-                      type="email"
-                      className={`w-full bg-transparent border-b outline-none placeholder-white ${
-                        errors && errors.email
-                          ? "border-red-600 "
-                          : "border-white"
-                      } p-3`}
-                      placeholder="Email"
-                      name="email"
-                      value={form.email}
-                      onChange={handleFormChange}
-                    />
-                    {errors && errors.email ? (
-                      <span className="text-red-600 text-sm mt-3">
-                        {errors.email}
-                      </span>
-                    ) : (
-                      ""
-                    )}
-                  </div>
-
-                  <div>
-                    <p className="uppercase text-sm mb-2">Votre message</p>
-                    <textarea
-                      className={`w-full h-24 bg-white bg-opacity-10 border-b outline-none placeholder-white ${
-                        errors && errors.message
-                          ? "border-red-600 "
-                          : "border-white"
-                      } p-3`}
-                      placeholder="J&lsquo;ai une question à propos de ..."
-                      value={form.message}
-                      name="message"
-                      onChange={handleFormChange}
-                    ></textarea>
-                    {errors && errors.message ? (
-                      <span className="text-red-600 text-sm mt-3">
-                        {errors.message}
-                      </span>
-                    ) : (
-                      ""
-                    )}
-                  </div>
-                  <div className="flex flex-row  justify-end">
-                    <button
-                      type="submit"
-                      className="mx-3 float-right rounded bg-white bg-opacity-10 p-3 transition hover:bg-opacity-100 hover:text-shamrock"
-                      disabled={isSubmitting}
-                    >
-                      Envoyer
-                    </button>
-
-                  </div>
-                </>
-              ) : (
-                <div className="w-full h-full flex-col justify-items-center ">
-                  <p className="text-center  xl:text-lg">
-                    Votre message a bien été envoyé.<br/> Nous vous recontacterons
-                    dans les plus brefs délais.
+                <p>
+                  (très bon choix) et vous logerez en
+                  <span className="font-bold whitespace-nowrap">
+                    {" "}
+                    <BookingDataSpan string={booking.roomName} />
+                  </span>
+                </p>
+                {booking.options ? (
+                  <p className="">
+                    Vous avez selectionné les options suivantes :{" "}
+                    <span className="font-bold">
+                      {booking.options.map((option) => {
+                        return option.isChecked === true ? (
+                          <BookingDataSpan string={option.name} />
+                        ) : (
+                          ""
+                        );
+                      })}
+                    </span>
                   </p>
+                ) : (
+                  ""
+                )}
+              </div>
 
-
-
-                  </div>
-
-              )}
+              <p className="pb-6 !mt-0 flex flex-col items-start gap-2 lg:flex-row lg:whitespace-nowrap lg:items-center">
+                Le prix tout compris de votre voyage sur-mesure est de :{" "}
+                <span className="text-2xl flex-row flex  rounded px-4 py-2 mx-2 bg-shamrock text-white ">
+                  {formatPrice(
+                    isChecked
+                      ? totalPrice - userProfile.referalBalance
+                      : totalPrice
+                  )}{" "}
+                  €
+                </span>
+              </p>
             </div>
-          </form>
+
+            <form onSubmit={handleFormSubmit}>
+              <div className="space-y-6">
+                {!formSent ? (
+                  <>
+                    <div>
+                      <p className="uppercase text-sm mb-2">Nom</p>
+                      <input
+                        type="text"
+                        className={`w-full bg-transparent border-b outline-none   ${
+                          errors && errors.name
+                            ? "border-red-600 "
+                            : "border-black"
+                        } p-3`}
+                        placeholder="Nom"
+                        name="name"
+                        value={form.name}
+                        onChange={handleFormChange}
+                      />
+                      {errors && errors.name ? (
+                        <span className="text-red-600 text-sm mt-3">
+                          {errors.name}
+                        </span>
+                      ) : (
+                        ""
+                      )}
+                    </div>
+
+                    <div
+                      className={`${
+                        errors && errors.phoneNumber ? "error-input" : ""
+                      }`}
+                    >
+                      <p className="uppercase text-sm mb-2">
+                        Numéro de téléphone
+                      </p>
+                      <PhoneInput
+                        country={"fr"}
+                        value={form.phoneNumber}
+                        onChange={(phone) => handlePhoneNumber(phone)}
+                      />
+                      {errors && errors.phoneNumber ? (
+                        <span className="text-red-600 text-sm mt-3">
+                          {errors.phoneNumber}
+                        </span>
+                      ) : (
+                        ""
+                      )}
+                    </div>
+
+                    <div>
+                      <p className="uppercase text-sm mb-2">Votre email</p>
+                      <input
+                        type="email"
+                        className={`w-full bg-transparent border-b outline-none  ${
+                          errors && errors.email
+                            ? "border-red-600 "
+                            : "border-black"
+                        } p-3`}
+                        placeholder="Email"
+                        name="email"
+                        value={form.email}
+                        onChange={handleFormChange}
+                      />
+                      {errors && errors.email ? (
+                        <span className="text-red-600 text-sm mt-3">
+                          {errors.email}
+                        </span>
+                      ) : (
+                        ""
+                      )}
+                    </div>
+
+                    <div>
+                      <p className="uppercase text-sm mb-2">Votre message</p>
+                      <textarea
+                        className={`w-full h-24 bg-white bg-opacity-10 border-b outline-none ${
+                          errors && errors.message
+                            ? "border-red-600 "
+                            : "border-black"
+                        } p-3`}
+                        placeholder="J&lsquo;ai une question à propos de ..."
+                        value={form.message}
+                        name="message"
+                        onChange={handleFormChange}
+                      ></textarea>
+                      {errors && errors.message ? (
+                        <span className="text-red-600 text-sm mt-3">
+                          {errors.message}
+                        </span>
+                      ) : (
+                        ""
+                      )}
+                    </div>
+                    <div className="flex flex-row justify-center  md:justify-end group ">
+                      <button
+                        type="submit"
+                        className={`mx-3 text-2xl px-2 md:px-3 float-right border rounded bg-shamrock text-white disabled:opacity-50 disabled:cursor-not-allowed disabled:col-span-full ${
+                          !isSubmitting &&
+                          "group-hover:text-shamrock group-hover:bg-white "
+                        }' p-3 transition `}
+                        disabled={isSubmitting}
+                      >
+                        Envoyer
+                      </button>
+                    </div>
+                  </>
+                ) : (
+                  <div className="w-full h-full flex-col justify-items-center ">
+                    <p className="text-center  xl:text-lg">
+                      Votre message a bien été envoyé.
+                      <br /> Nous vous recontacterons dans les plus brefs
+                      délais.
+                    </p>
+                  </div>
+                )}
+              </div>
+            </form>
+          </div>
         </div>
       </div>
     </div>
-    </div>
-
   );
 };
 

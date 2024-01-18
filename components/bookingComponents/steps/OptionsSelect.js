@@ -34,6 +34,7 @@ const OptionsSelectStep = ({
 
   return (
     <div className="space-y-6 h-full">
+      {console.log(booking)}
       <h1 className="text-2xl mb-6">
         C&apos;est noté, désirez-vous compléter votre voyage avec des offres
         complémentaires ?

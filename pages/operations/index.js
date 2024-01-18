@@ -14,6 +14,7 @@ import {
   getBackEndAsset,
 } from "../../utils/ServerHelpers";
 import { IoIosArrowDown } from "react-icons/io";
+import { useRouter } from "next/router";
 
 export const getStaticProps = async (context) => {
   const operationCategories = await getOperationCategories();
@@ -59,6 +60,7 @@ const OperationsList = ({
     "https://firebasestorage.googleapis.com/v0/b/booklinik.appspot.com/o/frontendassets%2Ff3f4e34aca2cab87619cb04c6610b4c7%20copie.jpg?alt=media&token=c402bd27-0ea9-411a-9960-78ce51c29558";
   const [openDropdown, setOpenDropdown] = useState(false);
   const [category, setCategory] = useState(operationCategories[0].name);
+  const router = useRouter();
 
   return (
     <div>
@@ -114,7 +116,7 @@ const OperationsList = ({
       </div>
 
       {operationCategories.map((category) => (
-        <div key={category.slug}>
+        <div key={category.slug} className="top-[-250px]">
           <OperationCategory operation={category} surgeries={surgeries} />
         </div>
       ))}

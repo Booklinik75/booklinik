@@ -1,9 +1,8 @@
 export default function validateContactForm({
   email,
-  message,
   name,
   phoneNumber,
-
+  date,
 }) {
   const errors = {};
   if (email.trim() === "") {
@@ -15,9 +14,7 @@ export default function validateContactForm({
       errors.email = "L'e-mail doit être une adresse e-mail valide";
     }
   }
-  if (message.trim() === "") {
-    errors.message = "Le mot de passe ne doit pas être vide";
-  }
+
   if (name.trim() === "") {
     errors.name = "Le nom ne doit pas être vide";
   }

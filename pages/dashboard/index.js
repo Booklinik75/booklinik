@@ -52,7 +52,6 @@ export default function DashboardIndex({
   useEffect(() => {
     const asyncFunc = async () => {
       const entries = [];
-
       await firebase
         .firestore()
         .collection("bookings")
