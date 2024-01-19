@@ -98,6 +98,7 @@ const Offer = ({
     name,
     description,
     price,
+    beforeAfter,
     id,
     hotel: { rating, name: hotelName, photoUrl: hotelPhotoUrl },
     hotelRoom: { photos: hotelRoomPhotos, name: hotelRoomName },
@@ -185,6 +186,30 @@ const Offer = ({
               {surgeryDescription}
             </p>
           </div>
+        </div>
+        <div className="mx-4 xl:mx-auto max-w-7xl space-y-10">
+        {beforeAfter[0].beforeafter
+          ? beforeAfter[0].beforeafter.length > 0 && (
+              <div className="space-y-6">
+                <h2 className="text-2xl">Avant/Après</h2>
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+                  {beforeAfter[0].beforeafter.map((x, i) => {
+                    return (
+                      <div
+                        key={(x, i)}
+                        className="col-span-1 rounded relative transition shadow hover:shadow-lg group"
+                      >
+                        <ReactCompareImage
+                          leftImage={x.leftimage}
+                          rightImage={x.rightimage}
+                        />
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )
+          : ""}
         </div>
         <div className="bg-gray-200 flex items-center flex-col w-full p-8 rounded gap-8">
           <div className="flex flex-col gap-3 items-center">
