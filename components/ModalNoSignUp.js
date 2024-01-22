@@ -275,7 +275,7 @@ const ModalNoSignUp = ({ onClose, visible, booking }) => {
                 </span>
                 <div className="flex items-center gap-2 flex-wrap md:flex-nowrap whitespace-nowrap mb-5">
                   <p className="lg:flex-row lg:items-center">
-                    Votre voyage s&apos;étendra du{" "}
+                    Votre offre pour la période du {" "}
                   </p>{" "}
                   {booking.dates ? (
                     <Select
@@ -355,11 +355,6 @@ const ModalNoSignUp = ({ onClose, visible, booking }) => {
                 ) : (
                   ""
                 )}
-                <p>
-                  pour une durée de{" "}
-                  <span className="font-bold">{totalSelectedNights} </span>
-                  jours.
-                </p>
                 {booking.extraBabies > 0 ||
                 booking.extraChilds > 0 ||
                 booking.extraTravellers > 0 ? (
