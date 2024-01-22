@@ -26,7 +26,7 @@ const BookingConfirmation = ({ booking, userProfile }) => {
           </span>
         </p>
         <p className="items-start gap-2 lg:flex-row lg:items-center">
-          Votre voyage s&apos;étendra du{" "}
+          Votre offre  pour la période du{" "}
         </p>{" "}
         <span>
           <BookingDataSpan>
@@ -37,7 +37,6 @@ const BookingConfirmation = ({ booking, userProfile }) => {
             <Moment format="DD MMM YYYY" date={booking.endDate} locale="fr" />
           </BookingDataSpan>
         </span>
-        <p>pour une durée de {booking.totalSelectedNights} jours.</p>
         {booking.extraBabies > 0 ||
         booking.extraChilds > 0 ||
         booking.extraTravellers > 0 ? (
