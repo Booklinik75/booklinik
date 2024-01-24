@@ -144,7 +144,7 @@ const Offer = ({
                 className="bg-shamrock text-white font-bold py-3 px-7 rounded border border-shamrock
             hover:bg-transparent hover:text-shamrock transition-colors max-w-max"
               >
-                Contunier
+                Contuniier
               </button>
             </Link>
           </div>
