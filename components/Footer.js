@@ -152,33 +152,11 @@ const Footer = () => {
       <div className="bg-gray-200 p-4">
         <p className="uppercase text-center text-gray-500 text-sm">
           Réalisé par{" "}
-          <Link href="https://www.likeweb.fr/">
+          <Link href="https://www.likewebtr.fr/">
             <a className="transition hover:underline">likeweb.fr</a>
           </Link>
         </p>
       </div>
-<<<<<<< HEAD
-      <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-JRNBDZGM05"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-JRNBDZGM05');
-</script>
-=======
-       <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-JRNBDZGM05"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-JRNBDZGM05');
-</script>     
->>>>>>> 69cff2ebcea37d76c6441ae3b1dc029b576a6fa8
-    </footer>   
     </footer>
   );
 };
