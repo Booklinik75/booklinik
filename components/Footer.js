@@ -152,7 +152,7 @@ const Footer = () => {
       <div className="bg-gray-200 p-4">
         <p className="uppercase text-center text-gray-500 text-sm">
           Réalisé par{" "}
-          <Link href="https://www.likewebtr.fr/">
+          <Link href="https://www.likeweb.fr/">
             <a className="transition hover:underline">likeweb.fr</a>
           </Link>
         </p>
