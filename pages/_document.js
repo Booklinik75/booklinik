@@ -14,32 +14,16 @@ export default class MyDocument extends Document {
               })(window,document,'script','dataLayer','GTM-NGCD8B7');</script>`,
             }}
           />
-          <script
-            async
-            src={`https://www.googletagmanager.com/gtag/js?id=AW-11382787557`}
-          />
-          <script
-            dangerouslySetInnerHTML={{
-              __html: `
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'AW-11382787557', {
-              page_path: window.location.pathname,
-            });
-          `,
-            }}
-          />
         </Head>
         <body>
-          <Main />
-          <NextScript />
           <noscript
             dangerouslySetInnerHTML={{
               __html: `<iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NGCD8B7"
             height="0" width="0" style="display:none; visibility:hidden" />`,
             }}
           />
+          <Main />
+          <NextScript />
         </body>
       </Html>
     );
