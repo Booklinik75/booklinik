@@ -16,7 +16,6 @@ import { useRouter } from "node_modules/next/dist/client/router";
 import "tippy.js/dist/tippy.css";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import TagManager from "react-gtm-module";
 import ModalOuibounce from "components/ModalOuibounce";
 import Script from "next/script";
 moment.locale("fr");
@@ -140,14 +139,6 @@ function BooklinikClient({ Component, pageProps }) {
     router.events.on("routeChangeStart", handleStart);
     router.events.on("routeChangeComplete", handleComplete);
     router.events.on("routeChangeError", handleComplete);
-
-    //Google TagManager
-
-    const tagManagerArgs = {
-      gtmId: "GTM-NXRNNN7L",
-    };
-
-    TagManager.initialize(tagManagerArgs);
 
     // Cleanup event listeners
     return () => {
