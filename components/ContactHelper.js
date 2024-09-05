@@ -128,9 +128,9 @@ const ContactHelper = () => {
           Remplisez le formulaire nous vous contacterons sous 24h.
         </h2>
         <p className="mt-4 mb-2">Par téléphone au</p>
-        <Link href="tel:0186653500">
+        <Link href="tel:33186653500">
           <a className="hover:underline text-xl font-bold flex items-center">
-            01 86 65 35 00
+            +33 1 86 65 32 00
           </a>
         </Link>
       </div>
