@@ -7,6 +7,7 @@ import validateModalOuibounce from "utils/validateModalOuibounce";
 import { AiOutlineClose } from "react-icons/ai";
 
 const ModalOuibounce = ({ onClose, showModal }) => {
+  const templateSendgridId = "d-dfba23955a2547b490f764c0965ecfb1";
   const [form, setForm] = useState({
     email: "",
     firstname: "",
@@ -40,11 +41,12 @@ const ModalOuibounce = ({ onClose, showModal }) => {
       setIsSubmitting(false);
     } else {
       gtag_report_conversion();
+      console.log("envoyer");
       fetch("/api/mail", {
         method: "post",
         body: JSON.stringify({
           recipient: "info@booklinik.com",
-          templateId: "d-c2b02b9d8e8448da934509a658d1e884",
+          templateId: templateSendgridId,
           dynamicTemplateData: {
             email: form.email,
             firstname: form.firstname,
@@ -204,6 +206,7 @@ const ModalOuibounce = ({ onClose, showModal }) => {
                           </p>
                           <PhoneInput
                             country={"fr"}
+                            autoFormat={false}
                             value={form.phoneNumber}
                             onChange={(phone) => handlePhoneNumber(phone)}
                           />

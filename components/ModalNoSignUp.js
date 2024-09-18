@@ -127,7 +127,7 @@ const ModalNoSignUp = ({ onClose, visible, booking }) => {
         method: "post",
         body: JSON.stringify({
           recipient: "info@booklinik.com",
-          templateId: "d-b2d6e1304ba7400ca27756c7cf642afe",
+          templateId: "d-92a7de3c4a1f46d597e3771446fb0efa",
           dynamicTemplateData: {
             email: email,
             name: name,
@@ -158,7 +158,7 @@ const ModalNoSignUp = ({ onClose, visible, booking }) => {
             method: "post",
             body: JSON.stringify({
               recipient: email,
-              templateId: "d-9dc1636238a84a4e969ddf101658aa53",
+              templateId: "d-92a7de3c4a1f46d597e3771446fb0efa",
               dynamicTemplateData: {
                 email: email,
                 name: name,
@@ -275,7 +275,7 @@ const ModalNoSignUp = ({ onClose, visible, booking }) => {
                 </span>
                 <div className="flex items-center gap-2 flex-wrap md:flex-nowrap whitespace-nowrap mb-5">
                   <p className="lg:flex-row lg:items-center">
-                    Votre offre pour la période du {" "}
+                    Votre offre pour la période du{" "}
                   </p>{" "}
                   {booking.dates ? (
                     <Select

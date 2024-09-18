@@ -20,6 +20,7 @@ const ContactHelper = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formSent, setFormSent] = useState(false);
   const [errors, setErrros] = useState({});
+  const templateSendgridId = "d-dfba23955a2547b490f764c0965ecfb1";
 
   const router = useRouter(); //stop
   function gtag_report_conversion(url) {
@@ -40,14 +41,21 @@ const ContactHelper = () => {
 
     const { errors, valid } = validateContactForm(form);
     if (!valid) {
+      console.log("__________validation formulaire Fause______________");
+
       setErrros(errors);
       setIsSubmitting(false);
     } else {
+      console.log("__________validation formulaire Vraie______________");
+      console.log(form);
+
+      form;
+
       fetch("/api/mail", {
         method: "post",
         body: JSON.stringify({
           recipient: "info@booklinik.com",
-          templateId: "d-6b9ed961cfdc44228824603584a8b740",
+          templateId: templateSendgridId,
           dynamicTemplateData: {
             email: form.email,
             name: form.name,
@@ -64,11 +72,11 @@ const ContactHelper = () => {
           gtag_report_conversion();
           setFormSent(true);
 
-          fetch("/api/mail", {
+          /*fetch("/api/mail", {
             method: "post",
             body: JSON.stringify({
               recipient: form.email,
-              templateId: "d-57cbc54b5ac345beb1bfc6509381ccee",
+              templateId: "d-dfba23955a2547b490f764c0965ecfb1 ",
               dynamicTemplateData: {
                 email: form.email,
                 name: form.name,
@@ -79,7 +87,7 @@ const ContactHelper = () => {
                 value: value,
               },
             }),
-          });
+          });*/
         })
         .catch((error) => {
           Sentry.captureException(error);
@@ -171,8 +179,10 @@ const ContactHelper = () => {
                   }`}
                 >
                   <p className="uppercase text-sm mb-2">Numéro de téléphone</p>
+
                   <PhoneInput
                     country={"fr"}
+                    autoFormat={false}
                     value={form.phoneNumber}
                     onChange={(phone) => handlePhoneNumber(phone)}
                   />
