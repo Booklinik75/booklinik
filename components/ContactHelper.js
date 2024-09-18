@@ -196,7 +196,7 @@ const ContactHelper = () => {
                 </div>
 
                 <div>
-                  <p className="uppercase text-sm mb-2">Votre email</p>
+                  <p className="uppercase text-sm mb-2">Votre emailss</p>
                   <input
                     type="email"
                     className={`w-full bg-transparent border-b outline-none placeholder-white ${
